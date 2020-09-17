@@ -1,0 +1,1 @@
+DELETE FROM `ai_agents` WHERE `entry` = 5822 and `spell` = 20798; -- Durotar: Feelweaver Scornn cast "Demon Skin" (bugget so ported to lua)
