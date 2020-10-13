@@ -7,16 +7,20 @@ DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest
 DELETE FROM `ai_agents` WHERE `entry` = 474 and `spell` = 12544; -- Elwynn Forest: Defias Rogue Wizard cast "Frost Armor"
 DELETE FROM `ai_agents` WHERE `entry` = 476 and `spell` = 12544; -- Elwynn Forest: Kobold Geomancer cast "Frost Armor"
 DELETE FROM `ai_agents` WHERE `entry` = 881 and `spell` = 12544; -- Elwynn Forest: Surena Caledon cast "Frost Armor"
+DELETE FROM `ai_agents` WHERE `entry` = 1507 and `spell` = 12544; -- Tirisfall Glades: Scarlet Initiate cast "Frost Armor"
 DELETE FROM `ai_agents` WHERE `entry` = 3204 and `spell` = 20798; -- Durotar: Gazzuz cast "Demon Skin"
 DELETE FROM `ai_agents` WHERE `entry` = 3206 and `spell` = 324; -- Durotar: Voodoo Troll cast "Lighting Shield"
 DELETE FROM `ai_agents` WHERE `entry` = 5822 and `spell` = 20798; -- Durotar: Feelweaver Scornn cast "Demon Skin"
 DELETE FROM `ai_agents` WHERE `entry` = 5826 and `spell` = 324; -- Durotar: Geolord Mottle cast "Lighting Shield"
 
-UPDATE `creature_proto` SET `auras` = 0 WHERE `entry` = 474;
-UPDATE `creature_proto` SET `auras` = 0 WHERE `entry` = 476;
-UPDATE `creature_proto` SET `auras` = 0 WHERE `entry` = 881;
-UPDATE `creature_proto` SET `auras` = 0 WHERE `entry` = 3204;
-UPDATE `creature_proto` SET `auras` = 0 WHERE `entry` = 5822;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 474;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 476;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 881;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 1507;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 3204;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 3206;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 5822;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 5826;
 
 --
 -- The next npc_monstersay has been ported to lua:
