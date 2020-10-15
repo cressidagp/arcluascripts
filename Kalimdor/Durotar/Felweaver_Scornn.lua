@@ -4,7 +4,8 @@ function FELWEAVER_SCORNN.OoCCastBuff( unit, event )
 
     if( event == 18 )
     then
-        unit:RegisterAIUpdateEvent( 1000 );
+        local n = math.random( 1, 5 );
+        unit:RegisterAIUpdateEvent( n * 1000 );
     else
         if( unit:IsInCombat() == false and unit:HasAura( 20798 ) == false )
         then
