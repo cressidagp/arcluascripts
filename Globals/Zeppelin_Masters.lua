@@ -16,166 +16,39 @@ local DATA = {
 { 34766, 190549, "Step right up! The zeppelin to Orgrimmar has arrived! All aboard to Durotar!" }                  -- Krendle, The Zephyr
 }
 
-T_ZEPPELIN = {}
+ZEPPELIN_MASTERS = {}
 
-function T_ZEPPELIN.CheckForTransport( unit, event )
+function ZEPPELIN_MASTERS.Reset( unit )
     local sUnit = tostring( unit );
-    if( unit:IsAlive() == true and T_ZEPPELIN[ sUnit ].var == false )
+    ZEPPELIN_MASTERS[ sUnit ].var = false;
+end
+
+function ZEPPELIN_MASTERS.CheckForTransport( unit )
+    local sUnit = tostring( unit );
+    if( unit:IsAlive() == true and ZEPPELIN_MASTERS[ sUnit ].var == false )
     then
-        -- Frezza, The Thundercaller
-        if( unit:GetEntry() == DATA[1][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[1][2] );
-            if( zep ~= nil )
+        for i = 1, #DATA do
+            if( unit:GetEntry() == DATA[ i ][ 1 ] )
             then
-                unit:SendChatMessage( 14, 0, DATA[1][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Zappeta, The Thundercaller
-        elseif( unit:GetEntry() == DATA[2][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[2][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[2][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Snurk, The Iron Eagle
-        elseif( unit:GetEntry() == DATA[3][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[3][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[3][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Nezraz, The Iron Eagle
-        elseif( unit:GetEntry() == DATA[4][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[4][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[4][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Squibby, The Purple Princess
-        elseif( unit:GetEntry() == DATA[5][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[5][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[5][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Hin, The Purple Princess
-        elseif( unit:GetEntry() == DATA[6][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[6][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[6][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Greeb, The Mighty Wind
-        elseif( unit:GetEntry() == DATA[7][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[7][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[7][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Nargo, The Mighty Wind
-        elseif( unit:GetEntry() == DATA[8][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[8][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[8][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Meefi, The Cloudkisser
-        elseif( unit:GetEntry() == DATA[9][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[9][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[9][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Drenk, The Cloudkisser
-        elseif( unit:GetEntry() == DATA[10][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[10][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[10][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Zelli, The Zephyr
-        elseif( unit:GetEntry() == DATA[11][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[11][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[11][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
-            end
-
-        -- Krendle, The Zephyr
-        elseif( unit:GetEntry() == DATA[12][1] )
-        then
-            local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[12][2] );
-            if( zep ~= nil )
-            then
-                unit:SendChatMessage( 14, 0, DATA[12][3] );
-                T_ZEPPELIN[ sUnit ].var = true;
-            else
-                T_ZEPPELIN[ sUnit ].var = false;
+                local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[ i ][ 2 ] );
+                if( zep ~= nil )
+                then
+                    unit:SendChatMessage( 14, 0, DATA[ i ][ 3 ] );
+                    ZEPPELIN_MASTERS[ sUnit ].var = true;
+                    unit:RegisterEvent( ZEPPELIN_MASTERS.Reset, 90000, 1 );
+                end
             end
         end
     end
 end
 
-function T_ZEPPELIN.OnSpawn( unit, event )
+function ZEPPELIN_MASTERS.OnSpawn( unit, event )
     local sUnit = tostring( unit );
-    T_ZEPPELIN[ sUnit ] = {}
-    T_ZEPPELIN[ sUnit ].var = false;
-    unit:RegisterEvent( T_ZEPPELIN.CheckForTransport, 1000, 0 );
+    ZEPPELIN_MASTERS[ sUnit ] = {}
+    ZEPPELIN_MASTERS[ sUnit ].var = false;
+    unit:RegisterEvent( ZEPPELIN_MASTERS.CheckForTransport, 1000, 0 );
 end
 
 for i = 1, #NPC_ENTRY do
-    RegisterUnitEvent( NPC_ENTRY[ i ], 18, T_ZEPPELIN.OnSpawn );
+    RegisterUnitEvent( NPC_ENTRY[ i ], 18, ZEPPELIN_MASTERS.OnSpawn );
 end
