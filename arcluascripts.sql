@@ -1,9 +1,16 @@
---
--- The follows ai_agents are bugged so lets port them to lua:
--- (This will just remove what should be the "out of combat stuff", so the lua script will coexist with the "on combat" ai agent)
+/* 
+	APPLY THIS FILE TO YOUR WORLD DATABASE IF YOU USE ARCLUASCRIPTS.
+	
+	For ArcEmu with A.L.E
+	
+	www.ArcEmu.org
+
+*/
+
+-- 
+-- This will just remove what should be the "out of combat stuff", so the lua script will coexist with the "on combat" ai agent:
 --
 
-DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest: Morgan the Collector cast "Gouge"
 DELETE FROM `ai_agents` WHERE `entry` = 474 and `spell` = 12544; -- Elwynn Forest: Defias Rogue Wizard cast "Frost Armor"
 DELETE FROM `ai_agents` WHERE `entry` = 476 and `spell` = 12544; -- Elwynn Forest: Kobold Geomancer cast "Frost Armor"
 DELETE FROM `ai_agents` WHERE `entry` = 881 and `spell` = 12544; -- Elwynn Forest: Surena Caledon cast "Frost Armor"
@@ -25,7 +32,13 @@ UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 5822;
 UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 5826;
 
 --
--- The next npc_monstersay has been ported to lua:
+-- The follows ai_agents are not working so lets port them to lua:
+--
+
+DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest: Morgan the Collector dont want to cast "Gouge"
+
+--
+-- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
 --
 
 DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
@@ -38,7 +51,7 @@ DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: M
 DELETE FROM `creature_spawns` WHERE `id` = 135619 and `entry` = 3289; -- Durotar: Minshinas Spirit
 
 --
--- I will use this table to store waypoints of creatures not spawned in world
+-- I will use this table to store waypoints of creatures not spawned in world:
 --
 
 DROP TABLE IF EXISTS `waypoints_lua`;
