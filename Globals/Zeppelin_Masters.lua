@@ -1,4 +1,9 @@
--- Frezza, Snurk, Zelli
+--[[  www.ArcEmu.org
+      Zeppelin Masters
+      Engine: A.L.E
+      Credits: i take the creature texts from Trinity so thanks to them.    
+--]]
+
 local NPC_ENTRY = { 3149, 3150, 9564, 9566, 12136, 12137, 26537, 26538, 26539, 26540, 34765, 34766 };
 
 local DATA = {
