@@ -58,15 +58,14 @@ DROP TABLE IF EXISTS `waypoints_lua`;
 
 CREATE TABLE `waypoints_lua` (
   `entry` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `wid` int(10) NOT NULL DEFAULT '0',
-  `p_x` float DEFAULT NULL,
-  `p_y` float DEFAULT NULL,
-  `p_z` float DEFAULT NULL,
-  `p_o` float DEFAULT NULL,
+  `wid` int(10) unsigned NOT NULL DEFAULT '0',
+  `p_x` float NOT NULL DEFAULT '0',
+  `p_y` float NOT NULL DEFAULT '0',
+  `p_z` float NOT NULL DEFAULT '0',
+  `p_o` float NOT NULL,
   `wtime` int(10) unsigned NOT NULL DEFAULT '0',
   `flags` int(10) unsigned NOT NULL DEFAULT '0',
   `modelid` int(10) unsigned NOT NULL DEFAULT '0',
-  `delay` int(10) unsigned NOT NULL DEFAULT '0',
   `point_comment` text,
   PRIMARY KEY (`entry`,`wid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Creature waypoints';
