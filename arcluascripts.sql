@@ -72,6 +72,8 @@ CREATE TABLE `waypoints_lua` (
 
 -- Stormwind City: Quest 333
 
+DELETE FROM `creature_spawns` WHERE `entry` = 1433; -- Nobody wants two Corbett
+
 REPLACE INTO `waypoints_lua` (`entry`, `wid`, `p_x`, `p_y`, `p_z`, `p_o`, `wtime`, `flags`, `modelid`, `point_comment`) VALUES (1433, 1, -8766.46, 716.756, 99.534, 0, 0, 0, 0, 'Corbett Schneider');
 REPLACE INTO `waypoints_lua` (`entry`, `wid`, `p_x`, `p_y`, `p_z`, `p_o`, `wtime`, `flags`, `modelid`, `point_comment`) VALUES (1433, 2, -8756.15, 726.392, 98.168, 0, 0, 0, 0, 'Corbett Schneider');
 REPLACE INTO `waypoints_lua` (`entry`, `wid`, `p_x`, `p_y`, `p_z`, `p_o`, `wtime`, `flags`, `modelid`, `point_comment`) VALUES (1433, 3, -8737, 700.497, 98.6993, 0, 0, 0, 0, 'Corbett Schneider');
