@@ -99,7 +99,6 @@ function HARLAN_RESUPPLY.OnReachWP( unit, event, wpID )
     elseif( wpID == 41 )
     then
         unit:SendChatMessage( 12, 7, CHAT[ math.random( 14, 15 ) ] );
-        --unit:SendChatMessageAlternateEntry( 483, 12, 7, CHAT[ math.random( 16, 17 ) ] );
         local elaine = unit:GetCreatureNearestCoords( -8845.68, 566.49, 94.77, 483 );
         if( elaine ~= nil )
         then
