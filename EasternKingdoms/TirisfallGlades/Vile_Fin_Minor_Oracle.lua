@@ -1,6 +1,12 @@
-VILEFIN_MINORORACLE = {}
+--[[  www.ArcEmu.org
+      Tirisfall Glades: Vile Fin Minor Oracle
+      Engine: A.L.E
+      Credits: nil
+--]]
 
-function VILEFIN_MINORORACLE.OoCCastBuff( unit, event )
+VILE_FIN_MINOR_ORACLE = {}
+
+function VILE_FIN_MINOR_ORACLE.OoCCastBuff( unit, event )
 
     if( event == 18 )
     then
@@ -15,5 +21,5 @@ function VILEFIN_MINORORACLE.OoCCastBuff( unit, event )
     end
 end
 
-RegisterUnitEvent( 1544, 18, VILEFIN_MINORORACLE.OoCCastBuff );
-RegisterUnitEvent( 1544, 21, VILEFIN_MINORORACLE.OoCCastBuff );
+RegisterUnitEvent( 1544, 18, VILE_FIN_MINOR_ORACLE.OoCCastBuff );
+RegisterUnitEvent( 1544, 21, VILE_FIN_MINOR_ORACLE.OoCCastBuff );
