@@ -1,3 +1,9 @@
+--[[  www.ArcEmu.org
+      Elwynn Forest: Defias Rogue Wizard
+      Engine: A.L.E
+      Credits: nil
+--]]
+
 DEFIAS_ROGUE_WIZARD = {}
 
 function DEFIAS_ROGUE_WIZARD.OoCCastBuff( unit, event )
@@ -9,7 +15,7 @@ function DEFIAS_ROGUE_WIZARD.OoCCastBuff( unit, event )
     else
         if( unit:IsInCombat() == false and unit:HasAura( 12544 ) == false )
         then
-            unit:FullCastSpell( 12544 ); -- Frost Amor:
+            unit:FullCastSpell( 12544 ); -- Frost Amor
             unit:ModifyAIUpdateEvent( 1800000 );
         end
     end
