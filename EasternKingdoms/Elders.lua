@@ -1,3 +1,9 @@
+--[[  www.ArcEmu.org
+      Elwynn Forest and Tirisfall Glades: Elders
+      Engine: A.L.E
+      Credits: nil  
+--]]
+
 local SECRET = 666;
 
 ELDERS = {}
@@ -15,12 +21,12 @@ function ELDERS.OnHelloOnSelect( unit, event, plr, id, intid, code )
 				then
 						if( code == ""..SECRET.."" )
 						then
-								plr:AddItem( 39656, 1 )
-								plr:GossipComplete();
+								plr:AddItem( 39656, 1 );
 						else
-								plr:GossipComplete();
 								unit:SendChatMessage( 12, 0, "You're secret code is not a valid one..." );
 						end
+						
+						plr:GossipComplete();
 				end
 		end
 end
@@ -28,6 +34,7 @@ end
 -- Stormwind: Ian Drake:
 RegisterUnitGossipEvent( 29093, 1, ELDERS.OnHelloOnSelect );
 RegisterUnitGossipEvent( 29093, 2, ELDERS.OnHelloOnSelect );
+
 -- Undercity: Edward Cairn:
 RegisterUnitGossipEvent( 29095, 1, ELDERS.OnHelloOnSelect );
 RegisterUnitGossipEvent( 29095, 2, ELDERS.OnHelloOnSelect );
