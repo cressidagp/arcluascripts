@@ -8,7 +8,7 @@ local EMOTE_ONESHOT_WAVE = 3
 
 BROTHER_SARNO = {}
 
-function ResetOrientation( unit )
+function BROTHER_SARNO.ResetOrientation( unit )
     unit:SetFacing( unit:GetSpawnO() );
 end
 
@@ -43,7 +43,6 @@ function BROTHER_SARNO.OnSpawnOrAIUpdate( unit, event )
         unit:RemoveAIUpdateEvent();
     end
 end
-
 
 function BROTHER_SARNO.OnAreaTrigger( event, plr, ATID )
 
