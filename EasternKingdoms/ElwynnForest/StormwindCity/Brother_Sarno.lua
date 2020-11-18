@@ -19,7 +19,7 @@ function BROTHER_SARNO.OnWelcome( unit )
         unit:SetFacing( 4.28 );
         unit:SendChatMessage( 12, 0, "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!" );
         unit:Emote( EMOTE_ONESHOT_WAVE, 0 );
-        unit:RegisterEvent( ResetOrientation, 9000, 1 ); -- when text expires...
+        unit:RegisterEvent( BROTHER_SARNO.ResetOrientation, 9000, 1 ); -- when text expires...
 
         BROTHER_SARNO.target = nil; -- lets clean up to save some resources
 
