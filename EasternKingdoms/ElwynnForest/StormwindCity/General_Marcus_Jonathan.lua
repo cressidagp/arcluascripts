@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Stormwind City: General Marcus Jonathan
-    Engine: A.L.E
-    Credits: nil
+	Stormwind City: General Marcus Jonathan
+	Engine: A.L.E
+	Credits: nil
 	
 	enUS: "Greetings citizen."
 	esMX: "Saludos ciudadano."

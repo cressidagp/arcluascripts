@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Elwynn Forest and Tirisfall Glades: Elders
-    Engine: A.L.E
-    Credits: nil
+	Elwynn Forest and Tirisfall Glades: Elders
+	Engine: A.L.E
+	Credits: nil
 	
 	enUS:
 	
