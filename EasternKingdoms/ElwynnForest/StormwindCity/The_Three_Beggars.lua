@@ -108,25 +108,25 @@ local MORRISLAWRY = {
 
 THREE_BEGGARS = {}
 
-function THREE_BEGGARS.RandomSay( unit, event )
+function THREE_BEGGARS.RandomSay( unit )
 
 	if( unit:GetEntry() == 1395 and unit:IsInCombat() == false )
 	
 	then
 	
-		unit:SendChatMessage( 12, 7, BEASLEY[ math.random( 1, 8 ) ] ); -- 9397
+		unit:SendChatMessage( 12, 7, BEASLEY[ math.random( 1, 8 ) ] ); -- portto 9397
 		
 	elseif( unit:GetEntry() == 1402 and unit:IsInCombat() == false )
 	
 	then
 		
-		unit:SendChatMessage( 12, 7, MCNABB[ math.random( 1, 8 ) ] ); -- 9475
+		unit:SendChatMessage( 12, 7, MCNABB[ math.random( 1, 8 ) ] ); -- portto 9475
 		
 	elseif( unit:GetEntry() == 1405 and unit:IsInCombat() == false )
 	
 	then
 	
-		unit:SendChatMessage( 12, 7, MORRISLAWRY[ math.random( 1, 8 ) ] ); -- 9477
+		unit:SendChatMessage( 12, 7, MORRISLAWRY[ math.random( 1, 8 ) ] ); -- portto 9477
 		
 	end
 	
