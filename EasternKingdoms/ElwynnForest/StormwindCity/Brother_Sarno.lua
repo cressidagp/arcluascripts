@@ -3,10 +3,10 @@
 	www.ArcEmu.org
 	Stormwind City: Brother Sarno
 	Engine: A.L.E
-	Credits: to Trinity for creature texts and emote
+	Credits: to Trinity for creature texts, emote and areatrigger
 	
-	enus: "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!"
-	esmx: "¡Saludos, "..BROTHER_SARNO.target:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
+	enUS: "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!"
+	esMX: "¡Saludos, "..BROTHER_SARNO.target:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
 --]]
 
 local EMOTE_ONESHOT_WAVE = 3;
