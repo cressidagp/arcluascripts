@@ -22,9 +22,9 @@
 local EMOTE_ONESHOT_WAVE = 3;
 
 local CHAT = {
-[ 1 ] = "Bienvenido a la Posada Orgullo del León.  Siéntete como en casa!";
-[ 2 ] = "Tanto que hacer, tanto que hacer!  Donde se va el tiempo?";
-[ 3 ] = "Si tu copa esta llena puede volver a estarlo!";
+[ 1 ] = "Welcome to the Lion's Pride In.  Make yourself at home!";
+[ 2 ] = "So much to do, so much to do!  Where does the time go?";
+[ 3 ] = "If your glass is full may it be again!";
 };
 
 INN_FARLEY = {}
