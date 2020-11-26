@@ -22,6 +22,19 @@
 	
 	esMX:
 
+	{ 9564, 164871, "¡El zepelín a Entrañas acaba de llegar! ¡Todos a bordo hacia los Claros de Tirisfal!" },
+	{ 9566, 164871, "¡El zepelín a Orgrimmar acaba de llegar! ¡Todos a bordo para Durotar!" },
+	{ 12136, 175080, "¡El zepelín a Grom'gol acaba de llegar! ¡Todos a bordo para Tuercespina!" },
+	{ 3149, 175080, "¡El zepelín a Orgrimmar acaba de llegar! ¡Todos a bordo para Durotar!" },
+	{ 12137, 176495, "¡El zepelín a Entrañas acaba de llegar! ¡Todos a bordo hacia los Claros de Tirisfal!" },
+	{ 3150, 176495, "¡El zepelín a Grom'gol acaba de llegar! ¡Todos a bordo para Tuercespina!" },
+	{ 26537, 186238, "¡El zepelín al Bastión Grito de Guerra acaba de llegar! ¡Todos a bordo para Tundra Boreal!" },
+	{ 26538, 186238, "¡El zepelín a Orgrimmar acaba de llegar! ¡Todos a bordo para Durotar!" },
+	{ 26539, 195459, "¡El zepelín a Campo Venganza acaba de llegar! ¡Todos a bordo para Fiordo Aquilonal!" },
+	{ 26540, 195459, "¡El zepelín a Entrañas acaba de llegar! ¡Todos a bordo hacia los Claros de Tirisfal!" },
+	{ 34765, 190549, "¡Ha llegado el zepelín a Cima del Trueno! ¡Todos a bordo para un viaje tranquilo a través de Los Baldíos!" },
+	{ 34766, 190549, "¡Un paso al frente! ¡Ha llegado el zepelín a Orgrimmar! ¡Todos a bordo de Durotar!" }
+
 --]]
 
 local NPC_ENTRY = { 3149, 3150, 9564, 9566, 12136, 12137, 26537, 26538, 26539, 26540, 34765, 34766 };
@@ -39,7 +52,7 @@ local DATA = {
 { 26540, 195459, "The zeppelin to Undercity has just arrived! All aboard for Tirisfal Glades!" },       -- Drenk, The Cloudkisser
 { 34765, 190549, "The zeppelin to Thunder Bluff has arrived! All aboard for a smooth ride across the Barrens!" },  -- Zelli, The Zephyr
 { 34766, 190549, "Step right up! The zeppelin to Orgrimmar has arrived! All aboard to Durotar!" }                  -- Krendle, The Zephyr
-}
+};
 
 ZEPPELIN_MASTERS = {}
 
