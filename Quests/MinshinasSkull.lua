@@ -6,8 +6,8 @@
 	Credits: nil
 	
 	Developer notes:	if someday we can implement something like EventResetTarget, EventEmote 
-						this script will wil use 2 less functions. I should try to implement them
-						but if i fail then will have no more choice to open a ticket and cross fingers.
+					this script will wil use 2 less functions. I should try to implement them
+					but if i fail then will have no more choice to open a ticket and cross fingers.
 						
 --]]
 
