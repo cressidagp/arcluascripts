@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Durotar: Gazzuz
-    Engine: A.L.E
-    Credits: nil
+	Durotar: Gazzuz
+	Engine: A.L.E
+	Credits: nil
 --]]
 
 GAZZUZ = {}

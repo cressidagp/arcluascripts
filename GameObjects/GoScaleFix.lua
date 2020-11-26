@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Gameobject scale fix: Farm Chicken Egg, Silithyst Mound
-    Engine: A.L.E
-    Credits: nil
+	Gameobject scale fix: Farm Chicken Egg, Silithyst Mound
+	Engine: A.L.E
+	Credits: nil
 --]]
 
 GO_SCALE_FIX = {}

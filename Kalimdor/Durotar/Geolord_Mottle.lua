@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Durotar: Geolord Mottle
-    Engine: A.L.E
-    Credits: nil
+	Durotar: Geolord Mottle
+	Engine: A.L.E
+	Credits: nil
 --]]
 
 GEOLORD_MOTTLE = {}

@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Durotar: Razormane Quilboar
-    Engine: A.L.E
-    Credits: nil
+	Durotar: Razormane Quilboar
+	Engine: A.L.E
+	Credits: nil
 --]]
 
 RAZORMANE_QUILBOAR = {}

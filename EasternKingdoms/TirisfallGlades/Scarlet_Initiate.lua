@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Tirisfall Glades: Scarlet Initiate
-    Engine: A.L.E
-    Credits: nil
+	Tirisfall Glades: Scarlet Initiate
+	Engine: A.L.E
+	Credits: nil
 --]]
 
 SCARLET_INITIATE = {}

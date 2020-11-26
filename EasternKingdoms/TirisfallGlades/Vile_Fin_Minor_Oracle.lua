@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Tirisfall Glades: Vile Fin Minor Oracle
-    Engine: A.L.E
-    Credits: nil
+	Tirisfall Glades: Vile Fin Minor Oracle
+	Engine: A.L.E
+	Credits: nil
 --]]
 
 VILE_FIN_MINOR_ORACLE = {}

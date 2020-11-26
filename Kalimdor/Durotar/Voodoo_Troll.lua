@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Durotar: Voodoo Troll
-    Engine: A.L.E
-    Credits: nil
+	Durotar: Voodoo Troll
+	Engine: A.L.E
+	Credits: nil
 --]]
 
 VOODOO_TROLL = {}

@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Zeppelin Masters
-    Engine: A.L.E
-    Credits: i take the creature texts from Trinity so thanks to them.
+	Zeppelin Masters
+	Engine: A.L.E
+	Credits: i take the creature texts from Trinity so thanks to them.
 
 	enUS:
 	

@@ -1,9 +1,9 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-    Stormwind City: Harlan Needs a Resupply
-    Engine: A.L.E
-    Credits: to Trinity for waypoints and creature texts
+	Stormwind City: Harlan Needs a Resupply
+	Engine: A.L.E
+	Credits: to Trinity for waypoints and creature texts
 --]]
 
 local FACTION_FRIENDLY = 35;
