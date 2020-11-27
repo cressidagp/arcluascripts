@@ -1,3 +1,14 @@
+--[[
+      ArcLuaScripts for ArcEmu
+      www.ArcEmu.org
+	  The Ruby Sanctum: General Zarithrian
+      Engine: A.L.E
+      Credits: Trinity for texts and sound ids.
+
+      Developer notes: in time i will change this to paroxysm modular way to save some resources.
+
+--]]
+
 local SOUND = {
 [ 1 ] = 17512;  -- OnCombat
 [ 2 ] = 17513;  -- OnTargetDied 1
@@ -18,8 +29,8 @@ function OnCombat( unit, event )
 
     unit:PlaySoundToSet( SOUND[ 1 ] );
 
-    -- Developer notes: we dont need to send the chat here since
-    our monstersay table will do the job, instance collision checked.
+    --[[ Developer notes: we dont need to send the chat here since
+    our monstersay table will do the job, instance collision checked. ]]
 
 end
 
@@ -35,8 +46,8 @@ function OnDeath( unit, event )
 
     unit:PlaySoundToSet( SOUND[ 5 ] );
 
-    -- Developer notes: we dont need to send the chat here since our
-    monstersay table will do the job, instance collision checked.
+    --[[ Developer notes: we dont need to send the chat here since our
+    monstersay table will do the job, instance collision checked. ]]
 
 end
 
