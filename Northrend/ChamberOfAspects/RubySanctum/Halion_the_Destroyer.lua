@@ -23,7 +23,7 @@ local CHAT = {
 [ 1 ] = "Meddlesome insects! You are too late. The Ruby Sanctum is lost!";  -- Intro
 [ 3 ] = "The heavens burn!";  -- OnMeterStrike
 [ 4 ] = "You will find only suffering within the realm of twilight! Enter if you dare!";  -- OnPhaseTwo
-[ 6 ] = "Another "hero" falls.";  -- OnTargetDied
+[ 6 ] = "Another hero falls.";  -- OnTargetDied (shoud be "hero", but "" caused problems)
 [ 7 ] = "Not good enough....";
 };
 
