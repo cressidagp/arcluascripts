@@ -44,8 +44,8 @@ function OnCombat( unit, event )
     phase = 1,
     cleave = 13,
     enervating = 13,
-    bladetempest = 18,
-    }
+    bladetempest = 18
+    };
 
     unit:PlaySoundToSet( SOUND[ 2 ] );
 
