@@ -7,15 +7,15 @@
 
 	enUS:
 
-  [ 1 ] = "Welcome to the Lion's Pride In.  Make yourself at home!";
-  [ 2 ] = "So much to do, so much to do!  Where does the time go?";
-  [ 3 ] = "If your glass is full may it be again!";
+	[ 1 ] = "Welcome to the Lion's Pride In.  Make yourself at home!";
+	[ 2 ] = "So much to do, so much to do!  Where does the time go?";
+	[ 3 ] = "If your glass is full may it be again!";
 
-  esMX:
+	esMX:
 
-  [ 1 ] = "Bienvenido a la Posada Orgullo del León.  Siéntete como en casa!";
-  [ 2 ] = "Tanto que hacer, tanto que hacer!  Donde se va el tiempo?";
-  [ 3 ] = "Si tu copa esta llena puede volver a estarlo!";
+	[ 1 ] = "Bienvenido a la Posada Orgullo del León.  Siéntete como en casa!";
+	[ 2 ] = "Tanto que hacer, tanto que hacer!  Donde se va el tiempo?";
+	[ 3 ] = "Si tu copa esta llena puede volver a estarlo!";
 
 --]]
 
@@ -39,7 +39,7 @@ function INN_FARLEY.DoChat( unit )
 
     then
 
-        unit:SendChatMessage( 12, 0, CHAT[ math.random( 2, 3 ) ] );
+        unit:SendChatMessage( 12, 7, CHAT[ math.random( 2, 3 ) ] );
 
         args.chat = math.random( 150, 180 );
 
@@ -95,4 +95,4 @@ end
 
 RegisterUnitEvent( 295, 18, INN_FARLEY.OnSpawnOnAIUpdate );
 
-RegisterUnitEvent( 295, 21, INN_FARLEY.OnSpawnOnAIUpdate  );
+RegisterUnitEvent( 295, 21, INN_FARLEY.OnSpawnOnAIUpdate );
