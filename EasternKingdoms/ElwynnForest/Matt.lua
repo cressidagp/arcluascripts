@@ -12,8 +12,8 @@
 
 	esMX:
 
-	[ 1 ] = "Demonios! Los peces tampoco están mordiendo aquí. Volveré a mi antiguo lugar de pezca!";
-	[ 2 ] = "Caramba, los peces no parecen estar mordiendo aquí. Tal vez deberia ir al Lago de Cristal y probar suerte allí!";
+	[ 1 ] = "¡Demonios! Los peces tampoco están mordiendo aquí. ¡Volveré a mi antiguo lugar de pezca!";
+	[ 2 ] = "Caramba, los peces no parecen estar mordiendo aquí. ¡Tal vez deberia ir al Lago de Cristal y probar suerte allí!";
 
 --]]
 
@@ -25,12 +25,16 @@ local CHAT = {
 MATT = {}
 
 function MATT.TalkOnReachWP( unit, event, wpID )
-
+	
+	-- OnSpawn:
+	
     if( event == 18 )
 	
     then
 	
         unit:RegisterAIUpdateEvent( 60000 );
+		
+	-- OnReachWaypoint:
 
     elseif( event == 19 )
 	
@@ -56,6 +60,8 @@ function MATT.TalkOnReachWP( unit, event, wpID )
 			
             unit:ModifyAIUpdateEvent( 60000 );
         end
+		
+	-- OnAIUpdate:
 
     elseif( event == 21 )
 	
