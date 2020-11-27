@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Elwynn Forest: Inkeeper Farley
+	Elwynn Forest: Innkeeper Farley
 	Engine: A.L.E
 	Credits: to Trinity for creature texts and timers.
 
