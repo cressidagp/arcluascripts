@@ -1,11 +1,11 @@
 --[[
-      ArcLuaScripts for ArcEmu
-      www.ArcEmu.org
-	  The Ruby Sanctum: General Zarithrian
-      Engine: A.L.E
-      Credits: Trinity for texts and sound ids.
+	ArcLuaScripts for ArcEmu
+	www.ArcEmu.org
+	The Ruby Sanctum: General Zarithrian
+	Engine: A.L.E
+	Credits: Trinity for texts and sound ids.
 
-      Developer notes: in time i will change this to paroxysm modular way to save some resources.
+	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
 --]]
 
