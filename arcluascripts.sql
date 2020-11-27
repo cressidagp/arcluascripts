@@ -43,6 +43,7 @@ DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest
 -- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
 --
 
+DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
 DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
 DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: Master Gadrin
 DELETE FROM `npc_monstersay` WHERE `entry` = 1395 and `event` = 0; -- Stormwind City: Ol Beasley
