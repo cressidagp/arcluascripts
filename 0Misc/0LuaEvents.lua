@@ -117,7 +117,7 @@ SERVER_HOOK_EVENT_ON_DUEL_FINISHED          = 30
 SERVER_HOOK_EVENT_ON_AURA_REMOVE			= 31
 SERVER_HOOK_EVENT_ON_RESURRECT				= 32
 
-// Entry Registers:
+//Entry Registers:
 
 RegisterUnitEvent( creature_entry, creature_event, function_name );
 RegisterGameObjectEvent( gameobject_entry, gameobject_event, function_name );
