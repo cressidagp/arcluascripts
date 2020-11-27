@@ -227,3 +227,19 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID3, 51, -9379.59, -109.527, 59.2667, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID3, 52, -9383.48, -114.425, 59.0793, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID3, 53, -9385.67, -116.133, 59.0943, 0, 0, 0, 0, 0, 0, 0, 0);
+
+--
+--
+-- DONT ADD MORE STUFF FROM HERE
+--
+--
+
+DROP TABLE IF EXISTS `arcluascripts`;
+
+CREATE TABLE `arcluascripts` (
+  `version` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+insert  into `arcluascripts`(`version`) values 
+('2020-11-27_10-00_matt');
