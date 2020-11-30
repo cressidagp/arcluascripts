@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: Halion the Destroyer
 	Engine: A.L.E
-	Credits: Trinity for texts and sound ids.
+	Credits: Trinity for texts, spells ids, sound ids and timers.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -33,9 +33,26 @@ local TEXT = {
 [ 3 ] = "Your companions' efforts force %s further into the physical realm!"; -- (type 41)
 };
 
+-- Spells:
+SPELL_FLAME_BREATH 		= 74525;
+SPELL_CLEAVE 			= 74524;
+SPELL_METEOR_STRIKE 	= 74637; -- aoe, need a dummy
+SPELL_TAIL_LASH 		= 74531;
+
 local self = getfenv( 1 );
 
 function OnCombat( unit, event )
+
+	self[ tostring( unit )] = {
+	
+	phase = 1,
+	flamebreath = math.random( 5, 15 ),
+	cleave = math.random( 6, 10 ),
+	tail = math.random( 7, 12 ),
+	fierycombustion = math.random( 15, 18 ),
+	meteorstrike = 18
+	
+	};
 
     unit:PlaySoundToSet( SOUND[ 2 ] );
 
@@ -60,6 +77,44 @@ function OnDeath( unit, event )
 
 end
 
+function OnAIUpdate( unit, event )
+
+	if( unit:IsCasting() == true ) then return; end
+
+	local vars = self[ tostring( unit ) ];
+
+	vars.flamebreath = vars.flamebreath - 1;
+	vars.cleave = vars.cleave - 1;
+	vars.tail = vars.tail - 1;
+
+	if( vars.flamebreath <= 0 )
+    then
+		unit:FullCastSpell( SPELL_FLAME_BREATH );
+		unit:SendChatMessage( 12, 0, "debug: flame breath" );
+		vars.flamebreath = math.random( 5, 15 );
+
+	elseif( vars.cleave <= 0 )
+	then
+		unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
+		unit:SendChatMessage( 12, 0, "debug: cleave" );
+		vars.cleave = math.random( 6, 10 );
+
+	elseif( vars.tail <= 0 )
+	then
+		unit:CastSpell( SPELL_TAIL_LASH );
+		unit:SendChatMessage( 12, 0, "debug: tail lash" );
+		vars.tail = math.random( 7, 12 )
+	end
+end
+
+
+function HalionControllerOnSpawn( unit, event )
+
+end
+
 RegisterUnitEvent( 39863, 1 , OnCombat );
 RegisterUnitEvent( 39863, 3 , OnTargetDied );
 RegisterUnitEvent( 39863, 4 , OnDeath );
+RegisterUnitEvent( 39863, 21, OnAIUpdate );
+
+RegisterUnitEvent( 40146, 18 , HalionControllerOnSpawn );

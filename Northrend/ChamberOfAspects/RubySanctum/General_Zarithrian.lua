@@ -35,7 +35,7 @@ function OnCombat( unit, event )
 	phase = 1,
 	cleave = 8,
 	roar = 14
-	}
+	};
 
     unit:PlaySoundToSet( SOUND[ 1 ] );
 
