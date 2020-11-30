@@ -74,6 +74,11 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38113, 0, 100, 0, 14, 'Marwyn', 'Death is all that you will find here', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38113, 5, 100, 0, 14, 'Marwyn', 'Yes... Run... Run to meet your destiny... Its bitter, cold embrace, awaits you.', NULL, NULL, NULL, NULL);
 
+-- Frostworn General: 
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 0, 100, 0, 14, 'Frostworn General', 'You are not worthy to face the Lich King!', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 5, 100, 0, 14, 'Frostworn General', 'Master, I have failed...', NULL, NULL, NULL, NULL);
+
 --
 -- The Ruby Sanctum: monstersay OnCombat, OnDeath
 --
@@ -283,4 +288,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-11-30_08-40_Marwyn');
+('2020-11-30_09-00_Frostworn_General');
