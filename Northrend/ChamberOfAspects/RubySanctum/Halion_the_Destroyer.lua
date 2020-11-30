@@ -70,6 +70,7 @@ end
 
 function OnDeath( unit, event )
 
+	unit:RemoveAIUpdateEvent();
     unit:PlaySoundToSet( SOUND[ 5 ] );
 
     --[[ Developer notes: we dont need to send the chat here since our
