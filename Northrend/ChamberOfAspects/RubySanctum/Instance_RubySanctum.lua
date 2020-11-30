@@ -1,3 +1,14 @@
+--[[
+	ArcLuaScripts for ArcEmu
+	www.ArcEmu.org
+	The Ruby Sanctum
+	Engine: A.L.E
+	Credits: Trinity for sound ids, chats and text.
+
+	Developer notes: in time i will change this to paroxysm modular way to save some resources.
+
+--]]
+
 -- WorldStates:
 local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
 local WORLDSTATE_CORPOREALITY_TWILIGHT  = 5050;
