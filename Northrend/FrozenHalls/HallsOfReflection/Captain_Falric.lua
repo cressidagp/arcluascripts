@@ -1,9 +1,7 @@
--- 38112
-
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	The Ruby Sanctum: Captain Falric
+	Hall of Reflection: Captain Falric
 	Engine: A.L.E
 	Credits: Trinity for texts, sound ids and spell ids.
 
