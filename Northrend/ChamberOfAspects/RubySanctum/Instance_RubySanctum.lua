@@ -9,6 +9,14 @@
 
 --]]
 
+local SOUND = {
+[ 1 ] = ;
+};
+
+local CHAT = {
+[ 1 ] = "";
+};
+
 -- WorldStates:
 local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
 local WORLDSTATE_CORPOREALITY_TWILIGHT  = 5050;
@@ -28,12 +36,13 @@ function RUBY_SANCTUM.InstanceOnLoad( iid )
 
     print(iid)
 	  RUBY_SANCTUM[ iid ] = {
-    --RUBY_SANCTUM[ iid ].baltharus = false;	-- hypers bugged tutorials...
-    --RUBY_SANCTUM[ iid ].saviana = false;		-- hypers bugged tutorials...	
-    --RUBY_SANCTUM[ iid ].zarithrian = false;	-- hypers bugged tutorials...
+    --RUBY_SANCTUM[ iid ].baltharus = false;  -- hypers bugged tutorials...
+    --RUBY_SANCTUM[ iid ].saviana = false;    -- hypers bugged tutorials...
+    --RUBY_SANCTUM[ iid ].zarithrian = false; -- hypers bugged tutorials...
     baltharus = false,
     saviana = false,
-    zarithrian = false
+    zarithrian = false,
+    phase = 0
     };
     print("debug: ruby sanctum variables created")
 end
@@ -50,12 +59,13 @@ function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
     then
         print("debug: ruby sanctum is nil")
 	      RUBY_SANCTUM[ iid ] = {
-        --RUBY_SANCTUM[ iid ].baltharus = false;	-- hypers bugged tutorials...
-        --RUBY_SANCTUM[ iid ].saviana = false;		-- hypers bugged tutorials...
-        --RUBY_SANCTUM[ iid ].zarithrian = false;	-- hypers bugged tutorials...
+        --RUBY_SANCTUM[ iid ].baltharus = false;  -- hypers bugged tutorials...
+        --RUBY_SANCTUM[ iid ].saviana = false;    -- hypers bugged tutorials...
+        --RUBY_SANCTUM[ iid ].zarithrian = false; -- hypers bugged tutorials...
         baltharus = false,
         saviana = false,
-        zarithrian = false
+        zarithrian = false,
+        phase = 0
         };
         print("debug: ruby sanctum variables created")
     end
@@ -95,11 +105,22 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
         print("debug: zarithrian is dead");
         local controller = victim:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
 
-        -- Controller All hail Halion!
+        -- All hail Halion!
 
         controller:SpawnCreature( 39863, 3156.67, 533.8108, 72.98822, 3.159046, FACTION_HOSTILE, NO_DESPAWN, 1, 1, 1, 1, 0 );
     end
 end
+
+function RUBY_SANCTUM.XerexOnSpawn( unit, event )
+    local iid = unit:GetInstanceID();
+    if( RUBY_SANCTUM[ iid ].phase = 0 )
+    then
+        unit:PlaySoundToSet( 40598 );
+        unit:SendChatMessage( 14, 0, "Help! I am trapped within this tree!  I require aid!" );
+    end
+end
+
+RegisterUnitEvent( 40429, 18, RUBY_SANCTUM.XerexOnSpawn)
 
 RegisterInstanceEvent( 724, 9, RUBY_SANCTUM.InstanceOnLoad );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
