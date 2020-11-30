@@ -46,6 +46,20 @@ function OnCombat( unit, event )
 
 end
 
+function OnLeaveCombat( unit, event )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
+
+end
+
 function OnTargetDied( unit, event )
 
     local random = math.random( 2, 3 );
@@ -56,7 +70,6 @@ end
 
 function OnDeath( unit, event )
 
-	unit:RemoveAIUpdateEvent();
     unit:PlaySoundToSet( SOUND[ 5 ] );
 
     --[[ Developer notes: we dont need to send the chat here since our
@@ -88,6 +101,7 @@ function OnAIUpdate( unit, event )
 end
 
 RegisterUnitEvent( 39746, 1 , OnCombat );
+RegisterUnitEvent( 39746, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39746, 3 , OnTargetDied );
 RegisterUnitEvent( 39746, 4 , OnDeath );
 RegisterUnitEvent( 39746, 21, OnAIUpdate );

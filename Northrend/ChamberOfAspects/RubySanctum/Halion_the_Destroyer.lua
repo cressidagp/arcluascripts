@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: Halion the Destroyer
 	Engine: A.L.E
-	Credits: Trinity for texts, spells ids, sound ids and timers.
+	Credits: Trinity for texts and sound ids.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -35,29 +35,43 @@ local TEXT = {
 
 -- Spells:
 SPELL_FLAME_BREATH 		= 74525;
-SPELL_CLEAVE 			= 74524;
+SPELL_CLEAVE 					= 74524;
 SPELL_METEOR_STRIKE 	= 74637; -- aoe, need a dummy
-SPELL_TAIL_LASH 		= 74531;
+SPELL_TAIL_LASH 			= 74531;
 
 local self = getfenv( 1 );
 
 function OnCombat( unit, event )
 
-	self[ tostring( unit )] = {
-	
-	phase = 1,
-	flamebreath = math.random( 5, 15 ),
-	cleave = math.random( 6, 10 ),
-	tail = math.random( 7, 12 ),
-	fierycombustion = math.random( 15, 18 ),
-	meteorstrike = 18
-	
-	};
+		self[ tostring( unit )] = {
+
+		phase = 1,
+		flamebreath = math.random( 5, 15 ),
+		cleave = math.random( 6, 10 ),
+		tail = math.random( 7, 12 ),
+		fierycombustion = math.random( 15, 18 ),
+		meteorstrike = 18
+
+		};
 
     unit:PlaySoundToSet( SOUND[ 2 ] );
 
     --[[ Developer notes: we dont need to send the chat here since
     our monstersay table will do the job, instance collision checked. ]]
+
+end
+
+function OnLeaveCombat( unit, event )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
 
 end
 
@@ -70,7 +84,6 @@ end
 
 function OnDeath( unit, event )
 
-	unit:RemoveAIUpdateEvent();
     unit:PlaySoundToSet( SOUND[ 5 ] );
 
     --[[ Developer notes: we dont need to send the chat here since our
@@ -108,12 +121,12 @@ function OnAIUpdate( unit, event )
 	end
 end
 
-
 function HalionControllerOnSpawn( unit, event )
 
 end
 
 RegisterUnitEvent( 39863, 1 , OnCombat );
+RegisterUnitEvent( 39863, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39863, 3 , OnTargetDied );
 RegisterUnitEvent( 39863, 4 , OnDeath );
 RegisterUnitEvent( 39863, 21, OnAIUpdate );

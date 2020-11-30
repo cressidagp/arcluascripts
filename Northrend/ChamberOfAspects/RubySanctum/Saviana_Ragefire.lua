@@ -42,7 +42,7 @@ function OnCombat( unit, event )
 	enrage = 20
 	};
 
-	unit:PlaySoundToSet( SOUND[ 1 ] );
+    unit:PlaySoundToSet( SOUND[ 1 ] );
 
     --[[ Developer notes: we dont need to send the chat here since
     our monstersay table will do the job, instance collision checked. ]]
@@ -51,19 +51,32 @@ function OnCombat( unit, event )
 
 end
 
+function OnLeaveCombat( unit, event )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
+
+end
+
 function OnTargetDied( unit, event, victim )
 
-	if( victim:IsPlayer() == true )
-	then
-    	local random = math.random( 3, 4 );
-    	unit:PlaySoundToSet( SOUND[ random ] );
-    	unit:SendChatMessage( 14, 0, CHAT[ random ] );
-	end
+		if( victim:IsPlayer() == true )
+		then
+    		local random = math.random( 3, 4 );
+    		unit:PlaySoundToSet( SOUND[ random ] );
+    		unit:SendChatMessage( 14, 0, CHAT[ random ] );
+		end
 end
 
 function OnDeath( unit, event )
 
-		unit:RemoveAIUpdateEvent();
 		unit:PlaySoundToSet( SOUND[ 5 ] );
 end
 
@@ -91,7 +104,7 @@ function OnAIUpdate( unit, event )
 end
 
 RegisterUnitEvent( 39747, 1 , OnCombat );
+RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39747, 3 , OnTargetDied );
 RegisterUnitEvent( 39747, 4 , OnDeath );
 RegisterUnitEvent( 39747, 21, OnAIUpdate );
-

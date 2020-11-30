@@ -1,4 +1,4 @@
----[[
+--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	The Ruby Sanctum: Baltharus the Warborn
@@ -59,6 +59,20 @@ function OnCombat( unit, event )
 
 end
 
+function OnLeaveCombat( unit, event )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
+
+end
+
 function OnTargetDied( unit, event )
 
     local random = math.random( 3, 4 );
@@ -69,16 +83,14 @@ end
 
 function OnDeath( unit, event )
 
-    unit:RemoveAIUpdateEvent();
-
     unit:PlaySoundToSet( SOUND[ 6 ] );
 
     --[[ Developer notes: we dont need to send the chat here since our
     monstersay table will do the job, instance collision checked. ]]
 
-		local firefield = unit:GetGameObjectNearestCoords( 3153.27, 380.47, 86.36, 203005 );
+	local firefield = unit:GetGameObjectNearestCoords( 3153.27, 380.47, 86.36, 203005 );
 
-		firefield:SetByte( GAMEOBJECT_BYTES_1, 0, 0 );
+	firefield:SetByte( GAMEOBJECT_BYTES_1, 0, 0 );
 
     local xerestrasza = unit:GetCreatureNearestCoords( 3155.54, 342.39, 84.60, 40429 );
 
@@ -90,7 +102,7 @@ end
 
 function OnAIUpdate( unit, event )
 
-		if( unit:IsCasting() == true) then return; end
+	if( unit:IsCasting() == true) then return; end
 
     local vars = self[ tostring( unit ) ];
 
@@ -119,6 +131,7 @@ function OnAIUpdate( unit, event )
 end
 
 RegisterUnitEvent( 39751, 1 , OnCombat );
+RegisterUnitEvent( 36751, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39751, 3 , OnTargetDied );
 RegisterUnitEvent( 39751, 4 , OnDeath );
 RegisterUnitEvent( 39751, 21, OnAIUpdate );
