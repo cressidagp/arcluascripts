@@ -43,9 +43,22 @@ function OnCombat( unit, event )
     unit:RegisterAIUpdateEvent( 1000 );
 end
 
+function OnLeaveCombat( unit, event )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
+
+end
+
 function OnDeath( unit, event )
 
-    unit:RemoveAIUpdateEvent();
     unit:PlaySoundToSet( SOUND[ 2 ] );
 
     --[[ Developer notes: we dont need to send the chat here since our
@@ -64,7 +77,7 @@ function OnAIUpdate( unit, event )
 
 	if( vars.shield <= 0 )
     then
-		unit:CastSpellOnTarget( SPELL_SHIELD_THROWN, unit:GetRandomPlayer( 1 ) ); -- maybe give more range?
+		unit:CastSpellOnTarget( SPELL_SHIELD_THROWN,  unit:GetRandomPlayer( 1 ) ); -- maybe give more range?
 		unit:SendChatMessage( 12, 0, "debug: shield thrown" );
 		vars.shield = math.random( 8, 12 );
 
@@ -78,5 +91,6 @@ function OnAIUpdate( unit, event )
 end
 
 RegisterUnitEvent( 36723, 1 , OnCombat );
+RegisterUnitEvent( 36723, 2 , OnLeaveCombat );
 RegisterUnitEvent( 36723, 4 , OnDeath );
 RegisterUnitEvent( 36723, 21, OnAIUpdate );

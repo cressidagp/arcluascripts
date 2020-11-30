@@ -158,7 +158,7 @@ function RUBY_SANCTUM.XerexOnSpawn( unit, event )
     end
 end
 
-RegisterUnitEvent( 40429, 18, RUBY_SANCTUM.XerexOnSpawn )
+RegisterUnitEvent( 40429, 18, RUBY_SANCTUM.XerexOnSpawn );
 
 RegisterInstanceEvent( 724, 9, RUBY_SANCTUM.InstanceOnLoad );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
