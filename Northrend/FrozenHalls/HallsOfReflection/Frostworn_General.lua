@@ -64,13 +64,13 @@ function OnAIUpdate( unit, event )
 
 	if( vars.shield <= 0 )
     then
-		unit:CastSpellOnTarget( SPELL_SHIELD_THROWN, unit:GetMainTank() );
+		unit:CastSpellOnTarget( SPELL_SHIELD_THROWN, unit:GetRandomPlayer( 1 ) ); -- maybe give more range?
 		unit:SendChatMessage( 12, 0, "debug: shield thrown" );
 		vars.shield = math.random( 8, 12 );
 
 	elseif( vars.spike <= 0 )
 	then
-		local target = unit:GetRandomPlayer( 1 );
+		local target = unit:GetRandomPlayer( 1 ); -- maybe give more range?
 		unit:FullCastSpellAoE( target:GetX(), target:GetY(), target:GetZ(), SPELL_SPIKE );
 		unit:SendChatMessage( 12, 0, "debug: spike" );
 		vars.spike = math.random( 15, 20 );
