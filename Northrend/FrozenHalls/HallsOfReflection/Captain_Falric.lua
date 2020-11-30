@@ -3,9 +3,9 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	The Ruby Sanctum: Saviana Ragefire
+	The Ruby Sanctum: Captain Falric
 	Engine: A.L.E
-	Credits: Trinity for texts and sound ids.
+	Credits: Trinity for texts, sound ids and spell ids.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
