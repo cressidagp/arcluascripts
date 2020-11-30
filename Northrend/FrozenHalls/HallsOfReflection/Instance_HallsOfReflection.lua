@@ -10,8 +10,8 @@
 --]]
 
 -- Spells:
-local SPELL_A_PHASE   = 60027; -- Phase 64
-local SPELL_H_PHASE   = 60028; -- Phase 128
+local SPELL_A_PHASE   = 60027; -- Phase +64
+local SPELL_H_PHASE   = 60028; -- Phase +128
 
 HOR = {}
 
@@ -73,7 +73,8 @@ function HOR.OnPlayerEnter( iid, plr )
     end
 end
 
-function HOR.OnZoneOut( event, plr, ZoneId, OldZoneId )
+function HOR.OnZoneOut( event, plr, NewZoneId, OldZoneId )
+
     if( OldZoneId == 668 )
     then
         plr:SetPhase( 1, 1 );
@@ -82,4 +83,4 @@ end
 
 RegisterInstanceEvent( 668, 9, HOR.InstanceOnLoad );
 RegisterInstanceEvent( 668, 2, HOR.OnPlayerEnter );
-RegisterServerHook( 15, HOR.OnZoneOut );
+RegisterInstanceEvent( 668, 4, HOR.OnZoneOut );
