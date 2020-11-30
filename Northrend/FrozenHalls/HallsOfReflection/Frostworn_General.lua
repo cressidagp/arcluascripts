@@ -36,8 +36,8 @@ end
 
 function OnDeath( unit, event )
 
-		unit:RemoveAIUpdateEvent( 1000 );
-    unit:PlaySoundToSet( SOUND[ 4 ] );
+	unit:RemoveAIUpdateEvent( 1000 );
+    unit:PlaySoundToSet( SOUND[ 2 ] );
 
     --[[ Developer notes: we dont need to send the chat here since our
     monstersay table will do the job, instance collision checked. ]]
