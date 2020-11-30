@@ -10,12 +10,30 @@
 --]]
 
 local SOUND = {
-[ 1 ] = ;
+[ 1 ] = 17491;
+[ 2 ] = 17492;
+[ 3 ] = 17493;
+[ 4 ] = 17494;
+[ 5 ] = 17495;
+[ 6 ] = 17496;
+[ 7 ] = 17497;
+[ 8 ] = 17498;
+[ 9 ] = 40598; -- Intro
 };
 
 local CHAT = {
-[ 1 ] = "";
+[ 1 ] = "Thank you! I could not have held out for much longer.... A terrible thing has happened here.";
+[ 2 ] = "We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault.";
+[ 3 ] = "The Black dragonkin materialized from thin air, and set upon us before we could react.";
+[ 4 ] = "We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance.";
+[ 5 ] = "They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum.";
+[ 6 ] = "The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work.";
+[ 7 ] = "In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon.";
+[ 8 ] = "I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!";
+[ 9 ] = "Help! I am trapped within this tree!  I require aid!";
 };
+
+local AREA_TRIGGER = 5867; -- Baltharus plateau
 
 -- WorldStates:
 local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
@@ -32,18 +50,24 @@ RUBY_SANCTUM = {}
 
 function RUBY_SANCTUM.InstanceOnLoad( iid )
 
-    -- check if iid its safe here
+	--[[ Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
+	are created. But then if player from opposite faction enter variables wont be created with the same idd number.
+	so will have no more choice than spend resources getting instance id again. ]]
 
-    print(iid)
-	  RUBY_SANCTUM[ iid ] = {
+	RUBY_SANCTUM[ iid ] = {
+
     --RUBY_SANCTUM[ iid ].baltharus = false;  -- hypers bugged tutorials...
     --RUBY_SANCTUM[ iid ].saviana = false;    -- hypers bugged tutorials...
     --RUBY_SANCTUM[ iid ].zarithrian = false; -- hypers bugged tutorials...
+
     baltharus = false,
     saviana = false,
     zarithrian = false,
+	intro = false;
     phase = 0
+
     };
+
     print("debug: ruby sanctum variables created")
 end
 
@@ -58,15 +82,17 @@ function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
     if( RUBY_SANCTUM[ iid ] == nil )
     then
         print("debug: ruby sanctum is nil")
-	      RUBY_SANCTUM[ iid ] = {
-        --RUBY_SANCTUM[ iid ].baltharus = false;  -- hypers bugged tutorials...
-        --RUBY_SANCTUM[ iid ].saviana = false;    -- hypers bugged tutorials...
-        --RUBY_SANCTUM[ iid ].zarithrian = false; -- hypers bugged tutorials...
+
+	    RUBY_SANCTUM[ iid ] = {
+
         baltharus = false,
         saviana = false,
         zarithrian = false,
+		intro = false,
         phase = 0
+		
         };
+
         print("debug: ruby sanctum variables created")
     end
 end
@@ -75,7 +101,9 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
 
     local iid = killer:GetInstanceID(); -- fucking idd argument
 
-    if( victim:GetEntry() == 39751 )
+	local entry = victim:GetEntry();
+
+    if( entry == 39751 )
     then
         RUBY_SANCTUM[ iid ].baltharus = true;
         print("debug: baltharus is dead");
@@ -87,7 +115,7 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
             flame:SetByte( GAMEOBJECT_BYTES_1, 0, 0 );
         end
 
-    elseif( victim:GetEntry() == 39747 )
+    elseif( entry == 39747 )
     then
         RUBY_SANCTUM[ iid ].saviana = true;
         print("debug: saviana is dead");
@@ -99,7 +127,7 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
             flame:SetByte( GAMEOBJECT_BYTES_1, 0, 0 );
         end
 
-    elseif( victim:GetEntry() == 39746 )
+    elseif( entry == 39746 )
     then
         RUBY_SANCTUM[ iid ].zarithrian = true;
         print("debug: zarithrian is dead");
@@ -111,17 +139,28 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
     end
 end
 
-function RUBY_SANCTUM.XerexOnSpawn( unit, event )
-    local iid = unit:GetInstanceID();
-    if( RUBY_SANCTUM[ iid ].phase = 0 )
+function RUBY_SANCTUM.OnAreaTrigger( iid, plr, areaID )
+
+    if( areaID == AREA_TRIGGER and RUBY_SANCTUM[ iid ].intro == false )
     then
-        unit:PlaySoundToSet( 40598 );
-        unit:SendChatMessage( 14, 0, "Help! I am trapped within this tree!  I require aid!" );
+        RUBY_SANCTUM[ iid ].intro = true;
     end
 end
 
-RegisterUnitEvent( 40429, 18, RUBY_SANCTUM.XerexOnSpawn)
+function RUBY_SANCTUM.XerexOnSpawn( unit, event )
+
+    local iid = unit:GetInstanceID();
+
+    if( RUBY_SANCTUM[ iid ].phase == 0 )
+    then
+        unit:PlaySoundToSet( SOUND[ 9 ] );
+        unit:SendChatMessage( 14, 0, CHAT[ 9 ] );
+    end
+end
+
+RegisterUnitEvent( 40429, 18, RUBY_SANCTUM.XerexOnSpawn )
 
 RegisterInstanceEvent( 724, 9, RUBY_SANCTUM.InstanceOnLoad );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
 RegisterInstanceEvent( 724, 5, RUBY_SANCTUM.OnCreatureDeath );
+RegisterInstanceEvent( 724, 3, RUBY_SANCTUM.OnAreaTrigger );
