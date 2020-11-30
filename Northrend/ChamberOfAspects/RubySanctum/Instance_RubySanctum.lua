@@ -50,6 +50,5 @@ function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
     end
 end
 
-
 RegisterInstanceEvent( 724, 9, RUBY_SANCTUM.InstanceOnLoad );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
