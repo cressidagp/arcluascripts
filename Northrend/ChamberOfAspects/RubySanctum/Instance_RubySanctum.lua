@@ -17,9 +17,9 @@ function RUBY_SANCTUM.InstanceOnLoad( iid )
 
     print(iid)
 	  RUBY_SANCTUM[ iid ] = {
-    --RUBY_SANCTUM[ iid ].baltharus = false;
-    --RUBY_SANCTUM[ iid ].saviana = false;
-    --RUBY_SANCTUM[ iid ].zarithrian = false;
+    --RUBY_SANCTUM[ iid ].baltharus = false;	-- hypers bugged tutorials...
+    --RUBY_SANCTUM[ iid ].saviana = false;		-- hypers bugged tutorials...	
+    --RUBY_SANCTUM[ iid ].zarithrian = false;	-- hypers bugged tutorials...
     baltharus = false,
     saviana = false,
     zarithrian = false
@@ -39,9 +39,9 @@ function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
     then
         print("debug: ruby sanctum is nil")
 	      RUBY_SANCTUM[ iid ] = {
-        --RUBY_SANCTUM[ iid ].baltharus = false;
-        --RUBY_SANCTUM[ iid ].saviana = false;
-        --RUBY_SANCTUM[ iid ].zarithrian = false;
+        --RUBY_SANCTUM[ iid ].baltharus = false;	-- hypers bugged tutorials...
+        --RUBY_SANCTUM[ iid ].saviana = false;		-- hypers bugged tutorials...
+        --RUBY_SANCTUM[ iid ].zarithrian = false;	-- hypers bugged tutorials...
         baltharus = false,
         saviana = false,
         zarithrian = false
