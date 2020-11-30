@@ -1,4 +1,4 @@
---[[
+---[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	The Ruby Sanctum: Baltharus the Warborn
@@ -35,6 +35,9 @@ SPELL_CLONE                 = 74511;
 SPELL_REPELLING_WAVE        = 74509;
 SPELL_CLEAR_DEBUFFS         = 34098;
 SPELL_SPAWN_EFFECT          = 64195;
+
+-- For 3.3.5a
+local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 
 local self = getfenv( 1 );
 
@@ -73,6 +76,10 @@ function OnDeath( unit, event )
     --[[ Developer notes: we dont need to send the chat here since our
     monstersay table will do the job, instance collision checked. ]]
 
+		local firefield = unit:GetGameObjectNearestCoords( 3153.27, 380.47, 86.36, 203005 );
+
+		firefield:SetByte( GAMEOBJECT_BYTES_1, 0, 0 );
+
     local xerestrasza = unit:GetCreatureNearestCoords( 3155.54, 342.39, 84.60, 40429 );
 
     if( xerestrasza ~= nil )
@@ -82,8 +89,8 @@ function OnDeath( unit, event )
 end
 
 function OnAIUpdate( unit, event )
-	
-	if( unit:IsCasting() == true) then return; end
+
+		if( unit:IsCasting() == true) then return; end
 
     local vars = self[ tostring( unit ) ];
 
@@ -106,7 +113,7 @@ function OnAIUpdate( unit, event )
     elseif( vars.bladetempest <= 0 )
     then
         unit:FullCastSpell( SPELL_BLADE_TEMPEST );
-        unit:SendChatMessage( 12, 0, "debug: blade tempest!" );
+        unit:SendChatMessage( 12, 0, "debug: blade tempest" );
         vars.bladetempest = 18;
     end
 end
