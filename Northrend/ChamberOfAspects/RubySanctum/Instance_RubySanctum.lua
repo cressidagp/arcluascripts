@@ -27,5 +27,29 @@ function RUBY_SANCTUM.InstanceOnLoad( iid )
     print("debug: ruby sanctum variables created")
 end
 
+function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
+
+    --[[ Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
+    are created. But then if player from opposite faction enter variables wont be created with the same idd number.
+    so will have no more choice than spend resources getting instance id again. ]]
+
+    local iid = plr:GetInstanceID();
+
+    if( RUBY_SANCTUM[ iid ] == nil )
+    then
+        print("debug: ruby sanctum is nil")
+	      RUBY_SANCTUM[ iid ] = {
+        --RUBY_SANCTUM[ iid ].baltharus = false;
+        --RUBY_SANCTUM[ iid ].saviana = false;
+        --RUBY_SANCTUM[ iid ].zarithrian = false;
+        baltharus = false,
+        saviana = false,
+        zarithrian = false
+        };
+        print("debug: ruby sanctum variables created")
+    end
+end
+
 
 RegisterInstanceEvent( 724, 9, RUBY_SANCTUM.InstanceOnLoad );
+RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
