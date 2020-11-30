@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	The Ruby Sanctum
 	Engine: A.L.E
-	Credits: Trinity for sound ids, chats and text.
+	Credits: Trinity for sound ids, chats and worldstates.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -61,5 +61,46 @@ function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
     end
 end
 
+function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
+
+    local iid = killer:GetInstanceID(); -- fucking idd argument
+
+    if( victim:GetEntry() == 39751 )
+    then
+        RUBY_SANCTUM[ iid ].baltharus = true;
+        print("debug: baltharus is dead");
+        if( RUBY_SANCTUM[ iid ].saviana == true )
+        then
+            print("debug: and saviana is dead");
+            local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+            print("open door")
+            flame:SetByte( GAMEOBJECT_BYTES_1, 0, 0 );
+        end
+
+    elseif( victim:GetEntry() == 39747 )
+    then
+        RUBY_SANCTUM[ iid ].saviana = true;
+        print("debug: saviana is dead");
+        if( RUBY_SANCTUM[ iid ].baltharus == true )
+        then
+            print("debug: and baltharus is dead");
+            local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+            print("open door")
+            flame:SetByte( GAMEOBJECT_BYTES_1, 0, 0 );
+        end
+
+    elseif( victim:GetEntry() == 39746 )
+    then
+        RUBY_SANCTUM[ iid ].zarithrian = true;
+        print("debug: zarithrian is dead");
+        local controller = victim:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
+
+        -- Controller All hail Halion!
+
+        controller:SpawnCreature( 39863, 3156.67, 533.8108, 72.98822, 3.159046, FACTION_HOSTILE, NO_DESPAWN, 1, 1, 1, 1, 0 );
+    end
+end
+
 RegisterInstanceEvent( 724, 9, RUBY_SANCTUM.InstanceOnLoad );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
+RegisterInstanceEvent( 724, 5, RUBY_SANCTUM.OnCreatureDeath );
