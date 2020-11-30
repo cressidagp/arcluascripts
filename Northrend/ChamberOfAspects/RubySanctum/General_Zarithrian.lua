@@ -81,7 +81,7 @@ function OnAIUpdate( unit, event )
 
 	elseif( vars.roar <= 0 )
 	then
-		unit:CastSpell( SPELL_INTIMIDATING_ROAR );
+		unit:FullCastSpell( SPELL_INTIMIDATING_ROAR );
 		unit:SendChatMessage( 12, 0, "debug: roar" );
 		vars.roar = 14;
 	end
