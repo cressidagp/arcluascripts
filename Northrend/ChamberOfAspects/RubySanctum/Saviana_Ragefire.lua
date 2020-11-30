@@ -40,7 +40,7 @@ function OnCombat( unit, event )
 	flamebreath = 14,
 	flamebeacon = 0,
 	enrage = 20
-	}
+	};
 
 	unit:PlaySoundToSet( SOUND[ 1 ] );
 
