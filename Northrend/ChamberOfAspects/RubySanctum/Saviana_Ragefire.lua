@@ -92,6 +92,6 @@ end
 
 RegisterUnitEvent( 39747, 1 , OnCombat );
 RegisterUnitEvent( 39747, 3 , OnTargetDied );
-RegisterUnitEvent( 39747, 4 , OnTargetDied );
+RegisterUnitEvent( 39747, 4 , OnDeath );
 RegisterUnitEvent( 39747, 21, OnAIUpdate );
 
