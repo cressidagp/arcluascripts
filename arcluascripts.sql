@@ -61,20 +61,117 @@ DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind 
 DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
 
 --
--- Halls of Reflections: monstersay OnCombat, OnDeath
+-- Halls of Reflections:
 --
 
--- Captain Falric:
+-- Starting to phase shift people for Alliance set
+
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134007 and `entry` = 37221; -- Jaina
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134252 and `entry` = 38112; -- Falric
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134254 and `entry` = 38113; -- Marwyn
+
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 133416 and `entry` = 36723; -- General Frostborn
+
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134319 and `entry` = 38177; -- Right semicircle: Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134266 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134277 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134298 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134389 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134278 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134303 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134316 and `entry` = 38177; -- Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134309 and `entry` = 38176; -- Tortured Rifleman
+
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134286 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134291 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134282 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134320 and `entry` = 38177; -- Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134307 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134388 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134265 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134290 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134301 and `entry` = 38176; -- Tortured Rifleman
+
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134311 and `entry` = 38177; -- Left semicircle: Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134268 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134279 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134312 and `entry` = 38177; -- Shadowy Mercenary start from right
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134305 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134391 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134287 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134272 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134385 and `entry` = 38567; -- Phantom Hallucination
+
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134386 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134281 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134295 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134390 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134267 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134285 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134306 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134313 and `entry` = 38177; -- Shadowy Mercenary start from right
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134299 and `entry` = 38175; -- Ghostly Priest
+
+-- Starting to phase shift people for Horde set
+
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134009 and `entry` = 37223; -- Sylvanas
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134010 and `entry` = 37223; -- Sylvanas
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134253 and `entry` = 38112; -- Falric
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134255 and `entry` = 38113; -- Marwyn
+
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 133417 and `entry` = 36723; -- General Frostborn
+
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134315 and `entry` = 38177; -- Right semicircle: Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134269 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134280 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134292 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134394 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134283 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134308 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134321 and `entry` = 38177; -- Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134304 and `entry` = 38176; -- Tortured Rifleman
+
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134276 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134294 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134275 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134314 and `entry` = 38177; -- Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134302 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134395 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134270 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134293 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134310 and `entry` = 38176; -- Tortured Rifleman
+
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134318 and `entry` = 38177; -- Left semicircle: Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134263 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134271 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134317 and `entry` = 38177; -- Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134299 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134384 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134297 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134284 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134392 and `entry` = 38567; -- Phantom Hallucination
+
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134393 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134273 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134288 and `entry` = 38175; -- Ghostly Priest
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134387 and `entry` = 38567; -- Phantom Hallucination
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134264 and `entry` = 38172; -- Phantom Mage
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134274 and `entry` = 38173; -- Spectral Footman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134300 and `entry` = 38176; -- Tortured Rifleman
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134322 and `entry` = 38177; -- Shadowy Mercenary
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134289 and `entry` = 38175; -- Ghostly Priest
+
+-- Captain Falric: monstersay OnCombat, OnDeath
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38112, 0, 100, 0, 14, 'Falric', 'Men, women, and children... None were spared the master\'s wrath. Your death will be no different.', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38112, 5, 100, 0, 14, 'Falric', 'Marwyn, finish them...', NULL, NULL, NULL, NULL);
 
--- Captain Marwyn:
+-- Captain Marwyn: monstersay OnCombat, OnDeath
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38113, 0, 100, 0, 14, 'Marwyn', 'Death is all that you will find here', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38113, 5, 100, 0, 14, 'Marwyn', 'Yes... Run... Run to meet your destiny... Its bitter, cold embrace, awaits you.', NULL, NULL, NULL, NULL);
 
--- Frostworn General: 
+-- Frostworn General: monstersay OnCombat, OnDeath
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 0, 100, 0, 14, 'Frostworn General', 'You are not worthy to face the Lich King!', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 5, 100, 0, 14, 'Frostworn General', 'Master, I have failed...', NULL, NULL, NULL, NULL);
@@ -103,7 +200,8 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 
 -- Halion Controller:
 
-UPDATE `creature_spawns` SET `invisibility_type` = 1 WHERE `entry` = 40146;
+UPDATE `creature_proto` SET `invisibility_type` = 1 WHERE `entry` = 40146;
+DELETE FROM `creature_spawns` WHERE `id` = 200631 and `entry` = 40146;
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) VALUES (200631, 40146, 724, 3156.04, 533.27, 72.97, 0.00, 0, 169, 14, 33554688, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33);
 
 --
@@ -288,4 +386,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-11-30_09-00_Frostworn_General');
+('2020-11-30_14-41_Instance_HOR');

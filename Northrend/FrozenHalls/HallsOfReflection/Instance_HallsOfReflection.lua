@@ -3,15 +3,15 @@
 	www.ArcEmu.org
 	Halls of Reflection
 	Engine: A.L.E
-	Credits: Trinity for spawn pos.
+	Credits: nil
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
 --]]
 
 -- Spells:
-local SPELL_A_PHASE   = 55774; -- Phase 128
-local SPELL_H_PHASE   = 55773; -- Phase 64
+local SPELL_A_PHASE   = 60027; -- Phase 64
+local SPELL_H_PHASE   = 60028; -- Phase 128
 
 HOR = {}
 
