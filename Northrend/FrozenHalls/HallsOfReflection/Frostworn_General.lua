@@ -82,6 +82,11 @@ function OnAIUpdate( unit, event )
 
 	if( unit:IsCasting() == true ) then return; end
 
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
+
 	local vars = self[ tostring( unit ) ];
 
 	vars.shield = vars.shield - 1;
@@ -89,13 +94,13 @@ function OnAIUpdate( unit, event )
 
 	if( vars.shield <= 0 )
     then
-		unit:CastSpellOnTarget( SPELL_SHIELD_THROWN,  unit:GetRandomPlayer( 1 ) ); -- maybe give more range?
+		unit:CastSpellOnTarget( SPELL_SHIELD_THROWN,  unit:GetRandomPlayer( 2 ) ); -- range 45
 		unit:SendChatMessage( 12, 0, "debug: shield thrown" );
 		vars.shield = math.random( 8, 12 );
 
 	elseif( vars.spike <= 0 )
 	then
-		local target = unit:GetRandomPlayer( 1 ); -- maybe give more range?
+		local target = unit:GetRandomPlayer( 2 ); -- range 45
 		unit:FullCastSpellAoE( target:GetX(), target:GetY(), target:GetZ(), SPELL_SPIKE );
 		unit:SendChatMessage( 12, 0, "debug: spike" );
 		vars.spike = math.random( 15, 20 );

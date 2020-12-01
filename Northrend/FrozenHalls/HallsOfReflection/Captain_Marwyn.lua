@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	Halls of Reflection: Captain Marwyn
 	Engine: A.L.E
-	Credits: Trinity for texts and sound ids.
+	Credits: Trinity for texts, sound ids, spell ids and timers.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -52,6 +52,15 @@ end
 
 function OnCombat( unit, event )
 
+	self[ tostring( unit )] = {
+	
+	obliterate = math.random( 8, 13 ),
+	well = 12,
+	flesh = 20,
+	suffering = math.random( 14, 15 )
+	
+	};
+
     unit:PlaySoundToSet( SOUND[ 1 ] );
 
     --[[ Developer notes: we dont need to send the chat here since
@@ -93,6 +102,45 @@ end
 
 function OnAIUpdate( unit, event )
 
+	if( unit:IsCasting() == true ) then return; end
+	
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
+	
+	local vars = self[ tostring( unit ) ];	
+	
+	vars.obliterate = vars.obliterate - 1;
+	vars.well = vars.well - 1;
+	vars.flesh = vars.flesh - 1;
+	vars.suffering = vars.suffering - 1;
+	
+	if( vars.obliterate <= 0 )
+    then	
+		unit:CastSpellOnTarget( SPELL_OBLITERATE, unit:GetMainTank() );
+		vars.obliterate = math.random( 8, 13 );
+		
+	elseif( vars.well <= 0 )
+	then
+		local targeta = unit:GetRandomPlayer( 3 ); -- long range 100
+		unit:CastSpellOnTarget( SPELL_WELL_OF_CORRUPTION, targeta );
+		vars.well = 13;
+		
+	elseif( vars.flesh <= 0 )
+	then
+		unit:CastSpell( SPELL_CORRUPTED_FLESH );
+		vars.flesh = 20;
+		local random = math.random( 5, 6 );
+		unit:PlaySoundToSet( SOUND[ random ] );
+		unit:SendChatMessage( 14, 0, CHAT[ random ] );
+	
+	elseif( vars.suffering <= 0 )
+	then
+		local targetb = unit:GetClosestPlayer(); -- range 0
+		unit:CastSpellOnTarget( SPELL_SHARED_SUFFERING, targetb );
+		vars.suffering = math.random( 14, 15 );
+	end
 end
 
 RegisterUnitEvent( 38113, 18, OnSpawn );

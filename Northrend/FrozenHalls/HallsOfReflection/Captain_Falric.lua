@@ -147,7 +147,7 @@ function OnAIUpdate( unit, event )
 
 	elseif( vars.impending <= 0 )
 	then
-		unit:CastSpellOnTarget( SPELL_IMPENDING_DESPAIR, unit:GetRandomPlayer( 1 ) ); -- maybe give more range?
+		unit:CastSpellOnTarget( SPELL_IMPENDING_DESPAIR, unit:GetRandomPlayer( 2 ) ); -- range 45
 		unit:PlaySoundToSet( SOUND[ 5 ] );
 		unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
 		vars.impending = 13;
