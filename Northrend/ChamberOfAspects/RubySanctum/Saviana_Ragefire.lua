@@ -95,6 +95,11 @@ end
 function OnAIUpdate( unit, event )
 
 	if( unit:IsCasting() == true ) then return; end
+	
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -102,7 +107,7 @@ function OnAIUpdate( unit, event )
 	vars.enrage = vars.enrage - 1;
 
 	if( vars.flamebreath <= 0 )
-    then
+	then
 		unit:FullCastSpellOnTarget( SPELL_FLAME_BREATH, unit:GetMainTank() );
 		unit:SendChatMessage( 12, 0, "debug: flame breath" );
 		vars.flamebreath = 14;

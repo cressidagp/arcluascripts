@@ -115,6 +115,11 @@ end
 function OnAIUpdate( unit, event )
 
 	if( unit:IsCasting() == true) then return; end
+	
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
 
     local vars = self[ tostring( unit ) ];
 
