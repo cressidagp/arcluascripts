@@ -9,6 +9,8 @@
 
 --]]
 
+local BOSS_HP = { 315000, 441000 };
+
 local SOUND = {
 [ 1 ] = 16921; -- OnCombat
 [ 2 ] = 16922; -- OnDeath
@@ -23,6 +25,16 @@ SPELL_CLONE             = 69828; -- need scripted effect
 SPELL_GHOST_VISUAL      = 69861; -- need a dummy
 
 local self = getfenv( 1 );
+
+function OnSpawn( unit, event )
+
+    local diff = unit:GetDungeonDifficulty();
+	
+    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+	
+    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+end
 
 function OnCombat( unit, event )
 
@@ -90,6 +102,7 @@ function OnAIUpdate( unit, event )
 	end
 end
 
+RegisterUnitEvent( 36723, 18, OnSpawn );
 RegisterUnitEvent( 36723, 1 , OnCombat );
 RegisterUnitEvent( 36723, 2 , OnLeaveCombat );
 RegisterUnitEvent( 36723, 4 , OnDeath );

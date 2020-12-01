@@ -9,6 +9,8 @@
 
 --]]
 
+local BOSS_HP = { 539240, 903227 };
+
 local SOUND = {
 [ 1 ] = 16734; -- OnEnterCombat
 [ 2 ] = 16735; -- OnTargetDied 1
@@ -37,6 +39,16 @@ SPELL_SHARED_SUFFERING        = 72368;
 SPELL_SHARED_SUFFERING_DISPEL = 72373;
 
 local self = getfenv( 1 );
+
+function OnSpawn( unit, event )
+
+    local diff = unit:GetDungeonDifficulty();
+	
+    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+	
+    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+end
 
 function OnCombat( unit, event )
 
@@ -83,6 +95,7 @@ function OnAIUpdate( unit, event )
 
 end
 
+RegisterUnitEvent( 38113, 18, OnSpawn );
 RegisterUnitEvent( 38113, 1 , OnCombat );
 RegisterUnitEvent( 38113, 2 , OnLeaveCombat );
 RegisterUnitEvent( 38113, 3 , OnTargetDied );
