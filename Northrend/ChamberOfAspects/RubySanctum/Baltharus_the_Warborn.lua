@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: Baltharus the Warborn
 	Engine: A.L.E
-	Credits: Trinity for texts, sound ids and spells.
+	Credits: Trinity for texts, sound ids, timers and spells.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -66,6 +66,7 @@ function OnCombat( unit, event )
     cleave = 13,
     enervatingBrand = 13,
     bladeTempest = 18,
+	sharedHealth = 0,
 	cloneCount = 0
 
     };
@@ -94,7 +95,7 @@ function OnDamageTaken( unit, event, attacker, ammount )
 			vars.cloneCount = vars.cloneCount + 1;
 			unit:CastSpell( SPELL_CLONE );
 			unit:PlaySoundToSet( SOUND[ 5 ] );
-			unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
+			unit:SendChatMessage( 14, 0, CHAT[ 5 - 1 ] );
 
 		end
 	else
@@ -165,34 +166,38 @@ function OnAIUpdate( unit, event )
 			return;
 	end
 
-    local vars = self[ tostring( unit ) ];
+	local vars = self[ tostring( unit ) ];
 
-    vars.cleave = vars.cleave - 1;
-    vars.enervatingBrand = vars.enervatingBrand - 1;
-    vars.bladeTempest = vars.bladeTempest - 1;
+	vars.cleave = vars.cleave - 1;
+	vars.enervatingBrand = vars.enervatingBrand - 1;
+	vars.bladeTempest = vars.bladeTempest - 1;
 
-    if( vars.cleave <= 0 )
-    then
-        unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
-        unit:SendChatMessage( 12, 0, "debug: cleave" );
-        vars.cleave = math.random( 20, 24 );
+	if( vars.cleave <= 0 )
+	then
+		unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
+		unit:SendChatMessage( 12, 0, "debug: cleave" );
+		vars.cleave = math.random( 20, 24 );
 
-    elseif( vars.enervatingBrand <= 0 )
-    then
+	elseif( vars.enervatingBrand <= 0 )
+	then
 		local raidMode = { 2, 4, 2, 4 };
 		local targetNum = raidMode[ vars.diff ]
 		local targetList = {};
 
-        unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 2 ) ); -- range 45
-        unit:SendChatMessage( 12, 0, "debug: enervating brand" );
-        vars.enervatingBrand = 26;
+		for i = 1, targetNum
+		do
+			unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 2 ) ); -- range 45
+		end
 
-    elseif( vars.bladeTempest <= 0 )
-    then
-        unit:FullCastSpell( SPELL_BLADE_TEMPEST );
-        unit:SendChatMessage( 12, 0, "debug: blade tempest" );
-        vars.bladeTempest = 24;
-    end
+		unit:SendChatMessage( 12, 0, "debug: enervating brand" );
+		vars.enervatingBrand = 26;
+
+	elseif( vars.bladeTempest <= 0 )
+	then
+		unit:FullCastSpell( SPELL_BLADE_TEMPEST );
+		unit:SendChatMessage( 12, 0, "debug: blade tempest" );
+		vars.bladeTempest = 24;
+	end
 end
 
 RegisterUnitEvent( 39751, 18, OnSpawn );
@@ -202,3 +207,109 @@ RegisterUnitEvent( 36751, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39751, 3 , OnTargetDied );
 RegisterUnitEvent( 39751, 4 , OnDeath );
 RegisterUnitEvent( 39751, 21, OnAIUpdate );
+
+--[[
+			Clone AI
+--]]
+
+function CloneOnSpawn( unit, event )
+
+	unit:CastSpell( SPELL_SPAWN_EFFECT );
+
+end
+
+function CloneOnCombat( unit, event )
+
+	self[ tostring( unit ) ] = {
+
+	cleave = 11,
+	enervatingBrand = 15,
+	bladeTempest = 10
+
+	};
+
+	unit:RegisterAIUpdateEvent( 1000 );
+
+end
+
+function OnDamageTaken( unit, event, attacker, damage )
+
+	local baltharus = unit:GetCreator();
+
+	local vars = self[ tostring( baltharus ) ];
+
+	local hp = unit:GetHealth();
+
+	if( hp > damage )
+	then
+		vars.sharedHealth = hp - damage;
+	end
+end
+
+function CloneOnLeaveCombat( unit, event )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
+
+end
+
+function CloneOnAIUpdate( unit, event )
+
+	if( unit:IsCasting() == true) then return; end
+
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
+
+	local baltharus = unit:GetCreator();
+
+	local args = self[ tostring( baltharus ) ];
+
+	unit:SetHealth( args.sharedHealth );
+
+	local vars = self[ tostring( unit ) ];
+
+	vars.cleave = vars.cleave - 1;
+	vars.enervatingBrand = vars.enervatingBrand - 1;
+	vars.bladeTempest = vars.bladeTempest - 1;
+
+	if( vars.cleave <= 0 )
+	then
+		unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
+		unit:SendChatMessage( 12, 0, "debug: clone cleave" );
+		vars.cleave = math.random( 20, 24 );
+
+	elseif( vars.enervatingBrand <= 0 )
+	then
+		local raidMode = { 2, 4, 2, 4 };
+		local targetNum = raidMode[ args.diff ];
+
+		for i = 1, targetNum -- targetNum its the for limiter
+		do
+			unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 2 ) ); -- range 45
+		end
+
+	unit:SendChatMessage( 12, 0, "debug: clone enervating brand" );
+	vars.enervatingBrand = 26;
+
+	elseif( vars.bladeTempest <= 0 )
+	then
+		unit:FullCastSpell( SPELL_BLADE_TEMPEST );
+		unit:SendChatMessage( 12, 0, "debug: clone blade tempest" );
+		vars.bladeTempest = 24;
+	end
+end
+
+RegisterUnitEvent( 39899, 18, CloneOnSpawn );
+RegisterUnitEvent( 39899, 1 , CloneOnCombat );
+RegisterUnitEvent( 39899, 23, CloneOnDamageTaken );
+RegisterUnitEvent( 39899, 2 , CloneOnLeaveCombat );
+RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
