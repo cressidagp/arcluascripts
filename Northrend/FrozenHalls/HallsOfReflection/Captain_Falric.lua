@@ -35,23 +35,40 @@ local CHAT = {
 SPELL_QUIVERING_STRIKE    = 72422;
 SPELL_IMPENDING_DESPAIR   = 72426;
 SPELL_DEFILING_HORROR     = 72435;
-SPELL_HOPELESSNESS_1      = 72395;
-SPELL_HOPELESSNESS_2      = 72396;
-SPELL_HOPELESSNESS_3      = 72397;
+-- SPELL_HOPELESSNESS_1      = 72395;
+-- SPELL_HOPELESSNESS_2      = 72396;
+-- SPELL_HOPELESSNESS_3      = 72397;
+
+HOPELESSNESS = {
+{ 72395, 72390 },
+{ 72396, 72391 },
+{ 72397, 72393 }
+};
 
 local self = getfenv( 1 );
 
 function OnSpawn( unit, event )
 
     local diff = unit:GetDungeonDifficulty();
-	
+
     unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-	
+
     unit:SetHealth( BOSS_HP [ diff + 1 ] );
 
 end
 
 function OnCombat( unit, event )
+
+	self[ tostring( unit )] = {
+
+	phase = 1,
+	quivering = 23,
+	impending = 9,
+	defiling = math.random( 21, 39 ),
+	hopeless = 0,
+	diff = unit:GetDungeonDifficulty()
+
+	};
 
     unit:PlaySoundToSet( SOUND[ 1 ] );
 
@@ -59,6 +76,21 @@ function OnCombat( unit, event )
     our monstersay table will do the job, instance collision checked. ]]
 
     unit:RegisterAIUpdateEvent( 1000 );
+end
+
+function OnDamageTaken( unit, event, attacker, ammount )
+
+	local vars = self[ tostring( unit ) ];
+
+	local hp = unit:GetHealthPct();
+
+	-- local n = unit:GetHealth() - ammount
+
+	if( ( vars.hopeless < 1 and hp < 66 ) or ( vars.hopeless < 2 and hp < 33 ) or ( vars.hopeless < 3 and hp < 10 ) )
+	then
+		vars.hopeless = vars.hopeless + 1;
+		unit:CastSpell( HOPELESSNESS[ vars.hopeless ][ vars.diff + 1 ] );
+	end
 end
 
 function OnLeaveCombat( unit, event )
@@ -94,11 +126,46 @@ end
 
 function OnAIUpdate( unit, event )
 
+	if( unit:IsCasting() == true ) then return; end
+	
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
+
+	local vars = self[ tostring( unit ) ];
+
+	vars.quivering = vars.quivering - 1;
+	vars.impending = vars.impending - 1;
+	vars.defiling = vars.defiling - 1;
+
+	if( vars.quivering <= 0 )
+    then
+		unit:CastSpellOnTarget( SPELL_QUIVERING_STRIKE, unit:GetMainTank() );
+		unit:SendChatMessage( 12, 0, "debug: quivering strike" );
+		vars.quivering = 10;
+
+	elseif( vars.impending <= 0 )
+	then
+		unit:CastSpellOnTarget( SPELL_IMPENDING_DESPAIR, unit:GetRandomPlayer( 1 ) ); -- maybe give more range?
+		unit:PlaySoundToSet( SOUND[ 5 ] );
+		unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
+		vars.impending = 13;
+
+	elseif( vars.defiling <= 0 )
+	then
+		unit:CastSpell( SPELL_DEFILING_HORROR );
+		unit:PlaySoundToSet( SOUND[ 6 ] );
+		unit:SendChatMessage( 14, 0, CHAT[ 6 ] );
+		vars.defiling = math.random( 21, 39 );
+	end
 end
 
 RegisterUnitEvent( 38112, 18, OnSpawn );
 RegisterUnitEvent( 38112, 1 , OnCombat );
+RegisterUnitEvent( 38112, 23, OnDamageTaken );
 RegisterUnitEvent( 38112, 2 , OnLeaveCombat );
 RegisterUnitEvent( 38112, 3 , OnTargetDied );
 RegisterUnitEvent( 38112, 4 , OnDeath );
 RegisterUnitEvent( 38112, 21, OnAIUpdate );
+
