@@ -9,6 +9,8 @@
 
 --]]
 
+local BOSS_HP = { 3486250, 11156000, 3486250, 11156000 };
+
 local SOUND = {
 [ 1 ] = 17525;  -- Intro
 [ 2 ] = 17520;  -- OnCombat
@@ -40,6 +42,16 @@ SPELL_SPAWN_EFFECT          = 64195;
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 
 local self = getfenv( 1 );
+
+function OnSpawn( unit, event )
+
+    local diff = unit:GetDungeonDifficulty();
+	
+    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+	
+    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+end
 
 function OnCombat( unit, event )
 
@@ -130,6 +142,7 @@ function OnAIUpdate( unit, event )
     end
 end
 
+RegisterUnitEvent( 39751, 18, OnSpawn );
 RegisterUnitEvent( 39751, 1 , OnCombat );
 RegisterUnitEvent( 36751, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39751, 3 , OnTargetDied );

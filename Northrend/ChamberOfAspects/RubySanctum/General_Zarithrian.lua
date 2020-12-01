@@ -9,6 +9,8 @@
 
 --]]
 
+local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
+
 local SOUND = {
 [ 1 ] = 17512;  -- OnCombat
 [ 2 ] = 17513;  -- OnTargetDied 1
@@ -28,6 +30,16 @@ SPELL_INTIMIDATING_ROAR     = 74384;
 SPELL_CLEAVE_ARMOR          = 74367;
 
 local self = getfenv( 1 );
+
+function OnSpawn( unit, event )
+
+    local diff = unit:GetDungeonDifficulty();
+	
+    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+	
+    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+end
 
 function OnCombat( unit, event )
 
@@ -100,6 +112,7 @@ function OnAIUpdate( unit, event )
 	end
 end
 
+RegisterUnitEvent( 39746, 18, OnSpawn );
 RegisterUnitEvent( 39746, 1 , OnCombat );
 RegisterUnitEvent( 39746, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39746, 3 , OnTargetDied );

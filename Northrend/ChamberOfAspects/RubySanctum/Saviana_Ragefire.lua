@@ -9,6 +9,8 @@
 
 --]]
 
+local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
+
 local SOUND = {
 [ 1 ] = 17528;  -- OnCombat
 [ 2 ] = 17532;  -- OnCast: "Conflagration"
@@ -32,6 +34,16 @@ SPELL_ENRAGE                = 78722;
 SPELL_FLAME_BREATH          = 74403;
 
 local self = getfenv( 1 );
+
+function OnSpawn( unit, event )
+
+    local diff = unit:GetDungeonDifficulty();
+	
+    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+	
+    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+end
 
 function OnCombat( unit, event )
 
@@ -103,6 +115,7 @@ function OnAIUpdate( unit, event )
 	end
 end
 
+RegisterUnitEvent( 39747, 18, OnSpawn );
 RegisterUnitEvent( 39747, 1 , OnCombat );
 RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39747, 3 , OnTargetDied );

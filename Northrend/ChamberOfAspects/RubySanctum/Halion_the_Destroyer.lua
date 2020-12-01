@@ -9,6 +9,8 @@
 
 --]]
 
+local BOSS_HP = { 11156000, 40440500, 15339500, 58569000 };
+
 local SOUND = {
 [ 1 ] = 17499;  -- Intro
 [ 2 ] = 17500;  -- OnCombat
@@ -35,11 +37,21 @@ local TEXT = {
 
 -- Spells:
 SPELL_FLAME_BREATH 		= 74525;
-SPELL_CLEAVE 					= 74524;
+SPELL_CLEAVE 			= 74524;
 SPELL_METEOR_STRIKE 	= 74637; -- aoe, need a dummy
-SPELL_TAIL_LASH 			= 74531;
+SPELL_TAIL_LASH 		= 74531;
 
 local self = getfenv( 1 );
+
+function OnSpawn( unit, event )
+
+    local diff = unit:GetDungeonDifficulty();
+	
+    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+	
+    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+end
 
 function OnCombat( unit, event )
 
@@ -125,6 +137,7 @@ function HalionControllerOnSpawn( unit, event )
 
 end
 
+RegisterUnitEvent( 39863, 18, OnSpawn );
 RegisterUnitEvent( 39863, 1 , OnCombat );
 RegisterUnitEvent( 39863, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39863, 3 , OnTargetDied );
