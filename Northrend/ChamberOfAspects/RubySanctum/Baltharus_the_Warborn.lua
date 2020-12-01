@@ -28,7 +28,7 @@ local TEXT = {
 };
 
 -- Spells:
-SPELL_BARRIER_CHANNEL       = 76221;
+SPELL_BARRIER_CHANNEL       = 76221; -- need a dummy
 SPELL_ENERVATING_BRAND      = 74502;
 SPELL_SIPHONED_MIGHT        = 74507;
 SPELL_CLEAVE                = 40504;
@@ -46,21 +46,31 @@ local self = getfenv( 1 );
 function OnSpawn( unit, event )
 
     local diff = unit:GetDungeonDifficulty();
-	
+
     unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-	
+
     unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+
+	unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
 
 end
 
 function OnCombat( unit, event )
 
     self[ tostring( unit )] = {
+
     phase = 1,
+	diff = unit:GetDungeonDifficulty() + 1,
     cleave = 13,
-    enervating = 13,
-    bladetempest = 18
+    enervatingBrand = 13,
+    bladeTempest = 18,
+	cloneCount = 0
+
     };
+
+	unit:StopChannel();
 
     unit:PlaySoundToSet( SOUND[ 2 ] );
 
@@ -69,6 +79,40 @@ function OnCombat( unit, event )
 
     unit:RegisterAIUpdateEvent( 1000 );
 
+end
+
+function OnDamageTaken( unit, event, attacker, ammount )
+
+	local vars = self[ tostring( unit ) ];
+
+	local hp = unit:GetHealthPct();
+
+	if( unit:GetDungeonDifficulty() == 0 )
+	then
+		if( hp < 50 and vars.cloneCount == 0 )
+		then
+			vars.cloneCount = vars.cloneCount + 1;
+			unit:CastSpell( SPELL_CLONE );
+			unit:PlaySoundToSet( SOUND[ 5 ] );
+			unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
+
+		end
+	else
+		if( hp < 66 and vars.cloneCount == 0 )
+		then
+			vars.cloneCount = vars.cloneCount + 1;
+			unit:CastSpell( SPELL_CLONE );
+			unit:PlaySoundToSet( SOUND[ 5 ] );
+			unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
+
+		elseif( hp < 33 and vars.cloneCount == 1 )
+		then
+			vars.cloneCount = vars.cloneCount + 1;
+			unit:CastSpell( SPELL_CLONE );
+			unit:PlaySoundToSet( SOUND[ 5 ] );
+			unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
+		end
+	end
 end
 
 function OnLeaveCombat( unit, event )
@@ -115,40 +159,45 @@ end
 function OnAIUpdate( unit, event )
 
 	if( unit:IsCasting() == true) then return; end
-	
+
 	if( unit:GetNextTarget() == nil ) then
-		unit:WipeThreatList()
-		return;
+			unit:WipeThreatList()
+			return;
 	end
 
     local vars = self[ tostring( unit ) ];
 
     vars.cleave = vars.cleave - 1;
-    vars.enervating = vars.enervating - 1;
-    vars.bladetempest = vars.bladetempest - 1;
+    vars.enervatingBrand = vars.enervatingBrand - 1;
+    vars.bladeTempest = vars.bladeTempest - 1;
 
     if( vars.cleave <= 0 )
     then
         unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
         unit:SendChatMessage( 12, 0, "debug: cleave" );
-        vars.cleave = 13;
+        vars.cleave = math.random( 20, 24 );
 
-    elseif( vars.enervating <= 0 )
+    elseif( vars.enervatingBrand <= 0 )
     then
-        unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 0 ) );
-        unit:SendChatMessage( 12, 0, "debug: enervating brand" );
-        vars.enervating = 13;
+		local raidMode = { 2, 4, 2, 4 };
+		local targetNum = raidMode[ vars.diff ]
+		local targetList = {};
 
-    elseif( vars.bladetempest <= 0 )
+        unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 2 ) ); -- range 45
+        unit:SendChatMessage( 12, 0, "debug: enervating brand" );
+        vars.enervatingBrand = 26;
+
+    elseif( vars.bladeTempest <= 0 )
     then
         unit:FullCastSpell( SPELL_BLADE_TEMPEST );
         unit:SendChatMessage( 12, 0, "debug: blade tempest" );
-        vars.bladetempest = 18;
+        vars.bladeTempest = 24;
     end
 end
 
 RegisterUnitEvent( 39751, 18, OnSpawn );
 RegisterUnitEvent( 39751, 1 , OnCombat );
+RegisterUnitEvent( 39751, 23, OnDamageTaken );
 RegisterUnitEvent( 36751, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39751, 3 , OnTargetDied );
 RegisterUnitEvent( 39751, 4 , OnDeath );
