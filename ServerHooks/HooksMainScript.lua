@@ -16,12 +16,18 @@ function HOOKS.Consolidated( event, plr )
         if( plr:GetPlayerRace() == 11 )
         then
             local class = plr:GetPlayerClass();
-            if( class == "Priest"  or class == "Shaman" or class == "Mage" )
+            if( class == "Priest" or class == "Shaman" or class == "Mage" )
             then
                 plr:AddAura( 28878, 0 ); -- Heroic Presence
             else
                 plr:AddAura( 6562, 0 ); -- Heroic Presence
             end
+        end
+
+        if( plr:GetPlayerClass() == "Death Knight" )
+        then
+            plr:CastSpell( 48266 ); -- Blood Presence
+            plr:AddAura( 51915 ); -- Undying Resolve
         end
     end
 end
