@@ -9,6 +9,10 @@
 
 --]]
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".BALTHARUS_WARBORN", package.seeall );
+
 local BOSS_HP = { 3486250, 11156000, 3486250, 11156000 };
 
 local SOUND = {
@@ -51,12 +55,12 @@ function OnSpawn( unit, event )
 	unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
 
 	unit:SetHealth( BOSS_HP [ diff + 1 ] );
-	
+
 
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
 
 	unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
-	
+
 
 	unit:PlaySoundToSet( SOUND[ 1 ] );
 
@@ -82,7 +86,7 @@ function OnCombat( unit )
 
     --[[ Developer notes: we dont need to send the chat here since
     our monstersay table will do the job, instance collision checked. ]]
-	
+
 	unit:PlaySoundToSet( SOUND[ 2 ] );
 
     unit:RegisterAIUpdateEvent( 1000 );
@@ -155,7 +159,7 @@ function OnDeath( unit )
 
 	-- destroy table with variables to recycle resources
 
-	self[ tostring( unit ) ] = nil; 
+	self[ tostring( unit ) ] = nil;
 
     --[[ Developer notes: we dont need to send the chat here since our
     monstersay table will do the job, instance collision checked. ]]
