@@ -27,7 +27,7 @@ function HOOKS.Consolidated( event, plr )
         if( plr:GetPlayerClass() == "Death Knight" )
         then
             plr:CastSpell( 48266 ); -- Blood Presence
-            plr:AddAura( 51915 ); -- Undying Resolve
+            plr:AddAura( 51915, 0 ); -- Undying Resolve
         end
     end
 end
