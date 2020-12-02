@@ -147,12 +147,14 @@ function OnLeaveCombat( unit )
 
 end
 
-function OnTargetDied( unit )
+function OnTargetDied( unit, _, victim )
 
-    local random = math.random( 3, 4 );
-    unit:PlaySoundToSet( SOUND[ random - 1 ] );
-    unit:SendChatMessage( 14, 0, CHAT[ random - 1 ] );
-
+	if( victim:IsPlayer() == true )
+	then
+    	local random = math.random( 3, 4 );
+    	unit:PlaySoundToSet( SOUND[ random - 1 ] );
+    	unit:SendChatMessage( 14, 0, CHAT[ random - 1 ] );
+	end
 end
 
 function OnDeath( unit )
