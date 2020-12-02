@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: Saviana Ragefire
 	Engine: A.L.E
-	Credits: Trinity for texts and sound ids.
+	Credits: Trinity for texts, sound ids and spell ids.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -27,11 +27,12 @@ local CHAT = {
 };
 
 -- Spells:
-local SPELL_CONFLAGRATION         = 74452;	-- need a dummy
-local SPELL_FLAME_BEACON          = 74453;
-local SPELL_CONFLAGRATION_2       = 74454;	-- unknown dummy effect
-local SPELL_ENRAGE                = 78722;
-local SPELL_FLAME_BREATH          = 74403;
+local SPELL_CONFLAGRATION       = 74452; -- need a dummy
+local SPELL_FLAME_BEACON        = 74453;
+local SPELL_CONFLAGRATION_2     = 74454; -- dummy effect
+local SPELL_CONFLAGRATION_3		= 74455; -- TODO: need a scripted effect
+local SPELL_ENRAGE              = 78722;
+local SPELL_FLAME_BREATH        = 74403;
 
 local self = getfenv( 1 );
 
@@ -49,7 +50,9 @@ function OnCombat( unit )
 	phase = 1,
 	flamebreath = 14,
 	flamebeacon = 0,
+	conflagration = 30, -- for now
 	enrage = 20
+
 	};
 
 	--[[ Developer notes: we dont need to send the chat here since
@@ -111,6 +114,7 @@ function OnAIUpdate( unit )
 
 	vars.flamebreath = vars.flamebreath - 1;
 	vars.enrage = vars.enrage - 1;
+	vars.conflagration = vars.conflagration - 1 --// for now
 
 	if( vars.flamebreath <= 0 )
     then
@@ -121,8 +125,15 @@ function OnAIUpdate( unit )
 	elseif( vars.enrage <= 0 )
 	then
 		unit:CastSpell( SPELL_ENRAGE );
-		unit:SendChatMessage( 12, 0, "debug: enrage" );
+		unit:SendChatMessage( 16, 0, CHAT[ 2 ] );
 		vars.enrage = 20;
+
+	elseif( vars.conflagration <= 0 )
+	then
+		unit:CastSpell( SPELL_CONFLAGRATION );
+		unit:SendChatMessage( 14, 0, CHAT[ 1 ] );
+		unit:PlaySoundToSet( SOUND[ 2 ] );
+		vars.conflagration = 25;
 	end
 end
 
@@ -132,3 +143,28 @@ RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39747, 3 , OnTargetDied );
 RegisterUnitEvent( 39747, 4 , OnDeath );
 RegisterUnitEvent( 39747, 21, OnAIUpdate );
+
+--[[
+			Spell: Conflagration ( 74452 )
+--]]
+
+function ConflagrationInitDummy( effectIndex, spellObject )
+
+	local caster = spellObject:GetCaster();
+	local target = caster:GetRandomPlayer( 0 );
+
+	local raidMode = { 3, 6, 3, 6 };
+	local diff = caster:GetDungeonDifficulty();
+
+	local targetNum = raidMode[ diff + 1 ];
+
+	for i = 1, targetNum  -- targetNum its the "for" limiter
+	do
+
+		caster:CastSpellOnTarget( SPELL_FLAME_BEACON, target );
+		caster:FullCastSpellOnTarget( SPELL_CONFLAGRATION_2, target );
+
+	end
+end
+
+RegisterDummySpell( SPELL_CONFLAGRATION, ConflagrationInitDummy );
