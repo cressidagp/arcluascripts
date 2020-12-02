@@ -342,13 +342,13 @@ function HookOnCastSpell( event, plr, spell_id, spellObject )
 
 	if( spell_id ~= SPELL_ENERVATING_BRAND ) then return; end
 
-    if( spell_id == SPELL_ENERVATING_BRAND )
-    then
+	if( spell_id == SPELL_ENERVATING_BRAND )
+	then
 
-        local caster = spellObject:GetCaster();
+		local caster = spellObject:GetCaster();
 
-        caster:FullCastSpell( SPELL_SIPHONED_MIGHT );
-    end
+		caster:FullCastSpell( SPELL_SIPHONED_MIGHT );
+	end
 end
 
 RegisterServerHook( 10, HookOnCastSpell );
