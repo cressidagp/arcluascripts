@@ -20,23 +20,24 @@ local SOUND = {
 [ 6 ] = 17523;  -- OnDeath
 };
 
-local TEXT = {
-[ 1 ] = "Your power wanes, ancient one.... Soon you will join your friends.";
-[ 3 ] = "Baltharus leaves no survivors!";
-[ 4 ] = "This world has enough heroes.";
-[ 5 ] = "Twice the pain and half the fun.";
+local CHAT = {
+[ 1 ] = "Your power wanes, ancient one.... Soon you will join your friends."; -- Intro
+[ 2 ] = "Baltharus leaves no survivors!";	-- OnTargetDied 1
+[ 3 ] = "This world has enough heroes.";	-- OnTargetDied 2
+[ 4 ] = "Twice the pain and half the fun.";	-- OnClone
 };
 
 -- Spells:
-SPELL_BARRIER_CHANNEL       = 76221; -- need a dummy
-SPELL_ENERVATING_BRAND      = 74502;
-SPELL_SIPHONED_MIGHT        = 74507;
-SPELL_CLEAVE                = 40504;
-SPELL_BLADE_TEMPEST         = 75125;
-SPELL_CLONE                 = 74511;
-SPELL_REPELLING_WAVE        = 74509;
-SPELL_CLEAR_DEBUFFS         = 34098;
-SPELL_SPAWN_EFFECT          = 64195;
+local SPELL_BARRIER_CHANNEL       = 76221; -- TODO: need a dummy
+local SPELL_ENERVATING_BRAND      = 74502; -- need spell script
+local SPELL_ENERVATING_BRAND_2	  = 74505; -- TODO: WTF?
+local SPELL_SIPHONED_MIGHT        = 74507;
+local SPELL_CLEAVE                = 40504;
+local SPELL_BLADE_TEMPEST         = 75125;
+local SPELL_CLONE                 = 74511;
+local SPELL_REPELLING_WAVE        = 74509;
+local SPELL_CLEAR_DEBUFFS         = 34098;
+local SPELL_SPAWN_EFFECT          = 64195;
 
 -- For 3.3.5a
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
@@ -45,19 +46,25 @@ local self = getfenv( 1 );
 
 function OnSpawn( unit, event )
 
-    local diff = unit:GetDungeonDifficulty();
+	local diff = unit:GetDungeonDifficulty();
 
-    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+	unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
 
-    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+	unit:SetHealth( BOSS_HP [ diff + 1 ] );
+	
 
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
 
 	unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
+	
+
+	unit:PlaySoundToSet( SOUND[ 1 ] );
+
+	unit:SendChatMessage( 14, 0, CHAT[ 1 ] );
 
 end
 
-function OnCombat( unit, event )
+function OnCombat( unit )
 
     self[ tostring( unit )] = {
 
@@ -73,10 +80,10 @@ function OnCombat( unit, event )
 
 	unit:StopChannel();
 
-    unit:PlaySoundToSet( SOUND[ 2 ] );
-
     --[[ Developer notes: we dont need to send the chat here since
     our monstersay table will do the job, instance collision checked. ]]
+	
+	unit:PlaySoundToSet( SOUND[ 2 ] );
 
     unit:RegisterAIUpdateEvent( 1000 );
 
@@ -93,7 +100,9 @@ function OnDamageTaken( unit, event, attacker, ammount )
 		if( hp < 50 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
+			unit:CastSpell( SPELL_CLEAR_DEBUFFS );
 			unit:CastSpell( SPELL_CLONE );
+			unit:CastSpell( SPELL_REPELLING_WAVE );
 			unit:PlaySoundToSet( SOUND[ 5 ] );
 			unit:SendChatMessage( 14, 0, CHAT[ 5 - 1 ] );
 
@@ -102,21 +111,25 @@ function OnDamageTaken( unit, event, attacker, ammount )
 		if( hp < 66 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
+			unit:CastSpell( SPELL_CLEAR_DEBUFFS );
 			unit:CastSpell( SPELL_CLONE );
+			unit:CastSpell( SPELL_REPELLING_WAVE );
 			unit:PlaySoundToSet( SOUND[ 5 ] );
-			unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
+			unit:SendChatMessage( 14, 0, CHAT[ 5 - 1 ] );
 
 		elseif( hp < 33 and vars.cloneCount == 1 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
+			unit:CastSpell( SPELL_CLEAR_DEBUFFS );
 			unit:CastSpell( SPELL_CLONE );
+			unit:CastSpell( SPELL_REPELLING_WAVE );
 			unit:PlaySoundToSet( SOUND[ 5 ] );
-			unit:SendChatMessage( 14, 0, CHAT[ 5 ] );
+			unit:SendChatMessage( 14, 0, CHAT[ 5 - 1 ] );
 		end
 	end
 end
 
-function OnLeaveCombat( unit, event )
+function OnLeaveCombat( unit )
 
 	-- destroy table with variables to recycle resources
 
@@ -130,20 +143,24 @@ function OnLeaveCombat( unit, event )
 
 end
 
-function OnTargetDied( unit, event )
+function OnTargetDied( unit )
 
     local random = math.random( 3, 4 );
-    unit:PlaySoundToSet( SOUND[ random ] );
-    unit:SendChatMessage( 14, 0, CHAT[ random ] );
+    unit:PlaySoundToSet( SOUND[ random - 1 ] );
+    unit:SendChatMessage( 14, 0, CHAT[ random - 1 ] );
 
 end
 
-function OnDeath( unit, event )
+function OnDeath( unit )
 
-    unit:PlaySoundToSet( SOUND[ 6 ] );
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil; 
 
     --[[ Developer notes: we dont need to send the chat here since our
     monstersay table will do the job, instance collision checked. ]]
+
+	unit:PlaySoundToSet( SOUND[ 6 ] );
 
 	local firefield = unit:GetGameObjectNearestCoords( 3153.27, 380.47, 86.36, 203005 );
 
@@ -157,7 +174,7 @@ function OnDeath( unit, event )
     end
 end
 
-function OnAIUpdate( unit, event )
+function OnAIUpdate( unit )
 
 	if( unit:IsCasting() == true) then return; end
 
@@ -174,17 +191,18 @@ function OnAIUpdate( unit, event )
 
 	if( vars.cleave <= 0 )
 	then
+		unit:Unroot();
 		unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
 		unit:SendChatMessage( 12, 0, "debug: cleave" );
 		vars.cleave = math.random( 20, 24 );
 
 	elseif( vars.enervatingBrand <= 0 )
 	then
+		unit:Unroot();
 		local raidMode = { 2, 4, 2, 4 };
-		local targetNum = raidMode[ vars.diff ]
-		local targetList = {};
+		local targetNum = raidMode[ vars.diff ];
 
-		for i = 1, targetNum
+		for i = 1, targetNum  -- targetNum its the "for" limiter
 		do
 			unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 2 ) ); -- range 45
 		end
@@ -194,8 +212,8 @@ function OnAIUpdate( unit, event )
 
 	elseif( vars.bladeTempest <= 0 )
 	then
+		unit:Root();
 		unit:FullCastSpell( SPELL_BLADE_TEMPEST );
-		unit:SendChatMessage( 12, 0, "debug: blade tempest" );
 		vars.bladeTempest = 24;
 	end
 end
@@ -212,13 +230,13 @@ RegisterUnitEvent( 39751, 21, OnAIUpdate );
 			Clone AI
 --]]
 
-function CloneOnSpawn( unit, event )
+function CloneOnSpawn( unit )
 
 	unit:CastSpell( SPELL_SPAWN_EFFECT );
 
 end
 
-function CloneOnCombat( unit, event )
+function CloneOnCombat( unit )
 
 	self[ tostring( unit ) ] = {
 
@@ -246,7 +264,7 @@ function OnDamageTaken( unit, event, attacker, damage )
 	end
 end
 
-function CloneOnLeaveCombat( unit, event )
+function CloneOnLeaveCombat( unit )
 
 	-- destroy table with variables to recycle resources
 
@@ -260,7 +278,7 @@ function CloneOnLeaveCombat( unit, event )
 
 end
 
-function CloneOnAIUpdate( unit, event )
+function CloneOnAIUpdate( unit )
 
 	if( unit:IsCasting() == true) then return; end
 
@@ -283,27 +301,29 @@ function CloneOnAIUpdate( unit, event )
 
 	if( vars.cleave <= 0 )
 	then
+		unit:Unroot();
 		unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
 		unit:SendChatMessage( 12, 0, "debug: clone cleave" );
 		vars.cleave = math.random( 20, 24 );
 
 	elseif( vars.enervatingBrand <= 0 )
 	then
+		unit:Unroot();
 		local raidMode = { 2, 4, 2, 4 };
 		local targetNum = raidMode[ args.diff ];
 
-		for i = 1, targetNum -- targetNum its the for limiter
+		for i = 1, targetNum -- targetNum its the "for" limiter
 		do
 			unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 2 ) ); -- range 45
 		end
 
-	unit:SendChatMessage( 12, 0, "debug: clone enervating brand" );
-	vars.enervatingBrand = 26;
+		unit:SendChatMessage( 12, 0, "debug: clone enervating brand" );
+		vars.enervatingBrand = 26;
 
 	elseif( vars.bladeTempest <= 0 )
 	then
+		unit:Root();
 		unit:FullCastSpell( SPELL_BLADE_TEMPEST );
-		unit:SendChatMessage( 12, 0, "debug: clone blade tempest" );
 		vars.bladeTempest = 24;
 	end
 end
@@ -313,3 +333,22 @@ RegisterUnitEvent( 39899, 1 , CloneOnCombat );
 RegisterUnitEvent( 39899, 23, CloneOnDamageTaken );
 RegisterUnitEvent( 39899, 2 , CloneOnLeaveCombat );
 RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
+
+--[[
+			Spell: Enervating Brand
+--]]
+
+function HookOnCastSpell( event, plr, spell_id, spellObject )
+
+	if( spell_id ~= SPELL_ENERVATING_BRAND ) then return; end
+
+    if( spell_id == SPELL_ENERVATING_BRAND )
+    then
+
+        local caster = spellObject:GetCaster();
+
+        caster:FullCastSpell( SPELL_SIPHONED_MIGHT );
+    end
+end
+
+RegisterServerHook( 10, HookOnCastSpell );
