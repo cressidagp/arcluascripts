@@ -27,25 +27,23 @@ local CHAT = {
 };
 
 -- Spells:
-SPELL_CONFLAGRATION         = 74452;	-- need a dummy
-SPELL_FLAME_BEACON          = 74453;
-SPELL_CONFLAGRATION_2       = 74454;	-- unknown dummy effect
-SPELL_ENRAGE                = 78722;
-SPELL_FLAME_BREATH          = 74403;
+local SPELL_CONFLAGRATION         = 74452;	-- need a dummy
+local SPELL_FLAME_BEACON          = 74453;
+local SPELL_CONFLAGRATION_2       = 74454;	-- unknown dummy effect
+local SPELL_ENRAGE                = 78722;
+local SPELL_FLAME_BREATH          = 74403;
 
 local self = getfenv( 1 );
 
-function OnSpawn( unit, event )
+function OnSpawn( unit )
 
     local diff = unit:GetDungeonDifficulty();
-	
-    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-	
-    unit:SetHealth( BOSS_HP [ diff + 1 ] );
 
+    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
+    unit:SetHealth( BOSS_HP [ diff + 1 ] );
 end
 
-function OnCombat( unit, event )
+function OnCombat( unit )
 
 	self[ tostring( unit )] = {
 	phase = 1,
@@ -54,16 +52,16 @@ function OnCombat( unit, event )
 	enrage = 20
 	};
 
-    unit:PlaySoundToSet( SOUND[ 1 ] );
+	--[[ Developer notes: we dont need to send the chat here since
+	our monstersay table will do the job, instance collision checked. ]]
 
-    --[[ Developer notes: we dont need to send the chat here since
-    our monstersay table will do the job, instance collision checked. ]]
+	unit:PlaySoundToSet( SOUND[ 1 ] );
 
 	unit:RegisterAIUpdateEvent( 1000 );
 
 end
 
-function OnLeaveCombat( unit, event )
+function OnLeaveCombat( unit )
 
 	-- destroy table with variables to recycle resources
 
@@ -77,25 +75,33 @@ function OnLeaveCombat( unit, event )
 
 end
 
-function OnTargetDied( unit, event, victim )
+function OnTargetDied( unit, _, victim )
 
-		if( victim:IsPlayer() == true )
-		then
-    		local random = math.random( 3, 4 );
-    		unit:PlaySoundToSet( SOUND[ random ] );
-    		unit:SendChatMessage( 14, 0, CHAT[ random ] );
-		end
+	if( victim:IsPlayer() == true )
+	then
+		local random = math.random( 3, 4 );
+		unit:PlaySoundToSet( SOUND[ random ] );
+		unit:SendChatMessage( 14, 0, CHAT[ random ] );
+	end
 end
 
-function OnDeath( unit, event )
+function OnDeath( unit )
 
-		unit:PlaySoundToSet( SOUND[ 5 ] );
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: we dont need to send the chat here since
+	our monstersay table will do the job, instance collision checked. ]]
+
+	unit:PlaySoundToSet( SOUND[ 5 ] );
+
 end
 
-function OnAIUpdate( unit, event )
+function OnAIUpdate( unit )
 
 	if( unit:IsCasting() == true ) then return; end
-	
+
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
 		return;
@@ -107,7 +113,7 @@ function OnAIUpdate( unit, event )
 	vars.enrage = vars.enrage - 1;
 
 	if( vars.flamebreath <= 0 )
-	then
+    then
 		unit:FullCastSpellOnTarget( SPELL_FLAME_BREATH, unit:GetMainTank() );
 		unit:SendChatMessage( 12, 0, "debug: flame breath" );
 		vars.flamebreath = 14;
