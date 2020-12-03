@@ -25,6 +25,8 @@ end
 local startpos,endpos = string.find( src, file_sep ), string.len( src );
 local directory = string.reverse( string.sub( src, startpos, endpos ) );
 
+--print( "Resolved directory is :"..directory );
+
 -- now we construct our modules based on the resolved directory.
 local modules = { directory.."Baltharus.script", directory.."Saviana.script" }; -- insert name.script here
 for _, v in pairs( modules )
