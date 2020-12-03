@@ -32,7 +32,7 @@ local CHAT = {
 };
 
 -- Spells:
-local SPELL_BARRIER_CHANNEL       = 76221; -- TODO: need a dummy
+-- local SPELL_BARRIER_CHANNEL       = 76221; -- TODO: need a dummy
 local SPELL_ENERVATING_BRAND      = 74502; -- need spell script
 local SPELL_ENERVATING_BRAND_2	  = 74505; -- TODO: WTF?
 local SPELL_SIPHONED_MIGHT        = 74507;
@@ -56,10 +56,9 @@ function OnSpawn( unit, event )
 
 	unit:SetHealth( BOSS_HP [ diff + 1 ] );
 
-
-	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-
-	unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
+	-- [[ Moved this to SQL file.
+	-- local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+	-- unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal ); --]]
 
 
 	unit:PlaySoundToSet( SOUND[ 1 ] );
@@ -149,12 +148,12 @@ end
 
 function OnTargetDied( unit, _, victim )
 
-	if( victim:IsPlayer() == true )
-	then
-    	local random = math.random( 3, 4 );
-    	unit:PlaySoundToSet( SOUND[ random - 1 ] );
-    	unit:SendChatMessage( 14, 0, CHAT[ random - 1 ] );
-	end
+		if( victim:IsPlayer() == true )
+		then
+    		local random = math.random( 3, 4 );
+    		unit:PlaySoundToSet( SOUND[ random - 1 ] );
+    		unit:SendChatMessage( 14, 0, CHAT[ random - 1 ] );
+		end
 end
 
 function OnDeath( unit )

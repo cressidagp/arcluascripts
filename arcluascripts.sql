@@ -16,6 +16,10 @@
 SET @ID1 := 135619;	-- Durotar: Minshinas Spirit
 SET @ID2 := 136215;	-- Stormwind: Corbett Schneider
 SET @ID3 := 5443;	-- Elwynn Forest: Matt
+SET @ID4 := 134426; -- Ruby Sanctum: Zarithrian
+SET @ID5 := 134428; -- Ruby Sanctum: Baltharus
+SET @ID6 := 109436; -- Ruby Sanctum: Target Crystal
+SET @ID7 := 200631; -- Ruby Sanctum: Halion Controller
 
 -- 
 -- This will just remove what should be the "out of combat stuff", so the lua script will coexist with the "on combat" ai agent:
@@ -177,13 +181,15 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 5, 100, 0, 14, 'Frostworn General', 'Master, I have failed...', NULL, NULL, NULL, NULL);
 
 --
--- The Ruby Sanctum: monstersay OnCombat, OnDeath
+-- The Ruby Sanctum: 
 --
 
--- General Zarithrian:
+-- General Zarithrian: monstersay OnCombat, OnDeath
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39746, 0, 100, 0, 14, 'General Zarithrian', 'Alexstrasza has chosen capable allies.... A pity that I must END YOU!', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39746, 5, 100, 0, 14, 'General Zarithrian', 'HALION! I....', NULL, NULL, NULL, NULL);
+
+UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `id` = @ID4; -- UNIT_FLAG_NOT_SELECTABLE + UNIT_FLAG_NOT_ATTACKABLE_9 + UNIT_FLAG_PLUS_MOB
 
 -- Saviana Ragefire:
 
@@ -193,6 +199,8 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39751, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment has arrived.', NULL, NULL, NULL, NULL);
 
+UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
+
 -- Halion the Destroyer:
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39863, 0, 100, 0, 14, 'Halion the Destroyer', 'Your world teeters on the brink of annihilation. You will ALL bear witness to the coming of a new age of DESTRUCTION!', NULL, NULL, NULL, NULL);
@@ -201,14 +209,14 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 -- Halion Controller:
 
 UPDATE `creature_proto` SET `invisibility_type` = 1 WHERE `entry` = 40146;
-DELETE FROM `creature_spawns` WHERE `id` = 200631 and `entry` = 40146;
-INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) VALUES (200631, 40146, 724, 3156.04, 533.27, 72.97, 0.00, 0, 169, 14, 33554688, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33);
+DELETE FROM `creature_spawns` WHERE `id` = @ID7 AND `entry` = 40146;
+INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) VALUES (@ID7, 40146, 724, 3156.04, 533.27, 72.97, 0.00, 0, 169, 14, 33554688, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33);
 
 --
 -- This one will be handled in lua:
 --
 
-DELETE FROM `creature_spawns` WHERE `id` = @ID1 and `entry` = 3289; -- Durotar: Minshinas Spirit
+DELETE FROM `creature_spawns` WHERE `id` = @ID1 AND `entry` = 3289; -- Durotar: Minshinas Spirit
 
 --
 -- This table store waypoints of creatures not spawned in world:
@@ -386,4 +394,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-11-30_14-41_Instance_HOR');
+('2020-12-03_00-58_Baltharus');
