@@ -34,8 +34,6 @@ local SPELL_CONFLAGRATION_3		= 74455; -- TODO: need a scripted effect
 local SPELL_ENRAGE              = 78722;
 local SPELL_FLAME_BREATH        = 74403;
 
-local UNIT_FIELD_TARGET = 0x0006 + 0x000C; -- for now
-
 local self = getfenv( 1 );
 
 function OnSpawn( unit )
@@ -51,7 +49,7 @@ function OnCombat( unit )
 	self[ tostring( unit )] = {
 	phase = 1,
 	flamebreath = 14,
-	flight = 30, -- 60
+	flight = 60,
 	movement = 0;
 	enrage = 20
 
