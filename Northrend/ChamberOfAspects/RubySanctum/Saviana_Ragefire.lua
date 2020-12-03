@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: Saviana Ragefire
 	Engine: A.L.E
-	Credits: Trinity for texts, sound ids and spell ids.
+	Credits: Trinity for texts, sound ids, timers and spell ids.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -34,6 +34,8 @@ local SPELL_CONFLAGRATION_3		= 74455; -- TODO: need a scripted effect
 local SPELL_ENRAGE              = 78722;
 local SPELL_FLAME_BREATH        = 74403;
 
+local UNIT_FIELD_TARGET = 0x0006 + 0x000C; -- for now
+
 local self = getfenv( 1 );
 
 function OnSpawn( unit )
@@ -49,8 +51,8 @@ function OnCombat( unit )
 	self[ tostring( unit )] = {
 	phase = 1,
 	flamebreath = 14,
-	flamebeacon = 0,
-	conflagration = 30, -- for now
+	flight = 30, -- 60
+	movement = 0;
 	enrage = 20
 
 	};
@@ -114,26 +116,67 @@ function OnAIUpdate( unit )
 
 	vars.flamebreath = vars.flamebreath - 1;
 	vars.enrage = vars.enrage - 1;
-	vars.conflagration = vars.conflagration - 1 --// for now
+	vars.flight = vars.flight - 1;
 
 	if( vars.flamebreath <= 0 )
     then
 		unit:FullCastSpellOnTarget( SPELL_FLAME_BREATH, unit:GetMainTank() );
-		unit:SendChatMessage( 12, 0, "debug: flame breath" );
-		vars.flamebreath = 14;
+		vars.flamebreath = math.random( 20, 30 );
 
 	elseif( vars.enrage <= 0 )
 	then
-		unit:CastSpell( SPELL_ENRAGE );
+		unit:FullCastSpell( SPELL_ENRAGE );
 		unit:SendChatMessage( 16, 0, CHAT[ 2 ] );
-		vars.enrage = 20;
+		vars.enrage = 24;
 
-	elseif( vars.conflagration <= 0 )
+	elseif( vars.flight <= 0 )
 	then
-		unit:CastSpell( SPELL_CONFLAGRATION );
+		unit:DisableCombat( 1 );
+		unit:RemoveAIUpdateEvent();
+
+		-- take off
+
+		unit:SetFlying();
+		unit:MoveTo( unit:GetX(), unit:GetY(), unit:GetZ() + 10, unit:GetO() );
+
+		unit:RegisterEvent( MovementInform, 1000, 0 );
+		vars.flight = 50;
+	end
+end
+
+function MovementInform( unit )
+
+	if( unit:IsCreatureMoving() == true ) then return; end
+
+	local vars = self[ tostring( unit ) ];
+
+	vars.movement = vars.movement + 1;
+
+	if( vars.movement == 2 )
+	then
+		unit:MoveTo( 3155.51, 683.84, 95.00, 4.69 ); -- wp1
+
+	elseif( vars.movement == 4 )
+	then
+		unit:CastSpell( SPELL_CONFLAGRATION )
 		unit:SendChatMessage( 14, 0, CHAT[ 1 ] );
 		unit:PlaySoundToSet( SOUND[ 2 ] );
-		vars.conflagration = 25;
+
+	elseif( vars.movement == 8 )
+	then
+		unit:MoveTo( 3151.07, 636.44, 79.54, 4.69 ); -- wp2
+
+	elseif( vars.movement == 9 )
+	then
+		unit:MoveTo( 3151.07, 636.44, 78.65, 4.69 ); -- wp3
+
+	elseif( vars.movement == 10 )
+	then
+		unit:Land();
+		unit:DisableCombat( 0 );
+		unit:RemoveEvents();
+		unit:RegisterAIUpdateEvent( 1000 );
+		vars.movement = 0;
 	end
 end
 
@@ -143,6 +186,7 @@ RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39747, 3 , OnTargetDied );
 RegisterUnitEvent( 39747, 4 , OnDeath );
 RegisterUnitEvent( 39747, 21, OnAIUpdate );
+
 
 --[[
 			Spell: Conflagration ( 74452 )
