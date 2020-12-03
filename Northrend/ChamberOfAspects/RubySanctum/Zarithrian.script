@@ -9,6 +9,10 @@
 
 --]]
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".GENERAL_ZARITHRIAN", package.seeall );
+
 local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
 
 local SOUND = {
