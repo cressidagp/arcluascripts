@@ -9,6 +9,10 @@
 
 --]]
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".SAVIANA_RAGEFIRE", package.seeall );
+
 local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
 
 local SOUND = {

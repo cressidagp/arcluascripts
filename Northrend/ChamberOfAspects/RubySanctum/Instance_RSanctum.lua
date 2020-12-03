@@ -26,18 +26,18 @@ local startpos,endpos = string.find( src, file_sep ), string.len( src );
 local directory = string.reverse( string.sub( src, startpos, endpos ) );
 
 -- now we construct our modules based on the resolved directory.
-local modules = { directory.."Baltharus_the_Warborn.script" }; -- insert name.script here
+local modules = { directory.."Baltharus_the_Warborn.script", directory.."Saviana_Ragefire.script" }; -- insert name.script here
 for _, v in pairs( modules )
 do
 	local loader_function, errormsg = loadfile( v );
 	if( loader_function == nil )
-	then
+  then
 		print( errormsg );
 	else
 		setfenv( loader_function, mod );
 		local ret, errormsg = pcall( loader_function );
 		if( ret == false )
-		then
+    then
 			print( errormsg );
 		end
 	end
