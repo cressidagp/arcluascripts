@@ -20,45 +20,54 @@ local SOUND = {
 };
 
 local CHAT = {
-[ 2 ] = "You thought you stood a chance?";  -- OnTargetDied 1
-[ 3 ] = "It's for the best.";               -- OnTargetDied 2
-[ 4 ] = "Turn them to ash, minions!";       -- OnDeath
+[ 1 ] = "You thought you stood a chance?";  -- OnTargetDied 1
+[ 2 ] = "It's for the best.";               -- OnTargetDied 2
+[ 3 ] = "Turn them to ash, minions!";       -- OnMinions
 };
 
 -- Spells:
-SPELL_INTIMIDATING_ROAR     = 74384;
-SPELL_CLEAVE_ARMOR          = 74367;
+local SPELL_INTIMIDATING_ROAR     = 74384;
+local SPELL_CLEAVE_ARMOR          = 74367;
+local SPELL_SUMMON_FLAMECALLER    = 74398; -- Zarithrian Spawn Stalker
+local SPELL_BLAST_NOVA            = 74392; -- Onyx Flamecaller
+local SPELL_LAVA_GOUT             = 74394; -- Onyx Flamecaller
 
 local self = getfenv( 1 );
 
-function OnSpawn( unit, event )
+function OnSpawn( unit )
 
     local diff = unit:GetDungeonDifficulty();
-	
+
     unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-	
+
     unit:SetHealth( BOSS_HP [ diff + 1 ] );
+
+	-- [[ Moved this to SQL file.
+	-- unit:DisableCombat( true ); --]]
 
 end
 
-function OnCombat( unit, event )
+function OnCombat( unit )
 
 	self[ tostring( unit )] = {
 	phase = 1,
+	diff = unit:GetDungeonDifficulty(); -- TODO: implement LCF for Is25Man
 	cleave = 8,
-	roar = 14
+	roar = 14,
+	minions = 15,
+	minions25 = 16
 	};
 
-    unit:PlaySoundToSet( SOUND[ 1 ] );
+	unit:PlaySoundToSet( SOUND[ 1 ] );
 
-    --[[ Developer notes: we dont need to send the chat here since
-    our monstersay table will do the job, instance collision checked. ]]
+	--[[ Developer notes: we dont need to send the chat here since
+	our monstersay table will do the job, instance collision checked. ]]
 
 	unit:RegisterAIUpdateEvent( 1000 );
 
 end
 
-function OnLeaveCombat( unit, event )
+function OnLeaveCombat( unit )
 
 	-- destroy table with variables to recycle resources
 
@@ -72,27 +81,33 @@ function OnLeaveCombat( unit, event )
 
 end
 
-function OnTargetDied( unit, event )
+function OnTargetDied( unit, _, victim )
 
-    local random = math.random( 2, 3 );
-    unit:PlaySoundToSet( SOUND[ random ] );
-    unit:SendChatMessage( 14, 0, CHAT[ random ] );
+	if( victim:IsPlayer() == true )
+	then
+    	local random = math.random( 2, 3 );
+    	unit:PlaySoundToSet( SOUND[ random ] );
+    	unit:SendChatMessage( 14, 0, CHAT[ random - 1 ] );
+	end
+end
+
+function OnDeath( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: we dont need to send the chat here since our
+	monstersay table will do the job, instance collision checked. ]]
+
+	unit:PlaySoundToSet( SOUND[ 5 ] );
 
 end
 
-function OnDeath( unit, event )
-
-    unit:PlaySoundToSet( SOUND[ 5 ] );
-
-    --[[ Developer notes: we dont need to send the chat here since our
-    monstersay table will do the job, instance collision checked. ]]
-
-end
-
-function OnAIUpdate( unit, event )
+function OnAIUpdate( unit )
 
 	if( unit:IsCasting() == true ) then return; end
-	
+
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
 		return;
@@ -101,19 +116,32 @@ function OnAIUpdate( unit, event )
 	local vars = self[ tostring( unit ) ];
 
 	vars.cleave = vars.cleave - 1;
+	vars.minions = vars.minions - 1;
+	vars.minions25 = vars.minions25 - 1;
 	vars.roar = vars.roar - 1;
 
 	if( vars.cleave <= 0 )
     then
 		unit:CastSpellOnTarget( SPELL_CLEAVE_ARMOR, unit:GetMainTank() );
-		unit:SendChatMessage( 12, 0, "debug: cleave" );
-		vars.cleave = 8;
+		vars.cleave = 15;
 
 	elseif( vars.roar <= 0 )
 	then
 		unit:FullCastSpell( SPELL_INTIMIDATING_ROAR );
-		unit:SendChatMessage( 12, 0, "debug: roar" );
-		vars.roar = 14;
+		vars.roar = math.random( 35, 40 );
+
+	elseif( vars.minions <= 0 )
+	then
+		unit:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		unit:PlaySoundToSet( SOUND[ 4 ] );
+		unit:SendChatMessage( 14, 0, CHAT[ 3 ] );
+		vars.minions = 45;
+
+	elseif( vars.minions25 <= 0 and (vars.diff == 1 or vars.diff == 3 ) )
+	then
+		unit:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		vars.minions25 = 45;
+		unit:SendChatMessage( 12, 0, "debug: minions 2" );
 	end
 end
 
