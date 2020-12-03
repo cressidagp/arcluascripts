@@ -39,6 +39,8 @@ do
 		if( ret == false )
     then
 			print( errormsg );
+		else
+			print( string.format( "Successfully loaded script file: \"%s\" ", v ) );
 		end
 	end
 end
