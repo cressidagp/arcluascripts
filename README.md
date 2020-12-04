@@ -1,9 +1,18 @@
 # ArcLuaScripts
+
+## Introduction
+
 This repo its for learning Lua while i have fun.
 
 WARNING: this stuff its experimental, use it at your own risk.
 
 Feel free to open tickets to report bugs. Feedback its apreciated.
+
+## Features
+
+Lua scripts for Bosses, Creatures, Gameobjects, Quests, Spells and extra gm commands.
+
+Implemented bosses: Baltharus, Saviana, Zarithrian, Falric, Marwyn, Frosworn General.
 
 ## Requirements
 
@@ -14,6 +23,8 @@ https://github.com/arcemu
 ## Instalation
 
 Copy all files in to your ArcEmu script folder.
+
+Apply arcscripts.sql to your world database.
 
 ## Credits to
 
