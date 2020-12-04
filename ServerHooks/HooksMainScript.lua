@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Debug Kit
+	Hooks Main
 	Engine: A.L.E
 	Credits: nil
 
@@ -13,7 +13,7 @@ function HOOKS.Consolidated( event, plr )
 
     if( event == 4 ) -- OnEnterWorld
     then
-        if( plr:GetPlayerRace() == 11 )
+        if( plr:GetPlayerRace() == 11 ) -- Dranei
         then
             local class = plr:GetPlayerClass();
             if( class == "Priest" or class == "Shaman" or class == "Mage" )

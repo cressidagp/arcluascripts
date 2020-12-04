@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Debug Kit
+	Hooks Chat
 	Engine: A.L.E
 	Credits: nil
 
