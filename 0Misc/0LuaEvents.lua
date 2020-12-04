@@ -16,13 +16,13 @@ CREATURE_EVENT_ON_BLOCKED                 = 11
 CREATURE_EVENT_ON_CRIT_HIT                = 12
 CREATURE_EVENT_ON_HIT                     = 13
 CREATURE_EVENT_ON_ASSIST_TARGET_DIED      = 14
-CREATURE_EVENT_ON_FEAR		                = 15
-CREATURE_EVENT_ON_FLEE		                = 16
-CREATURE_EVENT_ON_CALL_FOR_HELP		        = 17
-CREATURE_EVENT_ON_SPAWN		                = 18
-CREATURE_EVENT_ON_REACH_WP		            = 19
-CREATURE_EVENT_ON_LOOT_TAKEN		          = 20
-CREATURE_EVENT_ON_AIUPDATE		            = 21
+CREATURE_EVENT_ON_FEAR		              = 15
+CREATURE_EVENT_ON_FLEE		              = 16
+CREATURE_EVENT_ON_CALL_FOR_HELP		      = 17
+CREATURE_EVENT_ON_SPAWN		              = 18
+CREATURE_EVENT_ON_REACH_WP		          = 19
+CREATURE_EVENT_ON_LOOT_TAKEN		      = 20
+CREATURE_EVENT_ON_AIUPDATE		          = 21
 CREATURE_EVENT_ON_EMOTE                   = 22
 CREATURE_EVENT_ON_DAMAGE_TAKEN            = 23
 CREATURE_EVENT_ON_ENTER_VEHICLE           = 24
@@ -31,22 +31,30 @@ CREATURE_EVENT_ON_FIRST_PASSENGER_ENTERED = 26
 CREATURE_EVENT_ON_VEHICLE_FULL            = 27
 CREATURE_EVENT_ON_LAST_PASSENGER_LEFT     = 28
 
+RegisterUnitEvent( creature_entry, creature_event, function_name );
+
 //Gameobjects Events:
 
 GAMEOBJECT_EVENT_ON_CREATE			= 1
-GAMEOBJECT_EVENT_ON_SPAWN			  = 2
-GAMEOBJECT_EVENT_ON_LOOT_TAKEN  = 3
-GAMEOBJECT_EVENT_ON_USE         = 4 // AKA ON_ACTIVATE
-GAMEOBJECT_EVENT_AIUPDATE       = 5
+GAMEOBJECT_EVENT_ON_SPAWN			= 2
+GAMEOBJECT_EVENT_ON_LOOT_TAKEN		= 3
+GAMEOBJECT_EVENT_ON_USE				= 4 // AKA ON_ACTIVATE
+GAMEOBJECT_EVENT_AIUPDATE			= 5
 GAMEOBJECT_EVENT_ON_DESPAWN			= 6
 GAMEOBJECT_EVENT_ON_DAMAGED			= 7
 GAMEOBJECT_EVENT_ON_DESTROYED		= 8
+
+RegisterGameObjectEvent( gameobject_entry, gameobject_event, function_name );
 
 //Gossips Events:
 
 GOSSIP_EVENT_ON_TALK            = 1 // AKA ON_HELLO
 GOSSIP_EVENT_ON_SELECT_OPTION   = 2
 GOSSIP_EVENT_ON_END             = 3 // AKA ON_BYE
+
+RegisterUnitGossipEvent( creature_entry, gossip_event, function_name );
+RegisterGOGossipEvent( gameobject_entry, gossip_event, function_name );
+RegisterItemGossipEvent( item_entry, gossip_event, function_name );
 
 //Quest Events:
 
@@ -58,29 +66,33 @@ QUEST_EVENT_ON_CREATURE_KILL      = 5
 QUEST_EVENT_ON_EXPLORE_AREA       = 6
 QUEST_EVENT_ON_PLAYER_ITEMPICKUP  = 7
 
+RegisterQuestEvent( quest_id, quest_event, function_name );
+
 //Instance Hooks:
 
-INSTANCE_EVENT_ON_PLAYER_DEATH      = 1
-INSTANCE_EVENT_ON_PLAYER_ENTER      = 2
-INSTANCE_EVENT_ON_AREA_TRIGGER      = 3
-INSTANCE_EVENT_ON_ZONE_CHANGE       = 4
-INSTANCE_EVENT_ON_CREATURE_DEATH    = 5
-INSTANCE_EVENT_ON_CREATURE_PUSH     = 6
-INSTANCE_EVENT_ON_GO_ACTIVATE       = 7
-INSTANCE_EVENT_ON_GO_PUSH           = 8
-INSTANCE_EVENT_ONLOAD               = 9
-INSTANCE_EVENT_DESTROY              = 10
+INSTANCE_EVENT_ON_PLAYER_DEATH		= 1
+INSTANCE_EVENT_ON_PLAYER_ENTER		= 2
+INSTANCE_EVENT_ON_AREA_TRIGGER		= 3
+INSTANCE_EVENT_ON_ZONE_CHANGE		= 4
+INSTANCE_EVENT_ON_CREATURE_DEATH	= 5
+INSTANCE_EVENT_ON_CREATURE_PUSH		= 6
+INSTANCE_EVENT_ON_GO_ACTIVATE		= 7
+INSTANCE_EVENT_ON_GO_PUSH			= 8
+INSTANCE_EVENT_ONLOAD				= 9
+INSTANCE_EVENT_DESTROY				= 10
+
+RegisterInstanceEvent( instance_map, instance_event, function_name );
 
 //Server Hooks:
 
-SERVER_HOOK_EVENT_ON_NEW_CHARACTER          = 1
+SERVER_HOOK_EVENT_ON_NEW_CHARACTER			= 1
 SERVER_HOOK_EVENT_ON_KILL_PLAYER            = 2
 SERVER_HOOK_EVENT_ON_FIRST_ENTER_WORLD      = 3
-SERVER_HOOK_EVENT_ON_ENTER_WORLD		        = 4
-SERVER_HOOK_EVENT_ON_GUILD_JOIN			        = 5
-SERVER_HOOK_EVENT_ON_DEATH				          = 6
-SERVER_HOOK_EVENT_ON_REPOP				          = 7
-SERVER_HOOK_EVENT_ON_EMOTE				          = 8
+SERVER_HOOK_EVENT_ON_ENTER_WORLD		    = 4
+SERVER_HOOK_EVENT_ON_GUILD_JOIN			    = 5
+SERVER_HOOK_EVENT_ON_DEATH				    = 6
+SERVER_HOOK_EVENT_ON_REPOP				    = 7
+SERVER_HOOK_EVENT_ON_EMOTE				    = 8
 SERVER_HOOK_EVENT_ON_ENTER_COMBAT           = 9
 SERVER_HOOK_EVENT_ON_CAST_SPELL             = 10
 SERVER_HOOK_EVENT_ON_TICK                   = 11 // not working
@@ -103,8 +115,10 @@ SERVER_HOOK_EVENT_ON_POST_LEVELUP           = 27
 SERVER_HOOK_EVENT_ON_PRE_DIE                = 28 // general unit die, not only plr
 SERVER_HOOK_EVENT_ON_ADVANCE_SKILLLINE      = 29
 SERVER_HOOK_EVENT_ON_DUEL_FINISHED          = 30
-SERVER_HOOK_EVENT_ON_AURA_REMOVE		        = 31
-SERVER_HOOK_EVENT_ON_RESURRECT		          = 32
+SERVER_HOOK_EVENT_ON_AURA_REMOVE		    = 31
+SERVER_HOOK_EVENT_ON_RESURRECT		        = 32
+
+RegisterServerHook( server_hook_event, function_name );
 
 //Random Flags:
 
@@ -117,16 +131,6 @@ RANDOM_WITH_RAGE        = 5
 RANDOM_WITH_ENERGY      = 6
 RANDOM_NOT_MAINTANK     = 7
 
-//Entry Registers:
-
-RegisterUnitEvent( creature_entry, creature_event, function_name );
-RegisterGameObjectEvent( gameobject_entry, gameobject_event, function_name );
-RegisterUnitGossipEvent( creature_entry, gossip_event, function_name );
-RegisterGOGossipEvent( gameobject_entry, gossip_event, function_name );
-RegisterItemGossipEvent( item_entry, gossip_event, function_name );
-RegisterQuestEvent( quest_id, quest_event, function_name );
 RegisterDummySpell( spell_id, function_name );
-RegisterInstanceEvent( instance_map, instance_event, function_name );
-RegisterServerHook( server_hook_event, function_name );
 
 --]]
