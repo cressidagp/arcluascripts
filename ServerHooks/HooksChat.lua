@@ -36,7 +36,6 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 			local target = plr:GetSelection();
 			plr:SendBroadcastMessage( "Distance: "..plr:GetDistance( target ).."" );
 			plr:SendBroadcastMessage( "Use .debug dist to get distance in yards." );
-		end
 		
 		elseif( msg == "#removeauras" )
 		then
