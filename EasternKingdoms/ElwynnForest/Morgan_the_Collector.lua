@@ -10,13 +10,13 @@ local SPELL_GOUGE = 1776;
 
 MORGAN_THE_COLLECTOR = {}
 
-function MORGAN_THE_COLLECTOR.Gouge( unit, event )
+function MORGAN_THE_COLLECTOR.Gouge( unit )
 
     unit:CastSpellOnTarget( SPELL_GOUGE, MORGAN_THE_COLLECTOR.target );
 	
 end
 
-function MORGAN_THE_COLLECTOR.OnCombat( unit, event, attacker )
+function MORGAN_THE_COLLECTOR.OnCombat( unit, _, attacker )
 
     MORGAN_THE_COLLECTOR.target = attacker;
 	
