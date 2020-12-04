@@ -20,7 +20,7 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 				print( n ); 
 			end
 		
-			plr:SendBroadcastMessage( "Global table has been printed." );
+			plr:SendBroadcastMessage( "Lua global table has been printed." );
 	
 		elseif( msg == "#gdisplay" )
 		then
@@ -28,6 +28,12 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 			do 
 				plr:SendBroadcastMessage( ""..n.."" ); 
 			end
+			
+		elseif( msg == "#distance" )
+		then
+			local target = plr:GetSelection();
+			plr:SendBroadcastMessage( ""..plr:GetDistance( target ).."" );
+			plr:SendBroadcastMessage( "Use .debug dist to get distance in yards." );
 		end
 	end
 end

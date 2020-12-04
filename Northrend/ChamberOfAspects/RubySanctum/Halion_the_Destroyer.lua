@@ -316,7 +316,7 @@ function HalionControllerOnAIUpdate( unit )
 	then
 		--[[ Developer notes: we have a problem here, since arcemu didnt implemented extra_flags why miss
 		CREATURE_FLAG_EXTRA_TRIGGER (creature is trigger-NPC (invisible to players only)). We can
-		manually make the trigger creature invisible invisible but creatures cast invisible spells. ]]
+		manually make the trigger invisible but invisible creatures cast invisible spells. ]]
 		
 		unit:CastSpell( SPELL_COSMETIC_FIRE_PILLAR );
 		vars.event = vars.event + 1;
