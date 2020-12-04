@@ -7,7 +7,7 @@
 
 --]]
 
-local COMMANDS = { "help", "gdisplay", "removeauras" };
+local COMMANDS = { "help", "gdisplay", "removeauras", "getphase" };
 
 HOOKS_CHAT = {}
 
@@ -50,6 +50,11 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 			local target = plr:GetSelection();
 			target:RemoveAllAuras();
 			plr:SendBroadcastMessage( "All auras has been removed from the target." );
+			
+		elseif( msg == "#getphase" )
+		then
+			local target = plr:GetSelection();
+			plr:SendBroadcastMessage( "Phase: "..target:GetPhase().."" );
 		end
 	end
 end
