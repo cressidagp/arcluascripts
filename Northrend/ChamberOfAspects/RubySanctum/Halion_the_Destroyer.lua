@@ -3,7 +3,12 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: Halion the Destroyer
 	Engine: A.L.E
-	Credits: Trinity for texts, sound ids, timers and spell ids.
+	
+	Credits: 
+	
+	*) Trinity for texts, sound ids, timers and spell ids.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
 
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
@@ -38,16 +43,21 @@ local TEXT = {
 -- Spells (Halion):
 local SPELL_FLAME_BREATH		= 74525;
 local SPELL_CLEAVE				= 74524;
-local SPELL_METEOR_STRIKE		= 74637; -- aoe, need a dummy
+local SPELL_METEOR_STRIKE		= 74637; -- aoe, need a dummy effect
 local SPELL_TAIL_LASH			= 74531;
 local SPELL_TWILIGHT_PRECISION  = 78243; -- not aura displayed... not working?
 
--- Spells (Halion Controller):
+-- Spells (Twilight Halion):
+local SPELL_SOUL_CONSUMPTION 	= 74792;
 
+-- Spells (Halion Controller):
 local  SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
 
 -- Spells (Misc):
 local SPELL_TWILIGHT_PHASING    = 74808; -- Phase spell from phase 1 to phase 2
+local SPELL_DUSK_SHROUD         = 75476;
+local SPELL_COPY_DAMAGE         = 74810;
+
 
 local TREES = { 203034, 203035, 203036, 203037 };
 
@@ -189,7 +199,7 @@ function OnAIUpdate( unit )
 
 	local vars = self[ tostring( unit ) ];
 
-	vars.firewall = vars.firewall - 1;
+	vars.firewall = vars.firewallTime - 1;
 	vars.flamebreath = vars.flamebreath - 1;
 	vars.cleave = vars.cleave - 1;
 	vars.tail = vars.tail - 1;
@@ -236,9 +246,48 @@ RegisterUnitEvent( 39863, 21, OnAIUpdate );
 
 function TwilightHalionOnSpawn( unit )
 
+	self[ tostring( unit )] = {
+	
+	tail = 12,
+	soul = 15
+	
+	};
+	
+	-- set halion health
+	unit:AddAura( SPELL_COPY_DAMAGE, 0 );
+	-- to halion unit:AddAura( SPELL_COPY_DAMAGE, 0 );
+	unit:CastSpell( SPELL_DUSK_SHROUD );
 end
 
-RegisterUnitEvent( 40142, 18 , TwilightHalionOnSpawn );
+function TwilightHalionOnSpawn( unit )
+
+	local vars = self[ tostring( unit ) ];
+	
+	if( unit:IsCasting() == true ) then return; end
+
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
+	
+	vars.tail = vars.tail - 1;
+	vars.soul = vars.soul - 1;
+	
+	if( vars.tail <= 0 )
+	then
+		unit:FullCastSpellOnTarget( SPELL_TAIL_LASH, unit:GetRandomPlayer( 0 ) ); -- AoE?
+		vars.tail = math.random( 12, 16 );
+	
+	elseif( vars.soul <= 0 )
+	then
+		unit:FullCastSpellOnTarget( SPELL_SOUL_CONSUMPTION, unit:GetRandomPlayer( 0 ) );
+		vars.soul = 28;
+		
+	end
+end
+
+RegisterUnitEvent( 40142, 18, TwilightHalionOnSpawn );
+RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
 
 --[[
 			Halion Controller AI
@@ -265,6 +314,10 @@ function HalionControllerOnAIUpdate( unit )
 
 	if( vars.event == 0 )
 	then
+		--[[ Developer notes: we have a problem here, since arcemu didnt implemented extra_flags why miss
+		CREATURE_FLAG_EXTRA_TRIGGER (creature is trigger-NPC (invisible to players only)). We can
+		manually make the trigger creature invisible invisible but creatures cast invisible spells. ]]
+		
 		unit:CastSpell( SPELL_COSMETIC_FIRE_PILLAR );
 		vars.event = vars.event + 1;
 		vars.timer = 4;
@@ -277,7 +330,7 @@ function HalionControllerOnAIUpdate( unit )
 			if( v:GetEntry() == TREES[ i ] )
 			then
 				v:SetByte( GAMEOBJECT_BYTES_1, 0, 2 );
-				--unit:SendChatMessage( 12, 0, "debug: got a tree" );
+				unit:SendChatMessage( 12, 0, "debug: got a tree" );
 			end
 		end
 		
