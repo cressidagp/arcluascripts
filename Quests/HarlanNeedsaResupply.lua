@@ -10,40 +10,41 @@ local FACTION_FRIENDLY = 35;
 local NO_DESPAWN = 0;
 local NEVER_RESPAWN = 0;
 
-local CHAT = {}
+local CHAT = {
 
-CHAT[ 1 ] = "Business must be good down at the bazaar.  I'll get him resupplied right away!";
-CHAT[ 2 ] = "Corbett, dear. Harlan needs a load of knitted shirts and pants as soon as we can manage.";
-CHAT[ 3 ] = "Corbett, you there? Harlan needs another load of knitted goods. Can you take it to him?";
-CHAT[ 4 ] = "My pleasure, sugar drop.  I'll be back soon...";
+[ 1 ] = "Business must be good down at the bazaar.  I'll get him resupplied right away!";
+[ 2 ] = "Corbett, dear. Harlan needs a load of knitted shirts and pants as soon as we can manage.";
+[ 3 ] = "Corbett, you there? Harlan needs another load of knitted goods. Can you take it to him?";
+[ 4 ] = "My pleasure, sugar drop.  I'll be back soon...";
 
-CHAT[ 5 ] = "Hm...after dropping this off, I think I'll head to that cheese shop for a snack.";
-CHAT[ 6 ] = "I should have a few extra coins from this sale.  Maybe I'll buy myself some lunch...";
+[ 5 ] = "Hm...after dropping this off, I think I'll head to that cheese shop for a snack.";
+[ 6 ] = "I should have a few extra coins from this sale.  Maybe I'll buy myself some lunch...";
 
-CHAT[ 7 ] = "Hey, Harlan.  Here's a load of knitted cloth for you.";
-CHAT[ 8 ] = "Oomph!  Here's another load of supplies, Harlan.  It must be selling fast!";
-CHAT[ 9 ] = "Ah, much appreciated, Corbett.  We'll get these on the racks immediately.";
-CHAT[ 10 ] = "Ah yes, and promptly delivered. As always, it's a pleasure doing business with you, Corbett.";
+[ 7 ] = "Hey, Harlan.  Here's a load of knitted cloth for you.";
+[ 8 ] = "Oomph!  Here's another load of supplies, Harlan.  It must be selling fast!";
+[ 9 ] = "Ah, much appreciated, Corbett.  We'll get these on the racks immediately.";
+[ 10 ] = "Ah yes, and promptly delivered. As always, it's a pleasure doing business with you, Corbett.";
 
-CHAT[ 11 ] = "Well, I'm off then.  Take care, Harlan.";
-CHAT[ 12 ] = "Glad to see you're doing so well, Harlan.  And I hope to see you again soon...";
+[ 11 ] = "Well, I'm off then.  Take care, Harlan.";
+[ 12 ] = "Glad to see you're doing so well, Harlan.  And I hope to see you again soon...";
 
-CHAT[ 13 ] = "Now for that snack...";
+[ 13 ] = "Now for that snack...";
 
-CHAT[ 14 ] = "Good day, Elling!  Hullo Elaine!  Let me have a wheel of bleu cheese, eh?";
-CHAT[ 15 ] = "Hullo, Trias clan!  A ball of your smoked mozzarella, if you please!";
-CHAT[ 16 ] = "Good day, Corbett.  Here's your cheese, fresh made this morning!  And how are things at your shop?";
-CHAT[ 17 ] = "Hi Corbett!  Here, you go!  I trust business is faring well at your clothier shop...?";
+[ 14 ] = "Good day, Elling!  Hullo Elaine!  Let me have a wheel of bleu cheese, eh?";
+[ 15 ] = "Hullo, Trias clan!  A ball of your smoked mozzarella, if you please!";
+[ 16 ] = "Good day, Corbett.  Here's your cheese, fresh made this morning!  And how are things at your shop?";
+[ 17 ] = "Hi Corbett!  Here, you go!  I trust business is faring well at your clothier shop...?";
 
-CHAT[ 18 ] = "Yes ma'am, business is brisk!";
+[ 18 ] = "Yes ma'am, business is brisk!";
 
-CHAT[ 19 ] = "Thank you kindly!";
-CHAT[ 20 ] = "Thanks for the cheese!";
+[ 19 ] = "Thank you kindly!";
+[ 20 ] = "Thanks for the cheese!";
 
-CHAT[ 21 ] = "I should get back before Rema starts to worry...";
-CHAT[ 22 ] = "Time to get back to the shop...";
+[ 21 ] = "I should get back before Rema starts to worry...";
+[ 22 ] = "Time to get back to the shop...";
 
-CHAT[ 23 ] = "I'm back!";
+[ 23 ] = "I'm back!";
+};
 
 HARLAN_RESUPPLY = {}
 
