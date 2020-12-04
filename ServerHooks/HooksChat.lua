@@ -7,6 +7,8 @@
 
 --]]
 
+local COMMANDS = { #help, #gdisplay, #distance, #removeauras };
+
 HOOKS_CHAT = {}
 
 function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
@@ -32,7 +34,7 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 		elseif( msg == "#distance" )
 		then
 			local target = plr:GetSelection();
-			plr:SendBroadcastMessage( ""..plr:GetDistance( target ).."" );
+			plr:SendBroadcastMessage( "Distance: "..plr:GetDistance( target ).."" );
 			plr:SendBroadcastMessage( "Use .debug dist to get distance in yards." );
 		end
 		
