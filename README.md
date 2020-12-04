@@ -5,8 +5,17 @@ WARNING: this stuff its experimental, use it at your own risk.
 
 Feel free to open tickets to report bugs. Feedback its apreciated.
 
+## Requirements
 
-*) Credits to:
+To run properly require the contents of 0Misc folder from ArcEmu github repo.
+
+https://github.com/arcemu
+
+## Instalation
+
+Copy all files in to your ArcEmu script folder.
+
+## Credits to
 
 	*) Trinity for texts, sound ids, timers, spell ids and some inspiration.
 	*) Hypersniper for his lua guides and some job in the lua engine.
