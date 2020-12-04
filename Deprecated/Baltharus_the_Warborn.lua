@@ -220,13 +220,13 @@ function OnAIUpdate( unit )
 	end
 end
 
-RegisterUnitEvent( 39751, 18, OnSpawn );
-RegisterUnitEvent( 39751, 1 , OnCombat );
-RegisterUnitEvent( 39751, 23, OnDamageTaken );
-RegisterUnitEvent( 36751, 2 , OnLeaveCombat );
-RegisterUnitEvent( 39751, 3 , OnTargetDied );
-RegisterUnitEvent( 39751, 4 , OnDeath );
-RegisterUnitEvent( 39751, 21, OnAIUpdate );
+--RegisterUnitEvent( 39751, 18, OnSpawn );
+--RegisterUnitEvent( 39751, 1 , OnCombat );
+--RegisterUnitEvent( 39751, 23, OnDamageTaken );
+--RegisterUnitEvent( 36751, 2 , OnLeaveCombat );
+--RegisterUnitEvent( 39751, 3 , OnTargetDied );
+--RegisterUnitEvent( 39751, 4 , OnDeath );
+--RegisterUnitEvent( 39751, 21, OnAIUpdate );
 
 --[[
 			Clone AI
@@ -330,11 +330,11 @@ function CloneOnAIUpdate( unit )
 	end
 end
 
-RegisterUnitEvent( 39899, 18, CloneOnSpawn );
-RegisterUnitEvent( 39899, 1 , CloneOnCombat );
-RegisterUnitEvent( 39899, 23, CloneOnDamageTaken );
-RegisterUnitEvent( 39899, 2 , CloneOnLeaveCombat );
-RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
+--RegisterUnitEvent( 39899, 18, CloneOnSpawn );
+--RegisterUnitEvent( 39899, 1 , CloneOnCombat );
+--RegisterUnitEvent( 39899, 23, CloneOnDamageTaken );
+--RegisterUnitEvent( 39899, 2 , CloneOnLeaveCombat );
+--RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
 
 --[[
 			Spell: Enervating Brand
@@ -353,4 +353,4 @@ function HookOnCastSpell( event, plr, spell_id, spellObject )
 	end
 end
 
-RegisterServerHook( 10, HookOnCastSpell );
+--RegisterServerHook( 10, HookOnCastSpell );

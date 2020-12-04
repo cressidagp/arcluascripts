@@ -178,12 +178,12 @@ function MovementInform( unit )
 	end
 end
 
-RegisterUnitEvent( 39747, 18, OnSpawn );
-RegisterUnitEvent( 39747, 1 , OnCombat );
-RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
-RegisterUnitEvent( 39747, 3 , OnTargetDied );
-RegisterUnitEvent( 39747, 4 , OnDeath );
-RegisterUnitEvent( 39747, 21, OnAIUpdate );
+--RegisterUnitEvent( 39747, 18, OnSpawn );
+--RegisterUnitEvent( 39747, 1 , OnCombat );
+--RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
+--RegisterUnitEvent( 39747, 3 , OnTargetDied );
+--RegisterUnitEvent( 39747, 4 , OnDeath );
+--RegisterUnitEvent( 39747, 21, OnAIUpdate );
 
 
 --[[
@@ -209,4 +209,4 @@ function ConflagrationInitDummy( effectIndex, spellObject )
 	end
 end
 
-RegisterDummySpell( SPELL_CONFLAGRATION, ConflagrationInitDummy );
+--RegisterDummySpell( SPELL_CONFLAGRATION, ConflagrationInitDummy );
