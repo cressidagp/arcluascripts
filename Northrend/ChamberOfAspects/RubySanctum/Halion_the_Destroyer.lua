@@ -4,7 +4,7 @@
 	The Ruby Sanctum: Halion the Destroyer
 	Engine: A.L.E
 	Credits: Trinity for texts, sound ids, timers and spell ids.
-			
+
 	Developer notes: in time i will change this to paroxysm modular way to save some resources.
 
 --]]
@@ -35,12 +35,21 @@ local TEXT = {
 [ 3 ] = "Your companions' efforts force %s further into the physical realm!"; -- (type 41)
 };
 
--- Spells:
+-- Spells (Halion):
 local SPELL_FLAME_BREATH		= 74525;
 local SPELL_CLEAVE				= 74524;
 local SPELL_METEOR_STRIKE		= 74637; -- aoe, need a dummy
 local SPELL_TAIL_LASH			= 74531;
 local SPELL_TWILIGHT_PRECISION  = 78243; -- not aura displayed... not working?
+
+-- Spells (Halion Controller):
+
+local  SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
+
+-- Spells (Misc):
+local SPELL_TWILIGHT_PHASING    = 74808; -- Phase spell from phase 1 to phase 2
+
+local TREES = { 203034, 203035, 203036, 203037 };
 
 -- For 3.3.5a
 local UNIT_FIELD_FLAGS			= 0x0006 + 0x0035;
@@ -78,7 +87,7 @@ function OnCombat( unit )
     our monstersay table will do the job, instance collision checked. ]]
 
     unit:PlaySoundToSet( SOUND[ 2 ] );
-	
+
 	unit:AddAura( SPELL_TWILIGHT_PRECISION, 0 );
 	unit:RegisterAIUpdateEvent( 1000 );
 
@@ -87,33 +96,34 @@ end
 function OnDamageTaken( unit, event, attacker, damage )
 
 	local vars = self[ tostring( unit ) ];
-	
+
 	local hp = unit:GetHealth();
 	local pct = unit:GetHealthPct();
 
     if( damage >= hp and vars.phase ~= 3 )
 	then
         damage = hp - 1;
-		
+
 	end
-	
+
 	-- TODO: implement HealthBelowPctDamaged( %, damage )
-	
+
 	if( pct < 75 and vars.phase == 1 )
 	then
 		unit:PlaySoundToSet( SOUND[ 4 ] );
 		unit:SendChatMessage( 14, 0, CHAT[ 4 - 1 ] );
 		vars.phase = 2;
-		
+		unit:CastSpell( SPELL_TWILIGHT_PHASING );
+
 	end
-	
+
 	if( vars.phase == 3 )
 	then
 		if( unit:GetPhase() ~= attacker:GetPhase() )
-		then 
-			return; 
+		then
+			return;
 		end
-		
+
 		local controller = unit:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
 		controller:SetHealth( controller:GetHealth() - damage );
 	end
@@ -152,20 +162,16 @@ function OnDeath( unit )
 	monstersay table will do the job, instance collision checked. ]]
 
     unit:PlaySoundToSet( SOUND[ 5 ] );
-	
-	local x = unit:GetX();
-	local y = unit:GetY();
-	local z = unit:GetZ();
-	
-	local twlighthalion = unit:GetClosestCreature( x, y, z, 40142 );
-	
+
+	local twlighthalion = unit:GetClosestCreature( unit:GetX(), unit:GetY(), unit:GetZ(), 40142 );
+
 	if( twlighthalion:IsAlive() == true )
 	then
 		twlighthalion:Kill();
 	end
-	
-	local controller = unit:GetClosestCreature( x, y, z, 40146 );
-	
+
+	local controller = unit:GetClosestCreature( 3156.04, 533.266, 72.9721, 40146 );
+
 	if( controller:IsAlive() == true )
 	then
 		controller:Kill();
@@ -214,7 +220,7 @@ function OnAIUpdate( unit )
 		unit:SendChatMessage( 12, 0, "debug: tail lash" );
 		vars.tail = math.random( 7, 12 )
 	end
-end 
+end
 
 RegisterUnitEvent( 39863, 18, OnSpawn );
 RegisterUnitEvent( 39863, 1 , OnCombat );
@@ -238,8 +244,47 @@ RegisterUnitEvent( 40142, 18 , TwilightHalionOnSpawn );
 			Halion Controller AI
 --]]
 
-function HalionControllerOnSpawn( unit, event )
+function HalionControllerOnSpawn( unit )
+
+	self[ tostring( unit )] = {
+	
+	event = 0,
+	timer = 4
+	
+	};
+
+	unit:RegisterAIUpdateEvent( 1000 );
 
 end
 
-RegisterUnitEvent( 40146, 18 , HalionControllerOnSpawn );
+function HalionControllerOnAIUpdate( unit )
+
+	local vars = self[ tostring( unit ) ];
+	
+	vars.timer = vars.timer - 1;
+
+	if( vars.event == 0 )
+	then
+		unit:CastSpell( SPELL_COSMETIC_FIRE_PILLAR );
+		vars.event = vars.event + 1;
+		vars.timer = 4;
+	
+	elseif( vars.event == 1 and vars.timer == 0 )
+	then 
+		unit:SendChatMessage( 12, 0, "debug: event 1" );
+		for k, v in ipairs( unit:GetInRangeObjects() )
+		do
+			if( v:GetEntry() == TREES[ i ] )
+			then
+				v:SetByte( GAMEOBJECT_BYTES_1, 0, 2 );
+				--unit:SendChatMessage( 12, 0, "debug: got a tree" );
+			end
+		end
+		
+		vars.event = vars.event + 1;
+		vars.timer = 4;
+	end
+end
+
+RegisterUnitEvent( 40146, 18, HalionControllerOnSpawn );
+RegisterUnitEvent( 40146, 21, HalionControllerOnAIUpdate );
