@@ -48,13 +48,23 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 		elseif( msg == "#removeauras" )
 		then
 			local target = plr:GetSelection();
-			target:RemoveAllAuras();
-			plr:SendBroadcastMessage( "All auras has been removed from the target." );
+			if( target ~= nil )
+			then
+				target:RemoveAllAuras();
+				plr:SendBroadcastMessage( "All auras has been removed from the target." );
+			else
+				plr:SendBroadcastMessage( "You dont have a target." );
+			end
 			
 		elseif( msg == "#getphase" )
 		then
 			local target = plr:GetSelection();
-			plr:SendBroadcastMessage( "Phase: "..target:GetPhase().."" );
+			if( target ~= nil )
+			then
+				plr:SendBroadcastMessage( "Phase: "..target:GetPhase().."" );
+			else
+				plr:SendBroadcastMessage( "You dont have a target." );
+			end
 		end
 	end
 end
