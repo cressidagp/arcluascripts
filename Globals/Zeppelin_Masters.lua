@@ -102,7 +102,7 @@ function ZEPPELIN_MASTERS.CheckForTransport( unit )
 	
 end
 
-function ZEPPELIN_MASTERS.OnSpawn( unit, event )
+function ZEPPELIN_MASTERS.OnSpawn( unit )
 
     local sUnit = tostring( unit );
 	
