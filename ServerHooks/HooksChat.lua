@@ -7,7 +7,7 @@
 
 --]]
 
-local COMMANDS = { #help, #gdisplay, #distance, #removeauras };
+local COMMANDS = { "help", "gdisplay", "distance", "removeauras" };
 
 HOOKS_CHAT = {}
 
@@ -15,7 +15,14 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 
 	if( plr:IsGm() == true )
 	then
-		if( msg == "#gprint" )
+		if( msg == "#help" )
+		then
+			for i = 1, #COMMANDS
+			do
+				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
+			end
+	
+		elseif( msg == "#gprint" )
 		then
 			for n in pairs( _G )
 			do 
