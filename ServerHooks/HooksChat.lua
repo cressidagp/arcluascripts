@@ -10,15 +10,25 @@
 HOOKS_CHAT = {}
 
 function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
-	
-	if( plr:IsGm() and msg == "#gprint" )
-    then
-		for n in pairs( _G )
-		do 
-			print( n ); 
-		end
+
+	if( plr:IsGm() == true )
+	then
+		if( msg == "#gprint" )
+		then
+			for n in pairs( _G )
+			do 
+				print( n ); 
+			end
 		
-		plr:SendBroadcastMessage( "Global table has been printed." );
+			plr:SendBroadcastMessage( "Global table has been printed." );
+	
+		elseif( msg == "#gdisplay" )
+		then
+			for n in pairs( _G ) 
+			do 
+				plr:SendBroadcastMessage( ""..n.."" ); 
+			end
+		end
 	end
 end
 
