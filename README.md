@@ -2,9 +2,9 @@
 
 ## Introduction
 
-ArcLuaScript its a non oficial scripting project for ArcEmu just for learning purposes.
+ArcLuaScript its a non oficial scripting project for ArcEmu just for learning purposes. Its not intended as a replace for ArcEmu official 
 
-Its not intended as a replace for ArcEmu official plugins, its a complement.
+plugins, its intended as a complement.
 
 WARNING: this stuff its experimental, use it at your own risk.
 
@@ -13,14 +13,13 @@ Feel free to open tickets to report bugs. Feedback its apreciated.
 
 ## Features
 
-Lua scripts for Bosses, Creatures, Gameobjects, Quests, Spells and extra gm commands.
+Lua scripts for Bosses, Creatures, Gameobjects, Quests, Spells and a couple of extra gm commands that i used in the development.
 
 
 ## Requirements
 
-To run properly require the contents of 0Misc folder from [ArcEmu github repository.](https://github.com/arcemu).
+To run properly require the contents of 0Misc folder from [ArcEmu github repository.](https://github.com/arcemu)
 
-https://github.com/arcemu
 
 
 ## Instalation
