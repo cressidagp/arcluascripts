@@ -2,7 +2,9 @@
 
 ## Introduction
 
-This repo its for learning Lua while i have fun.
+ArcLuaScript its a non oficial scripting project for ArcEmu just for learning purposes.
+
+Its not intended as a replace for ArcEmu official plugins, its a complement.
 
 WARNING: this stuff its experimental, use it at your own risk.
 
@@ -16,16 +18,16 @@ Lua scripts for Bosses, Creatures, Gameobjects, Quests, Spells and extra gm comm
 
 ## Requirements
 
-To run properly require the contents of 0Misc folder from ArcEmu github repo.
+To run properly require the contents of 0Misc folder from [ArcEmu github repository.](https://github.com/arcemu).
 
 https://github.com/arcemu
 
 
 ## Instalation
 
-Copy all files in to your ArcEmu script folder.
+1. Copy all files in to your ArcEmu script folder.
 
-Apply arcscripts.sql to your world database.
+2. Apply arcluascripts.sql to your world database.
 
 
 ## Credits to
@@ -34,3 +36,8 @@ Apply arcscripts.sql to your world database.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+
+## Links
+
+* [ArcEmu Forums](http://www.arcemu.org/forums/)
+
