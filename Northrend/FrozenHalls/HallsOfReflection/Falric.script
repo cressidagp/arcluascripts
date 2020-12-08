@@ -46,6 +46,8 @@ HOPELESSNESS = {
 };
 
 local self = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".CAPTAIN_FALRIC", package.seeall );
 
 function OnSpawn( unit, event )
 
@@ -127,7 +129,7 @@ end
 function OnAIUpdate( unit, event )
 
 	if( unit:IsCasting() == true ) then return; end
-	
+
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
 		return;
@@ -168,4 +170,3 @@ RegisterUnitEvent( 38112, 2 , OnLeaveCombat );
 RegisterUnitEvent( 38112, 3 , OnTargetDied );
 RegisterUnitEvent( 38112, 4 , OnDeath );
 RegisterUnitEvent( 38112, 21, OnAIUpdate );
-

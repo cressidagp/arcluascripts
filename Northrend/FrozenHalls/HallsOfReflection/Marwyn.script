@@ -39,13 +39,15 @@ SPELL_SHARED_SUFFERING        = 72368;
 SPELL_SHARED_SUFFERING_DISPEL = 72373;
 
 local self = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".CAPTAIN_MARWYN", package.seeall );
 
 function OnSpawn( unit, event )
 
     local diff = unit:GetDungeonDifficulty();
-	
+
     unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-	
+
     unit:SetHealth( BOSS_HP [ diff + 1 ] );
 
 end
@@ -53,12 +55,12 @@ end
 function OnCombat( unit, event )
 
 	self[ tostring( unit )] = {
-	
+
 	obliterate = math.random( 8, 13 ),
 	well = 12,
 	flesh = 20,
 	suffering = math.random( 14, 15 )
-	
+
 	};
 
     unit:PlaySoundToSet( SOUND[ 1 ] );
@@ -103,30 +105,30 @@ end
 function OnAIUpdate( unit, event )
 
 	if( unit:IsCasting() == true ) then return; end
-	
+
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
 		return;
 	end
-	
-	local vars = self[ tostring( unit ) ];	
-	
+
+	local vars = self[ tostring( unit ) ];
+
 	vars.obliterate = vars.obliterate - 1;
 	vars.well = vars.well - 1;
 	vars.flesh = vars.flesh - 1;
 	vars.suffering = vars.suffering - 1;
-	
+
 	if( vars.obliterate <= 0 )
-    then	
+    then
 		unit:CastSpellOnTarget( SPELL_OBLITERATE, unit:GetMainTank() );
 		vars.obliterate = math.random( 8, 13 );
-		
+
 	elseif( vars.well <= 0 )
 	then
 		local targeta = unit:GetRandomPlayer( 3 ); -- long range 100
 		unit:CastSpellOnTarget( SPELL_WELL_OF_CORRUPTION, targeta );
 		vars.well = 13;
-		
+
 	elseif( vars.flesh <= 0 )
 	then
 		unit:CastSpell( SPELL_CORRUPTED_FLESH );
@@ -134,7 +136,7 @@ function OnAIUpdate( unit, event )
 		local random = math.random( 5, 6 );
 		unit:PlaySoundToSet( SOUND[ random ] );
 		unit:SendChatMessage( 14, 0, CHAT[ random ] );
-	
+
 	elseif( vars.suffering <= 0 )
 	then
 		local targetb = unit:GetClosestPlayer(); -- range 0

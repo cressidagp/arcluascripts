@@ -25,13 +25,15 @@ SPELL_CLONE             = 69828; -- need scripted effect
 SPELL_GHOST_VISUAL      = 69861; -- need a dummy
 
 local self = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".FROSTWORN_GENERAL", package.seeall );
 
 function OnSpawn( unit, event )
 
     local diff = unit:GetDungeonDifficulty();
-	
+
     unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-	
+
     unit:SetHealth( BOSS_HP [ diff + 1 ] );
 
 end
