@@ -15,11 +15,12 @@ Feel free to open tickets to report bugs. Feedback its apreciated.
 
 Lua scripts for Bosses, Creatures, Gameobjects, Quests, Spells and a couple of extra gm commands that i used in the development.
 
+Script folder has been organizated per map. Bosses has been scripted in modular way.
+
 
 ## Requirements
 
 To run properly require the contents of 0Misc folder from [ArcEmu github repository.](https://github.com/arcemu)
-
 
 
 ## Instalation
@@ -31,12 +32,13 @@ To run properly require the contents of 0Misc folder from [ArcEmu github reposit
 
 ## Credits to
 
-	*) Trinity for texts, sound ids, timers, spell ids and some inspiration.
-	*) Hypersniper for his lua guides and some job in the lua engine.
-	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+* Trinity for texts, sound ids, timers, spell ids and some inspiration.
+* Hypersniper for his lua guides and some job in the lua engine.
+* Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+* ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
 
 ## Links
 
 * [ArcEmu Forums](http://www.arcemu.org/forums/)
-
+* [ArcEmu Github](https://github.com/arcemu)
+* [ArcEmu Wiki](https://arcemu.fandom.com/wiki/Arcemu_Wiki)

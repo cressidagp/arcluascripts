@@ -21,9 +21,9 @@ elseif( version == "2020-12-03_00-58_Baltharus" )
 
 then
 
-        print("==============================");
-        print("ArcLuaScripts: Its up to date!");
-        print("==============================");
+        print("============================================");
+        print("ArcLuaScripts: your database its up to date!");
+        print("============================================");
 
 else
 
