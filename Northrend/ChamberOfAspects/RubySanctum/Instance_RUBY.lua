@@ -1,8 +1,8 @@
-local instance_mod = require( "DUNGEON_CHAMBEROFASPECTS" );
+local instance_mod = require( "DUNGEON_COA" );
 
 if( type( instance_mod ) ~= "table" ) then error( "Ruby Sanctum Module is missing!", 1 ); end
 
-module( instance_mod._NAME..".INSTANCE_RSANCTUM", package.seeall );
+module( instance_mod._NAME..".INSTANCE_RUBY", package.seeall );
 
 local mod = getfenv( 1 );
 
