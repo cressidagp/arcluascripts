@@ -9,6 +9,10 @@
 
 --]]
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".FROSTWORN_GENERAL", package.seeall );
+
 local BOSS_HP = { 315000, 441000 };
 
 local SOUND = {
@@ -25,8 +29,6 @@ SPELL_CLONE             = 69828; -- need scripted effect
 SPELL_GHOST_VISUAL      = 69861; -- need a dummy
 
 local self = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".FROSTWORN_GENERAL", package.seeall );
 
 function OnSpawn( unit, event )
 

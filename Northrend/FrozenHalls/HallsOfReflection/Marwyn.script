@@ -9,6 +9,10 @@
 
 --]]
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".CAPTAIN_MARWYN", package.seeall );
+
 local BOSS_HP = { 539240, 903227 };
 
 local SOUND = {
@@ -39,8 +43,6 @@ SPELL_SHARED_SUFFERING        = 72368;
 SPELL_SHARED_SUFFERING_DISPEL = 72373;
 
 local self = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".CAPTAIN_MARWYN", package.seeall );
 
 function OnSpawn( unit, event )
 

@@ -9,6 +9,10 @@
 
 --]]
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".CAPTAIN_FALRIC", package.seeall );
+
 local BOSS_HP = { 377468, 633607 };
 
 local SOUND = {
@@ -46,8 +50,6 @@ HOPELESSNESS = {
 };
 
 local self = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".CAPTAIN_FALRIC", package.seeall );
 
 function OnSpawn( unit, event )
 
