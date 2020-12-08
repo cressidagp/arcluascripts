@@ -343,7 +343,7 @@ RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
 			Spell: Enervating Brand
 --]]
 
-function HookOnCastSpell( event, plr, spell_id, spellObject )
+function SpellBaltharusEnervatingBrand( _, _, spell_id, spellObject )
 
 	if( spell_id ~= SPELL_ENERVATING_BRAND ) then return; end
 
@@ -356,4 +356,4 @@ function HookOnCastSpell( event, plr, spell_id, spellObject )
 	end
 end
 
-RegisterServerHook( 10, HookOnCastSpell );
+RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
