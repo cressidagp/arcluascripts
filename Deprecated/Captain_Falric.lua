@@ -161,10 +161,10 @@ function OnAIUpdate( unit, event )
 	end
 end
 
-RegisterUnitEvent( 38112, 18, OnSpawn );
-RegisterUnitEvent( 38112, 1 , OnCombat );
-RegisterUnitEvent( 38112, 23, OnDamageTaken );
-RegisterUnitEvent( 38112, 2 , OnLeaveCombat );
-RegisterUnitEvent( 38112, 3 , OnTargetDied );
-RegisterUnitEvent( 38112, 4 , OnDeath );
-RegisterUnitEvent( 38112, 21, OnAIUpdate );
+--RegisterUnitEvent( 38112, 18, OnSpawn );
+--RegisterUnitEvent( 38112, 1 , OnCombat );
+--RegisterUnitEvent( 38112, 23, OnDamageTaken );
+--RegisterUnitEvent( 38112, 2 , OnLeaveCombat );
+--RegisterUnitEvent( 38112, 3 , OnTargetDied );
+--RegisterUnitEvent( 38112, 4 , OnDeath );
+--RegisterUnitEvent( 38112, 21, OnAIUpdate );
