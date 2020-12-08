@@ -7,13 +7,25 @@
 
 --]]
 
+local GM_ITEMS = { 2586, 12064, 11508, 43651 };
+
 HOOKS = {}
 
 function HOOKS.Consolidated( event, plr )
 
-    if( event == 4 ) -- OnEnterWorld
+		if( event == 3 ) -- OnFirstEnterWorld
+		then
+			if( plr:IsGm() == true )
+			then
+				for i = 1, #GM_ITEMS
+				do
+					plr:AddItem( GM_ITEMS[ i ], 1 );
+				end
+			end
+
+    elseif( event == 4 ) -- OnEnterWorld
     then
-        if( plr:GetPlayerRace() == 11 ) -- Dranei
+        if( plr:GetPlayerRace() == 11 )
         then
             local class = plr:GetPlayerClass();
             if( class == "Priest" or class == "Shaman" or class == "Mage" )
@@ -32,4 +44,5 @@ function HOOKS.Consolidated( event, plr )
     end
 end
 
+RegisterServerHook( 3, HOOKS.Consolidated );
 RegisterServerHook( 4, HOOKS.Consolidated );
