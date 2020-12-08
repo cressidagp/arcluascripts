@@ -13,7 +13,7 @@ Feel free to open tickets to report bugs. Feedback its apreciated.
 
 Lua scripts for Bosses, Creatures, Gameobjects, Quests, Spells and a couple of extra gm commands that i used in the development.
 
-Script folder has been organizated per map. Bosses has been scripted in modular way.
+Scripts folder has been organizated per map, bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
 
 
 ## Requirements
