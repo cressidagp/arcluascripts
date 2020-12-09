@@ -343,17 +343,17 @@ RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
 			Spell: Enervating Brand
 --]]
 
-function SpellBaltharusEnervatingBrand( _, _, spell_id, spellObject )
+--function SpellBaltharusEnervatingBrand( _, _, spell_id, spellObject )
 
-	if( spell_id ~= SPELL_ENERVATING_BRAND ) then return; end
+--	if( spell_id ~= SPELL_ENERVATING_BRAND ) then return; end
 
-	if( spell_id == SPELL_ENERVATING_BRAND )
-	then
+--	if( spell_id == SPELL_ENERVATING_BRAND )
+--	then
 
-		local caster = spellObject:GetCaster();
+--		local caster = spellObject:GetCaster();
 
-		caster:FullCastSpell( SPELL_SIPHONED_MIGHT );
-	end
-end
+--		caster:FullCastSpell( SPELL_SIPHONED_MIGHT );
+--	end
+--end
 
-RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
+--RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
