@@ -181,6 +181,14 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 5, 100, 0, 14, 'Frostworn General', 'Master, I have failed...', NULL, NULL, NULL, NULL);
 
 --
+-- Icecrown Citadel:
+--
+
+-- Hack! Since arcemu cand handle gossip vehicles
+
+UPDATE `creature_proto` SET `vehicleid` = 0 WHERE `entry` = 37120; -- Hightlord Darion Mograine
+
+--
 -- The Ruby Sanctum: 
 --
 
@@ -394,4 +402,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-12-03_00-58_Baltharus');
+('2020-12-08_21-07_DarionMograine');
