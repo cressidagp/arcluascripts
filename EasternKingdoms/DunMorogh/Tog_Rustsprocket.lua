@@ -19,15 +19,15 @@ function TOG_RUSTSPROCKET.OnHelloOnSelect( unit, event, plr, id, selection, code
 
 	if( event == 1 )
 	then
-    if( plr:GetPlayerClass() == "Warlock" and plr:GetLevel() >= 10 )
-    then
-		  unit:GossipCreateMenu( 767, plr, 0 );
-		  unit:GossipMenuAddItem( 0, "What message?", 1, 0 );
-		  unit:GossipSendMenu( plr );
-    else
-      unit:GossipCreateMenu( 766, plr, 0 );
-      unit:GossipSendMenu( plr );
-    end
+		if( plr:GetPlayerClass() == "Warlock" and plr:GetLevel() >= 10 )
+		then
+			unit:GossipCreateMenu( 767, plr, 0 );
+			unit:GossipMenuAddItem( 0, "What message?", 1, 0 );
+			unit:GossipSendMenu( plr );
+		else
+			unit:GossipCreateMenu( 766, plr, 0 );
+			unit:GossipSendMenu( plr );
+		end
 
 	else
 		if( selection == 1 )
