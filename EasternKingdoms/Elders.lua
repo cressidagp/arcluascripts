@@ -7,13 +7,13 @@
 	
 	enUS:
 	
-	CHAT[ 1 ] = "I would like to whisper my secret code to you to receive Tyrael's Hilt.";
-	CHAT[ 2 ] = "You're secret code is not a valid one...";
+	[ 1 ] = "I would like to whisper my secret code to you to receive Tyrael's Hilt.";
+	[ 2 ] = "You're secret code is not a valid one...";
 	
 	esMX:
 	
-	CHAT[ 1 ] = "Me gustaría susurrarte mi código secreto para que reciba Empuñadura de Tyrael.";
-	CHAT[ 2 ] = "Tu código secreto no es válido...";
+	[ 1 ] = "Me gustaría susurrarte mi código secreto para que reciba Empuñadura de Tyrael.";
+	[ 2 ] = "Tu código secreto no es válido...";
 	
 --]]
 
@@ -26,7 +26,7 @@ local CHAT = {
 
 ELDERS = {}
 
-function ELDERS.OnHelloOnSelect( unit, event, plr, id, intid, code )
+function ELDERS.OnHelloOnSelect( unit, event, plr, id, selection, code )
 
 		if( event == 1 )
 		
@@ -37,10 +37,8 @@ function ELDERS.OnHelloOnSelect( unit, event, plr, id, intid, code )
 				
 				unit:GossipSendMenu( plr );
 
-		elseif( event == 2 )
-		
-		then
-				if( intid == 2 )
+		else
+				if( selection == 2 )
 				
 				then
 						if( code == ""..SECRET.."" )
