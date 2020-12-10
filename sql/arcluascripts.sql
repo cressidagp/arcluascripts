@@ -65,6 +65,16 @@ DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind 
 DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
 
 --
+-- The next npc_gossip_textid had been ported to lua since arcemu database structure dont have support for them:
+--
+
+DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 3442; -- The Barrens: Sputtervalve
+DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6119; -- Dun Morogh: Tog
+DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6568; -- Tanaris: Vizzklick
+DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8962; -- Redridge Mountains: Hilary
+DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains: Shawn
+
+--
 -- Halls of Reflections:
 --
 
@@ -402,4 +412,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-12-08_21-07_DarionMograine');
+('2020-12-10_13-43_HillaryNecklace');

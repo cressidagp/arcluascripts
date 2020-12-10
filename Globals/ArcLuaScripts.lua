@@ -17,7 +17,7 @@ then
         print("ArcLuaScripts: your forget to apply SQL file to your database!");
         print("==============================================================");
 
-elseif( version == "2020-12-08_21-07_DarionMograine" )
+elseif( version == "2020-12-10_13-43_HillaryNecklace" )
 
 then
 
