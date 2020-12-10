@@ -1,9 +1,15 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Hooks Main
+	Hooks Main script
 	Engine: A.L.E
 	Credits: nil
+	
+	Features:
+	
+	*) Add the gm items to new characters.
+	*) Add "Heroic Presence" aura for Draneis players.
+	*) Cast "Blood Presence" and add "Undying Resolve" for Death Knights.
 
 --]]
 
@@ -13,15 +19,15 @@ HOOKS = {}
 
 function HOOKS.Consolidated( event, plr )
 
-		if( event == 3 ) -- OnFirstEnterWorld
+	if( event == 3 ) -- OnFirstEnterWorld
+	then
+		if( plr:IsGm() == true )
 		then
-			if( plr:IsGm() == true )
-			then
-				for i = 1, #GM_ITEMS
-				do
-					plr:AddItem( GM_ITEMS[ i ], 1 );
-				end
+			for i = 1, #GM_ITEMS
+			do
+				plr:AddItem( GM_ITEMS[ i ], 1 );
 			end
+		end
 
     elseif( event == 4 ) -- OnEnterWorld
     then
