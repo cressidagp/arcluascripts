@@ -9,14 +9,14 @@ WARNING: this stuff its experimental, use it at your own risk. Feel free to [ope
 
 ## Features
 
-Lua scripts for Bosses, Creatures, Gameobjects, Quests, Spells and a couple of extra gm commands that i used in the development.
+Lua scripts for Instances, Bosses, Creatures, Gameobjects, Gossips, Quests, DummySpells and a couple of extra commands that i used in the development.
 
 Scripts folder has been organizated per map, bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
 
 
 ## Requirements
 
-To run properly require the contents of 0Misc folder from [ArcEmu github repository.](https://github.com/arcemu)
+To run properly require the contents of 0Misc folder from [ArcEmu github repository.](https://github.com/arcemu/arcemu/tree/master/src/scripts/lua/0Misc)
 
 
 ## Instalation
