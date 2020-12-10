@@ -10,6 +10,9 @@
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	
+	Developer notes: apparently there are some conflicts beetwen quests texts and gossips texts.
+	If i add a gossip then quests text wont be displayed. Cant be solved script side.
 
 --]]
 
@@ -23,7 +26,7 @@ function HILARY.OnHello( unit, _, plr )
 	else
 		unit:GossipCreateMenu( 2273, plr, 0 );
 	end
-		
+	
 	unit:GossipSendMenu( plr );
 	
 end
