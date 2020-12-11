@@ -78,9 +78,44 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains
 -- Halls of Reflections:
 --
 
+-- Archmage Koreln
+
+INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
+VALUES (200632, 37582, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30685, 1770, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 35781, 0, 0, 0, 64);
+
+-- Dark Ranger Loralen
+
+INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
+VALUES (200633, 37779, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30687, 1770, 0, 0, 0, 1, 433, 0, 0, 0, 0, 0, 0, 0, 34284, 34284, 34269, 0, 128);
+
+-- Fix Jaina spawn pos
+
+UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134006;
+UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134006;
+UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134006;
+UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134006;
+
+UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134007;
+UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134007;
+UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134007;
+UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134007;
+
+-- Fix Sylvana spawn pos
+
+UPDATE `creature_spawns` SET `position_x` = '5236.667' WHERE `entry` = 37223 and `id` = 134009;
+UPDATE `creature_spawns` SET `position_y` = '1929.906' WHERE `entry` = 37223 and `id` = 134009;
+UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37223 and `id` = 134009;
+UPDATE `creature_spawns` SET `orientation` = '0.8377581' WHERE `entry` = 37223 and `id` = 134009;
+
+UPDATE `creature_spawns` SET `position_x` = '5236.667' WHERE `entry` = 37223 and `id` = 134010;
+UPDATE `creature_spawns` SET `position_y` = '1929.906' WHERE `entry` = 37223 and `id` = 134010;
+UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37223 and `id` = 134010;
+UPDATE `creature_spawns` SET `orientation` = '0.8377581' WHERE `entry` = 37223 and `id` = 134010;
+
 -- Starting to phase shift people for Alliance set
 
-UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134007 and `entry` = 37221; -- Jaina
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134006 and `entry` = 37221; -- Jaina (enemy to horde, big one)
+UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134007 and `entry` = 37221; -- Jaina (friend to alliance, big one)
 UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134252 and `entry` = 38112; -- Falric
 UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134254 and `entry` = 38113; -- Marwyn
 
@@ -128,7 +163,7 @@ UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134299 and `entry` = 3817
 
 -- Starting to phase shift people for Horde set
 
-UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134009 and `entry` = 37223; -- Sylvanas
+UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134009 and `entry` = 37223; -- Sylvanas (enemy to horde)
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134010 and `entry` = 37223; -- Sylvanas
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134253 and `entry` = 38112; -- Falric
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134255 and `entry` = 38113; -- Marwyn
