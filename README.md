@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ArcLuaScripts its a NON-OFFICIAL scripting project for ArcEmu just for learning purposes. Its NOT intended as a replace for ArcEmu official plugins, its intended as a complement.
+ArcLuaScripts its a NON-OFFICIAL scripting project for ArcEmu just for learning purposes. Its NOT intended as a replace for ArcEmu official plugins, its a complement.
 
 WARNING: this stuff its experimental, use it at your own risk. Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new) Feedback its apreciated.
 
