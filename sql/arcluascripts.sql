@@ -78,6 +78,20 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains
 -- Halls of Reflections:
 --
 
+-- Falric and Marwyn invisibility
+
+UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` = 38112; -- right one?
+UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` = 38113; -- right one?
+
+-- Lich King speed fix
+
+UPDATE `creature_proto` SET `walk_speed` = 5 WHERE `entry` = 37226;
+
+-- Lets remove some pre-spawned
+
+DELETE FROM `creature_spawns` WHERE `id` = 141917 and `entry` = 37225; -- Uther
+DELETE FROM `creature_spawns` WHERE `id` = 133989 and `entry` = 37158; -- Queldalar
+
 -- Archmage Koreln
 
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
@@ -447,4 +461,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-12-10_13-43_HillaryNecklace');
+('2020-12-11_17-00_HOR');
