@@ -1,12 +1,11 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Redridge Mountains: Quest: Hillary Necklace
+	Eastern Kingdoms Quest Hooks
 	Engine: A.L.E
 
 	Credits:
 
-	*) Trinity for texts.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.

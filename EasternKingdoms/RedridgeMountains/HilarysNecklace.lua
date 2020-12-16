@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Redridge Mountains: Quest: Hillary Necklace
+	Quest: "Hillary Necklace"
 	Engine: A.L.E
 
 	Credits:
@@ -10,6 +10,10 @@
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	
+	enus: "I know how to speak kitty, and Effsee said thank you."
+	
+	esmx: "Sé cómo hablar gatuno, y Effsee dijo gracias."
 
 --]]
 
@@ -23,8 +27,6 @@ function NECKLACE.OnComplete( plr, questID )
 		if( hillary ~= nil )
 		then
 			hillary:EventChat( 12, 0, "I know how to speak kitty, and Effsee said thank you.", 2000 );
-			
-			
 			local effsee = plr:GetCreatureNearestCoords( -9351.24, -2204.45, 62.18, 8963 );
 			effsee:SendChatMessage( 12, 0, "Meow!" );
 		end
