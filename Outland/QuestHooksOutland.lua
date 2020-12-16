@@ -6,12 +6,14 @@
 
   Credits:
 
-  *) Trinity for gossips, texts, sound ids, timers, spell ids, move coords and some inspiration.
+  *) Trinity for texts and spell ids.
   *) Hypersniper for his lua guides and some job in the lua engine.
   *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
   *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
-
-	Developer notes: if this grows to big i will split on zones.
+  
+  enus: "Welcome to Honor Hold, "..plr:GetName()..".  It's good to have you."
+  
+  esmx: "Bienvenido a Honor Hold, gonzalo. Es bueno tenerte."
 
 --]]
 
@@ -21,11 +23,10 @@ function QUESTS_HOOK_OUTLAND.OnComplete( event, plr, questID, questEnder )
 
     if( plr:GetMapId() ~= 530 ) then return; end
 
-    if( questID == 10254 )
+    if( questID == 10254 ) -- Force Commander Danath
     then
       questEnder:SendChatMessage( 12, 0, "Welcome to Honor Hold, "..plr:GetName()..".  It's good to have you." );
-      --questEnder:CastSpellOnTarget( 6245, plr );
-      questEnder:Emote( 66, 0 );
+      questEnder:CastSpellOnTarget( 6245, plr );
     end
 end
 
