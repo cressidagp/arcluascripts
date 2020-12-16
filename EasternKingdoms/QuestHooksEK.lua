@@ -20,12 +20,6 @@ QUESTS_HOOK_EK = {}
 
 function QUESTS_HOOK_EK.OnComplete( event, plr, questID, questEnder )
 
-	if( questID == 3741 ) -- Hilary Necklace
-	then
-			questEnder:EventChat( 12, 0, "I know how to speak kitty, and Effsee said thank you.", 2000 );
-			local effsee = plr:GetCreatureNearestCoords( -9351.24, -2204.45, 62.18, 8963 );
-			effsee:SendChatMessage( 12, 0, "Meow!" );
-	end
 end
 
-RegisterServerHook( 22, QUESTS_HOOK_EK.OnComplete );
+--RegisterServerHook( 22, QUESTS_HOOK_EK.OnComplete );

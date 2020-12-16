@@ -25,6 +25,7 @@ function HILARY.OnHello( unit, _, plr )
 		unit:GossipCreateMenu( 2274, plr, 0 );
 	else
 		unit:GossipCreateMenu( 2273, plr, 0 );
+		unit:GossipAddQuests( plr );
 	end
 	
 	unit:GossipSendMenu( plr );

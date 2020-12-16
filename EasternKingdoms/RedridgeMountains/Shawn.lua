@@ -21,7 +21,8 @@ function SHAWN.OnHello( unit, _, plr )
 	then
 		unit:GossipCreateMenu( 2277, plr, 0 );
 	else
-		unit:GossipCreateMenu( 2276, plr, 0 );	
+		unit:GossipCreateMenu( 2276, plr, 0 );
+		unit:GossipAddQuests( plr );
 	end
 		
 	unit:GossipSendMenu( plr );
