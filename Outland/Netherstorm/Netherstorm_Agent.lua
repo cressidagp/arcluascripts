@@ -42,10 +42,15 @@ NETHERSTORM_AGENT = {}
 function NETHERSTORM_AGENT.Chat( unit )
   if( unit:IsInCombat() == false )
   then
-    unit:SendChatMessage( 12, 0, TEXT[ math.random( 1, 5 ) ] );
-    unit:Emote( 1, 0 );
-    unit:RemoveEvents();
-    unit:RegisterEvent( NETHERSTORM_AGENT.Chat, math.random( 200000, 230000 ), 0 );
+    local chance = math.random( 1, 5 );
+    if( chance == 1 )
+    then
+      local i = math.random( 1, 5 )
+      unit:SendChatMessage( 12, 0, TEXT[ i ] );
+      unit:Emote( 1, 0 );
+      unit:RemoveEvents();
+      unit:RegisterEvent( NETHERSTORM_AGENT.Chat, math.random( 200000, 230000 ), 0 );
+    end
   end
 end
 
