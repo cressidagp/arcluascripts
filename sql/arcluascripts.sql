@@ -78,7 +78,7 @@ DELETE FROM `npc_gossip_textid` WHERE `entry` IN ( 3442, 6119, 6568, 8962, 8965,
 
 -- Falric and Marwyn invisibility
 
-UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` IN ( 38112, 38113 );
+UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` IN ( 38112, 38113 ); -- work but its the right type?
 
 -- Lich King speed fix
 
@@ -461,6 +461,13 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 6, -3012.07, 3984.19, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 7, -3007.90, 3978.22, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
 
+-- Nagrand: Warden Moibff Jill
+
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (77081, 1, -2568.98, 7271.64, 15.49, 120000, 0, 1, 0, 1, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (77081, 2, -2565.83, 7274.23, 15.48, 0, 0, 1, 0, 1, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (77081, 3, -2565.83, 7274.23, 15.55, 23000, 0, 1, 0, 1, 0, 0, 0);
+
+
 --
 --
 -- DONT ADD MORE STUFF FROM HERE
@@ -475,4 +482,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-12-16_21-12_Gravelhammer');
+('2020-12-17_00-40_Nagrand');
