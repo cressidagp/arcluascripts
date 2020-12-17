@@ -15,7 +15,11 @@ function HOOKS_DEBUG.Consolidated( event, plr, argC, argD )
 
     if( plr:IsGm() == true )
     then
-        if( event == 10 ) -- OnCastSpell
+		if( event == 8 ) -- OnEmote
+		then
+			plr:SendBroadcastMessage( "Emote ID: "..argD.." " );
+		
+        elseif( event == 10 ) -- OnCastSpell
         then
             plr:SendBroadcastMessage( "Spell ID: "..argC.." " );
 
@@ -34,7 +38,8 @@ function HOOKS_DEBUG.Consolidated( event, plr, argC, argD )
     end
 end
 
-RegisterServerHook( 10, HOOKS_DEBUG.Consolidated );
-RegisterServerHook( 14, HOOKS_DEBUG.Consolidated );
-RegisterServerHook( 22, HOOKS_DEBUG.Consolidated );
-RegisterServerHook( 26, HOOKS_DEBUG.Consolidated );
+--RegisterServerHook( 8, HOOKS_DEBUG.Consolidated );
+--RegisterServerHook( 10, HOOKS_DEBUG.Consolidated );
+--RegisterServerHook( 14, HOOKS_DEBUG.Consolidated );
+--RegisterServerHook( 22, HOOKS_DEBUG.Consolidated );
+--RegisterServerHook( 26, HOOKS_DEBUG.Consolidated );
