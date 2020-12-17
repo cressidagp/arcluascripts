@@ -69,7 +69,7 @@ function MOIBFFJILL.OnReachWP( unit, _, waypointId )
 
 		-- destroy table with variables to recycle resources
 
-		GRAVELHAMMER[ tostring( unit ) ] = nil;
+		MOIBFFJILL[ tostring( unit ) ] = nil;
 
 	elseif( waypointId == 2 )
 	then
