@@ -20,6 +20,7 @@ SET @ID4 := 134426; -- Ruby Sanctum: Zarithrian
 SET @ID5 := 134428; -- Ruby Sanctum: Baltharus
 SET @ID6 := 109436; -- Ruby Sanctum: Target Crystal
 SET @ID7 := 200631; -- Ruby Sanctum: Halion Controller
+SET @ID8 := 78482;	-- Liutenant Gravelhammer
 
 -- 
 -- This will just remove what should be the "out of combat stuff", so the lua script will coexist with the "on combat" ai agent:
@@ -35,15 +36,7 @@ DELETE FROM `ai_agents` WHERE `entry` = 3206 and `spell` = 324; -- Durotar: Vood
 DELETE FROM `ai_agents` WHERE `entry` = 5822 and `spell` = 20798; -- Durotar: Feelweaver Scornn cast "Demon Skin"
 DELETE FROM `ai_agents` WHERE `entry` = 5826 and `spell` = 324; -- Durotar: Geolord Mottle cast "Lighting Shield"
 
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 474;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 476;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 881;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 1507;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 1544;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 3204;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 3206;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 5822;
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 5826;
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` IN ( 474, 476, 881, 1507, 1544, 3204, 3206, 5822, 5826 );
 
 --
 -- The follows ai_agents are not working so lets port them to lua:
@@ -55,24 +48,29 @@ DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest
 -- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
 --
 
-DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
-DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
-DELETE FROM `npc_monstersay` WHERE `entry` = 794 and `event` = 0; -- Elwynn Forest: Matt
-DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: Master Gadrin
-DELETE FROM `npc_monstersay` WHERE `entry` = 1395 and `event` = 0; -- Stormwind City: Ol Beasley
-DELETE FROM `npc_monstersay` WHERE `entry` = 1402 and `event` = 0; -- Stormwind City: Topper McNabb
-DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind City: Morris Lawry
-DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
+DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 3188, 1395, 1402, 1405, 7917 );
+
+--DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
+--DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
+--DELETE FROM `npc_monstersay` WHERE `entry` = 794 and `event` = 0; -- Elwynn Forest: Matt
+--DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: Master Gadrin
+--DELETE FROM `npc_monstersay` WHERE `entry` = 1395 and `event` = 0; -- Stormwind City: Ol Beasley
+--DELETE FROM `npc_monstersay` WHERE `entry` = 1402 and `event` = 0; -- Stormwind City: Topper McNabb
+--DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind City: Morris Lawry
+--DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
 
 --
 -- The next npc_gossip_textid had been ported to lua since arcemu database structure dont have support for them:
 --
 
-DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 3442; -- The Barrens: Sputtervalve
-DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6119; -- Dun Morogh: Tog
-DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6568; -- Tanaris: Vizzklick
-DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8962; -- Redridge Mountains: Hilary
-DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains: Shawn
+DELETE FROM `npc_gossip_textid` WHERE `entry` IN ( 3442, 6119, 6568, 8962, 8965, 16819 );
+
+--DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 3442; -- The Barrens: Sputtervalve
+--DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6119; -- Dun Morogh: Tog
+--DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6568; -- Tanaris: Vizzklick
+--DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8962; -- Redridge Mountains: Hilary
+--DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains: Shawn
+--DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16819; -- Hellfire Peninsula: Danath Trollbane
 
 --
 -- Halls of Reflections:
@@ -80,8 +78,7 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains
 
 -- Falric and Marwyn invisibility
 
-UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` = 38112; -- right one?
-UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` = 38113; -- right one?
+UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` IN ( 38112, 38113 );
 
 -- Lich King speed fix
 
@@ -94,10 +91,14 @@ DELETE FROM `creature_spawns` WHERE `id` = 133989 and `entry` = 37158; -- Quelda
 
 -- Archmage Koreln
 
+DELETE FROM `creature_spawns` WHERE `id` = 200632 and `entry` = 37582;
+
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
 VALUES (200632, 37582, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30685, 1770, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 35781, 0, 0, 0, 64);
 
 -- Dark Ranger Loralen
+
+DELETE FROM `creature_spawns` WHERE `id` = 200633 and `entry` = 37779;
 
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
 VALUES (200633, 37779, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30687, 1770, 0, 0, 0, 1, 433, 0, 0, 0, 0, 0, 0, 0, 34284, 34284, 34269, 0, 128);
@@ -384,10 +385,7 @@ REPLACE INTO `waypoints_lua` (`entry`, `wid`, `p_x`, `p_y`, `p_z`, `p_o`, `wtime
 -- Elwynn Forest: Matt
 --
 
-UPDATE `creature_spawns` SET `position_x` = '-9387.13' WHERE `id` = @ID3 and `entry` = '794';
-UPDATE `creature_spawns` SET `position_y` = '-117.859' WHERE `id` = @ID3 and `entry` = '794';
-UPDATE `creature_spawns` SET `position_z` = '58.862' WHERE `id` = @ID3 and `entry` = '794';
-UPDATE `creature_spawns` SET `orientation` = '2.818' WHERE `id` = @ID3 and `entry` = '794';
+UPDATE `creature_spawns` SET `position_x` = '-9387.13', `position_y` = '-117.859', `position_z` = '58.862', `orientation` = '2.818'  WHERE `id` = @ID3 and `entry` = '794';
 
 UPDATE `creature_spawns` SET `movetype` = '2' WHERE `entry` = '794'; -- Circle
 
@@ -451,18 +449,17 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 -- Terokkar Forest: Liutenant Gravelhammer
 --
 
-UPDATE `creature_spawns` SET `movetype` = '4' WHERE `entry` = 18713;
-UPDATE `creature_spawns` SET `bytes2` = '0' WHERE `entry` = 18713;
+UPDATE `creature_spawns` SET `movetype` = '4', `bytes2` = '0' WHERE `entry` = 18713;
 
-DELETE FROM `creature_waypoints` WHERE `spawnid` = 78482;
+DELETE FROM `creature_waypoints` WHERE `spawnid` = @ID8;
 
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (78482, 1, -3012.45, 3983.70, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (78482, 2, -3011.60, 3991.66, 3.44, 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (78482, 3, -3011.15, 3993.25, 4.08, 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (78482, 4, -3010.12, 3994.75, 4.46, 35000, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (78482, 5, -3010.28, 3994.08, 4.46, 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (78482, 6, -3012.07, 3984.19, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (78482, 7, -3007.90, 3978.22, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 1, -3012.45, 3983.70, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 2, -3011.60, 3991.66, 3.44, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 3, -3011.15, 3993.25, 4.08, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 4, -3010.12, 3994.75, 4.46, 35000, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 5, -3010.28, 3994.08, 4.46, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 6, -3012.07, 3984.19, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID8, 7, -3007.90, 3978.22, 3.11, 0, 0, 0, 0, 0, 0, 0, 0);
 
 --
 --
