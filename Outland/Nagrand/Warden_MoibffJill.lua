@@ -32,51 +32,54 @@ MOIBFFJILL = {}
 
 function MOIBFFJILL.DoStuff( unit )
 
-  local args = MOIBFFJILL[ tostring( unit ) ]
-  args.time = args.time - 1;
+	local args = MOIBFFJILL[ tostring( unit ) ]
+	args.time = args.time - 1;
 
-  if( args.action == 0 and args.time <= 0 )
-  then
-    unit:SendChatMessage( 12, 7, TEXT[ 1 ] );
-    args.action = 1;
-    args.time = 0;
+	if( args.action == 0 and args.time <= 0 )
+	then
+		unit:SendChatMessage( 12, 7, TEXT[ 1 ] );
+		args.action = 1;
+		args.time = 0;
 
-  elseif( args.action == 1 and args.time <= 0 )
-  then
-    unit:SetUInt32Value( 0x0006 + 0x004D, 234 );
-    args.action = 2;
-    args.time = 15;
+	elseif( args.action == 1 and args.time <= 0 )
+	then
+		unit:SetUInt32Value( 0x0006 + 0x004D, 234 );
+		args.action = 2;
+		args.time = 15;
 
-    elseif( args.action == 2 and args.time <= 0 )
-    then
-      unit:SetUInt32Value( 0x0006 + 0x004D, 0 );
-      args.action = 3;
-      args.time = 1;
+	elseif( args.action == 2 and args.time <= 0 )
+	then
+		unit:SetUInt32Value( 0x0006 + 0x004D, 0 );
+		args.action = 3;
+		args.time = 1;
 
-      elseif( args.action == 3 and args.time <= 0 )
-      then
-      unit:SendChatMessage( 12, 7, TEXT[ 2 ] );
-      unit:Emote( 5, 0 );
-      args.action = 4;
-      args.time = 0;
-      unit:RemoveEvents();
-  end
+	elseif( args.action == 3 and args.time <= 0 )
+	then
+		unit:SendChatMessage( 12, 7, TEXT[ 2 ] );
+		unit:Emote( 5, 0 );
+		args.action = 4;
+	end
 end
 
-function MOIBFFJILL.OnReachWP( unit, event, waypointId, foward )
-  if( waypointId == 1 )
-  then
-    unit:SetFacing( 4.69494 );
+function MOIBFFJILL.OnReachWP( unit, _, waypointId )
+	if( waypointId == 1 )
+	then
+		unit:SetFacing( 4.69494 );
+		unit:RemoveEvents();
 
-  elseif( waypointId == 2 )
-  then
-    local sUnit = tostring( unit )
-    MOIBFFJILL[ sUnit ] = {}
-    local ref = MOIBFFJILL[ sUnit ]
-    ref.time = 2;
-    ref.action = 0;
-    unit:RegisterEvent(MOIBFFJILL.DoStuff, 1000, 0 );
-  end
+		-- destroy table with variables to recycle resources
+
+		GRAVELHAMMER[ tostring( unit ) ] = nil;
+
+	elseif( waypointId == 2 )
+	then
+		local sUnit = tostring( unit )
+		MOIBFFJILL[ sUnit ] = {}
+		local ref = MOIBFFJILL[ sUnit ]
+		ref.time = 2;
+		ref.action = 0;
+		unit:RegisterEvent( MOIBFFJILL.DoStuff, 1000, 0 );
+	end
 end
 
 RegisterUnitEvent( 18408, 19, MOIBFFJILL.OnReachWP );

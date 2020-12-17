@@ -21,6 +21,7 @@ SET @ID5 := 134428; -- Ruby Sanctum: Baltharus
 SET @ID6 := 109436; -- Ruby Sanctum: Target Crystal
 SET @ID7 := 200631; -- Ruby Sanctum: Halion Controller
 SET @ID8 := 78482;	-- Liutenant Gravelhammer
+SET @ID9 := 77081;	-- Warden Moibff Jill
 
 -- 
 -- This will just remove what should be the "out of combat stuff", so the lua script will coexist with the "on combat" ai agent:
@@ -48,7 +49,7 @@ DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest
 -- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
 --
 
-DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 3188, 1395, 1402, 1405, 7917 );
+DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 1395, 1402, 1405, 3188, 7917, 18408 );
 
 --DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
 --DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
@@ -58,12 +59,13 @@ DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 3
 --DELETE FROM `npc_monstersay` WHERE `entry` = 1402 and `event` = 0; -- Stormwind City: Topper McNabb
 --DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind City: Morris Lawry
 --DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
+--DELETE FROM `npc_monstersay` WHERE `entry` = 18408 and `event` = 0; -- Nagrand: Warden Moibff Jill
 
 --
 -- The next npc_gossip_textid had been ported to lua since arcemu database structure dont have support for them:
 --
 
-DELETE FROM `npc_gossip_textid` WHERE `entry` IN ( 3442, 6119, 6568, 8962, 8965, 16819 );
+DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 8965, 16819 );
 
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 3442; -- The Barrens: Sputtervalve
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6119; -- Dun Morogh: Tog
@@ -463,10 +465,13 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 
 -- Nagrand: Warden Moibff Jill
 
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (77081, 1, -2568.98, 7271.64, 15.49, 120000, 0, 1, 0, 1, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (77081, 2, -2565.83, 7274.23, 15.48, 0, 0, 1, 0, 1, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (77081, 3, -2565.83, 7274.23, 15.55, 23000, 0, 1, 0, 1, 0, 0, 0);
+UPDATE `creature_spawns` SET `movetype` = '2' WHERE `entry` = '18408'; -- Circle
 
+DELETE FROM `creature_waypoints` WHERE `spawnid` = @ID9;
+
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID9, 1, -2568.98, 7271.64, 15.49, 120000, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID9, 2, -2565.83, 7274.23, 15.48, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID9, 3, -2565.83, 7274.23, 15.55, 23000, 0, 0, 0, 0, 0, 0, 0);
 
 --
 --
@@ -482,4 +487,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-12-17_00-40_Nagrand');
+('2020-12-17_11-44_Nagrand');
