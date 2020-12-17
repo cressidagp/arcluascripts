@@ -13,7 +13,7 @@
 
   enUS: "I don't get it! Are ya blind? Can ya not see the demons bangin' on our door? Who am I gonna send out to talk to your shaman friends? Point 'em out!"
 
-  esMX: ¡No lo entiendo! ¿Estás ciego? ¿No puedes ver a los demonios golpeando nuestra puerta? ¿A quién voy a enviar para hablar con tus amigos chamanes? ¡Dime!
+  esMX: "¡No lo entiendo! ¿Estás ciego? ¿No puedes ver a los demonios golpeando nuestra puerta? ¿A quién voy a enviar para hablar con tus amigos chamanes? ¡Dime!"
 
 --]]
 
