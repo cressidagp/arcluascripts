@@ -10,8 +10,8 @@
                        manually... at least for now.
 --]]
 
-local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
-local UNIT_FIELD_CREATEDBY  = 0x0006 + 0x000A;
+--local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
+--local UNIT_FIELD_CREATEDBY  = 0x0006 + 0x000A;
 
 KEYANOMIR = {}
 
@@ -39,9 +39,9 @@ function KEYANOMIR.OnSpawnAndDeath( unit, event )
 
         local guid = unit:GetGUID();
 
-        minion:SetUInt64Value( UNIT_FIELD_SUMMONEDBY, guid );
+        minion:SetUInt64Value( 0x0006 + 0x0008, guid );
 
-        minion:SetUInt64Value( UNIT_FIELD_CREATEDBY, guid );
+        minion:SetUInt64Value( 0x0006 + 0x000A, guid );
 
     end
 
