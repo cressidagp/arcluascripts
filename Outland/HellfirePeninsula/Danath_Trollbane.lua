@@ -4,12 +4,26 @@
 	Hellfire Peninsula: Danath Trollbane (Honor Hold)
 	Engine: A.L.E
 
-  Credits:
+	Credits:
 
-  *) Trinity for gossips, texts, sound ids, timers, spell ids, move coords and some inspiration.
-  *) Hypersniper for his lua guides and some job in the lua engine.
-  *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-  *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+*) Trinity for gossips, texts, sound ids, timers, spell ids, move coords and some inspiration.
+*) Hypersniper for his lua guides and some job in the lua engine.
+*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+
+enUS:
+
+[ 1 ] = "Tell me of the Sons of Lothar."
+[ 2 ] = "Tell me of the Hellfire orcs."
+[ 3 ] = "Tell me of your homeland."
+[ 4 ] = "<more>"
+
+esMX:
+
+[ 1 ] = "Háblame de los Hijos de Lothar."
+[ 2 ] = "Háblame de los orcos Hellfire."
+[ 3 ] = "Háblame de tu tierra natal."
+[ 4 ] = "<más>"	
 
 --]]
 
@@ -23,12 +37,11 @@ function DANATH_TROLLBANE.OnHello( unit, _, plr )
 		unit:GossipMenuAddItem( 0, "Tell me of the Sons of Lothar.", 1, 0 );
 		unit:GossipMenuAddItem( 0, "Tell me of the Hellfire orcs.", 2, 0 );
 		unit:GossipMenuAddItem( 0, "Tell me of your homeland.", 3, 0 );
-
 	else
 		unit:GossipCreateMenu( 9939, plr, 0 );
 	end
-		unit:GossipAddQuests( plr );
-		unit:GossipSendMenu( plr );
+	unit:GossipAddQuests( plr );
+	unit:GossipSendMenu( plr );
 end
 
 function DANATH_TROLLBANE.OnSelect( unit, _, plr, id, selection )
@@ -45,6 +58,7 @@ function DANATH_TROLLBANE.OnSelect( unit, _, plr, id, selection )
 	elseif( selection == 3 )
 	then
 		unit:GossipCreateMenu( 8772, plr, 0 );
+
 	else
 		unit:GossipCreateMenu( 9933, plr, 0 );
 	end
