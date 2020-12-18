@@ -10,6 +10,16 @@
   *) Hypersniper for his lua guides and some job in the lua engine.
   *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
   *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+  
+  enUS:
+  
+  [ 1 ] = "Let me browse your reagents and poison supplies."
+  [ 2 ] = "Specialist, eh? Just what kind of specialist are you, anyway?"
+  
+  esMX:
+  
+  [ 1 ] = "Déjame explorar tus reactivos y suministros de veneno."
+  [ 2 ] = "Especialista, ¿eh? ¿Qué tipo de especialista eres?"
 
 --]]
 
