@@ -10,9 +10,9 @@
                        manually... at least for now.
 --]]
 
-local FACTION_ALLIANCE = 12;
-local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
-local UNIT_FIELD_CREATEDBY  = 0x0006 + 0x000A;
+--local FACTION_ALLIANCE = 12;
+--local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
+--local UNIT_FIELD_CREATEDBY  = 0x0006 + 0x000A;
 
 CYLINA_DARKHEART = {}
 
@@ -37,13 +37,13 @@ function CYLINA_DARKHEART.OnSpawnAndDeath( unit, event )
     then
         -- unit:CastSpell( 11939 ); -- cast "Summon Imp" (bugged spell on creature cast)
 
-        local minion = unit:SpawnCreature( 12922, -9466, -6.72, 49.79, 4.5, FACTION_ALLIANCE, 0, 0, 0, 0, 1, 0 );
+        local minion = unit:SpawnCreature( 12922, -9466, -6.72, 49.79, 4.5, 12, 0, 0, 0, 0, 1, 0 );
 
         local guid = unit:GetGUID();
 
-        minion:SetUInt64Value( UNIT_FIELD_SUMMONEDBY, guid );
+        minion:SetUInt64Value( 0x0006 + 0x0008, guid );
 
-        minion:SetUInt64Value( UNIT_FIELD_CREATEDBY, guid );
+        minion:SetUInt64Value( 0x0006 + 0x000A, guid );
 
     end
 
