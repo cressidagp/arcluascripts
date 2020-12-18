@@ -13,7 +13,7 @@
 
   enUS: "Show me, Seer."
 
-  esMX: "Show me, Seer."
+  esMX: "Muéstramelo, Vidente"
 
 --]]
 
