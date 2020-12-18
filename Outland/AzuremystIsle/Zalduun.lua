@@ -1,3 +1,22 @@
+--[[
+	ArcLuaScripts for ArcEmu
+	www.ArcEmu.org
+	Azuremyst Isle: Zalduun
+	Engine: A.L.E
+
+	Credits:
+
+	*) Trinity for spell id and timers.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+
+	enUS: "Oh no!  I'm losing this one!"
+
+	esMX: "¡Oh no! ¡Estoy perdiendo a este!"
+
+--]]
+
 ZALDUUN = {}
 
 function ZALDUUN.DoStuff( unit )
@@ -27,11 +46,9 @@ function ZALDUUN.DoStuff( unit )
 	then
 		if( args.wp == 21 )
 		then
-			unit:SendChatMessage( 12, 7, "debug: Casting" );
 			local target = unit:GetCreatureNearestCoords( -4103.75, -13766.79, 74.73, 16971 );
 			unit:FullCastSpellOnTarget( 29170, target );
 		else
-			unit:SendChatMessage( 12, 7, "debug: Casting" );
 			local target = unit:GetCreatureNearestCoords( -4126.75, -13765.20, 74.69, 16971 );
 			unit:FullCastSpellOnTarget( 29170, target );
 		end
@@ -60,10 +77,10 @@ function ZALDUUN.OnReachWP( unit, _, waypointId )
 
 	elseif( waypointId == 22 or waypointId == 69 )
 	then
-
+		unit:RemoveEvents();
+		
 		-- destroy table with variables to recycle resources
 	
-		unit:RemoveEvents();
 		ZALDUUN[ tostring( unit ) ] = nil;
 
 	end
