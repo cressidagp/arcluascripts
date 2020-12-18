@@ -20,6 +20,7 @@ function ARCANIST_VANDRIL.OnHello( unit, _, plr )
 	unit:GossipCreateMenu( 8417, plr, 0 );
 	unit:GossipMenuAddItem( 0, "Arcanist Vandril, what are the Forsaken doing here?", 1, 0 );
 	unit:GossipSendMenu( plr );
+	unit:GossipAddQuests( plr );
 
 end
 
