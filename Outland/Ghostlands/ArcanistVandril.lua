@@ -6,10 +6,14 @@
 
 	Credits:
 
-	*) Trinity for text and emotes.
+	*) Trinity for text.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	
+	enUS: "Arcanist Vandril, what are the Forsaken doing here?"
+	
+	esMX: "Arcanista Vandril, ¿qué están haciendo aquí los Renegados?"
 
 --]]
 
