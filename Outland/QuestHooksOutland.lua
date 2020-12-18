@@ -11,9 +11,9 @@
   *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
   *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
   
-  enus: "Welcome to Honor Hold, "..plr:GetName()..".  It's good to have you."
+  enUS: "Welcome to Honor Hold, "..plr:GetName()..".  It's good to have you."
   
-  esmx: "Bienvenido a Honor Hold, gonzalo. Es bueno tenerte."
+  esMX: "Bienvenido a Honor Hold, "..plr:GetName()..". Es bueno tenerte."
 
 --]]
 
