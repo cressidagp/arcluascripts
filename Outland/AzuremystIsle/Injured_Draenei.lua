@@ -22,17 +22,36 @@ INJURED_DRAENEI = {}
 
 function INJURED_DRAENEI.OnSpawn( unit )
 
-  --Need to disable health regen here.
-  --unit:SetUInt32Value( 0x0006 + 0x0035, 0x00080000 );
-  --unit:SetHealthPct( 15 );
-  --unit:SetHealth( 15 );
+	unit:SetFlag( 0x0006 + 0x0035, 0x00080000 ); -- in combat
 
-	local chance = math.random ( 1, 2 );
+	unit:SetHealthPct( 15 ); -- Need to disable health regen here
+
+	local chance = math.random( 1, 2 );
+	local rand = math.random( 1, 4 );
+
 	if( chance == 1 )
 	then
-		unit:SetUInt32Value( 0x0006 + 0x004D, 1 ); -- sit
+    --unit:SetUInt32Value( 0x0006 + 0x004D, 1 ); -- sit
+		unit:SetStandState( 1 );
 	else
-		unit:SetUInt32Value( 0x0006 + 0x004D, 3 ); -- sleep
+    --unit:SetUInt32Value( 0x0006 + 0x004D, 3 ); -- sleep
+		unit:SetStandState( 3 );
+	end
+
+	if( rand == 1 )
+	then
+		unit:SetModel( 16490 );
+
+	elseif( rand == 2 )
+	then
+		unit:SetModel( 16491  );
+
+	elseif( rand == 3 )
+	then
+		unit:SetModel( 16492 );
+		
+	else
+		unit:SetModel( 16493 );
 	end
 end
 
