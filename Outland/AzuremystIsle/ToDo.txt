@@ -1,0 +1,15 @@
+-- Dummy Auras
+
+29152: Bloodmyst Radiation
+35046: Quest - Draenei Survivor Irradiation
+
+-- Quests
+
+9294: Healing the Lake (need server hook on reward?)
+9312: The Emitter
+
+-- NPC
+
+Zalduun: should heal players
+
+Injured Draenei, Draenei Survivor: need disable health regen
