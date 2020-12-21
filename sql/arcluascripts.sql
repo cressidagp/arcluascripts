@@ -591,6 +591,20 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID10, 104, -4127.08, -13760.8, 74.2562, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID10, 105, -4121.58, -13761.4, 73.5881, 0, 0, 0, 0, 0, 0, 0, 0);
 
+-- Azuremyst Isle: quest "Healing the Lake"
+-- Dirty hack: set id to 1 will help to prevent trigger the quest end event when clicking in the gameobject
+
+UPDATE `quests` SET `flags` = 128, `ReqKillMobOrGOId1` = 1, `ReqKillMobOrGOCount1` = 1 WHERE `entry` = 9294;
+
+-- Azuremyst Isle: Draenei Survivor
+
+UPDATE `creature_proto` SET `auras` = 35046 WHERE `entry` = 16483;
+UPDATE `creature_spawns` SET `flags` = 4608 WHERE `entry` = 16483; -- UNIT_FLAG_UNKNOWN_10 + UNIT_FLAG_PVP
+
+-- Azuremyst Isle: Injured Draenei
+
+UPDATE `creature_spawns` SET `displayid` = 0, `flags` = 33024, `bytes0` = 0 WHERE `entry` = 16971; -- UNIT_FLAG_NOT_ATTACKABLE_9 + UNIT_FLAG_UNKNOWN_16
+
 --
 --
 -- DONT ADD MORE STUFF FROM HERE
