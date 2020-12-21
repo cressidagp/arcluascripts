@@ -10,6 +10,10 @@
   *) Hypersniper for his lua guides and some job in the lua engine.
   *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
   *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+  
+  enUS:
+  
+  esMX:
 
 --]]
 
@@ -66,7 +70,7 @@ function GRAVELHAMMER.OutOfCombat( unit )
 
   elseif( args.action == 2 and args.time <= 0 )
   then
-    unit:SetMovementType( 0 ); -- start
+    unit:SetMovementType( 0 ); -- start waypoint map
     args.action = 3;
     args.time = 0;
 
@@ -120,12 +124,6 @@ function GRAVELHAMMER.OutOfCombat( unit )
 end
 
 function GRAVELHAMMER.OnSpawn( unit )
-  --local sUnit = tostring( unit )
-  --GRAVELHAMMER[ sUnit ] = {}
-  --local ref = GRAVELHAMMER[ sUnit ]
-  --ref.time = 0;
-  --ref.action = 0;
-  --ref.waypoint = false;
   unit:RegisterAIUpdateEvent( math.random( 5000, 15000 ) );
 end
 
@@ -135,15 +133,18 @@ function GRAVELHAMMER.OnReachWP( unit, _, waypointId )
   then
     local args = GRAVELHAMMER[ tostring( unit ) ]
     args.waypoint = true;
-    --unit:StopMovement( 35000 );
     unit:SetFacing( 0.259758 );
 
   elseif( waypointId == 7 )
   then
-    unit:SetMovementType( 4 ); -- stop
+    unit:SetMovementType( 4 ); -- stop waypoint map
     unit:SetFacing( 4.15388 );
     unit:RegisterAIUpdateEvent( math.random( 300000, 900000 ) );
+	
+	-- destroy table with variables to recycle resources
+	
     GRAVELHAMMER[ tostring( unit ) ] = nil;
+	
   end
 end
 
@@ -151,7 +152,7 @@ function GRAVELHAMMER.OnAIUpdate( unit )
 
   if( unit:IsInCombat() == false )
   then
-    local sUnit = tostring( unit )
+    local sUnit = tostring( unit );
     GRAVELHAMMER[ sUnit ] = {}
     local ref = GRAVELHAMMER[ sUnit ]
     ref.time = 0;
