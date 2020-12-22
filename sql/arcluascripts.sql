@@ -50,18 +50,19 @@ DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest
 -- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
 --
 
-DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 1395, 1402, 1405, 3188, 7917, 16502, 18408 );
+DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 1395, 1402, 1405, 3188, 7917, 16483, 16502, 18408 );
 
 --DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
---DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
 --DELETE FROM `npc_monstersay` WHERE `entry` = 794 and `event` = 0; -- Elwynn Forest: Matt
---DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: Master Gadrin
+--DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
 --DELETE FROM `npc_monstersay` WHERE `entry` = 1395 and `event` = 0; -- Stormwind City: Ol Beasley
 --DELETE FROM `npc_monstersay` WHERE `entry` = 1402 and `event` = 0; -- Stormwind City: Topper McNabb
 --DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind City: Morris Lawry
 --DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
---DELETE FROM `npc_monstersay` WHERE `entry` = 16502 and `event` = 0; -- Azuremyst Isle: Zalduun
+--DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: Master Gadrin
 --DELETE FROM `npc_monstersay` WHERE `entry` = 18408 and `event` = 0; -- Nagrand: Warden Moibff Jill
+--DELETE FROM `npc_monstersay` WHERE `entry` = 16502 and `event` = 0; -- Azuremyst Isle: Zalduun
+--DELETE FROM `npc_monstersay` WHERE `entry` = 16483 and `event` = 0; -- Azuremyst Isle: Draenei Survivor
 
 --
 -- The next npc_gossip_textid had been ported to lua since arcemu database structure dont have support for them:
@@ -619,4 +620,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-12-18_13-44_Zalduun');
+('2020-12-22_15-18_DraeneiSurvivor');
