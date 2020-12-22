@@ -13,29 +13,29 @@ HOOKS_DEBUG = {}
 
 function HOOKS_DEBUG.Consolidated( event, plr, argC, argD )
 
-    if( plr:IsGm() == true )
-    then
+	if( plr:IsGm() == true )
+	then
 		if( event == 8 ) -- OnEmote
 		then
 			plr:SendBroadcastMessage( "Emote ID: "..argD.." " );
 		
-        elseif( event == 10 ) -- OnCastSpell
-        then
-            plr:SendBroadcastMessage( "Spell ID: "..argC.." " );
+		elseif( event == 10 ) -- OnCastSpell
+		then
+			plr:SendBroadcastMessage( "Spell ID: "..argC.." " );
 
-        elseif( event == 14 or event == 22 ) -- QuestAccept or QuestComplete
-        then
-            plr:SendBroadcastMessage( "QuestId: "..argC.." " );
-            if( argD ~= nil )
-            then
-                plr:SendBroadcastMessage( "QuestGiver: "..argD:GetEntry().. " " );
-            end
+		elseif( event == 14 or event == 22 ) -- QuestAccept or QuestComplete
+		then
+			plr:SendBroadcastMessage( "QuestId: "..argC.." " );
+			if( argD ~= nil )
+			then
+				plr:SendBroadcastMessage( "QuestGiver: "..argD:GetEntry().. " " );
+			end
 
-        elseif( event == 26) -- OnAreaTrigger
-        then
-            plr:SendBroadcastMessage("AT: "..argC.. " " );
-        end
-    end
+		elseif( event == 26) -- OnAreaTrigger
+		then
+			plr:SendBroadcastMessage("AT: "..argC.. " " );
+		end
+	end
 end
 
 --RegisterServerHook( 8, HOOKS_DEBUG.Consolidated );
