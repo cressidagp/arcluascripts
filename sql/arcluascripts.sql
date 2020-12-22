@@ -85,13 +85,13 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 
 -- Halls of Reflections:
 --
 
--- Falric and Marwyn invisibility
+-- Falric and Marwyn ( work but its the right invi type? )
 
-UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` IN ( 38112, 38113 ); -- work but its the right type?
+UPDATE `creature_proto` SET `invisibility_type` = 5, `flags` = 832 WHERE `entry` IN ( 38112, 38113 );
 
 -- Lich King speed fix
 
-UPDATE `creature_proto` SET `walk_speed` = 5 WHERE `entry` = 37226;
+UPDATE `creature_proto` SET `walk_speed` = 5, `flags` = 768 WHERE `entry` = 37226;
 
 -- Lets remove some pre-spawned
 
@@ -124,7 +124,9 @@ UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and
 UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134007;
 UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134007;
 
--- Fix Sylvana spawn pos
+-- Fix Sylvana spawn pos and display
+
+UPDATE `creature_spawns` SET `displayid` = 30776 WHERE `entry` = 37223;
 
 UPDATE `creature_spawns` SET `position_x` = '5236.667' WHERE `entry` = 37223 and `id` = 134009;
 UPDATE `creature_spawns` SET `position_y` = '1929.906' WHERE `entry` = 37223 and `id` = 134009;
@@ -249,6 +251,8 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 0, 100, 0, 14, 'Frostworn General', 'You are not worthy to face the Lich King!', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 5, 100, 0, 14, 'Frostworn General', 'Master, I have failed...', NULL, NULL, NULL, NULL);
 
+UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 36723;
+
 --
 -- Icecrown Citadel:
 --
@@ -272,11 +276,15 @@ UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `id` = @ID4; -- UNIT_FLAG_
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39747, 0, 100, 0, 14, 'Saviana Ragefire', 'You will sssuffer for this intrusion!', NULL, NULL, NULL, NULL);
 
+UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39747;
+
 -- Baltharus the Warborn:
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39751, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment has arrived.', NULL, NULL, NULL, NULL);
 
 UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
+
+UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39751;
 
 -- Halion the Destroyer:
 
