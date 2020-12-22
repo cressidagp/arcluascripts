@@ -25,22 +25,20 @@ function VALE_GUARDIAN.OnSpawn( unit )
 		local y = tonumber( os.date( "%M" ) );
 		if( y % 2 == 0 ) -- minutes its par
 		then
-				unit:SetModel( 16789 ); -- male 1
+			unit:SetModel( 16789 ); -- male 1
 		else
-				unit:SetModel( 16791 ); -- female 1
+			unit:SetModel( 16791 ); -- female 1
 		end
 
 	else
 		local y = tonumber( os.date( "%M" ) );
-			if( y % 2 == 0 ) -- minutes its par
-			then
-					unit:SetModel( 16790 ); -- male 2
-			else
-					unit:SetModel( 16792 ); -- female 2
-			end
+		if( y % 2 == 0 ) -- minutes its par
+		then
+			unit:SetModel( 16790 ); -- male 2
+		else
+			unit:SetModel( 16792 ); -- female 2
+		end
 	end
 end
 
 RegisterUnitEvent( 16921, 18, VALE_GUARDIAN.OnSpawn );
-
---]]

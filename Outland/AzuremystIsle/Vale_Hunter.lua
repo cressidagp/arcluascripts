@@ -9,20 +9,6 @@
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
-
---]]
-
---[[
-	ArcLuaScripts for ArcEmu
-	www.ArcEmu.org
-	Azuremyst Isle: Vale Hunter
-	Engine: A.L.E
-
-	Credits:
-
-	*) Hypersniper for his lua guides and some job in the lua engine.
-	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
 	
 	Developers note: since math.random( lowerValue, highgerValue) will always return the
 	lowerValue in the first round, and there is only on Vale Hunter spawned in world
