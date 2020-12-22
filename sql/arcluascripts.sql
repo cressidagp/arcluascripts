@@ -87,11 +87,13 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 
 
 -- Falric and Marwyn ( work but its the right invi type? )
 
-UPDATE `creature_proto` SET `invisibility_type` = 5, `flags` = 832 WHERE `entry` IN ( 38112, 38113 );
+UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` IN ( 38112, 38113 );
+
+UPDATE `creature_spawns` SET `flags` = 832 WHERE `entry` IN ( 38112, 38113 );
 
 -- Lich King speed fix
 
-UPDATE `creature_proto` SET `walk_speed` = 5, `flags` = 768 WHERE `entry` = 37226;
+UPDATE `creature_proto` SET `walk_speed` = 5  WHERE `entry` = 37226;
 
 -- Lets remove some pre-spawned
 
@@ -100,10 +102,10 @@ DELETE FROM `creature_spawns` WHERE `id` = 133989 and `entry` = 37158; -- Quelda
 
 -- Archmage Koreln
 
-DELETE FROM `creature_spawns` WHERE `id` = 200632 and `entry` = 37582;
+--DELETE FROM `creature_spawns` WHERE `id` = 200632 and `entry` = 37582;
 
-INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
-VALUES (200632, 37582, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30685, 1770, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 35781, 0, 0, 0, 64);
+--INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
+--VALUES (200632, 37582, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30685, 1770, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 35781, 0, 0, 0, 64);
 
 -- Dark Ranger Loralen
 
@@ -112,19 +114,19 @@ DELETE FROM `creature_spawns` WHERE `id` = 200633 and `entry` = 37779;
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
 VALUES (200633, 37779, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30687, 1770, 0, 0, 0, 1, 433, 0, 0, 0, 0, 0, 0, 0, 34284, 34284, 34269, 0, 128);
 
--- Fix Jaina spawn pos
+-- Fix Jaina spawn pos ( testing no pre-spawned )
 
-UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134006;
-UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134006;
-UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134006;
-UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134006;
+--UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134006;
+--UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134006;
+--UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134006;
+--UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134006;
 
-UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134007;
-UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134007;
-UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134007;
-UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134007;
+--UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134007;
+--UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134007;
+--UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134007;
+--UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134007;
 
--- Fix Sylvana spawn pos and display
+-- Fix Sylvana spawn pos and display ( testing pre-spawned )
 
 UPDATE `creature_spawns` SET `displayid` = 30776 WHERE `entry` = 37223;
 
@@ -140,8 +142,8 @@ UPDATE `creature_spawns` SET `orientation` = '0.8377581' WHERE `entry` = 37223 a
 
 -- Starting to phase shift people for Alliance set
 
-UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134006 and `entry` = 37221; -- Jaina (enemy to horde, big one)
-UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134007 and `entry` = 37221; -- Jaina (friend to alliance, big one)
+--UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134006 and `entry` = 37221; -- Jaina (enemy to horde, big one)
+--UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134007 and `entry` = 37221; -- Jaina (friend to alliance, big one)
 UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134252 and `entry` = 38112; -- Falric
 UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134254 and `entry` = 38113; -- Marwyn
 
