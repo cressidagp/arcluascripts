@@ -13,14 +13,14 @@
 
 	Precondition(s):
 
-	*) Casted by player
-	*) Player has quest 9452
-	*) Player is near a school of Red Snapper fish
+	*) Casted by player.
+	*) Player has quest 9452.
+	*) Player is near a school of Red Snapper fish.
 
 	Effect(s):
 
-	*) Despawns the fish school and gives to player one Red Snapper (23614)
-	*) Has a chance of spawning and Angry Murloc
+	*) Despawns the fish school and gives to player one Red Snapper (23614).
+	*) Has a chance of spawning and Angry Murloc.
 
 --]]
 

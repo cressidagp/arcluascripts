@@ -4,19 +4,33 @@
 	Force Target Salute (6245)
 	Engine: A.L.E
 
-  Credits:
+	Credits:
 
-  *) Hypersniper for his lua guides and some job in the lua engine.
-  *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-  *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
 
+	Precondition(s):
+	
+	*) Need a target.
+	
+	Effect(s):
+	
+	*) Makes unit salute the target.
+	*) The target salutes back unit.
+	
 --]]
 
 function ForceTargetSaluteDummy( effectIndex, spellObject )
 
 	local caster = spellObject:GetCaster();
+	
+	if( caster == nil ) then return; end
+	
 	local target = spellObject:GetTarget();
-
+	
+	if( target == nil ) then return; end
+	
 	caster:Emote( 66, 0 );
 	target:Emote( 66, 0 );
 	
