@@ -3,10 +3,15 @@
 29152: Bloodmyst Radiation
 35046: Quest - Draenei Survivor Irradiation
 
+-- Dummy Spell
+
+29866: Cast Fishing Net (need water visual effect)
+
 -- Quests
 
-9294: Healing the Lake (need server hook on reward?)
-9312: The Emitter
+9294: Healing the Lake (can be completed, bue need end event )
+9312: The Emitter (can be completed, but need end event )
+9303: Inoculation (need some texts)
 
 -- NPC
 
