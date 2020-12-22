@@ -3,7 +3,12 @@
 	www.ArcEmu.org
 	Hooks Chat
 	Engine: A.L.E
-	Credits: nil
+
+	Credits:
+
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
 
 --]]
 
@@ -38,7 +43,7 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 				plr:SendBroadcastMessage( ""..n.."" ); 
 			end
 		
-		-- .debug rangecheck
+		--.debug rangecheck
 		--elseif( msg == "#distance" )
 		--then
 			--local target = plr:GetSelection();
