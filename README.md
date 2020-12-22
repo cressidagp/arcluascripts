@@ -9,9 +9,9 @@ WARNING: this stuff its experimental, use it at your own risk. Feel free to [ope
 
 ## Features
 
-Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips, Quests, DummySpells and a couple of extra commands that i used in the development.
+Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips, Quests, DummySpells and a couple of gm/dev commands.
 
-Scripts folder has been organizated per map, bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
+Scripts folder has been organizated per map id, bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
 
 
 ## Requirements
@@ -21,7 +21,7 @@ To run properly require the contents of 0Misc folder from [ArcEmu github reposit
 
 ## Instalation
 
-1. Copy all files in to your ArcEmu scripts folder.
+1. Copy all files from scripts folder in to your ArcEmu scripts folder.
 
 2. Apply arcluascripts.sql to your world database.
 
