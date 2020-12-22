@@ -3,9 +3,16 @@
 	www.ArcEmu.org
 	Debug Kit
 	Engine: A.L.E
-	Credits: nil
+	
+	Credits:
+
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
 
 	Developer notes: this one save me a lot of time in debuggin quest and spells.
+	
+	WARNING: disabled by default.
 
 --]]
 
