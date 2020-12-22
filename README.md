@@ -9,7 +9,7 @@ WARNING: this stuff its experimental, use it at your own risk. Feel free to [ope
 
 ## Features
 
-Lua scripts for Instances, Bosses, Creatures, Gameobjects, Gossips, Quests, DummySpells and a couple of extra commands that i used in the development.
+Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips, Quests, DummySpells and a couple of extra commands that i used in the development.
 
 Scripts folder has been organizated per map, bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
 
