@@ -29,19 +29,19 @@
 
   esMX:
 
-  { 1, 12, 0, "<Sobbing> I hate graveyards.  So many dead.  And my sweet Luhanaa....", 1 },
-  { 2, 12, 7, "It should have been me!", 6 },
-  { 3, 12, 7, "Be at peace, my sweet, sweet, Luhanaa.", 6 },
-  { 4, 12, 7, "I'll never forget you, my love.", 1 },
-  { 5, 12, 7, "If I ever find the ones responsible for the crash...!", 1 },
-  { 6, 12, 7, "We should never have come along.", 1 },
-  { 7, 12, 7, "Why, Luhanaa?  Why?!", 6 },
-  { 8, 12, 7, "I miss you so much!", 1 },
-  { 9, 12, 7, "You'll always be here, with me.", 1 },
-  { 10, 16, 0, "%s weeps softly.", 18 },
-  { 11, 16, 0, "%s bows his head and sighs, clearly exhausted.", 2 },
-  { 12, 16, 0, "%s breaks down into huge, wracking sobs.", 18 },
-  { 13, 16, 0, "%s stares in silence at the grave marker before him.", 0 }
+  { 1, 12, 0, "<Sollozando> Odio los cementerios.  Tantos muertos.  Y mi dulce Luhanaa....", 1 },
+  { 2, 12, 7, "¡Debería haber sido yo!", 6 },
+  { 3, 12, 7, "Descansa en paz, mi dulce, dulce, Luhanaa.", 6 },
+  { 4, 12, 7, "Nunca te olvidaré, mi amor.", 1 },
+  { 5, 12, 7, "¡Si alguna vez encuentro a los responsables del accidente...!", 1 },
+  { 6, 12, 7, "Nunca deberíamos haber venido.", 1 },
+  { 7, 12, 7, "¿Por qué, Luhanaa? ¡¿Por qué?!", 6 },
+  { 8, 12, 7, "¡Te extraño tanto!", 1 },
+  { 9, 12, 7, "Siempre estarás aquí conmigo.", 1 },
+  { 10, 16, 0, "%s llora suavemente.", 18 },
+  { 11, 16, 0, "%s inclina la cabeza y suspira, claramente exhausto.", 2 },
+  { 12, 16, 0, "%s se rompe en sollozos enormes y devastadores.", 18 },
+  { 13, 16, 0, "%s mira en silencio la lápida que tiene ante él.", 0 }
 
 --]]
 
