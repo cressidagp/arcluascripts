@@ -138,9 +138,9 @@ function THREE_BEGGARS.OnSpawn( unit, event )
 	
 end
 
-for i = 1, #NPC_BEGGARS_ENTRY
-do
+--for i = 1, #NPC_BEGGARS_ENTRY
+--do
 
-	RegisterUnitEvent( NPC_BEGGARS_ENTRY[ i ], 18, THREE_BEGGARS.OnSpawn );
+--	RegisterUnitEvent( NPC_BEGGARS_ENTRY[ i ], 18, THREE_BEGGARS.OnSpawn );
 
-end
+--end
