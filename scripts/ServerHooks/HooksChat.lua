@@ -12,7 +12,7 @@
 
 --]]
 
-local COMMANDS = { "help", "gdisplay", "removeauras", "getphase", "jail", "entry" };
+local COMMANDS = { "help", "gprint", "gdisplay", "removeauras", "getphase", "jail", "entry" };
 
 HOOKS_CHAT = {}
 
