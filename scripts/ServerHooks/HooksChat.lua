@@ -12,7 +12,7 @@
 
 --]]
 
-local COMMANDS = { "help", "gdisplay", "removeauras", "getphase", "jail" };
+local COMMANDS = { "help", "gdisplay", "removeauras", "getphase", "jail", "entry" };
 
 HOOKS_CHAT = {}
 
@@ -79,6 +79,16 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 				target:Teleport( 0, -8667.677, 624.130, 95.69, 2.2 );
 				target:SendBroadcastMessage( "You are in jail." );
 				plr:SendBroadcastMessage( "Player has been send to jail." );
+			else
+				plr:SendBroadcastMessage( "You dont have a target." );
+			end
+			
+		elseif( msg == "#entry" )
+		then
+			local target = plr:GetSelection();
+			if( target ~= nil )
+			then
+				plr:SendBroadcastMessage( "Entry: "..target:GetEntry().."" );
 			else
 				plr:SendBroadcastMessage( "You dont have a target." );
 			end
