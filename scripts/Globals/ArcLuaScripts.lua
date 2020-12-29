@@ -35,4 +35,4 @@ end
 
 print( _VERSION );
 
-print( "Lua memory used: "..gcinfo().."" );
+print( "Lua memory used: "..gcinfo().." Kb." );

@@ -1,6 +1,6 @@
 local instance_mod = require( "DUNGEON_FH" );
 
-if( type( instance_mod ) ~= "table" ) then error( "Ruby Sanctum Module is missing!", 1 ); end
+if( type( instance_mod ) ~= "table" ) then error( "Halls of Reflection Module is missing!", 1 ); end
 
 module( instance_mod._NAME..".INSTANCE_HOR", package.seeall );
 
