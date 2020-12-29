@@ -33,6 +33,6 @@ else
 
 end
 
-print (_VERSION);
+print( _VERSION );
 
 print( "Lua memory used: "..gcinfo().."" );
