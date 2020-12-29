@@ -34,3 +34,5 @@ else
 end
 
 print (_VERSION);
+
+print( "Lua memory used: "..gcinfo().."" );
