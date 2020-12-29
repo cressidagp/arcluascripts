@@ -12,7 +12,7 @@
 
 --]]
 
-local COMMANDS = { "help", "gprint", "gdisplay", "removeauras", "getphase", "jail", "entry" };
+local COMMANDS = { "help", "gprint", "removeauras", "getphase", "jail", "entry" };
 
 HOOKS_CHAT = {}
 
@@ -31,17 +31,11 @@ function HOOKS_CHAT.AllCommands( event, plr, msg, type, lang, misc )
 		then
 			for n in pairs( _G )
 			do 
-				print( n ); 
+				print( n );
+				plr:SendBroadcastMessage( ""..n.."" );
 			end
 		
 			plr:SendBroadcastMessage( "Lua global table has been printed." );
-	
-		elseif( msg == "#gdisplay" )
-		then
-			for n in pairs( _G ) 
-			do 
-				plr:SendBroadcastMessage( ""..n.."" ); 
-			end
 		
 		--.debug rangecheck
 		--elseif( msg == "#distance" )
