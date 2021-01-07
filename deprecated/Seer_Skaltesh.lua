@@ -38,5 +38,5 @@ function SEER_SKALTESH.OnSelect( unit, _, plr, id, selection )
 	end
 end
 
-RegisterUnitGossipEvent( 18985, 1, SEER_SKALTESH.OnHello );
-RegisterUnitGossipEvent( 18985, 2, SEER_SKALTESH.OnSelect );
+--RegisterUnitGossipEvent( 18985, 1, SEER_SKALTESH.OnHello );
+--RegisterUnitGossipEvent( 18985, 2, SEER_SKALTESH.OnSelect );

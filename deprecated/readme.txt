@@ -17,5 +17,6 @@ The_Three_Beggars.lua
 Botanist_Taerix.lua
 Hilary.lua
 Proenitus.lua
+Seer_Skaltesh.lua
 Shawn.lua
 Spirit_of_the_Vale.lua
