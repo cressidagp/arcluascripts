@@ -32,4 +32,4 @@ function HILARY.OnHello( unit, _, plr )
 	
 end
 
-RegisterUnitGossipEvent( 8962, 1, HILARY.OnHello );
+--RegisterUnitGossipEvent( 8962, 1, HILARY.OnHello );

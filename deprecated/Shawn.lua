@@ -29,4 +29,4 @@ function SHAWN.OnHello( unit, _, plr )
 		
 end
 
-RegisterUnitGossipEvent( 8965, 1, SHAWN.OnHello );
+--RegisterUnitGossipEvent( 8965, 1, SHAWN.OnHello );
