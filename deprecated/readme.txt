@@ -16,6 +16,7 @@ The_Three_Beggars.lua
 
 Botanist_Taerix.lua
 Hilary.lua
+Knight-Defender_Zunade.lua
 Proenitus.lua
 Seer_Skaltesh.lua
 Shawn.lua

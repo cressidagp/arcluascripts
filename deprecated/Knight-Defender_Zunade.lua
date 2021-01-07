@@ -34,5 +34,5 @@ function ZUNADE.OnSelect( unit, _, plr, id, selection )
 	end
 end
 
-RegisterUnitGossipEvent( 18030, 1, ZUNADE.OnHello );
-RegisterUnitGossipEvent( 18030, 2, ZUNADE.OnSelect );
+--RegisterUnitGossipEvent( 18030, 1, ZUNADE.OnHello );
+--RegisterUnitGossipEvent( 18030, 2, ZUNADE.OnSelect );
