@@ -27,4 +27,4 @@ function BOTANIST_TAERIX.OnHello( unit, _, plr )
     unit:GossipSendMenu( plr );
 end
 
-RegisterUnitGossipEvent( 16514, 1, BOTANIST_TAERIX.OnHello );
+--RegisterUnitGossipEvent( 16514, 1, BOTANIST_TAERIX.OnHello );

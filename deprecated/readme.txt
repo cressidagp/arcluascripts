@@ -14,6 +14,7 @@ The_Three_Beggars.lua
 
 ***) Ported to gossip plugin:
 
+Botanist_Taerix.lua
 Hilary.lua
 Proenitus.lua
 Shawn.lua
