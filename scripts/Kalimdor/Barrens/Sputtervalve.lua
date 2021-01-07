@@ -21,6 +21,7 @@ function SPUTTERVALVE.OnHelloOnSelect( unit, event, plr, id, selection, code )
 	then
 		unit:GossipCreateMenu( 519, plr, 0 );
 		unit:GossipMenuAddItem( 0, "How can I help?", 1, 0 );
+		unit:GossipAddQuests( plr );
 		unit:GossipSendMenu( plr );
 	else
 		if( selection == 1 )
