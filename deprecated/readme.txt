@@ -12,7 +12,8 @@ Saviana_Ragefire.lua
 
 The_Three_Beggars.lua
 
-***) Ported to gossip plugin
+***) Ported to gossip plugin:
 
 Shawn.lua
 Hilary.lua
+Spirit_of_the_Vale.lua

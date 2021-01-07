@@ -27,4 +27,4 @@ function SPIRIT_VALE.OnHello( unit, _, plr )
     unit:GossipSendMenu( plr );
 end
 
-RegisterUnitGossipEvent( 17087, 1, SPIRIT_VALE.OnHello );
+--RegisterUnitGossipEvent( 17087, 1, SPIRIT_VALE.OnHello );
