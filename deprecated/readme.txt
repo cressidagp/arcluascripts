@@ -14,6 +14,7 @@ The_Three_Beggars.lua
 
 ***) Ported to gossip plugin:
 
-Shawn.lua
 Hilary.lua
+Proenitus.lua
+Shawn.lua
 Spirit_of_the_Vale.lua

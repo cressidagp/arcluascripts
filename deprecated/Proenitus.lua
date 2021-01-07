@@ -27,4 +27,4 @@ function PROENITUS.OnHello( unit, _, plr )
     unit:GossipSendMenu( plr );
 end
 
-RegisterUnitGossipEvent( 16477, 1, PROENITUS.OnHello );
+--RegisterUnitGossipEvent( 16477, 1, PROENITUS.OnHello );
