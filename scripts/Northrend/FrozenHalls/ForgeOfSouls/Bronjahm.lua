@@ -12,12 +12,12 @@
 local NPC_BRONJAHM					= 36497;
 local NPC_CORRUPTED_SOUL_FRAGMENT	= 36535;
 
+local BOSS_HP = { 539240, 903227 };
+local CREATURE_HP = { 18900, 56700 };
+
 local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
 
 --]]
-
-local BOSS_HP = { 539240, 903227 };
-local CREATURE_HP = { 18900, 56700 };
 
 local SOUND = {
 [ 1 ] = 16595; -- OnCombat
@@ -39,32 +39,33 @@ local YELL = {
 
 -- Spells:
 local SPELL_SOULSTORM_CHANNEL		= 69008; -- prefight, has an apply periodic trigger dummy aura effect
-local SPELL_TELEPORT          		= 68988;
-local SPELL_MAGICS_BANE       		= 68793;
-local SPELL_SHADOW_BOLT       		= 70043;
-local SPELL_CORRUPT_SOUL      		= 68839; -- has a apply dummy aura effect
---local SPELL_DRAW_CORRUPTED_SOUL 	= 68846;
-local SPELL_SOULSTORM_VISUAL  		= 68870; -- precast Soulstorm, has an apply periodic trigger dummy aura effect
-local SPELL_SOULSTORM         		= 68872;
---local SPELL_SOULSTORM 			= 68925; -- has a dummy effect
-local SPELL_FEAR              		= 68950;
-local SPELL_CONSUME_SOUL      		= 68861; -- has a scripted effect
+local SPELL_TELEPORT				= 68988;
+local SPELL_MAGICS_BANE				= 68793;
+local SPELL_SHADOW_BOLT				= 70043;
+local SPELL_CORRUPT_SOUL			= 68839; -- has a apply dummy aura effect
+--local SPELL_DRAW_CORRUPTED_SOUL	= 68846;
+local SPELL_SOULSTORM_VISUAL		= 68870; -- precast Soulstorm, has an apply periodic trigger dummy aura effect
+local SPELL_SOULSTORM				= 68872;
+--local SPELL_SOULSTORM				= 68925; -- has a dummy effect
+local SPELL_FEAR					= 68950;
+local SPELL_CONSUME_SOUL			= 68861; -- has a scripted effect
 --local SPELL_PURPLE_BANISH_VISUAL	= 68862; -- used by Soul Fragment (Aura), has an apply dummy aura effect
 
 local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
-    local diff = unit:GetDungeonDifficulty();
+	if( unit:GetDungeonDifficulty() ~= 0 )
+	then
+		unit:SetMaxHealth( 903227 );
+		unit:SetHealth( 903227 );
+	end
 
-    unit:SetMaxHealth( BOSS_HP[ diff + 1 ] );
-
-    unit:SetHealth( BOSS_HP[ diff + 1 ] );
-	
 	--unit:CastSpell( SPELL_SOULSTORM_CHANNEL );
 	unit:FullCastSpell( SPELL_SOULSTORM_CHANNEL );
-
 end
+
+RegisterUnitEvent( 36502, 18, OnSpawn );
 
 function OnCombat( unit )
 
@@ -78,14 +79,14 @@ function OnCombat( unit )
 	fear = math.random( 8, 12 )
 	};
 
-    unit:PlaySoundToSet( SOUND[ 1 ] );
+	unit:PlaySoundToSet( SOUND[ 1 ] );
 	
     --[[ Developer notes: we dont need to send the chat here since
     our monstersay table will do the job, instance collision checked. ]]
 	
 	unit:RemoveAura( SPELL_SOULSTORM_CHANNEL );
 
-    unit:RegisterAIUpdateEvent( 1000 );
+	unit:RegisterAIUpdateEvent( 1000 );
 end
 
 function OnDamageTaken( unit, _, _, ammount )
@@ -109,9 +110,9 @@ function OnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-    	local random = math.random( 2, 3 );
-    	unit:PlaySoundToSet( SOUND[ random ] );
-    	unit:SendChatMessage( 14, 0, YELL[ random - 1 ] );
+		local random = math.random( 2, 3 );
+		unit:PlaySoundToSet( SOUND[ random ] );
+		unit:SendChatMessage( 14, 0, YELL[ random - 1 ] );
 	end
 end
 
@@ -217,17 +218,17 @@ RegisterUnitEvent( 36497, 4 , OnDeath );
 RegisterUnitEvent( 36497, 21, OnAIUpdate );
 
 --[[
-			Corrupted Soul Fragment AI (36535)
+	Corrupted Soul Fragment AI (36535)
 --]]
 
 function NpcOnSpawn( unit )
 
-    local diff = unit:GetDungeonDifficulty();
+	if( unit:GetDungeonDifficulty() ~= 0 )
+	then
+		unit:SetMaxHealth( 56700 );
+		unit:SetHealth( 56700 );
+	end
 
-    unit:SetMaxHealth( CREATURE_HP[ diff + 1 ] );
-
-    unit:SetHealth( CREATURE_HP[ diff + 1 ] );
-	
 	unit:DisableCombat( 1 );
 	
 	unit:CastSpell( SPELL_PURPLE_BANISH_VISUAL );
