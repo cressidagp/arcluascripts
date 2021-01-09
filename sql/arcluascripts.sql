@@ -82,6 +82,21 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: Spirit of the Vale
 
 --
+-- Forge of Souls:
+--
+
+-- Bronjahm: monstersay OnCombat, OnDeath
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36497, 0, 100, 0, 14, 'Bronjahm', 'Finally, a captive audience!', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36497, 5, 100, 0, 14, 'Bronjahm', 'The Devourer awaits...', NULL, NULL, NULL, NULL);
+
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36497;
+
+-- Corrupted Fragmented Soul:
+
+--UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36535;
+
+--
 -- Halls of Reflections:
 --
 
@@ -630,4 +645,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2020-12-22_15-18_DraeneiSurvivor');
+('2021-01-09_14-20_Bronjahm');
