@@ -2,8 +2,10 @@
 comment out the Registers and remove his modular way counterpart.
 
 Baltharus_the_Warborn.lua
+Bronjahm.lua
 Captain_Falric.lua
 Captain_Marwyn.lua
+DevourerOfSouls
 Frostworn_General.lua
 General_Zarithrian.lua
 Saviana_Ragefire.lua
