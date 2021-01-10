@@ -72,8 +72,6 @@ function OnSpawn( unit )
 	unit:FullCastSpell( SPELL_SOULSTORM_CHANNEL );
 end
 
-RegisterUnitEvent( 36502, 18, OnSpawn );
-
 function OnCombat( unit )
 
 	self[ tostring( unit )] = {
