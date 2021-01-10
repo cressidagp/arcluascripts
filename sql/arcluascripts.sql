@@ -96,6 +96,13 @@ UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36497;
 
 --UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36535;
 
+-- Devourer Of Souls: monstersay OnCombat, OnDeath
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36502, 0, 100, 0, 14, 'Devourer Of Souls', 'You dare look upon the host of souls? I SHALL DEVOUR YOU WHOLE!', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36502, 5, 100, 0, 14, 'Devourer Of Souls', 'The swell of souls will not be abated! You only delay the inevitable.', NULL, NULL, NULL, NULL);
+
+UPDATE `creature_spawns` SET `auras` = 64 WHERE `entry` = 36502;
+
 --
 -- Halls of Reflections:
 --
@@ -645,4 +652,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-09_14-20_Bronjahm');
+('2021-01-10_01-36_DevourerOfSouls');
