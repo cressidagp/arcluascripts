@@ -10,12 +10,16 @@
 	
 
 local NPC_BRONJAHM					= 36497;
+local H_NPC_BRONJHAM				= 36498;
 local NPC_CORRUPTED_SOUL_FRAGMENT	= 36535;
+local H_NPC_CORRUPTED_SOUL_FRAGMENT	= 36617;
 
 local BOSS_HP = { 539240, 903227 };
 local CREATURE_HP = { 18900, 56700 };
 
 local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
+local UNIT_FIELD_FLAGS_2 = 0x0006 + 0x0036;
+local UNIT_FLAG2_ENABLE_POWER_REGEN = 0x0000800;
 
 --]]
 
@@ -60,7 +64,7 @@ function OnSpawn( unit )
 		unit:SetMaxHealth( 903227 );
 		unit:SetHealth( 903227 );
 	end
-
+	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
 	--unit:CastSpell( SPELL_SOULSTORM_CHANNEL );
 	unit:FullCastSpell( SPELL_SOULSTORM_CHANNEL );
 end
@@ -104,6 +108,19 @@ function OnDamageTaken( unit, _, _, ammount )
 		unit:CastSpell( SPELL_TELEPORT );
 		unit:Root();
 	end
+end
+
+function OnLeaveCombat( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
 end
 
 function OnTargetDied( unit, _, victim )
@@ -213,6 +230,7 @@ end
 RegisterUnitEvent( 36497, 18, OnSpawn );
 RegisterUnitEvent( 36497, 1 , OnCombat );
 RegisterUnitEvent( 36497, 23, OnDamageTaken );
+RegisterUnitEvent( 36497, 2 , OnLeaveCombat );
 RegisterUnitEvent( 36497, 3 , OnTargetDied );
 RegisterUnitEvent( 36497, 4 , OnDeath );
 RegisterUnitEvent( 36497, 21, OnAIUpdate );
@@ -228,6 +246,8 @@ function NpcOnSpawn( unit )
 		unit:SetMaxHealth( 56700 );
 		unit:SetHealth( 56700 );
 	end
+	
+	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
 
 	unit:DisableCombat( 1 );
 	
