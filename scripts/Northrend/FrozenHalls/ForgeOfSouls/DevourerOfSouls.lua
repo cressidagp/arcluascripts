@@ -11,15 +11,15 @@ local NPC_DEVOURER			= 36502;
 local H_NPC_DEVOURER		= 37677;
 local NPC_CRUCIBLE_OF_SOULS	= 37094;
 
-local BOSS_HP = { 647088, 903227 };
+local BOSS_HP	= { 647088, 903227 };
 
-local DISPLAY_ANGER = 30148;
-local DISPLAY_SORROW = 30149;
-local DISPLAY_DESIRE = 30150;
+local DISPLAY_ANGER		= 30148;
+local DISPLAY_SORROW	= 30149;
+local DISPLAY_DESIRE	= 30150;
 
-local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
-local UNIT_FIELD_FLAGS_2 = 0x0006 + 0x0036;
-local UNIT_FLAG2_ENABLE_POWER_REGEN = 0x0000800;
+local UNIT_FIELD_TARGET				= 0x0006 + 0x000C;
+local UNIT_FIELD_FLAGS_2			= 0x0006 + 0x0036;
+local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 
 --]]
 
@@ -33,13 +33,13 @@ local SOUND = {
 [ 7 ] = 16891;	-- OnTargetDiedFaceDesire 1
 [ 8 ] = 16892;	-- OnTargetDiedFaceDesire 2
 [ 9 ] = 16887;	-- OnDeathFaceAnger
-[ 10 ] = 16898; -- OnDeathFaceSorrow
-[ 11 ] = 16893; -- OnDeathFaceDesire
-[ 12 ] = 16888; -- OnUnleashSoulAnger
-[ 13 ] = 16899; -- OnUnleashSoulSorrow
-[ 14 ] = 16894; -- OnUnleashSoulDesire
-[ 15 ] = 16889; -- OnWailingSoulAnger
-[ 16 ] = 16895; -- OnWailingSoulDesire
+[ 10 ] = 16898;	-- OnDeathFaceSorrow
+[ 11 ] = 16893;	-- OnDeathFaceDesire
+[ 12 ] = 16888;	-- OnUnleashSoulAnger
+[ 13 ] = 16899;	-- OnUnleashSoulSorrow
+[ 14 ] = 16894;	-- OnUnleashSoulDesire
+[ 15 ] = 16889;	-- OnWailingSoulAnger
+[ 16 ] = 16895;	-- OnWailingSoulDesire
 };
 
 local YELL = {
@@ -63,8 +63,9 @@ local WHISPER = {
 };
 
 -- Spells:
-local SPELL_PHANTOM_BLAST					= 68982;
+--local SPELL_PHANTOM_BLAST					= 68982;
 --local H_SPELL_PHANTOM_BLAST				= 70322;
+local SPELL_PHANTOM_BLAST					= { 68982, 70322 };
 --local SPELL_MIRRORED_SOUL_PROC_AURA		= 69023;
 --local SPELL_MIRRORED_SOUL_DAMAGE			= 69034;
 local SPELL_MIRRORED_SOUL_TARGET_SELECTOR	= 69048; -- has a scripted effect
@@ -73,8 +74,9 @@ local SPELL_WELL_OF_SOULS					= 68820;
 local SPELL_UNLEASHED_SOULS					= 68939; -- client crash
 local SPELL_WAILING_SOULS_STARTING			= 68912; -- initial spell cast at begining of wailing souls phase, has an apply dummy aura effect
 local SPELL_WAILING_SOULS_BEAM				= 68875; -- the beam visual, has an apply periodic trigger dummy aura effect
-local SPELL_WAILING_SOULS					= 68873; -- the actual spell
-local H_SPELL_WAILING_SOULS					= 70324;
+--local SPELL_WAILING_SOULS					= 68873;
+--local H_SPELL_WAILING_SOULS				= 70324;
+local SPELL_WAILING_SOULS					= { 68873, 70324 };	-- the actual spell
 
 local self = getfenv( 1 );
 
@@ -106,8 +108,8 @@ function OnCombat( unit )
 
 	unit:PlaySoundToSet( SOUND[ 1 ] );
 	
-    --[[ Developer notes: we dont need to send the chat here since
-    our monstersay table will do the job, instance collision checked. ]]
+	--[[ Developer notes: we dont need to send the chat here since
+	our monstersay table will do the job, instance collision checked. ]]
 	
 	local crucibleOfSouls = unit:GetCreatureNearestCoords( 5672.294, 2520.686, 713.4386, 37094 );
 	if( crucibleOfSouls == nil )
@@ -220,7 +222,8 @@ function OnAIUpdate( unit )
 	
 	if( vars.phantomBlast <= 0 )
 	then
-		unit:FullCastSpellOnTarget( SPELL_PHANTOM_BLAST, unit:GetNextTarget() );
+		--unit:FullCastSpellOnTarget( SPELL_PHANTOM_BLAST, unit:GetNextTarget() );
+		unit:FullCastSpellOnTarget( SPELL_PHANTOM_BLAST[ vars.diff + 1], unit:GetNextTarget() );
 		vars.phantomBlast = 5;
 		
 	elseif( vars.mirroredSoul <= 0 )
@@ -324,7 +327,7 @@ function OnAIUpdate( unit )
 	then
 		vars.beamAngle = vars.beamAngle + vars.beamAngleDiff;
 		unit:SetFacing( vars.beamAngle );
-		unit:CastSpell( SPELL_WAILING_SOULS );
+		unit:CastSpell( SPELL_WAILING_SOULS[ vars.diff + 1 ] );
 		
 		if( vars.soulCounter < 16 )
 		then
