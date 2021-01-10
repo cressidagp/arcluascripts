@@ -14,12 +14,13 @@ local H_NPC_BRONJHAM				= 36498;
 local NPC_CORRUPTED_SOUL_FRAGMENT	= 36535;
 local H_NPC_CORRUPTED_SOUL_FRAGMENT	= 36617;
 
-local BOSS_HP = { 539240, 903227 };
-local CREATURE_HP = { 18900, 56700 };
+local BOSS_HP		= { 539240, 903227 };
+local BOSS_MANA		= { 166760, 279323 };
+local CREATURE_HP	= { 18900, 56700 };
 
-local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
-local UNIT_FIELD_FLAGS_2 = 0x0006 + 0x0036;
-local UNIT_FLAG2_ENABLE_POWER_REGEN = 0x0000800;
+local UNIT_FIELD_SUMMONEDBY			= 0x0006 + 0x0008;
+local UNIT_FIELD_FLAGS_2			= 0x0006 + 0x0036;
+local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 
 --]]
 
@@ -63,6 +64,8 @@ function OnSpawn( unit )
 	then
 		unit:SetMaxHealth( 903227 );
 		unit:SetHealth( 903227 );
+		unit:SetMaxMana( 279323 );
+		unit:SetMana( 279323 );
 	end
 	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
 	--unit:CastSpell( SPELL_SOULSTORM_CHANNEL );
@@ -93,7 +96,7 @@ function OnCombat( unit )
 	unit:RegisterAIUpdateEvent( 1000 );
 end
 
-function OnDamageTaken( unit, _, _, ammount )
+function OnDamageTaken( unit )
 
 	local vars = self[ tostring( unit ) ];
 
@@ -127,9 +130,9 @@ function OnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-		local random = math.random( 2, 3 );
-		unit:PlaySoundToSet( SOUND[ random ] );
-		unit:SendChatMessage( 14, 0, YELL[ random - 1 ] );
+		local rand = math.random( 2, 3 );
+		unit:PlaySoundToSet( SOUND[ rand ] );
+		unit:SendChatMessage( 14, 0, YELL[ rand - 1 ] );
 	end
 end
 
@@ -214,9 +217,8 @@ function OnAIUpdate( unit )
 		
 		elseif( vars.fear <= 0 )
 		then
+			SetDBCSpellVar( SPELL_FEAR, "MaxTargets", 1 );
 			unit:CastSpell( SPELL_FEAR );
-			-- ToDo: SPELLVALUE_MAX_TARGETS, 1
-			unit:SendChatMessage( 14, 0, "debug: FEAR" );
 			vars.fear = math.random( 8, 12 );
 			
 		elseif( vars.endPhase <= 0 )
