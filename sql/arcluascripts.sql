@@ -101,7 +101,18 @@ UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36497;
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36502, 0, 100, 0, 14, 'Devourer Of Souls', 'You dare look upon the host of souls? I SHALL DEVOUR YOU WHOLE!', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36502, 5, 100, 0, 14, 'Devourer Of Souls', 'The swell of souls will not be abated! You only delay the inevitable.', NULL, NULL, NULL, NULL);
 
-UPDATE `creature_spawns` SET `auras` = 64 WHERE `entry` = 36502;
+UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 36502;
+
+--
+-- Pit of Saron
+--
+
+-- Forgemaster Garfrost: monstersay OnCombat, OnDeath, CircleWP, weapon slot1
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36494, 0, 100, 0, 14, 'Forgemaster Garfrost', 'Tiny creatures under feet, you bring Garfrost something good to eat!', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36494, 5, 100, 0, 14, 'Forgemaster Garfrost', 'Garfrost hope giant underpants clean. Save boss great shame. For later.', NULL, NULL, NULL, NULL);
+
+UPDATE `creature_spawns` SET `movetype` = 2, `slot1item` = 49346 WHERE `entry` = 36494;
 
 --
 -- Halls of Reflections:
