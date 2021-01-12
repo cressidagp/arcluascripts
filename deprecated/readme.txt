@@ -6,6 +6,7 @@ Bronjahm.lua
 Captain_Falric.lua
 Captain_Marwyn.lua
 DevourerOfSouls
+Forgemaster_Garfrost.lua
 Frostworn_General.lua
 General_Zarithrian.lua
 Saviana_Ragefire.lua
