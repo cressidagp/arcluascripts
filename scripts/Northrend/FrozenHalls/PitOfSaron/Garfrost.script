@@ -21,6 +21,10 @@ local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 
 --]]
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".FORGEMASTER_GARFROST", package.seeall );
+
 local SOUND = {
 [ 1 ] = 16912; -- OnCombat
 [ 2 ] = 16916; -- OnPhase 2 (66%)
@@ -76,7 +80,7 @@ function OnCombat( unit )
     our monstersay table will do the job, instance collision checked. ]]
 
 	unit:CastSpell( SPELL_PERMAFROST );
-	
+
 	unit:RegisterAIUpdateEvent( 1000 );
 end
 
@@ -107,8 +111,6 @@ function OnDamageTaken( unit )
 end
 
 function OnLeaveCombat( unit )
-
-	unit:SendChatMessage( 12, 0, "DEBUG: ON LEAVE COMBAT TRIGGED" );
 
 	-- destroy table with variables to recycle resources
 
