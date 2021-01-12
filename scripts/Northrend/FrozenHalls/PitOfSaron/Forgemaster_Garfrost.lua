@@ -1,0 +1,339 @@
+--[[
+	ArcLuaScripts for ArcEmu
+	www.ArcEmu.org
+	Pit of Saron: Forgemaster Garfrost
+	Engine: A.L.E
+	Credits: Trinity for texts, sound ids and spell ids, and timers.
+
+	https://www.youtube.com/watch?v=QLBGk2K3ics
+
+local NPC_GARFROST		= 36494;
+local H_NPC_GARFROST	= 37613;
+
+local BOSS_HP	= { 498797, 647088 };
+
+local EQUIP_ID_AXE		= 49346; -- default
+local EQUIP_ID_SWORD	= 49345;
+local EQUIP_ID_MACE		= 49344;
+
+local UNIT_FIELD_FLAGS_2			= 0x0006 + 0x0036;
+local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
+
+--]]
+
+local SOUND = {
+[ 1 ] = 16912; -- OnCombat
+[ 2 ] = 16916; -- OnPhase 2 (66%)
+[ 3 ] = 16917; -- OnPhase 3 (33%)
+[ 4 ] = 16915; -- OnDeath
+[ 5 ] = 16913; -- OnTargetDied 1
+[ 6 ] = 16914; -- OnTargetDied 2
+};
+
+local YELL = {
+--[ 1 ] = "Tiny creatures under feet, you bring Garfrost something good to eat!";		-- OnCombat
+[ 1 ] = "Axe too weak. Garfrost make better and CRUSH YOU."; 							-- OnPhase 2 (66%)
+[ 2 ] = "Garfrost tired of puny mortals. Now your bones will freeze!";					-- OnPhase 3 (33%)
+--[ 4 ] = "Garfrost hope giant underpants clean. Save boss great shame. For later.";	-- OnDeath
+[ 3 ] = "Will save for snack. For later.";												-- OnTargetDied 1
+[ 4 ] = "That one maybe not so good to eat now. Stupid Garfrost! BAD! BAD!";			-- OnTargetDied 2
+};
+
+-- Spells:
+local SPELL_PERMAFROST			= 70326;
+local SPELL_THROW_SARONITE		= 68788; -- ToDo: has a dummy effect (1) but no handler, effect 2 not handled because of no target was found
+local SPELL_THUNDERING_STOMP	= 68771;
+local SPELL_CHILLING_WAVE		= 68778; -- ToDo: has a dummy effect (0) but no handler
+local SPELL_DEEP_FREEZE			= 70381;
+local SPELL_FORGE_MACE			= 68785;
+local SPELL_FORGE_BLADE			= 68774; -- ToDo: has an apply dummy aura effect
+
+local self = getfenv( 1 );
+
+function OnSpawn( unit )
+
+	if( unit:GetDungeonDifficulty() ~= 0 )
+	then
+		unit:SetMaxHealth( 647088 );
+		unit:SetHealth( 647088 );
+	end
+	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
+end
+
+function OnCombat( unit )
+
+	self[ tostring( unit )] = {
+
+	diff = unit:GetDungeonDifficulty(),
+	phase = 1,
+	permafrostStack = 0,
+	throwSaronite = 7
+	};
+
+	unit:PlaySoundToSet( SOUND[ 1 ] );
+
+    --[[ Developer notes: we dont need to send the chat here since
+    our monstersay table will do the job, instance collision checked. ]]
+
+	unit:CastSpell( SPELL_PERMAFROST );
+	
+	unit:RegisterAIUpdateEvent( 1000 );
+end
+
+function OnDamageTaken( unit )
+
+	local vars = self[ tostring( unit ) ];
+
+	local hp = unit:GetHealthPct();
+
+	if( vars.phase == 1 and hp <= 66 )
+	then
+		vars.phase = 2;
+		unit:PlaySoundToSet( SOUND[ 2 ] );
+		unit:SendChatMessage( 14, 0, YELL[ 1 ] );
+		vars.throwSaronite = vars.throwSaronite + 8;
+		unit:CastSpell( SPELL_THUNDERING_STOMP );
+		vars.forgeJump = 2;
+
+	elseif( vars.phase == 2 and hp <= 33 )
+	then
+		vars.phase = 3;
+		unit:PlaySoundToSet( SOUND[ 3 ] );
+		unit:SendChatMessage( 14, 0, YELL[ 2 ] );
+		vars.throwSaronite = vars.throwSaronite + 8;
+		unit:CastSpell( SPELL_THUNDERING_STOMP );
+		vars.forgeJump = 2;
+	end
+end
+
+function OnLeaveCombat( unit )
+
+	unit:SendChatMessage( 12, 0, "DEBUG: ON LEAVE COMBAT TRIGGED" );
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: contrary to popular believe, this is the right place
+	to remove ai update event since if a creature is dead the ai update will not trigger, so
+	one remove ai update event its more than enough. ]]
+
+	unit:RemoveAIUpdateEvent();
+
+	unit:RemoveAura( SPELL_PERMAFROST );
+
+	-- equip axe
+	unit:EquipWeapons( 49346, 0, 0 );
+end
+
+function OnTargetDied( unit, _, victim )
+
+	if( victim:IsPlayer() == true )
+	then
+		local rand = math.random( 5, 6 );
+		unit:PlaySoundToSet( SOUND[ rand ] );
+		unit:SendChatMessage( 14, 0, YELL[ rand - 2 ] );
+	end
+end
+
+function OnDeath( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	--[[ Developer notes: we dont need to send the chat here since our
+	monstersay table will do the job, instance collision checked. ]]
+
+	unit:PlaySoundToSet( SOUND[ 4 ] );
+
+end
+
+function OnAIUpdate( unit )
+
+	--if( unit:IsCasting() == true ) then return; end
+
+	--if( unit:GetAIState() == 2 ) then return; end
+
+	if( unit:GetCurrentSpell() ~= nil ) then return; end
+
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList();
+		return;
+	end
+
+	local vars = self[ tostring( unit ) ];
+
+	vars.throwSaronite = vars.throwSaronite - 1;
+	if( vars.chillingWave ~= nil ) then vars.chillingWave = vars.chillingWave - 1; end
+	if( vars.deepFreeze ~= nil ) then vars.deepFreeze = vars.deepFreeze - 1; end
+	if( vars.forgeJump ~= nil ) then vars.forgeJump = vars.forgeJump - 1; end
+	if( vars.resumeAttack ~= nil ) then vars.resumeAttack = vars.resumeAttack - 1; end
+
+	if( vars.throwSaronite <= 0 )
+	then
+		local target = unit:GetRandomPlayer( 0 );
+		if( target )
+		then
+			--unit:SendChatMessage( 42, 0, "%s hurls a massive saronite boulder at you!" ); -- ToDo: send to target
+			unit:SendChatMessageToPlayer( 42, 0, "%s hurls a massive saronite boulder at you!", target );
+			unit:FullCastSpellOnTarget( SPELL_THROW_SARONITE, target );
+		end
+		vars.throwSaronite = math.random( 13, 20 );
+
+	elseif( vars.chillingWave and vars.chillingWave <= 0 )
+	then
+		unit:CastSpellOnTarget( SPELL_CHILLING_WAVE, unit );
+		vars.chillingWave = 4;
+
+	elseif( vars.deepFreeze and vars.deepFreeze <= 0 )
+	then
+		local target = unit:GetRandomPlayer( 0 );
+		if( target )
+		then
+			unit:SendChatMessageToPlayer( 41, 0, "%s casts |cFF00AACCDeep Freeze|r at $n.", target );
+			unit:FullCastSpellOnTarget( SPELL_DEEP_FREEZE, target );
+		end
+		vars.deepFreeze = 25;
+
+	elseif( vars.forgeJump and vars.forgeJump <= 0 )
+	then
+		-- attack stop
+		unit:DisableCombat( 1 );
+
+		-- ToDo: add jump support in lua engine
+		if( vars.phase == 2 )
+		then
+			-- UGGLY HACK: north forge
+			unit:MoveTo( 722.5643, -234.1615, 527.182, 5.48 );
+
+		elseif( vars.phase == 3 )
+		then
+			-- UGGLY HACK: south forge
+			unit:MoveTo( 639.257, -210.1198, 529.015, 3.60 );
+
+		end
+		unit:SetUInt64Value( 0x0006 + 0x000C, 0 );
+		vars.forgeJump = nil;
+		unit:RegisterEvent( MovementInform, 1000, 0 );
+
+	elseif( vars.resumeAttack and vars.resumeAttack <= 0 )
+	then
+		if( vars.phase == 2 )
+		then
+			vars.chillingWave = 5;
+
+		elseif( vars.phase == 3 )
+		then
+			vars.deepFreeze = 10;
+		end
+
+		-- attack start
+		unit:DisableCombat( 0 );
+
+		vars.resumeAttack = nil;
+	end
+end
+
+function MovementInform( unit )
+
+	if( unit:IsCreatureMoving() == true ) then return; end
+
+	unit:SendChatMessage( 12, 0, "DEBUG: MOVEMENT INFORM" );
+
+	local vars = self[ tostring( unit ) ];
+
+	if( vars.phase == 2 )
+	then
+		unit:FullCastSpell( SPELL_FORGE_BLADE );
+		unit:EquipWeapons( 49345, 0, 0 );
+
+	elseif( vars.phase == 3 )
+	then
+		unit:FullCastSpell( SPELL_FORGE_MACE );
+		unit:EquipWeapons( 49344, 0, 0 );
+	end
+	vars.resumeAttack = 5;
+	unit:RemoveEvents();
+end
+
+RegisterUnitEvent( 36494, 18, OnSpawn );
+RegisterUnitEvent( 36494, 1, OnCombat );
+RegisterUnitEvent( 36494, 23, OnDamageTaken );
+RegisterUnitEvent( 36494, 2, OnLeaveCombat );
+RegisterUnitEvent( 36494, 3, OnTargetDied );
+RegisterUnitEvent( 36494, 4, OnDeath );
+RegisterUnitEvent( 36494, 21, OnAIUpdate );
+
+--[[ Debug commands disabled by default
+
+local COMMANDS = { "garfrost", "port", "cwave", "nforge", "sforge", "defaultequip", "equipsword", "equipmace", "hp66", "hp33" };
+
+function Commands( _, plr, message )
+
+	if( plr:IsGm() == true )
+	then
+		if( message == "#garfrost" )
+		then
+			for i = 1, #COMMANDS
+			do
+				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
+			end
+
+		elseif( message == "#port" )
+		then
+			plr:Teleport( 658, 694.90, -148.64, 527.29, 4.89 );
+
+		elseif( message == "#cwave" )
+		then
+			local target = plr:GetSelection();
+			if( target and target:GetEntry() == 36494 )
+			then
+				target:CastSpellOnTarget( SPELL_CHILLING_WAVE, target );
+			end
+
+		elseif( message == "#nforge" )
+		then
+			local target = plr:GetSelection();
+			target:TeleportCreature( 722.5643, -234.1615, 527.182 );
+			--target:MoveJump( 722.5643, -234.1615, 527.182, 2.16421 );
+			--target:MoveJump( 657.539, -203.564, 526.691, 2.16421 );
+
+		elseif( message == "#sforge" )
+		then
+			local target = plr:GetSelection();
+			target:TeleportCreature( 639.257, -210.1198, 529.015 );
+			--target:MoveJump( 639.257, -210.1198, 529.015, 0.523599 );
+			--target:MoveJump( 719.785, -230.227, 527.033, 0.523599 );
+
+		elseif( message == "#defaultequip" )
+		then
+			local target = plr:GetSelection();
+			--target:EquipWeapons( 49346, 49342, 0 );
+			target:EquipWeapons( 49346, 0, 0 );
+
+		elseif( message == "#equipsword" )
+		then
+			local target = plr:GetSelection();
+			target:EquipWeapons( 49345, 0, 0 );
+
+		elseif( message == "#equipmace" )
+		then
+			local target = plr:GetSelection();
+			target:EquipWeapons( 49344, 0, 0 );
+
+		elseif( message == "#hp66" )
+		then
+			local target = plr:GetSelection();
+			target:SetHealthPct( 66 );
+
+		elseif( message == "#hp33" )
+		then
+			local target = plr:GetSelection();
+			target:SetHealthPct( 33 );
+		end
+    end
+end
+
+RegisterServerHook( 16, Commands );
+--]]
