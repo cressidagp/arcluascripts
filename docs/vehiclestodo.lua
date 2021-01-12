@@ -1,7 +1,13 @@
 --[[ The following vehicles are bugged
 
-36661: rimmefang
+Rimmefang (36661):
 
-36476: ick
+*) cant be dismounted
+*) cant be mounted
+
+Ick (36476):
+
+*) dont move
+*) dont attack
 
 --]]
