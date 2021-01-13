@@ -18,7 +18,7 @@
 	*) 76221: has an apply dummy aura effect but no handler for it.
 	*) tried to port the channel to database but didnt work.
 	*) 34098: has a scripted effect (0) but no handler for it.
-	*) proper fix enervating brand
+	*) proper fix enervating brand.
 	
 	enUS locale:
 	
@@ -224,7 +224,6 @@ function OnDamageTaken( unit, _, _, damage )
 	
 	if( hp > damage )
 	then
-		--vars.sharedHealth = hp - damage;
 		local iid = unit:GetInstanceID();
 		SHARED[ iid ].sharedHealth = hp - damage;	
 	end
@@ -408,7 +407,6 @@ function CloneOnDamageTaken( unit, _, _, damage )
 
 	if( hp > damage )
 	then
-		--vars.sharedHealth = hp - damage;
 		local iid = unit:GetInstanceID();
 		SHARED[ iid ].sharedHealth = hp - damage;
 	end
