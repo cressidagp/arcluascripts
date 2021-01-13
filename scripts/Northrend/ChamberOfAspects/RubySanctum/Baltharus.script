@@ -187,7 +187,6 @@ function OnDamageTaken( unit, _, _, damage )
 			vars.cloneCount = vars.cloneCount + 1;
 			vars.action = 2;
 			unit:RegisterEvent( DoAction, 1000, 1 );
-			unit:SendChatMessage( 12, 0, "debug: hp50 i should clone" ); -- debug
 		end
 		
 	else
