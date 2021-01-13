@@ -104,7 +104,7 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 36502;
 
 --
--- Pit of Saron
+-- Pit of Saron:
 --
 
 -- Forgemaster Garfrost: monstersay OnCombat, OnDeath, CircleWP, weapon slot1
@@ -315,11 +315,14 @@ UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39747;
 
 -- Baltharus the Warborn:
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39751, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment has arrived.', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (@ID5, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment has arrived.', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (@ID5, 5, 100, 0, 14, 'Baltharus the Warborn', 'I... didn\'t see that coming....', NULL, NULL, NULL, NULL);
 
-UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
+--UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
 
-UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39751;
+UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = @ID5;
+
+UPDATE `creature_proto` SET `invisibility_type` = 0 WHERE `entry` = @ID6; -- crystal target: fix the channeling effect
 
 -- Halion the Destroyer:
 
@@ -663,4 +666,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-10_01-36_DevourerOfSouls');
+('2021-01-13_17-58_Baltharus');
