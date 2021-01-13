@@ -20,6 +20,24 @@
 	*) 34098: has a scripted effect (0) but no handler for it.
 	*) proper fix enervating brand
 	
+	enUS locale:
+	
+[ 1 ] = "Your power wanes, ancient one.... Soon you will join your friends.";	-- Intro
+--[ 2 ] = "Ah, the entertainment has arrived.";									-- OnCombat
+[ 2 ] = "Baltharus leaves no survivors!";										-- OnTargetDied 1
+[ 3 ] = "This world has enough heroes.";										-- OnTargetDied 2
+[ 4 ] = "Twice the pain and half the fun.";										-- OnClone
+--[ 6 ] = "I... didn't see that coming....";									-- OnDeath
+	
+	esMX locale:
+	
+[ 1 ] = "Tu poder disminuye, antigua... Pronto te unirás a tus amigos.";		-- Intro
+--[ 2 ] = "Ah, ha llegado el entretenimiento";									-- OnCombat
+[ 2 ] = "¡Baltharus no deja sobrevivientes!";									-- OnTargetDied 1
+[ 3 ] = "Este mundo ya tiene suficientes héroes.";								-- OnTargetDied 2
+[ 4 ] = "El doble de dolor y la mitad de diversión.";							-- OnClone
+--[ 6 ] = "Yo... no lo vi venir...";											-- OnDeath
+	
 local MAP_RUBY_SANCTUM	= 724;
 
 local NPC_BALTHARUS		= 39751;
