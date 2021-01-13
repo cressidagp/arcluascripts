@@ -194,11 +194,13 @@ function OnDamageTaken( unit, _, _, damage )
 		if( hp < 66 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
+			vars.action = 2;
 			unit:RegisterEvent( DoAction, 1000, 1 );
 
 		elseif( hp < 33 and vars.cloneCount == 1 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
+			vars.action = 2;
 			unit:RegisterEvent( DoAction, 1000, 1 );
 		end
 	end
