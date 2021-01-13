@@ -192,15 +192,6 @@ function DoAction( unit )
 	end
 end
 
-function OnReturnToSpawnPoint( unit )
-
-	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-	if( crystal )
-	then
-		unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
-	end
-end
-
 function OnDamageTaken( unit, _, _, damage )
 
 	local vars = self[ tostring( unit ) ];
@@ -261,13 +252,11 @@ function OnLeaveCombat( unit )
 	local iid = unit:GetInstanceID();
 	SHARED[ iid ].sharedHealth = unit:GetMaxHealth();
 	
-	--local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-	--if( crystal )
-	--then
-	--	unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
-	--end
-	
-	unit:RegisterEvent( OnReturnToSpawnPoint, 5000, 1 );
+	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+	if( crystal )
+	then
+		unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
+	end
 end
 
 function OnTargetDied( unit, _, victim )
