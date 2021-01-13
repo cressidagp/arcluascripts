@@ -31,12 +31,12 @@
 	
 	esMX locale:
 	
-[ 1 ] = "Tu poder disminuye, antigua... Pronto te unirás a tus amigos.";		-- Intro
---[ 2 ] = "Ah, ha llegado el entretenimiento";									-- OnCombat
+[ 1 ] = "Tu poder mengua, anciano... Pronto te unirás a tus amigos.";			-- Intro
+--[ 2 ] = "Ah, un poco de entretenimiento";										-- OnCombat
 [ 2 ] = "¡Baltharus no deja sobrevivientes!";									-- OnTargetDied 1
 [ 3 ] = "Este mundo ya tiene suficientes héroes.";								-- OnTargetDied 2
-[ 4 ] = "El doble de dolor y la mitad de diversión.";							-- OnClone
---[ 6 ] = "Yo... no lo vi venir...";											-- OnDeath
+[ 4 ] = "El doble de dolor, la mitad de la diversión.";							-- OnClone
+--[ 6 ] = "Yo... no me lo esperaba...";											-- OnDeath
 	
 local MAP_RUBY_SANCTUM	= 724;
 
@@ -192,6 +192,15 @@ function DoAction( unit )
 	end
 end
 
+function OnReturnToSpawnPoint( unit )
+
+	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+	if( crystal )
+	then
+		unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
+	end
+end
+
 function OnDamageTaken( unit, _, _, damage )
 
 	local vars = self[ tostring( unit ) ];
@@ -252,11 +261,13 @@ function OnLeaveCombat( unit )
 	local iid = unit:GetInstanceID();
 	SHARED[ iid ].sharedHealth = unit:GetMaxHealth();
 	
-	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-	if( crystal )
-	then
-		unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
-	end
+	--local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+	--if( crystal )
+	--then
+	--	unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
+	--end
+	
+	unit:RegisterEvent( OnReturnToSpawnPoint, 5000, 1 );
 end
 
 function OnTargetDied( unit, _, victim )
