@@ -97,32 +97,6 @@ local CHAT = {
 
 RUBY_SANCTUM = {}
 
---[[
-function RUBY_SANCTUM.InstanceOnLoad( iid )
-
-	--[[ Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
-	are created. But then if player from opposite faction enter variables wont be created with the same idd number.
-	so will have no more choice than spend resources getting instance id again. ]]
-
-	RUBY_SANCTUM[ iid ] = {
-
-    --RUBY_SANCTUM[ iid ].baltharus = false;  -- hypers bugged tutorials...
-    --RUBY_SANCTUM[ iid ].saviana = false;    -- hypers bugged tutorials...
-    --RUBY_SANCTUM[ iid ].zarithrian = false; -- hypers bugged tutorials...
-
-	isIntro = true,
-	isDone = false,
-	baltharus = false,
-	saviana = false,
-	zarithrian = false,
-	action = 0
-
-    };
-
-    print("debug: ruby sanctum variables created")
-end
---]]
-
 function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
 
     --[[ Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
@@ -338,7 +312,6 @@ end
 RegisterUnitEvent( 40429, 18, RUBY_SANCTUM.XerexOnSpawn );
 RegisterUnitEvent( 40429, 21, RUBY_SANCTUM.XerexOnAIUpdate );
 
---RegisterInstanceEvent( 724, 9, RUBY_SANCTUM.InstanceOnLoad );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
 RegisterInstanceEvent( 724, 5, RUBY_SANCTUM.OnCreatureDeath );
 RegisterInstanceEvent( 724, 3, RUBY_SANCTUM.OnAreaTrigger );
