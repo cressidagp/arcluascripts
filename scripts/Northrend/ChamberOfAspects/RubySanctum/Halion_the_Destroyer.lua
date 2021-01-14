@@ -11,7 +11,7 @@
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
-	yt
+	https://www.youtube.com/watch?v=4TwEUrlRLeg
 	
 	ToDo:
 
@@ -39,6 +39,7 @@ local NPC_CONTROLLER = 40146;
 -- For 3.3.5a
 local GAMEOBJECT_BYTES_1		= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS			= 0x0006 + 0x0035;
+local UNIT_FLAG_COMBAT			= 0x00080000;
 local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000;
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
@@ -48,8 +49,6 @@ local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 --local mod = getfenv( 1 );
 --assert( mod );
 --module( mod._NAME..".HALION_DESTROYER", package.seeall );
-
-local BOSS_HP = { 11156000, 40440500, 15339500, 58569000 };
 
 local SOUND = {
 [ 1 ] = 17499;  -- Intro
@@ -65,7 +64,7 @@ local YELL = {
 [ 1 ] = "Meddlesome insects! You are too late. The Ruby Sanctum is lost!";  -- Intro
 [ 2 ] = "The heavens burn!";  -- OnMeterStrike
 [ 3 ] = "You will find only suffering within the realm of twilight! Enter if you dare!";  -- OnPhaseTwo
-[ 4 ] = "Another 'hero' falls.";  -- OnTargetDied (shoud be "hero", but "" caused problems)
+[ 4 ] = "Another ""hero"" falls.";  -- OnTargetDied
 [ 5 ] = "Not good enough...."; -- OnBerserk
 };
 
@@ -76,25 +75,27 @@ local TEXT = {
 };
 
 -- Spells (Halion):
-local SPELL_FLAME_BREATH		= 74525;
-local SPELL_CLEAVE				= 74524;
-local SPELL_METEOR_STRIKE		= 74637; -- aoe, need a dummy effect
-local SPELL_TAIL_LASH			= 74531;
-
-local SPELL_TWILIGHT_PRECISION  = 78243; -- not aura displayed... not working?
-
-local SPELL_FIERY_COMBUSTION    = 74562;
+local SPELL_FLAME_BREATH	= 74525;
+local SPELL_METEOR_STRIKE	= 74637; -- aoe, need a dummy effect
+local SPELL_FIERY_COMBUSTION	= 74562;
 
 -- Spells (Twilight Halion):
-local SPELL_SOUL_CONSUMPTION 	= 74792;
+local SPELL_DARK_BREATH	= 74806;
+local SPELL_SOUL_CONSUMPTION	= 74792;
+
+-- Spells (shared):
+local SPELL_CLEAVE	= 74524;
+local SPELL_TAIL_LASH	= 74531;
+local SPELL_TWILIGHT_PRECISION 	= 78243; -- not aura displayed... not working?
 
 -- Spells (Halion Controller):
 local SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
 
 -- Spells (Misc):
-local SPELL_TWILIGHT_PHASING    	= 74808; -- Phase spell from phase 1 to phase 2
-local SPELL_DUSK_SHROUD         	= 75476;
-local SPELL_COPY_DAMAGE         	= 74810;
+local SPELL_LEAVE_TWILIGHT_REALM	= 74812;
+local SPELL_TWILIGHT_PHASING	= 74808; -- Phase spell from phase 1 to phase 2
+local SPELL_DUSK_SHROUD	= 75476;
+local SPELL_COPY_DAMAGE	= 74810;
 local SPELL_SUMMON_TWILIGHT_PORTAL	= 74809; -- Summons go 202794
 
 local TREES = { 203034, 203035, 203036, 203037 };
@@ -102,6 +103,8 @@ local TREES = { 203034, 203035, 203036, 203037 };
 local self = getfenv( 1 );
 
 function OnSpawn( unit )
+
+	local BOSS_HP = { 11156000, 40440500, 15339500, 58569000 };
 
 	-- set health acording to difficulty
     local diff = unit:GetDungeonDifficulty();
@@ -136,11 +139,12 @@ function OnCombat( unit )
     unit:PlaySoundToSet( SOUND[ 2 ] );
 
 	unit:AddAura( SPELL_TWILIGHT_PRECISION, 0 );
+	
 	unit:RegisterAIUpdateEvent( 1000 );
 
 end
 
-function OnDamageTaken( unit, event, attacker, damage )
+function OnDamageTaken( unit, _, attacker, damage )
 
 	local vars = self[ tostring( unit ) ];
 
@@ -167,7 +171,7 @@ function OnDamageTaken( unit, event, attacker, damage )
 		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
 
 		local iid = unit:GetInstanceID();
-		local controller = local controller = GetInstanceCreature( 724, iid, 200631 );
+		local controller = GetInstanceCreature( 724, iid, 200631 );
 		if( controller )
 		then
 			controller:SetHealth( controller:GetHealth() - damage );
@@ -233,7 +237,7 @@ function OnAIUpdate( unit )
 
 	local vars = self[ tostring( unit ) ];
 
-	if( vars.phase = 3 ) then return; end
+	if( vars.phase == 3 ) then return; end
 
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
@@ -249,7 +253,8 @@ function OnAIUpdate( unit )
 	vars.cleave = vars.cleave - 1;
 	vars.tailLash = vars.tailLash - 1;
 	vars.flameBreath = vars.flameBreath - 1;
-	if( vars.firewallTime ~= nil ) then vars.firewallTime = vars.firewallTime - 1; end
+	--if( vars.firewallTime ~= nil ) then vars.firewallTime = vars.firewallTime - 1; end
+	vars.firewallTime = vars.firewallTime - 1;
 	vars.meteorStrike = vars.meteorStrike - 1;
 	vars.fieryCombustion = vars.fieryCombustion - 1;
 
@@ -268,7 +273,7 @@ function OnAIUpdate( unit )
 		unit:FullCastSpell( SPELL_FLAME_BREATH );
 		vars.flameBreath = math.random( 5, 15 );
 
-	elseif( vars.firewallTime and vars.firewallTime <= 0 and vars.firewallIsClosed == false )
+	elseif( vars.firewallTime <= 0 and vars.firewallIsClosed == false )
 	then
 		local flameRing = unit:GetGameObjectNearestCoords( 3154.99, 535.64, 72.89, 203007 );
 		if( flamering )
@@ -307,22 +312,119 @@ RegisterUnitEvent( 39863, 21, OnAIUpdate );
 
 function TwilightHalionOnSpawn( unit )
 
+	local halion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 39863 );
+	if not( halion ) then return; end
+	
+	halion:AddAura( SPELL_COPY_DAMAGE, 0 );
+	unit:AddAura( SPELL_COPY_DAMAGE, 0 );
+	
+	unit:CastSpell( SPELL_DUSK_SHROUD );
+	
+	unit:SetHealth( halion:GetHealth() );
+	
+	-- ToDo: set phase mask...  = 0x00000020, // 6           32
+	
+	-- react defensive
+	unit:DisableCombat( 1 );
+	
+	unit:SetFlag( 0x0006 + 0x0035, 0x00080000 );
+
+	-- create protected variables
 	self[ tostring( unit )] = {
 
-	tail = 12,
-	soul = 15
+	tailLash = 12,
+	soulConsumption = 15
 
 	};
-
-	-- set halion health
-	unit:AddAura( SPELL_COPY_DAMAGE, 0 );
-	-- to halion unit:AddAura( SPELL_COPY_DAMAGE, 0 );
-	unit:CastSpell( SPELL_DUSK_SHROUD );
 end
 
-function TwilightHalionOnSpawn( unit )
+function TwilightHalionOnCombat( unit )
+
+	-- add more protected variables
+	local vars = self[ tostring( unit ) ];
+	
+	vars.phase = 3; -- Should be shared or private?
+	vars.cleave = 3;
+	vars.darkBreath = 12;
+	
+	unit:AddAura( SPELL_TWILIGHT_PRECISION, 0 );
+	
+end
+
+function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 
 	local vars = self[ tostring( unit ) ];
+
+	local hp = unit:GetHealth();
+	
+    if( damage >= hp and vars.phase ~= 4 )
+	then
+        damage = hp - 1;
+	end
+	
+	-- call on combat here? will work?
+
+	local pct = unit:GetHealthPct();
+	
+	if( pct < 50 and vars.phase == 3 )
+	then
+		--unit:PlaySoundToSet( SOUND[ 4 ] );
+		--unit:SendChatMessage( 14, 0, YELL[ 4 - 1 ] );
+		vars.phase = 4;
+		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 );
+		unit:CastSpell( SPELL_TWILIGHT_PHASING );
+	end
+
+	if( vars.phase == 4 )
+	then
+		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
+
+		local iid = unit:GetInstanceID();
+		local controller = GetInstanceCreature( 724, iid, 200631 );
+		if( controller )
+		then
+			controller:SetHealth( controller:GetHealth() - damage );
+		end
+	end
+end
+
+function TwilightHalionOnTargetDied( unit, _, victim )
+
+	if( victim:IsPlayer() == true )
+	then
+    	unit:PlaySoundToSet( SOUND[ 6 ] );
+    	unit:SendChatMessage( 14, 0, YELL[ 6 - 2 ] );
+	end
+	unit:CastSpellOnTarget( SPELL_LEAVE_TWILIGHT_REALM, victim );
+end
+
+function TwilightHalionOnDeath( unit )
+
+	-- destroy table with variables to recycle resources
+
+	--self[ tostring( unit ) ] = nil;
+
+	local halion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 39863 );
+	if( halion )
+	then
+		if( twlightHalion:IsAlive() == true )
+		then
+			halion:Kill();
+		end
+	end
+
+	local iid = unit:GetInstanceID();
+	local controller = GetInstanceCreature( 724, iid, 200631 );
+	if( controller )
+	then
+		if( controller:IsAlive() == true )
+		then
+			controller:Kill();
+		end
+	end
+end
+
+function TwilightHalionOnAIUpdate( unit )
 
 	if( unit:IsCasting() == true ) then return; end
 
@@ -330,24 +432,41 @@ function TwilightHalionOnSpawn( unit )
 		unit:WipeThreatList()
 		return;
 	end
+	
+	local vars = self[ tostring( unit ) ];
 
-	vars.tail = vars.tail - 1;
-	vars.soul = vars.soul - 1;
+	vars.tailLash = vars.tailLash - 1;
+	vars.soulConsumption = vars.soulConsumption - 1;
+	vars.cleave = vars.cleave - 1;
+	vars.darkBreath = vars.darkBreath - 1;
+	
+	if( vars.cleave <= 0 )
+	then
+		unit:CastSpell( SPELL_CLEAVE );
+		vars.cleave = math.random( 7, 10 );
 
-	if( vars.tail <= 0 )
+	elseif( vars.tailLash <= 0 )
 	then
 		unit:FullCastSpellOnTarget( SPELL_TAIL_LASH, unit:GetRandomPlayer( 0 ) ); -- AoE?
-		vars.tail = math.random( 12, 16 );
-
-	elseif( vars.soul <= 0 )
+		vars.tailLash = math.random( 12, 16 );
+	
+	elseif( vars.darkBreath <= 0 )
+	then
+		unit:FullCastSpell( SPELL_DARK_BREATH );
+		vars.darkBreath = math.random( 10, 14 );
+		
+	elseif( vars.soulConsumption <= 0 )
 	then
 		unit:FullCastSpellOnTarget( SPELL_SOUL_CONSUMPTION, unit:GetRandomPlayer( 0 ) ); -- Any
-		vars.soul = 28;
-
+		vars.soulConsumption = 28;	
 	end
 end
 
 RegisterUnitEvent( 40142, 18, TwilightHalionOnSpawn );
+RegisterUnitEvent( 40142, 1, TwilightHalionOnCombat );
+RegisterUnitEvent( 40142, 23, OnDamageTaken );
+RegisterUnitEvent( 40142, 3, TwilightHalionOnTargetDied );
+RegisterUnitEvent( 40142, 4, TwilightHalionOnDeath );
 RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
 
 --[[
@@ -355,7 +474,6 @@ RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
 --]]
 
 -- def unit flags 256 + 33554432 (256 for development :P)
-
 function ControllerOnSpawn( unit )
 
 	-- created protected variables
