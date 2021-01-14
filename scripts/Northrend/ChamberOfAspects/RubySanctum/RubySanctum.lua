@@ -33,16 +33,16 @@
 
 	esMX locale:
 
-[ 1 ] = "Thank you! I could not have held out for much longer.... A terrible thing has happened here.";
-[ 2 ] = "We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault.";
-[ 3 ] = "The Black dragonkin materialized from thin air, and set upon us before we could react.";
-[ 4 ] = "We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance.";
-[ 5 ] = "They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum.";
-[ 6 ] = "The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work.";
-[ 7 ] = "In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon.";
-[ 8 ] = "I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!";
-[ 9 ] = "Help! I am trapped within this tree!  I require aid!";
-[ 10 ] = "Your power wanes, ancient one.... Soon you will join your friends.";
+[ 1 ] = "¡Gracias! No podía aguantar mucho más.... A ocurrido algo terrible en este lugar.";
+[ 2 ] = "Creíamos que el sagrario estaba bien fortificado, pero no estabamos preparados para este tipo de asalto.";
+[ 3 ] = "El dragonante Negro se apareció de la nada, y nos enbistió antes de que pudieramos reaccionar.";
+[ 4 ] = "Era nuestro fin. Con mis hermanos pereciendo a mi alrededor logre la retirada hasta aqui. Donde barrique la entrada";
+[ 5 ] = "Nos masacraron con una eficacia fria, pero pareciann mas interesado en los huevos guardados aquim en el Sagrario.";
+[ 6 ] = "El comandante de las fuerzas terrestres es un salvaje cruel llamado Zarithrian ground here is a cruel brute named Zarithrian, pero me temo que hay fuerzas superiores en el medio.";
+[ 7 ] = "En su asalto inicial, pude ver fugazmente a su verdadero lider, un temible dragon crepuscular.";
+[ 8 ] = "Desconozco sus verdaderos plates heroes, pero si s esto: no hay que permitirles que los lleven a coboI know not: No hay que permitirles que los lleven a cabo.";
+[ 9 ] = "¡Ayudenme! ¡Estoy atrapado dentro de este arbol!";
+[ 10 ] = "Tu poder mengua, anciano... Pronto te unirás a tus amigos.";
 	
 local MAP_RUBY_SANCTUM	= 724;
 
