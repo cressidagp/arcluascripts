@@ -300,36 +300,40 @@ UPDATE `creature_proto` SET `vehicleid` = 0 WHERE `entry` = 37120; -- Hightlord 
 -- The Ruby Sanctum: 
 --
 
--- General Zarithrian: monstersay OnCombat, OnDeath
+-- Xerex (40429):
+
+UPDATE `creature_spawns` SET `flags` = 32768 WHERE `entry` = 40429;
+
+-- General Zarithrian (39746):
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39746, 0, 100, 0, 14, 'General Zarithrian', 'Alexstrasza has chosen capable allies.... A pity that I must END YOU!', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39746, 5, 100, 0, 14, 'General Zarithrian', 'HALION! I....', NULL, NULL, NULL, NULL);
 
-UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `id` = @ID4; -- UNIT_FLAG_NOT_SELECTABLE + UNIT_FLAG_NOT_ATTACKABLE_9 + UNIT_FLAG_PLUS_MOB
+UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `id` = @ID4;
 
--- Saviana Ragefire:
+-- Saviana Ragefire (39747):
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39747, 0, 100, 0, 14, 'Saviana Ragefire', 'You will sssuffer for this intrusion!', NULL, NULL, NULL, NULL);
 
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39747;
 
--- Baltharus the Warborn:
+-- Baltharus the Warborn (39751):
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (@ID5, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment has arrived.', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (@ID5, 5, 100, 0, 14, 'Baltharus the Warborn', 'I... didn\'t see that coming....', NULL, NULL, NULL, NULL);
 
---UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
-
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = @ID5;
+
+--UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
 
 UPDATE `creature_proto` SET `invisibility_type` = 0 WHERE `entry` = @ID6; -- crystal target: fix the channeling effect
 
--- Halion the Destroyer:
+-- Halion the Destroyer (39863):
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39863, 0, 100, 0, 14, 'Halion the Destroyer', 'Your world teeters on the brink of annihilation. You will ALL bear witness to the coming of a new age of DESTRUCTION!', NULL, NULL, NULL, NULL);
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39863, 5, 100, 0, 14, 'Halion the Destroyer', 'Relish this victory, mortals, for it will be your last. This world will burn with the master\'s return!', NULL, NULL, NULL, NULL);
 
--- Halion Controller:
+-- Halion Controller (40146):
 
 UPDATE `creature_proto` SET `invisibility_type` = 1 WHERE `entry` = 40146;
 DELETE FROM `creature_spawns` WHERE `id` = @ID7 AND `entry` = 40146;
@@ -666,4 +670,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-13_17-58_Baltharus');
+('2021-01-14_09-27_Ruby');
