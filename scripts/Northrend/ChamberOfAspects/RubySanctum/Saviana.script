@@ -3,9 +3,47 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: Saviana Ragefire
 	Engine: A.L.E
-	Credits: Trinity for texts, sound ids, timers and spell ids.
 
-	Developer notes: in time i will change this to paroxysm modular way to save some resources.
+	Credits:
+
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
+	
+	https://www.youtube.com/watch?v=bbVx1l9PZq4
+	
+	ToDo:
+
+	*) 74403: has a dummy effect (0) but no handler for it.
+	*) 74452: has a dummy effect (0) but no handler for it (need a proper fix).
+	*) 74454: has a dummy effect (0) but no handler for it (need a proper fix).
+	*) 74455: has a scripted effect (0) but no handler for it.
+
+	enUS locale:
+
+--[ 1 ] = "You will sssuffer for this intrusion!";	-- OnCombat
+[ 1 ] = "Burn in the master's flame!";			-- OnCast: "Conflagration"
+[ 2 ] = "Halion will be pleased.";			-- OnTargetDied 1
+[ 3 ] = "As it should be....";				-- OnTargetDied 2
+	
+	esMX locale:
+	
+--[ 1 ] = "¡Sssufrirás por esta intrusión!";	-- OnCombat
+[ 1 ] = "¡Ardan en las llamas del amo!";	-- OnCast: "Conflagration"
+[ 2 ] = "Halion estará felíz.";			-- OnTargetDied 1
+[ 3 ] = "Como debía ser....";			-- OnTargetDied 2
+	
+local MAP_RUBY_SANCTUM	= 724;
+
+local NPC_SAVIANA	= 39747;
+local NPC_25M_SAVIANA	= 39823;
+
+local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
+
+-- For 3.3.5a
+local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
+local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 
 --]]
 
@@ -13,46 +51,52 @@ local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".SAVIANA_RAGEFIRE", package.seeall );
 
-local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
-
 local SOUND = {
 [ 1 ] = 17528;  -- OnCombat
 [ 2 ] = 17532;  -- OnCast: "Conflagration"
 [ 3 ] = 17530;  -- OnTargetDied 1
 [ 4 ] = 17529;  -- OnTargetDied 2
-[ 5 ] = 17531;	-- OnDeath
+[ 5 ] = 17531;	-- OnDeath (just a sound effect, not text).
 };
 
-local CHAT = {
-[ 1 ] = "Burn in the master's flame!";  -- OnCast: "Conflagration"
-[ 2 ] = "%s becomes enraged!";          -- OnEnrage (type 16)
-[ 3 ] = "Halion will be pleased.";      -- OnTargetDied 1
-[ 4 ] = "As it should be....";          -- OnTargetDied 2
+local YELL = {
+--[ 1 ] = "You will sssuffer for this intrusion!";	-- OnCombat
+[ 1 ] = "Burn in the master's flame!";			-- OnCast: "Conflagration"
+[ 2 ] = "Halion will be pleased.";			-- OnTargetDied 1
+[ 3 ] = "As it should be....";				-- OnTargetDied 2
 };
 
 -- Spells:
-local SPELL_CONFLAGRATION       = 74452; -- need a dummy
-local SPELL_FLAME_BEACON        = 74453;
-local SPELL_CONFLAGRATION_2     = 74454; -- dummy effect
-local SPELL_CONFLAGRATION_3		= 74455; -- TODO: need a scripted effect
-local SPELL_ENRAGE              = 78722;
 local SPELL_FLAME_BREATH        = 74403;
+local SPELL_CONFLAGRATION       = 74452; -- Currently make all units agro caster if player?
+local SPELL_FLAME_BEACON        = 74453; -- Seems to trigger 74455
+local SPELL_CONFLAGRATION_2     = 74454; -- Launch big fire ball but dont make harm.
+local SPELL_CONFLAGRATION_3	= 74455; -- Does nothing.
+local SPELL_ENRAGE              = 78722;
 
 local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
-    local diff = unit:GetDungeonDifficulty();
-
-    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+	-- set health acording to difficulty
+	local diff = unit:GetDungeonDifficulty();
+	
+	if( diff == 1 or diff == 3 )
+	then
+		unit:SetMaxHealth( 13945000 );
+		unit:SetHealth( 13945000 );
+	end
+	
+	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
+	
 end
 
 function OnCombat( unit )
 
+	-- create protected variables
 	self[ tostring( unit )] = {
-	phase = 1,
-	flamebreath = 14,
+	
+	flameBreath = 14,
 	flight = 60,
 	movement = 0;
 	enrage = 20
@@ -86,9 +130,9 @@ function OnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-		local random = math.random( 3, 4 );
-		unit:PlaySoundToSet( SOUND[ random ] );
-		unit:SendChatMessage( 14, 0, CHAT[ random ] );
+		local ran = math.random( 3, 4 );
+		unit:PlaySoundToSet( SOUND[ rand ] );
+		unit:SendChatMessage( 14, 0, YELL[ rand - 1 ] );
 	end
 end
 
@@ -98,46 +142,48 @@ function OnDeath( unit )
 
 	self[ tostring( unit ) ] = nil;
 
-	--[[ Developer notes: we dont need to send the chat here since
-	our monstersay table will do the job, instance collision checked. ]]
-
 	unit:PlaySoundToSet( SOUND[ 5 ] );
 
 end
 
 function OnAIUpdate( unit )
 
-	if( unit:IsCasting() == true ) then return; end
-
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
 		return;
 	end
+	
+	--if( unit:IsCasting() == true ) then return; end
+
+	--if( unit:GetAIState() == 2 ) then return; end
+
+	if( unit:GetCurrentSpell() ~= nil ) then return; end
 
 	local vars = self[ tostring( unit ) ];
 
-	vars.flamebreath = vars.flamebreath - 1;
+	vars.flameBreath = vars.flameBreath - 1;
 	vars.enrage = vars.enrage - 1;
 	vars.flight = vars.flight - 1;
 
-	if( vars.flamebreath <= 0 )
-    then
+	if( vars.flameBreath <= 0 )
+	then
 		unit:FullCastSpellOnTarget( SPELL_FLAME_BREATH, unit:GetMainTank() );
-		vars.flamebreath = math.random( 20, 30 );
+		vars.flameBreath = math.random( 20, 30 );
 
 	elseif( vars.enrage <= 0 )
 	then
-		unit:FullCastSpell( SPELL_ENRAGE );
-		unit:SendChatMessage( 16, 0, CHAT[ 2 ] );
+		unit:CastSpell( SPELL_ENRAGE );
+		unit:SendChatMessage( 16, 0, "%s becomes enraged!" );
 		vars.enrage = 24;
 
 	elseif( vars.flight <= 0 )
 	then
+		-- react pasive
 		unit:DisableCombat( 1 );
+		
 		unit:RemoveAIUpdateEvent();
 
 		-- take off
-
 		unit:SetFlying();
 		unit:MoveTo( unit:GetX(), unit:GetY(), unit:GetZ() + 10, unit:GetO() );
 
@@ -160,9 +206,9 @@ function MovementInform( unit )
 
 	elseif( vars.movement == 4 )
 	then
-		unit:CastSpell( SPELL_CONFLAGRATION )
-		unit:SendChatMessage( 14, 0, CHAT[ 1 ] );
+		unit:FullCastSpell( SPELL_CONFLAGRATION )
 		unit:PlaySoundToSet( SOUND[ 2 ] );
+		unit:SendChatMessage( 14, 0, YELL[ 1 ] );
 
 	elseif( vars.movement == 8 )
 	then
@@ -175,7 +221,10 @@ function MovementInform( unit )
 	elseif( vars.movement == 10 )
 	then
 		unit:Land();
+		
+		-- react agresive
 		unit:DisableCombat( 0 );
+		
 		unit:RemoveEvents();
 		unit:RegisterAIUpdateEvent( 1000 );
 		vars.movement = 0;
@@ -189,28 +238,137 @@ RegisterUnitEvent( 39747, 3 , OnTargetDied );
 RegisterUnitEvent( 39747, 4 , OnDeath );
 RegisterUnitEvent( 39747, 21, OnAIUpdate );
 
-
 --[[
-			Spell: Conflagration ( 74452 )
+		Spell: Flame Breath ( 74403 )
 --]]
 
-function ConflagrationInitDummy( effectIndex, spellObject )
+function FlameBreathDummy( effectIndex, spellObject )
+
+	local target = spellObject:GetTarget();
+	
+	-- ToDo: me need to add burn to target
+	
+end
+
+RegisterDummySpell( SPELL_FLAME_BREATH, FlameBreathDummy );
+
+
+--[[
+		Spell: Conflagration ( 74452 )
+--]]
+
+function ConflagrationDummy( effectIndex, spellObject )
 
 	local caster = spellObject:GetCaster();
-	local target = caster:GetRandomPlayer( 0 );
 
-	local raidMode = { 3, 6, 3, 6 };
 	local diff = caster:GetDungeonDifficulty();
-
+	
+	local raidMode = { 1, 1, 1, 1}; --3,6,3,6
+	
 	local targetNum = raidMode[ diff + 1 ];
-
+	
 	for i = 1, targetNum  -- targetNum its the "for" limiter
 	do
-
-		caster:CastSpellOnTarget( SPELL_FLAME_BEACON, target );
-		caster:FullCastSpellOnTarget( SPELL_CONFLAGRATION_2, target );
-
+		local target = caster:GetRandomPlayer( 0 );
+		if( target ) 
+		then
+			caster:FullCastSpellOnTarget( SPELL_CONFLAGRATION_2, target );
+			caster:CastSpellOnTarget( SPELL_FLAME_BEACON, target );
+		end
 	end
 end
 
-RegisterDummySpell( SPELL_CONFLAGRATION, ConflagrationInitDummy );
+RegisterDummySpell( SPELL_CONFLAGRATION, ConflagrationDummy );
+
+
+--[[
+		Spell: Conflagration 2 ( 74454 )
+--]]
+
+function ConflagrationDummy2( effectIndex, spellObject )
+
+	local caster = spellObject:GetCaster();
+	
+	local target = spellObject:GetTarget();
+	
+	if( target )
+	then
+		caster:DealDamage( target, 1000, SPELL_CONFLAGRATION_2 ); -- need proper damage
+	end
+end
+
+RegisterDummySpell( SPELL_CONFLAGRATION_2, ConflagrationDummy2 );
+
+
+--[[ 
+		Debug commands disabled by default 
+
+
+local COMMANDS = { "saviana", "port", "damage", "fly", "land", "move1", "move2", "move3", "beacon", "conf" };
+
+function Commands( _, plr, message )
+
+	if( plr:IsGm() == true )
+	then
+		if( message == "#saviana" )
+		then
+			for i = 1, #COMMANDS
+			do
+				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
+			end
+
+		elseif( message == "#port" )
+		then
+			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );
+			
+		else
+		
+			local selection = plr:GetSelection();
+			if( selection == nil)
+			then
+				plr:SendBroadcastMessage( "You need to select saviana first." );
+				
+			else		
+
+				if( message == "#damage" )
+				then
+					plr:DealDamage( selection, 90000, 13322 );
+					
+				elseif( message == "#fly" )
+				then
+					selection:SetFlying();
+				
+				elseif( message == "#land" )
+				then
+					selection:Land();
+				
+				elseif( message == "#move1" )
+				then
+					selection:MoveTo( 3155.51, 683.844, 95.0, 4.69 ); -- fly out?
+					selection:DisableCombat( 1 );
+				
+				elseif( message == "#move2" )
+				then
+					selection:MoveTo( 3151.07, 636.443, 79.540, 4.69 ); -- fly in?
+					selection:DisableCombat( 1 );
+					
+				elseif( message == "#move3" )
+				then
+					selection:MoveTo( 3151.07, 636.443, 78.649, 4.69 ); -- land?
+					selection:DisableCombat( 1 );
+				
+				elseif( message == "#beacon" )
+				then
+					selection:CastSpellOnTarget( SPELL_FLAME_BEACON, selection:GetRandomPlayer( 0 ) );
+					
+				elseif( message == "#conf" )
+				then
+					selection:CastSpell( SPELL_CONFLAGRATION );
+				end
+			end
+		end
+    end
+end
+
+RegisterServerHook( 16, Commands );
+--]]
