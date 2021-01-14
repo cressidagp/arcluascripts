@@ -3,17 +3,59 @@
 	www.ArcEmu.org
 	The Ruby Sanctum: General Zarithrian
 	Engine: A.L.E
-	Credits: Trinity for texts, sound ids, timers and spell ids.
+	
+	Credits:
 
-	Developer notes: in time i will change this to paroxysm modular way to save some resources.
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
+	
+	yt
+	
+	ToDo:
+
+	*) 74403: has a dummy effect (0) but no handler for it.
+	*) 74452: has a dummy effect (0) but no handler for it (need a proper fix).
+	*) need core support to spawn stalker and boss from far distance or at instance create.
+
+	enUS locale:
+
+--[ 1 ] = "Alexstrasza has chosen capable allies.... A pity that I must END YOU!";  -- OnCombat
+[ 1 ] = "You thought you stood a chance?";  -- OnTargetDied 1
+[ 2 ] = "It's for the best.";               -- OnTargetDied 2
+[ 3 ] = "Turn them to ash, minions!";       -- OnMinions
+--[ 5 ] = "HALION! I....";  -- OnDeath
+	
+	esMX locale:
+	
+--[ 1 ] = "Alexstrasza ha elegido aliados capaces.... ¡Una lástima que deba ELIMINARLOS!";  -- OnCombat
+[ 1 ] = "¿Creían que podrían?";  -- OnTargetDied 1
+[ 2 ] = "Mejor así.";               -- OnTargetDied 2
+[ 3 ] = "¡Haganlos cenizas, esbirros!";       -- OnMinions
+--[ 5 ] = "HALION! Yo....";  -- OnDeath
+
+local MAP_RUBY_SANCTUM	= 724;
+
+local NPC_ZARITHRIAN	= 39746;
+local NPC_25M_ZARITHRIAN	= 39805;
+
+local NPC_ZARITHRIAN_SPAWN_STALKER	= 39794;
+
+local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
+
+-- For 3.3.5a
+local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
+local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
+local UNIT_FLAG_NOT_SELECTABLE		= 0x02000000
+local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
+local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 
 --]]
 
-local mod = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".GENERAL_ZARITHRIAN", package.seeall );
-
-local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
+--local mod = getfenv( 1 );
+--assert( mod );
+--module( mod._NAME..".GENERAL_ZARITHRIAN", package.seeall );
 
 local SOUND = {
 [ 1 ] = 17512;  -- OnCombat
@@ -23,10 +65,12 @@ local SOUND = {
 [ 5 ] = 17515;  -- OnDeath
 };
 
-local CHAT = {
-[ 1 ] = "You thought you stood a chance?";  -- OnTargetDied 1
-[ 2 ] = "It's for the best.";               -- OnTargetDied 2
-[ 3 ] = "Turn them to ash, minions!";       -- OnMinions
+local YELL = {
+--[ 1 ] = "Alexstrasza has chosen capable allies.... A pity that I must END YOU!";  -- OnCombat
+[ 1 ] = "You thought you stood a chance?";		-- OnTargetDied 1
+[ 2 ] = "It's for the best.";	-- OnTargetDied 2
+[ 3 ] = "Turn them to ash, minions!";	-- OnMinions
+--[ 5 ] = "HALION! I....";	-- OnDeath
 };
 
 -- Spells:
@@ -40,11 +84,16 @@ local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
-    local diff = unit:GetDungeonDifficulty();
-
-    unit:SetMaxHealth( BOSS_HP [ diff + 1 ] );
-
-    unit:SetHealth( BOSS_HP [ diff + 1 ] );
+	-- set health acording to difficulty
+	local diff = unit:GetDungeonDifficulty();
+	
+	if( diff == 1 or diff == 3 )
+	then
+		unit:SetMaxHealth( 14098395 );
+		unit:SetHealth( 14098395 );
+	end
+	
+	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
 
 	-- [[ Moved this to SQL file.
 	-- unit:DisableCombat( true ); --]]
@@ -56,10 +105,10 @@ function OnCombat( unit )
 	self[ tostring( unit )] = {
 	phase = 1,
 	diff = unit:GetDungeonDifficulty(); -- TODO: implement LCF for Is25Man
-	cleave = 8,
-	roar = 14,
-	minions = 15,
-	minions25 = 16
+	cleaveArmor = 8,
+	intimidatingRoar = 14,
+	summonMinions = 15,
+	summonMinions25 = 16
 	};
 
 	unit:PlaySoundToSet( SOUND[ 1 ] );
@@ -89,9 +138,9 @@ function OnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-    	local random = math.random( 2, 3 );
-    	unit:PlaySoundToSet( SOUND[ random ] );
-    	unit:SendChatMessage( 14, 0, CHAT[ random - 1 ] );
+    	local rand = math.random( 2, 3 );
+    	unit:PlaySoundToSet( SOUND[ rand ] );
+    	unit:SendChatMessage( 14, 0, YELL[ rand - 1 ] );
 	end
 end
 
@@ -110,48 +159,158 @@ end
 
 function OnAIUpdate( unit )
 
-	if( unit:IsCasting() == true ) then return; end
-
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
 		return;
 	end
 
+	--if( unit:IsCasting() == true ) then return; end
+
+	--if( unit:GetAIState() == 2 ) then return; end
+
+	if( unit:GetCurrentSpell() ~= nil ) then return; end
+
 	local vars = self[ tostring( unit ) ];
 
-	vars.cleave = vars.cleave - 1;
-	vars.minions = vars.minions - 1;
-	vars.minions25 = vars.minions25 - 1;
-	vars.roar = vars.roar - 1;
+	vars.cleaveArmor = vars.cleaveArmor - 1;
+	vars.summonMinions = vars.summonMinions - 1;
+	vars.summonMinions25 = vars.summonMinions25 - 1;
+	vars.intimidatingRoar = vars.intimidatingRoar - 1;
 
-	if( vars.cleave <= 0 )
+	if( vars.cleaveArmor <= 0 )
     then
 		unit:CastSpellOnTarget( SPELL_CLEAVE_ARMOR, unit:GetMainTank() );
-		vars.cleave = 15;
+		vars.cleaveArmor = 15;
 
-	elseif( vars.roar <= 0 )
+	elseif( vars.intimidatingRoar <= 0 )
 	then
 		unit:FullCastSpell( SPELL_INTIMIDATING_ROAR );
-		vars.roar = math.random( 35, 40 );
+		vars.intimidatingRoar = math.random( 35, 40 );
 
-	elseif( vars.minions <= 0 )
+	elseif( vars.summonMinions <= 0 )
 	then
-		unit:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		
 		unit:PlaySoundToSet( SOUND[ 4 ] );
-		unit:SendChatMessage( 14, 0, CHAT[ 3 ] );
-		vars.minions = 45;
+		unit:SendChatMessage( 14, 0, YELL[ 3 ] );
+		
+		local stalker1 = unit:GetCreatureNearestCoords( 3043.97, 419.88, 87.1399, 39794 );
+		if( stalker1 )
+		then
+			stalker1:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		end
+		
+		local stalker2 = unit:GetCreatureNearestCoords( 3062.6, 636.998, 82.8377, 39794 );
+		if( stalker2 )
+		then
+			stalker2:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		end
+		
+		vars.summonMinions = 45;
 
-	elseif( vars.minions25 <= 0 and (vars.diff == 1 or vars.diff == 3 ) )
+	elseif( vars.summonMinions25 <= 0 and (vars.diff == 1 or vars.diff == 3 ) )
 	then
-		unit:CastSpell( SPELL_SUMMON_FLAMECALLER );
-		vars.minions25 = 45;
-		unit:SendChatMessage( 12, 0, "debug: minions 2" );
+		local stalker1 = unit:GetCreatureNearestCoords( 3043.97, 419.88, 87.1399, 39794 );
+		if( stalker1 )
+		then
+			stalker1:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		end
+		
+		local stalker2 = unit:GetCreatureNearestCoords( 3062.6, 636.998, 82.8377, 39794 );
+		if( stalker2 )
+		then
+			stalker2:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		end
+		vars.summonMinions25 = 45;
+		unit:SendChatMessage( 12, 0, "debug: minions 2" ); -- CLEAN ME!
 	end
 end
 
 RegisterUnitEvent( 39746, 18, OnSpawn );
-RegisterUnitEvent( 39746, 1 , OnCombat );
-RegisterUnitEvent( 39746, 2 , OnLeaveCombat );
-RegisterUnitEvent( 39746, 3 , OnTargetDied );
-RegisterUnitEvent( 39746, 4 , OnDeath );
+RegisterUnitEvent( 39746, 1, OnCombat );
+RegisterUnitEvent( 39746, 2, OnLeaveCombat );
+RegisterUnitEvent( 39746, 3, OnTargetDied );
+RegisterUnitEvent( 39746, 4, OnDeath );
 RegisterUnitEvent( 39746, 21, OnAIUpdate );
+
+
+--[[ 
+		Debug commands disabled by default 
+--]]
+
+local COMMANDS = { "zar", "port", "removeflag", "minions", "gotostalker1", "gotostalker2", "open", "close", "summon" };
+
+function Commands( _, plr, message )
+
+	if( plr:IsGm() == true )
+	then
+		if( message == "#zar" )
+		then
+			for i = 1, #COMMANDS
+			do
+				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
+			end
+
+		elseif( message == "#port" )
+		then
+			plr:Teleport( 724, 3002.49, 538.22, 90.85, 6.01 );
+			
+		elseif( message == "#removeflag" )
+		then
+			local zar = plr:GetCreatureNearestCoords( 3049.7, 528.125, 89.6219, 39746 );
+			zar:RemoveFlag( 0x0006 + 0x0035, 0x02000000 + 0x00000100 );
+			
+		elseif( message == "#minions1" )
+		then
+			local stalker1 = plr:GetCreatureNearestCoords( 3043.97, 419.88, 87.1399, 39794 );
+			stalker1:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		
+		elseif( message == "#minions2" )
+		then
+			local stalker2 = plr:GetCreatureNearestCoords( 3062.6, 636.998, 82.8377, 39794 );
+			stalker2:CastSpell( SPELL_SUMMON_FLAMECALLER );
+		
+		elseif( message == "#gotostalker1" )
+		then
+			plr:Teleport( 724, 3043.97, 419.88, 87.1399, 6.01 );
+			
+		elseif( message == "#gotostalker2" )
+		then
+			plr:Teleport( 724, 3062.6, 636.998, 82.8377, 6.01 );
+		
+		elseif( message == "#open" )
+		then
+			local flame = plr:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+			flame:SetByte( 0x0006 + 0x000B, 0, 0 );
+		
+		elseif( message == "#close" )
+		then
+			local flame = plr:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+			flame:SetByte( 0x0006 + 0x000B, 0, 1 );
+	
+		else
+		
+			local selection = plr:GetSelection();
+			if( selection == nil)
+			then
+				plr:SendBroadcastMessage( "You need to select baltharus first." );
+				
+			else
+					
+				if( message == "#summon" )
+				then
+					selection:CastSpell( SPELL_SUMMON_FLAMECALLER );
+				
+				elseif( message == "#enervating2" )
+				then
+					selection:CastSpellOnTarget( SPELL_ENERVATING_BRAND_2, selection:GetRandomPlayer( 0 ) );
+				
+				elseif( message == "#siphon" )
+				then
+					selection:CastSpell( SPELL_SIPHONED_MIGHT );
+				end
+			end
+		end
+    end
+end
+
+RegisterServerHook( 16, Commands );
