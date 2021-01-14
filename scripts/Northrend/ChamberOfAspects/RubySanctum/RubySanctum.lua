@@ -131,15 +131,16 @@ function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
 
     local iid = plr:GetInstanceID();
 
+	-- create protected variables
     if( RUBY_SANCTUM[ iid ] == nil )
     then
 	    RUBY_SANCTUM[ iid ] = {
 
 		isIntro = true,
 		isDone = false,
-        baltharus = false,
-        saviana = false,
-        zarithrian = false,
+        baltharusIsDead = false,
+        savianaIsDead = false,
+        zarithrianIsDead = false,
 		action = 0
 		
         };
@@ -148,16 +149,16 @@ end
 
 function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
 
-    local iid = killer:GetInstanceID(); -- fucking idd argument
+    local iid = killer:GetInstanceID();
 
 	local entry = victim:GetEntry();
 	
 	-- baltharus
     if( entry == 39751 )
     then
-        RUBY_SANCTUM[ iid ].baltharus = true;
+        RUBY_SANCTUM[ iid ].baltharusIsDead = true;
 		
-        if( RUBY_SANCTUM[ iid ].saviana == true )
+        if( RUBY_SANCTUM[ iid ].savianaIsDead == true )
         then
             local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
 			
@@ -171,9 +172,9 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
 	-- saviana
     elseif( entry == 39747 )
     then
-        RUBY_SANCTUM[ iid ].saviana = true;
+        RUBY_SANCTUM[ iid ].savianaIsDead = true;
 
-        if( RUBY_SANCTUM[ iid ].baltharus == true )
+        if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
         then
 
             local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
@@ -188,7 +189,7 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
 	-- zarithrian
     elseif( entry == 39746 )
     then
-        RUBY_SANCTUM[ iid ].zarithrian = true;
+        RUBY_SANCTUM[ iid ].zarithrianIsDead = true;
 		
         local controller = victim:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
 		
@@ -228,6 +229,8 @@ function RUBY_SANCTUM.XerexDoAction( unit )
 		unit:Emote( 5, 0 );
 		
 		RUBY_SANCTUM[ iid ].isIntro = false;
+		
+		-- add protected variables
 		RUBY_SANCTUM[ iid ].event1 = 16;
 		RUBY_SANCTUM[ iid ].event2 = 25;
 		RUBY_SANCTUM[ iid ].event3 = 32;
@@ -256,8 +259,6 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	
 	if( RUBY_SANCTUM[ iid ].isIntro == true )
 	then return; end
-	
-	--local vars = self[ tostring( unit ) ];
 	
 	RUBY_SANCTUM[ iid ].event1 = RUBY_SANCTUM[ iid ].event1 - 1;
 	RUBY_SANCTUM[ iid ].event2 = RUBY_SANCTUM[ iid ].event2 - 1;
@@ -376,7 +377,6 @@ function RubyCommands( _, plr, message )
 		then
 			local iid = plr:GetInstanceID();
 			local xerex = GetInstanceCreature( 724, iid, 134456 );
-			--local xerex = plr:GetUnitBySqlId( 134456 );
 			xerex:SendChatMessage( 12, 0, CHAT[ 6 ] );
 			
 		elseif( message == "#open" )
@@ -400,13 +400,10 @@ function RubyCommands( _, plr, message )
 
 				if( message == "#n" )
 				then
-					local iid = plr:GetInstanceID();
-					local xerex = GetInstanceCreature( 724, iid, 0, 134456 );
-					xerex:SendChatMessage( 12, 0, CHAT[ 6 ] );
 					
 				elseif( message == "#m" )
 				then
-					selection:SetFlying();
+
 				end
 			end
 		end
