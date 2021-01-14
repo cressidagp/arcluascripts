@@ -46,9 +46,9 @@ local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 
 --]]
 
---local mod = getfenv( 1 );
---assert( mod );
---module( mod._NAME..".HALION_DESTROYER", package.seeall );
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".HALION_DESTROYER", package.seeall );
 
 local SOUND = {
 [ 1 ] = 17499;  -- Intro
