@@ -323,7 +323,7 @@ RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
 
 --[[ 
 		Debug commands disabled by default 
-
+--]]
 
 local COMMANDS = { "ruby", "port", "exit", "xerex", "open", "close" };
 
@@ -384,5 +384,3 @@ function RubyCommands( _, plr, message )
 end
 
 RegisterServerHook( 16, RubyCommands );
-
---]]
