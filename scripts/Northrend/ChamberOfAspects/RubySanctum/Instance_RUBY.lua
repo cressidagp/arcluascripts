@@ -28,7 +28,7 @@ local directory = string.reverse( string.sub( src, startpos, endpos ) );
 --print( "Resolved directory is :"..directory );
 
 -- now we construct our modules based on the resolved directory.
-local modules = { directory.."Baltharus.script", directory.."Saviana.script", directory.."Zarithrian.script" directory.."Halion.script"};
+local modules = { directory.."Baltharus.script", directory.."Saviana.script", directory.."Zarithrian.script", directory.."Halion.script"};
 for _, v in pairs( modules )
 do
 	local loader_function, errormsg = loadfile( v );

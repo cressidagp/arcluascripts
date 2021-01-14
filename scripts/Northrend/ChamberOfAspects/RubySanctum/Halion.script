@@ -64,7 +64,7 @@ local YELL = {
 [ 1 ] = "Meddlesome insects! You are too late. The Ruby Sanctum is lost!";  -- Intro
 [ 2 ] = "The heavens burn!";  -- OnMeterStrike
 [ 3 ] = "You will find only suffering within the realm of twilight! Enter if you dare!";  -- OnPhaseTwo
-[ 4 ] = "Another ""hero"" falls.";  -- OnTargetDied
+[ 4 ] = "Another \"hero\" falls.";  -- OnTargetDied
 [ 5 ] = "Not good enough...."; -- OnBerserk
 };
 
