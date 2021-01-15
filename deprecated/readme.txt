@@ -25,8 +25,3 @@ Proenitus.lua
 Seer_Skaltesh.lua
 Shawn.lua
 Spirit_of_the_Vale.lua
-
-****) Rewrited:
-
-Morgan_the_Collector.lua
-
