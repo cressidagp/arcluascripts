@@ -1,5 +1,4 @@
 --[[
-
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -31,11 +30,6 @@ local CHAT = {
 [ 2 ] = "Gee, fish sure dont seem to be biting here. Maybe I should go over to Crystal Lake to try my luck there!";
 };
 
-local ANGLE = {
-[ 1 ] = 2.617; -- Crystal Lake
-[ 2 ] = 2.118; -- Goldshire pond
-};
-
 MATT = {}
 
 function MATT.ChatOnReachWP( unit, event, waypointId )
@@ -65,23 +59,31 @@ function MATT.ChatOnReachWP( unit, event, waypointId )
 		
 		elseif( waypointId == 2 or waypointId == 27 )
 		then
-			unit:ModifyAIUpdateEvent( 1000 );
+			unit:ModifyAIUpdateEvent( 1000 );	
         end
 
 	-- on ai update
     elseif( event == 21 )
     then
         local currentWaypoint = unit:GetCurrentWaypoint();
-		
+	
 		--print(""..currentWaypoint.."");
 		
-        if( currentWaypoint == 1 or currentWaypoint == 26 )
+        if( currentWaypoint == 1 )
+		then
+			-- hide pole
+			unit:SetByteValue( 0x7A, 0, 0 );
+			
+			unit:SetFacing( 2.617 );
+			unit:SendChatMessage( 12, 7, CHAT[ 1 ] );
+			
+		elseif( currentWaypoint == 26 )
         then
 			-- hide pole
             unit:SetByteValue( 0x7A, 0, 0 );
 			
-			unit:SetFacing( ANGLE[ currentWaypoint ] );
-            unit:SendChatMessage( 12, 7, CHAT[ currentWaypoint ] );
+			unit:SetFacing( 2.118 );
+            unit:SendChatMessage( 12, 7, CHAT[ 2 ] );
         end
     end
 end
