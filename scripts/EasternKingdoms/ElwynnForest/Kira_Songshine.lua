@@ -21,16 +21,16 @@
 	
 	esMX locale:
 
-	[ 1 ] = "Fresh bread, baked this very morning!";
-	[ 2 ] = "Come get yer fresh bread!";
-	[ 3 ] = "Fresh bread for sale!";
+	[ 1 ] = "Pan casero, horneado esta mañana!";
+	[ 2 ] = "Venga a buscar su pan casero!";
+	[ 3 ] = "Pan casero a la venta!";
 
 --]]
 
 local CHAT = {}
-[ 1 ] = "Pan casero, horneado esta mañana!";
-[ 2 ] = "Venga a buscar su pan casero!";
-[ 3 ] = "Pan casero a la venta!";
+[ 1 ] = "Fresh bread, baked this very morning!";
+[ 2 ] = "Come get yer fresh bread!";
+[ 3 ] = "Fresh bread for sale!";
 
 KIRA_SONGSHINE = {}
 
