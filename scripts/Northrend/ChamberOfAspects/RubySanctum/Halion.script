@@ -15,8 +15,7 @@
 	
 	ToDo:
 
-	*) More clean up
-	*) 75416: need spellscript?
+	*) find a way to get guid for both halions
 	
 	enUS locale:
 	
@@ -51,6 +50,7 @@ assert( mod );
 module( mod._NAME..".HALION_DESTROYER", package.seeall );
 
 local SOUND = {
+-- Halion:
 [ 1 ] = 17499;  -- Intro
 [ 2 ] = 17500;  -- OnCombat
 [ 3 ] = 17505;  -- OnMeteorStrike
@@ -58,14 +58,21 @@ local SOUND = {
 [ 5 ] = 17503;  -- OnDeath
 [ 6 ] = 17501;  -- OnTargetDied
 [ 7 ] = 17504;  -- OnBerserk
+-- Twilight:
+[ 8 ] = 17506;
+[ 9 ] = 17508;
 };
 
 local YELL = {
+-- Halion:
 [ 1 ] = "Meddlesome insects! You are too late. The Ruby Sanctum is lost!";  -- Intro
 [ 2 ] = "The heavens burn!";  -- OnMeterStrike
 [ 3 ] = "You will find only suffering within the realm of twilight! Enter if you dare!";  -- OnPhaseTwo
 [ 4 ] = "Another \"hero\" falls.";  -- OnTargetDied
 [ 5 ] = "Not good enough...."; -- OnBerserk
+-- Twilight:
+[ 6 ] = "Beware the shadow!";
+[ 7 ] = "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!";
 };
 
 local TEXT = {
@@ -100,6 +107,13 @@ local SPELL_SUMMON_TWILIGHT_PORTAL	= 74809; -- Summons go 202794
 
 local TREES = { 203034, 203035, 203036, 203037 };
 
+-- Phases:
+local PHASE_ALL		= 0;
+local PHASE_INTRO	= 1;
+local PHASE_ONE		= 2; -- Combat in Physical realm
+local PHASE_TWO		= 3; -- Combat in Twilight realm
+local PHASE_THREE	= 4; -- Combat in both realms
+
 local self = getfenv( 1 );
 
 function OnSpawn( unit )
@@ -122,7 +136,7 @@ function OnCombat( unit )
 	-- create protected variables
 	self[ tostring( unit )] = {
 
-	phase = 2,
+	phase = PHASE_ONE,
 	firewallInClosed = false,
 	cleave = math.random( 6, 10 ),
 	tailLash = math.random( 7, 12 ),
@@ -150,23 +164,26 @@ function OnDamageTaken( unit, _, attacker, damage )
 
 	local hp = unit:GetHealth();
 	
-    if( damage >= hp and vars.phase ~= 4 )
+    if( damage >= hp and vars.phase ~= PHASE_THREE )
 	then
         damage = hp - 1;
 	end
 
 	local pct = unit:GetHealthPct();
 	
-	if( pct < 75 and vars.phase == 2 )
+	if( pct < 75 and vars.phase == PHASE_ONE )
 	then
 		unit:PlaySoundToSet( SOUND[ 4 ] );
 		unit:SendChatMessage( 14, 0, YELL[ 4 - 1 ] );
-		vars.phase = 3;
+		vars.phase = PHASE_TWO;
+		
+		-- set not attacable
 		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 );
+		
 		unit:CastSpell( SPELL_TWILIGHT_PHASING );
 	end
 
-	if( vars.phase == 4 )
+	if( vars.phase == PHASE_THREE )
 	then
 		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
 
@@ -237,7 +254,7 @@ function OnAIUpdate( unit )
 
 	local vars = self[ tostring( unit ) ];
 
-	if( vars.phase == 3 ) then return; end
+	if( vars.phase == PHASE_TWO ) then return; end
 
 	if( unit:GetNextTarget() == nil ) then
 		unit:WipeThreatList()
@@ -322,7 +339,8 @@ function TwilightHalionOnSpawn( unit )
 	
 	unit:SetHealth( halion:GetHealth() );
 	
-	-- ToDo: set phase mask...  = 0x00000020, // 6           32
+	-- ToDo: set phase mask: 0x00000020 // 6 -- 32
+	unit:SetPhase( 32 );
 	
 	-- react defensive
 	unit:DisableCombat( 1 );
@@ -343,7 +361,7 @@ function TwilightHalionOnCombat( unit )
 	-- add more protected variables
 	local vars = self[ tostring( unit ) ];
 	
-	vars.phase = 3; -- Should be shared or private?
+	vars.phase = PHASE_TWO; -- Should be shared or private?
 	vars.cleave = 3;
 	vars.darkBreath = 12;
 	
@@ -357,7 +375,7 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 
 	local hp = unit:GetHealth();
 	
-    if( damage >= hp and vars.phase ~= 4 )
+    if( damage >= hp and vars.phase ~= PHASE_THREE )
 	then
         damage = hp - 1;
 	end
@@ -366,16 +384,16 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 
 	local pct = unit:GetHealthPct();
 	
-	if( pct < 50 and vars.phase == 3 )
+	if( pct < 50 and vars.phase == PHASE_TWO )
 	then
-		--unit:PlaySoundToSet( SOUND[ 4 ] );
-		--unit:SendChatMessage( 14, 0, YELL[ 4 - 1 ] );
-		vars.phase = 4;
+		unit:PlaySoundToSet( SOUND[ 9 ] );
+		unit:SendChatMessage( 14, 0, YELL[ 7 ] );
+		vars.phase = PHASE_THREE;
 		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 );
 		unit:CastSpell( SPELL_TWILIGHT_PHASING );
 	end
 
-	if( vars.phase == 4 )
+	if( vars.phase == PHASE_THREE )
 	then
 		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
 
@@ -464,7 +482,7 @@ end
 
 RegisterUnitEvent( 40142, 18, TwilightHalionOnSpawn );
 RegisterUnitEvent( 40142, 1, TwilightHalionOnCombat );
-RegisterUnitEvent( 40142, 23, OnDamageTaken );
+RegisterUnitEvent( 40142, 23, TwilightHalionOnDamageTaken );
 RegisterUnitEvent( 40142, 3, TwilightHalionOnTargetDied );
 RegisterUnitEvent( 40142, 4, TwilightHalionOnDeath );
 RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
@@ -527,7 +545,7 @@ function ControllerOnLeaveCombat( unit )
 	local halion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 39863 );
 	if( halion )
 	then
-		Halion:Despawn( 1000, 0 );
+		halion:Despawn( 1000, 0 );
 	end
 end
 
@@ -591,3 +609,62 @@ end
 
 RegisterServerHook( 33, SpellHalionTwilightPhasing );
 --]]
+
+--[[ 
+		Debug commands disabled by default 
+
+--]]
+
+local COMMANDS = { "halion", "port", "exit", "open", "close" };
+
+function Commands( _, plr, message )
+
+	if( plr:IsGm() == true )
+	then
+		if( message == "#halion" )
+		then
+			for i = 1, #COMMANDS
+			do
+				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
+			end
+
+		elseif( message == "#port" )
+		then
+			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );
+			
+		elseif( message == "#exit" )
+		then
+			plr:Teleport( 571, 3597.61, 200.96, -113.74, 5.30 );
+			
+		elseif( message == "#open" )
+		then
+			local flameRing = plr:GetGameObjectNearestCoords( 3154.99, 535.64, 72.89, 203007 );
+			flameRing:SetByte( 0x0006 + 0x000B, 0, 0 );
+		
+		elseif( message == "#close" )
+		then
+			local flameRing = plr:GetGameObjectNearestCoords( 3154.99, 535.64, 72.89, 203007 );
+			flameRing:SetByte( 0x0006 + 0x000B, 0, 1 );
+			
+		else
+		
+			local selection = plr:GetSelection();
+			if( selection == nil)
+			then
+				plr:SendBroadcastMessage( "You need to select something first." );
+				
+			else		
+
+				if( message == "#n" )
+				then
+					
+				elseif( message == "#m" )
+				then
+
+				end
+			end
+		end
+    end
+end
+
+RegisterServerHook( 16, Commands );
