@@ -28,6 +28,7 @@
 --]]
 
 --local EMOTE_ONESHOT_WAVE = 3;
+--local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
 
 local CHAT = {
 [ 1 ] = "Welcome to the Lion's Pride In.  Make yourself at home!";
@@ -37,52 +38,56 @@ local CHAT = {
 
 INNKEEPER_FARLEY = {}
 
-function INNKEEPER_FARLEY.DoChat( unit )
-
-	if( unit:IsInCombat() == false )
-	then
-		local vars = INNKEEPER_FARLEY[ tostring( unit ) ];
-
-		vars.chatTime = vars.chatTime - 1;
-
-		if( vars.chatTime <= 0 )
-		then
-			unit:SendChatMessage( 12, 7, CHAT[ math.random( 2, 3 ) ] );
-			vars.chatTime = math.random( 150, 180 );
-		end 
-    end
-end
-
 function INNKEEPER_FARLEY.OnSpawnOnAIUpdate( unit, event )
+
+	local sUnit = tostring( unit )
 
 	-- on ai update
     if( event == 21 )
     then
-        local target = unit:GetClosestPlayer();
+		
+		if( unit:IsInCombat() == true ) then return; end
+		
+		local vars = INNKEEPER_FARLEY[ sUnit ];
+		
+		vars.welcomeTime = vars.welcomeTime - 1;
+		vars.randomChatTime = vars.randomChatTime - 1;
+		
+		unit:SetUInt64Value( 0x0006 + 0x000C, 0 );
+		
+		if( vars.welcomeTime <= 0 )
+		then
+		
+			local target = unit:GetClosestPlayer();
 
-        if (target ~= nil )
-        then
-            if( unit:IsHostile( target ) == false and unit:GetDistanceYards( target ) < 20 )
-            then
-                unit:SendChatMessage( 12, 7, CHAT[ 1 ] );
-                unit:Emote( 3, 0 );
-                unit:ModifyAIUpdateEvent( 40000 );
-            end
-        end
+			if (target ~= nil )
+			then
+				if( unit:IsHostile( target ) == false and unit:GetDistanceYards( target ) < 20 )
+				then
+					unit:SetUInt64Value( 0x0006 + 0x000C, target:GetGUID() );
+					unit:SendChatMessage( 12, 7, CHAT[ 1 ] );
+					unit:Emote( 3, 0 );
+					vars.welcomeTime = 40;
+				end
+			end
+		
+		elseif( vars.randomChatTime <= 0 )
+		then
+			unit:SendChatMessage( 12, 7, CHAT[ math.random( 2, 3 ) ] );
+			vars.randomChatTime = math.random( 150, 180 );
+		end
 	
 	-- on spawn
     else
-        local sUnit = tostring( unit );
 
         INNKEEPER_FARLEY[ sUnit ] = {
 		
-		chatTime = math.random( 1, 15 );
+		welcomeTime = 1,
+		randomChatTime = math.random( 1, 15 ),
 		
 		};
 
         unit:RegisterAIUpdateEvent( 1000 );
-
-        unit:RegisterEvent( INNKEEPER_FARLEY.DoChat, 1000, 0 );
 	end
 end
 
