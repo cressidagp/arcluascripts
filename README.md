@@ -31,7 +31,7 @@ To run properly require the contents of 0Misc folder from [ArcEmu github reposit
 * Trinity for texts, sound ids, timers, spell ids and some inspiration.
 * Hypersniper for his lua guides and some job in the lua engine.
 * Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-* ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+* ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 
 ## Links
 
