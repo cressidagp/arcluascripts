@@ -4,7 +4,7 @@
 	Engine: A.L.E
 	
 	Zone: Elwynn Forest
-	Creature: Morgan The Collector (794)
+	Creature: Morgan the Collector (473)
 
 	Credits:
 	
