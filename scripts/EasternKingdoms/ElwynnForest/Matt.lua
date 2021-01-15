@@ -27,8 +27,8 @@
 --]]
 
 local CHAT = {
-[ 1 ] = "¡Demonios! Los peces tampoco están mordiendo aquí. ¡Volveré a mi antiguo lugar de pezca!";
-[ 2 ] = "Caramba, los peces no parecen estar mordiendo aquí. ¡Tal vez deberia ir al Lago de Cristal y probar suerte allí!";
+[ 1 ] = "Dang! Fish arent biting here either. I am gonna go back to my ol fishin hole!";
+[ 2 ] = "Gee, fish sure dont seem to be biting here. Maybe I should go over to Crystal Lake to try my luck there!";
 };
 
 local ANGLE = {
