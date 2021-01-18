@@ -13,43 +13,50 @@
 
 --]]
 
+--local NPC_REMA = 1428
+--local NPC_CORBET = 1433;
+--local NPC_HARLAN = 1427;
+--local NPC_ELAINE = 483;
+
 --local FACTION_FRIENDLY = 35;
 --local NO_DESPAWN = 0;
 --local NEVER_RESPAWN = 0;
 
+print( "Lua memory used before: "..gcinfo().." Kb." );
+
 local CHAT = {
-[ 1 ] = "Business must be good down at the bazaar.  I'll get him resupplied right away!";
-[ 2 ] = "Corbett, dear. Harlan needs a load of knitted shirts and pants as soon as we can manage.";
-[ 3 ] = "Corbett, you there? Harlan needs another load of knitted goods. Can you take it to him?";
-[ 4 ] = "My pleasure, sugar drop.  I'll be back soon...";
+{ "Business must be good down at the bazaar.  I'll get him resupplied right away!" },
+{ "Corbett, dear. Harlan needs a load of knitted shirts and pants as soon as we can manage." },
+{ "Corbett, you there? Harlan needs another load of knitted goods. Can you take it to him?" },
+{ "My pleasure, sugar drop.  I'll be back soon..." },
 
-[ 5 ] = "Hm...after dropping this off, I think I'll head to that cheese shop for a snack.";
-[ 6 ] = "I should have a few extra coins from this sale.  Maybe I'll buy myself some lunch...";
+{ "Hm...after dropping this off, I think I'll head to that cheese shop for a snack." },
+{ "I should have a few extra coins from this sale.  Maybe I'll buy myself some lunch..." },
 
-[ 7 ] = "Hey, Harlan.  Here's a load of knitted cloth for you.";
-[ 8 ] = "Oomph!  Here's another load of supplies, Harlan.  It must be selling fast!";
-[ 9 ] = "Ah, much appreciated, Corbett.  We'll get these on the racks immediately.";
-[ 10 ] = "Ah yes, and promptly delivered. As always, it's a pleasure doing business with you, Corbett.";
+{ "Hey, Harlan.  Here's a load of knitted cloth for you." },
+{ "Oomph!  Here's another load of supplies, Harlan.  It must be selling fast!" },
+{ "Ah, much appreciated, Corbett.  We'll get these on the racks immediately." },
+{ "Ah yes, and promptly delivered. As always, it's a pleasure doing business with you, Corbett." },
 
-[ 11 ] = "Well, I'm off then.  Take care, Harlan.";
-[ 12 ] = "Glad to see you're doing so well, Harlan.  And I hope to see you again soon...";
+{ "Well, I'm off then.  Take care, Harlan." },
+{ "Glad to see you're doing so well, Harlan.  And I hope to see you again soon..." },
 
-[ 13 ] = "Now for that snack...";
+{ "Now for that snack..." },
 
-[ 14 ] = "Good day, Elling!  Hullo Elaine!  Let me have a wheel of bleu cheese, eh?";
-[ 15 ] = "Hullo, Trias clan!  A ball of your smoked mozzarella, if you please!";
-[ 16 ] = "Good day, Corbett.  Here's your cheese, fresh made this morning!  And how are things at your shop?";
-[ 17 ] = "Hi Corbett!  Here, you go!  I trust business is faring well at your clothier shop...?";
+{ "Good day, Elling!  Hullo Elaine!  Let me have a wheel of bleu cheese, eh?" },
+{ "Hullo, Trias clan!  A ball of your smoked mozzarella, if you please!" },
+{ "Good day, Corbett.  Here's your cheese, fresh made this morning!  And how are things at your shop?" },
+{ "Hi Corbett!  Here, you go!  I trust business is faring well at your clothier shop...?" },
 
-[ 18 ] = "Yes ma'am, business is brisk!";
+{ "Yes ma'am, business is brisk!" },
 
-[ 19 ] = "Thank you kindly!";
-[ 20 ] = "Thanks for the cheese!";
+{ "Thank you kindly!" },
+{ "Thanks for the cheese!" },
 
-[ 21 ] = "I should get back before Rema starts to worry...";
-[ 22 ] = "Time to get back to the shop...";
+{ "I should get back before Rema starts to worry..." },
+{ "Time to get back to the shop..." },
 
-[ 23 ] = "I'm back!";
+{ "I'm back!" }
 };
 
 HARLAN_RESUPPLY = {}
@@ -79,7 +86,6 @@ function HARLAN_RESUPPLY.OnComplete( plr, questID )
             local result = WorldDBQuery( "SELECT `p_x`, `p_y`, `p_z`, `p_o`, `wtime`, `flags` FROM `waypoints_lua` WHERE `entry` = '1433'" );
 			
             if( result ~= nil )
-			
             then
 			
                 corbett:CreateCustomWaypointMap();
@@ -91,25 +97,17 @@ function HARLAN_RESUPPLY.OnComplete( plr, questID )
                     i = i + 1;
 					
                     local x = result:GetColumn( 0 ):GetFloat();
-					
                     local y = result:GetColumn( 1 ):GetFloat();
-					
                     local z = result:GetColumn( 2 ):GetFloat();
-					
                     local o = result:GetColumn( 3 ):GetFloat();
-					
-                    local time = result:GetColumn( 4 ):GetUShort();
-					
-                    corbett:CreateCustomWaypoint( i, x, y, z, o, time, 0, 0 );
+                    local delay = result:GetColumn( 4 ):GetUShort();
+                    corbett:CreateCustomWaypoint( i, x, y, z, o, delay, 0, 0 );
 
                 until result:NextRow() ~= true;
 				
-            end
-			
+            end	
         end
-		
     end
-	
 end
 
 function HARLAN_RESUPPLY.OnReachWP( unit, event, wpID )
@@ -127,7 +125,6 @@ function HARLAN_RESUPPLY.OnReachWP( unit, event, wpID )
         local harlan = unit:GetCreatureNearestCoords( -8782.90, 640.19, 97.41, 1427 );
 		
         if( harlan ~= nil )
-		
         then
             harlan:EventChat( 12, 7, CHAT[ math.random( 9, 10 ) ], 5000 );
             unit:EventChat( 12, 7, CHAT[ math.random( 11, 12 ) ], 10000 );	
@@ -169,3 +166,5 @@ end
 
 RegisterQuestEvent( 333, 2, HARLAN_RESUPPLY.OnComplete );
 RegisterUnitEvent( 1433, 19, HARLAN_RESUPPLY.OnReachWP );
+
+print( "Lua memory used after: "..gcinfo().." Kb." );
