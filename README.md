@@ -11,7 +11,11 @@ WARNING: this stuff its experimental, use it at your own risk. Feel free to [ope
 
 Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips, Quests, DummySpells and a couple of gm/dev commands.
 
-Scripts folder has been organizated per map id, bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
+Scripts folder has been organizated per map id.
+
+All script has been writed to prevent [variable collision.](http://arcemu.org/forums/index.php?showtopic=19907)
+
+Bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
 
 
 ## Requirements
