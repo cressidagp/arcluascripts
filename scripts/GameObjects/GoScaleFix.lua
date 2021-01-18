@@ -19,7 +19,7 @@ function GO_SCALE_FIX.OnSpawn( go )
 	
     if( go:GetEntry() == 161513 )
     then
-		if( go:GetScale ~= 0.2 )
+		if( go:GetScale() ~= 0.2 )
 		then
 			go:SetScale( 0.2 );
 		end
