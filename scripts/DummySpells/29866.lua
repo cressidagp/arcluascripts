@@ -1,15 +1,18 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Cast Fishing Net (29866)
 	Engine: A.L.E
-
+	
+	Dummy: Cast Fishing Net (29866)
+	
 	Credits:
-
-	*) Fasthio, Jackpoz, Sadikum, dfighter1985
+	
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
+	
+	*) Spell research by: Fasthio, Jackpoz, Sadikum, dfighter1985
 
 	Precondition(s):
 
@@ -24,7 +27,9 @@
 
 --]]
 
-function CastFishingNetDummy( effectIndex, spellObject )
+CAST_FISHING_NET = {}
+
+function CAST_FISHING_NET.DummyHandler( _, spellObject )
 
 	local caster = spellObject:GetCaster();
 
@@ -50,11 +55,11 @@ function CastFishingNetDummy( effectIndex, spellObject )
 		murloc:StopMovement( 500 );
 		murloc:SetAttackTimer( 1000 );
 	end
-	
+
 	if( caster:GetItemCount( 23614 ) < 10 )
 	then
 		caster:AddItem( 23614, 1 );
 	end
 end
 
-RegisterDummySpell( 29866, CastFishingNetDummy );
+RegisterDummySpell( 29866, CAST_FISHING_NET.DummyHandler );
