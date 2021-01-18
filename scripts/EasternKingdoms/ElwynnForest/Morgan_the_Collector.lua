@@ -14,7 +14,6 @@
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
 --]]
-
 MORGAN_THE_COLLECTOR = {}
 
 function MORGAN_THE_COLLECTOR.CastGouge( unit )
@@ -23,7 +22,6 @@ function MORGAN_THE_COLLECTOR.CastGouge( unit )
 	
 	if( target == nil )
 	then
-		unit:WipeThreatList();
 		unit:RemoveEvents();
 		return;
 	end
