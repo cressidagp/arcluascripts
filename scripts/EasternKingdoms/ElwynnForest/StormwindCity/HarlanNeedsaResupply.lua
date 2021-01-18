@@ -1,17 +1,23 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Stormwind City: Harlan Needs a Resupply
 	Engine: A.L.E
-	Credits: to Trinity for waypoints and creature texts
+	
+	Zone: Stormwind City
+	Quest: Harlan Needs a Resupply (333)
+
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
+
 --]]
 
-local FACTION_FRIENDLY = 35;
-local NO_DESPAWN = 0;
-local NEVER_RESPAWN = 0;
+--local FACTION_FRIENDLY = 35;
+--local NO_DESPAWN = 0;
+--local NEVER_RESPAWN = 0;
 
 local CHAT = {
-
 [ 1 ] = "Business must be good down at the bazaar.  I'll get him resupplied right away!";
 [ 2 ] = "Corbett, dear. Harlan needs a load of knitted shirts and pants as soon as we can manage.";
 [ 3 ] = "Corbett, you there? Harlan needs another load of knitted goods. Can you take it to him?";
@@ -53,20 +59,18 @@ function HARLAN_RESUPPLY.OnComplete( plr, questID )
 	-- Developer notes: i will leave quest id check here since in future this function will expand to a zone quest function
 	
     if( questID == 333 )
-	
     then
 	
         local rema = plr:GetCreatureNearestCoords( -8777.60, 713.50, 99.62, 1428 );
 		
         if( rema ~= nil )
-		
         then
 		
             rema:SendChatMessage( 12, 7, CHAT[ 1 ] );
 			
             rema:EventChat( 12, 7, CHAT[ math.random( 2, 3 ) ], 6000 );
 			
-            local corbett = rema:SpawnCreature( 1433, -8773.65, 717.401, 99.534, 3.8705, FACTION_FRIENDLY, NO_DESPAWN, 1, 1, 1, 1, 0 );
+            local corbett = rema:SpawnCreature( 1433, -8773.65, 717.401, 99.534, 3.8705, 35, 0, 1, 1, 1, 1, 0 );
 			
             corbett:EventChat( 12, 7, CHAT[ 4 ], 9000 );
 			
@@ -111,13 +115,11 @@ end
 function HARLAN_RESUPPLY.OnReachWP( unit, event, wpID )
 
     if( wpID == 4 )
-	
     then
 	
         unit:SendChatMessage( 12, 7, CHAT[ math.random( 5, 6 ) ] );
 
     elseif( wpID == 31 )
-	
     then
 	
         unit:SendChatMessage( 12, 7, CHAT[ math.random( 7, 8 ) ] );
@@ -127,63 +129,43 @@ function HARLAN_RESUPPLY.OnReachWP( unit, event, wpID )
         if( harlan ~= nil )
 		
         then
-		
             harlan:EventChat( 12, 7, CHAT[ math.random( 9, 10 ) ], 5000 );
-			
-            unit:EventChat( 12, 7, CHAT[ math.random( 11, 12 ) ], 10000 );
-			
+            unit:EventChat( 12, 7, CHAT[ math.random( 11, 12 ) ], 10000 );	
         end
 
     elseif( wpID == 34 )
-	
     then
 	
         unit:SendChatMessage( 12, 7, CHAT[ 13 ] );
 
     elseif( wpID == 41 )
-	
     then
 	
         unit:SendChatMessage( 12, 7, CHAT[ math.random( 14, 15 ) ] );
 		
         local elaine = unit:GetCreatureNearestCoords( -8845.68, 566.49, 94.77, 483 );
 		
-        if( elaine ~= nil )
-		
+        if( elaine ~= nil )	
         then
-		
             elaine:EventChat( 12, 7, CHAT[ math.random( 16, 17 ) ], 5000 );
-			
             unit:EventChat( 12, 7, CHAT[ 18 ], 10000 );
-			
-            unit:EventChat( 12, 7, CHAT[ math.random( 19, 20 ) ], 15000 );
-			
+            unit:EventChat( 12, 7, CHAT[ math.random( 19, 20 ) ], 15000 );	
         end
 
     elseif( wpID == 44 )
-	
     then
-	
         unit:SendChatMessage( 12, 7, CHAT[ math.random( 21, 22 ) ] );
 
     elseif( wpID == 64 )
-	
     then
-	
         unit:SendChatMessage( 12, 7, CHAT[ 23 ] );
-
+		
     elseif( wpID == 70 )
-	
     then
-	
         unit:DestroyCustomWaypointMap();
-		
-        unit:Despawn( 1000, NEVER_RESPAWN );
-		
+        unit:Despawn( 1000, 0 );	
     end
-	
 end
 
 RegisterQuestEvent( 333, 2, HARLAN_RESUPPLY.OnComplete );
-
 RegisterUnitEvent( 1433, 19, HARLAN_RESUPPLY.OnReachWP );

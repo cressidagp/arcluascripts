@@ -16,6 +16,7 @@
 --]]
 
 --local SPELL_RALLYNG_CRY = 22888; -- Rallyng Cry of the Dragonslayer
+--local SPELL_HOLY_LIGHT = 15493; -- Holy Light
 
 --[[
 local TEXT = { -- Yell, Yell, and them spawn onyxia head
@@ -30,27 +31,30 @@ local TEXT = { -- Yell, Yell, and them spawn onyxia head
 -- End:
 --local QUEST_2 = 7496; -- Celebrating Good Times
 --local QUEST_3 = 7497;
-print( "Lua memory used before: "..gcinfo().." Kb." );
+
 MAJOR_MATTINGLY = {}
 
-function MAJOR_MATTINGLY.CheckFriendly( unit )
+function MAJOR_MATTINGLY.OnSpawn( unit, event )
 
-	local target = unit:GetClosestPlayer();
-	if( target )
+	-- on ai update
+	if( event == 21 )
 	then
-		if( target:GetStanding( 12 ) >= 0 )
+		local target = unit:GetClosestPlayer();
+		if( target )
 		then
-			if( unit:GetDistanceYards( target ) <= 25 )
+			if( target:GetStanding( 12 ) >= 0 )
 			then
-				unit:FullCastSpellOnTarget( 15493, target ); -- Holy Light
+				if( unit:GetDistanceYards( target ) <= 25 )
+				then
+					unit:FullCastSpellOnTarget( 15493, target ); -- Holy Light
+				end
 			end
 		end
+	
+	-- on spawn
+	else
+		unit:RegisterAIUpdateEvent( 12000 );
 	end
 end
 
-function MAJOR_MATTINGLY.OnSpawn( unit )
-    unit:RegisterEvent( MAJOR_MATTINGLY.CheckFriendly, 12000, 0 );
-end
-
 RegisterUnitEvent( 14394, 18, MAJOR_MATTINGLY.OnSpawn );
-print( "Lua memory used after: "..gcinfo().." Kb." );
