@@ -22,11 +22,11 @@
 --local NPC_MEVEN_KORGAL = 1667;
 
 local CHAT = {
-{ "These undead atrocities will be destroyed!" },
-{ "We must be vigilant to eradicate this plague!" },
-{ "Keep up the good work.  This scourge will be cleansed!" },
-{ "The Scarlet Crusade will scour these lands!" },
-{ "Let none with the foul taint of plague live!" }
+[ 1 ] = "These undead atrocities will be destroyed!",
+[ 2 ] = "We must be vigilant to eradicate this plague!",
+[ 3 ] = "Keep up the good work.  This scourge will be cleansed!",
+[ 4 ] = "The Scarlet Crusade will scour these lands!",
+[ 5 ] = "Let none with the foul taint of plague live!"
 };
 
 MEVEN_KORGAL = {}

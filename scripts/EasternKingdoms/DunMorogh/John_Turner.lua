@@ -15,27 +15,27 @@
 	
 	enUS locale:
 	
-	{ "¡Don't forget the orphans of Stormwind!" },
-	{ "Help the children of Stormwind... victims of the war and plague!" },
-	{ "Give of your hearts and your purses! Give to the children of Stormwind who have lost their parents." },
-	{ "Give to the charities who seek to help the victims of these hard times! Please." }
+	[ 1 ] = "¡Don't forget the orphans of Stormwind!",
+	[ 2 ] = "Help the children of Stormwind... victims of the war and plague!",
+	[ 3 ] = "Give of your hearts and your purses! Give to the children of Stormwind who have lost their parents.",
+	[ 4 ] = "Give to the charities who seek to help the victims of these hard times! Please."
 	
 	esMX locale:
 
-	{ "¡No te olvides de los huerfanos de Stormwind!" },
-	{ "¡Ayuda a los niños de Stormwind... Victimas de la guerra y la plaga!" },
-	{ "¡Entrega tu corazón y tu cartera! Dad a los niños de Stormwind quienes perdieron a sus parientes." },
-	{ "¡Caridad con aquellos que buscan ayudar a las victimas de estos tiempos dificiles! Por favor." }
+	[ 1 ] = "¡No te olvides de los huerfanos de Stormwind!",
+	[ 2 ] = "¡Ayuda a los niños de Stormwind... Victimas de la guerra y la plaga!" ,
+	[ 3 ] = "¡Entrega tu corazón y tu cartera! Dad a los niños de Stormwind quienes perdieron a sus parientes.",
+	[ 4 ] = "¡Caridad con aquellos que buscan ayudar a las victimas de estos tiempos dificiles! Por favor."
 
 --]]
 
--- local NPC_JOHN_TURNER = 6175;
+--local NPC_JOHN_TURNER = 6175;
 
 local CHAT = {
-{ "¡Don't forget the orphans of Stormwind!" },
-{ "Help the children of Stormwind... victims of the war and plague!" },
-{ "Give of your hearts and your purses! Give to the children of Stormwind who have lost their parents." },
-{ "Give to the charities who seek to help the victims of these hard times! Please." }
+[ 1 ] = "¡Don't forget the orphans of Stormwind!",
+[ 2 ] = "Help the children of Stormwind... victims of the war and plague!",
+[ 3 ] = "Give of your hearts and your purses! Give to the children of Stormwind who have lost their parents.",
+[ 4 ] = "Give to the charities who seek to help the victims of these hard times! Please."
 };
 
 JOHN_TURNER = {}
