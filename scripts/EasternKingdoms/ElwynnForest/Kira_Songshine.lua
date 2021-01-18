@@ -27,10 +27,11 @@
 
 --]]
 
-local CHAT = {}
+local CHAT = {
 [ 1 ] = "Fresh bread, baked this very morning!";
 [ 2 ] = "Come get yer fresh bread!";
 [ 3 ] = "Fresh bread for sale!";
+};
 
 KIRA_SONGSHINE = {}
 

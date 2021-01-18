@@ -1,28 +1,30 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Dun Morogh: Tog Rustsprocket
 	Engine: A.L.E
+	
+	Zone: Dun Morogh 
+	Creature: Tog Rustsprocket (6119)
 
 	Credits:
-
-	*) Trinity for texts.
+	
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 
 --]]
 
 TOG_RUSTSPROCKET = {}
 
-function TOG_RUSTSPROCKET.OnHelloOnSelect( unit, event, plr, id, selection, code )
+function TOG_RUSTSPROCKET.OnHelloOnSelect( unit, event, plr, id, selection )
 
 	if( event == 1 )
 	then
 		if( plr:GetPlayerClass() == "Warlock" and plr:GetLevel() >= 10 )
 		then
 			unit:GossipCreateMenu( 767, plr, 0 );
-			unit:GossipMenuAddItem( 0, "What message?", 1, 0 );
+			unit:GossipMenuAddItem( 0, "¿Qué mensaje?", 1, 0 );
 			unit:GossipSendMenu( plr );
 		else
 			unit:GossipCreateMenu( 766, plr, 0 );
