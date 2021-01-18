@@ -21,11 +21,8 @@ function GO_SCALE_FIX.OnSpawn( go )
     then
 		if( go:GetScale ~= 0.2 )
 		then
-			if( go:GetScale() == 0.2 )
-			then
-				go:SetScale( 0.2 );
-			end
-        end
+			go:SetScale( 0.2 );
+		end
 
     -- Case: Silithyst Mound
 	
@@ -33,10 +30,8 @@ function GO_SCALE_FIX.OnSpawn( go )
     then
 		if( go:GetScale() ~= 0.3 )
 		then
-			if( go:GetScale() == 0.3 )
-			then
-				go:SetScale( 0.3 );
-			end
+			go:SetScale( 0.3 );
+
         end
     end
 end
