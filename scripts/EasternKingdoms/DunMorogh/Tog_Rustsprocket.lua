@@ -15,6 +15,8 @@
 
 --]]
 
+--local NPC_TOG_RUSTSPROCKET = 6119;
+
 TOG_RUSTSPROCKET = {}
 
 function TOG_RUSTSPROCKET.OnHelloOnSelect( unit, event, plr, id, selection )
