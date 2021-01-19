@@ -1,8 +1,10 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	The Ruby Sanctum: Halion the Destroyer
 	Engine: A.L.E
+	
+	Instance: The Ruby Sanctum
+	Boss: Halion the Destroyer (39863)
 
 	Credits:
 
@@ -15,34 +17,40 @@
 	
 	ToDo:
 
-	*) find a way to get guid for both halions
+	*) find a way to get guid for both halions.
+	*) 74637: has a dummy effect (0) but no handler for it.
 	
 	enUS locale:
 	
 	esMX locale:
 	
-local MAP_RUBY_SANCTUM	= 724;
+--]]	
+	
+--local MAP_RUBY_SANCTUM	= 724;
 
-local NPC_HALION	= 39863;
-local NPC_25M_HALION	= 39864;
-local H_NPC_HALION	= 39944;
-local H_NPC_25M_HALION	= 39945;
+--local NPC_HALION	= 39863;
+--local NPC_25M_HALION	= 39864;
+--local H_NPC_HALION	= 39944;
+--local H_NPC_25M_HALION	= 39945;
 
-local NPC_TWILIGHT_HALION	= 40142;
-local NPC_25M_TWILIGHT_HALION	= 40143;
-local H_NPC_TWILIGHT_HALION = 40144;
-local H_NPC_25M_TWILIGHT_HALION	= 40145;
+--local NPC_TWILIGHT_HALION	= 40142;
+--local NPC_25M_TWILIGHT_HALION	= 40143;
+--local H_NPC_TWILIGHT_HALION = 40144;
+--local H_NPC_25M_TWILIGHT_HALION	= 40145;
 
-local NPC_CONTROLLER = 40146;
+--local NPC_CONTROLLER = 40146;
 
--- For 3.3.5a
+--local NPC_CONTROLLER_ID = 200631;
+
+--local TREES = { 203034, 203035, 203036, 203037 };
+
+--[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1		= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS			= 0x0006 + 0x0035;
 local UNIT_FLAG_COMBAT			= 0x00080000;
 local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000;
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
-
 --]]
 
 local mod = getfenv( 1 );
@@ -65,25 +73,25 @@ local SOUND = {
 
 local YELL = {
 -- Halion:
-[ 1 ] = "Meddlesome insects! You are too late. The Ruby Sanctum is lost!";  -- Intro
-[ 2 ] = "The heavens burn!";  -- OnMeterStrike
-[ 3 ] = "You will find only suffering within the realm of twilight! Enter if you dare!";  -- OnPhaseTwo
-[ 4 ] = "Another \"hero\" falls.";  -- OnTargetDied
-[ 5 ] = "Not good enough...."; -- OnBerserk
+[ 1 ] = "Meddlesome insects! You are too late. The Ruby Sanctum is lost!",	-- Intro
+[ 2 ] = "The heavens burn!",	-- OnMeterStrike
+[ 3 ] = "You will find only suffering within the realm of twilight! Enter if you dare!",	-- OnPhaseTwo
+[ 4 ] = "Another \"hero\" falls.",	-- OnTargetDied
+[ 5 ] = "Not good enough....",	-- OnBerserk
 -- Twilight:
-[ 6 ] = "Beware the shadow!";
-[ 7 ] = "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!";
+[ 6 ] = "Beware the shadow!",
+[ 7 ] = "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!"
 };
 
 local TEXT = {
-[ 1 ] = "Without pressure in both realms, %s begins to regenerate.";  -- Shared (type 41)
-[ 2 ] = "Your efforts force %s further out of the physical realm!"; -- (type 41)
-[ 3 ] = "Your companions' efforts force %s further into the physical realm!"; -- (type 41)
+[ 1 ] = "Without pressure in both realms, %s begins to regenerate.",  -- Shared (type 41)
+[ 2 ] = "Your efforts force %s further out of the physical realm!", -- (type 41)
+[ 3 ] = "Your companions' efforts force %s further into the physical realm!" -- (type 41)
 };
 
 -- Spells (Halion):
 local SPELL_FLAME_BREATH	= 74525;
-local SPELL_METEOR_STRIKE	= 74637; -- aoe, need a dummy effect
+local SPELL_METEOR_STRIKE	= 74637; -- aoe?, need a dummy effect
 local SPELL_FIERY_COMBUSTION	= 74562;
 
 -- Spells (Twilight Halion):
@@ -97,15 +105,15 @@ local SPELL_TWILIGHT_PRECISION 	= 78243; -- not aura displayed... not working?
 
 -- Spells (Halion Controller):
 local SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
+local SPELL_FIERY_EXPLOSION = 76010;
 
 -- Spells (Misc):
 local SPELL_LEAVE_TWILIGHT_REALM	= 74812;
-local SPELL_TWILIGHT_PHASING	= 74808; -- Phase spell from phase 1 to phase 2
+local SPELL_TWILIGHT_PHASING	= 74808; -- phase spell from phase 1 to phase 2
+local SPELL_TWILIGHT_DIVISION	= 75063; -- phase spell from phase 2 to phase 3
 local SPELL_DUSK_SHROUD	= 75476;
 local SPELL_COPY_DAMAGE	= 74810;
 local SPELL_SUMMON_TWILIGHT_PORTAL	= 74809; -- Summons go 202794
-
-local TREES = { 203034, 203035, 203036, 203037 };
 
 -- Phases:
 local PHASE_ALL		= 0;
@@ -118,11 +126,11 @@ local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
-	local BOSS_HP = { 11156000, 40440500, 15339500, 58569000 };
-
 	-- set health acording to difficulty
+	local BOSS_HP = { 11156000, 40440500, 15339500, 58569000 };
+	
     local diff = unit:GetDungeonDifficulty();
-
+	
     unit:SetMaxHealth( BOSS_HP[ diff + 1 ] );
 
     unit:SetHealth( BOSS_HP[ diff + 1 ] );
@@ -137,11 +145,10 @@ function OnCombat( unit )
 	self[ tostring( unit )] = {
 
 	phase = PHASE_ONE,
-	firewallInClosed = false,
 	cleave = math.random( 6, 10 ),
 	tailLash = math.random( 7, 12 ),
 	flameBreath = math.random( 5, 15 ),
-	firewallTime = 5,
+	flameRingTime = 5,
 	meteorStrike = 18,
 	fieryCombustion = math.random( 15, 18 )
 	
@@ -155,7 +162,13 @@ function OnCombat( unit )
 	unit:AddAura( SPELL_TWILIGHT_PRECISION, 0 );
 	
 	unit:RegisterAIUpdateEvent( 1000 );
-
+	
+	local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
+	if( controller )
+	then
+		local vars = self[ tostring( controller ) ];
+		vars.phase = PHASE_ONE;
+	end
 end
 
 function OnDamageTaken( unit, _, attacker, damage )
@@ -168,30 +181,44 @@ function OnDamageTaken( unit, _, attacker, damage )
 	then
         damage = hp - 1;
 	end
-
-	local pct = unit:GetHealthPct();
 	
-	if( pct < 75 and vars.phase == PHASE_ONE )
+	if( unit:GetHealthPct() < 75 and vars.phase == PHASE_ONE )
 	then
 		unit:PlaySoundToSet( SOUND[ 4 ] );
 		unit:SendChatMessage( 14, 0, YELL[ 4 - 1 ] );
+		
+		-- combat in twilight realm
 		vars.phase = PHASE_TWO;
 		
 		-- set not attacable
 		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 );
 		
+		-- phase spell from phase 1 to phase 2
 		unit:CastSpell( SPELL_TWILIGHT_PHASING );
+		
+		-- hacky: summon twilight halion
+		local twilightHalion = unit:SpawnCreature( 40142, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );
+		
+		-- try to get t halion guid to use it later
+		HSHARED[ unit:GetInstanceID() ].dataTwilight = twilightHalion:GetGUID();
+		
+		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
+		if( controller )
+		then
+			local varsbis = self[ tostring( controller ) ];
+			varsbis.phase = PHASE_TWO;
+		end	
 	end
 
 	if( vars.phase == PHASE_THREE )
 	then
 		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
 
-		local iid = unit:GetInstanceID();
-		local controller = GetInstanceCreature( 724, iid, 200631 );
+		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 		if( controller )
 		then
-			controller:SetHealth( controller:GetHealth() - damage );
+			local varsbis = self[ tostring( controller ) ];
+			varsbis.materialDamageTaken = varsbis.materialDamageTaken + damage;
 		end
 	end
 end
@@ -215,7 +242,7 @@ function OnTargetDied( unit, _, victim )
 	if( victim:IsPlayer() == true )
 	then
     	unit:PlaySoundToSet( SOUND[ 6 ] );
-    	unit:SendChatMessage( 14, 0, YELL[ 6 - 2 ] );
+    	unit:SendChatMessage( 14, 0, YELL[ 4 ] );
 	end
 end
 
@@ -239,8 +266,7 @@ function OnDeath( unit )
 		end
 	end
 
-	local iid = unit:GetInstanceID();
-	local controller = GetInstanceCreature( 724, iid, 200631 );
+	local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 	if( controller )
 	then
 		if( controller:IsAlive() == true )
@@ -249,6 +275,8 @@ function OnDeath( unit )
 		end
 	end
 end
+
+local meteorStrikePos = {};
 
 function OnAIUpdate( unit )
 
@@ -270,8 +298,7 @@ function OnAIUpdate( unit )
 	vars.cleave = vars.cleave - 1;
 	vars.tailLash = vars.tailLash - 1;
 	vars.flameBreath = vars.flameBreath - 1;
-	--if( vars.firewallTime ~= nil ) then vars.firewallTime = vars.firewallTime - 1; end
-	vars.firewallTime = vars.firewallTime - 1;
+	if( flameRingTime ~= nil ) then flameRingTime = flameRingTime - 1; end
 	vars.meteorStrike = vars.meteorStrike - 1;
 	vars.fieryCombustion = vars.fieryCombustion - 1;
 
@@ -290,19 +317,27 @@ function OnAIUpdate( unit )
 		unit:FullCastSpell( SPELL_FLAME_BREATH );
 		vars.flameBreath = math.random( 5, 15 );
 
-	elseif( vars.firewallTime <= 0 and vars.firewallIsClosed == false )
+	elseif( vars.flameRingTime == false and vars.flameRingTime <= 0 )
 	then
 		local flameRing = unit:GetGameObjectNearestCoords( 3154.99, 535.64, 72.89, 203007 );
-		if( flamering )
+		if( flameRing )
 		then
-			flamering:SetByte( 0x0006 + 0x000B, 0, 0 );
-			--vars.firewallTime = 0;
-			vars.fireWallTime = nil;
-			vars.firewallIsClosed = true;
+			-- enable fire ring
+			flameRing:SetByte( 0x0006 + 0x000B, 0, 1 );
+			vars.flameRingTime = nil;
 		end
 		
 	elseif( vars.meteorStrike <= 0 )
 	then
+		local target = unit:GetRandomPlayer( 0 );
+		if( target )
+		then
+			local meteorStrikePos = { target:GetLocation() };
+			unit:FullCastSpellAoE( meteorStrikePos[ 1 ], meteorStrikePos[ 2 ], meteorStrikePos[ 3 ], SPELL_METEOR_STRIKE );
+			unit:PlaySoundToSet( SOUND[ 5 ] );
+			unit:SendChatMessage( 14, 0, YELL[ 3 ] );
+		end
+		vars.meteorStrike = 38;
 	
 	elseif( vars.fieryCombustion <= 0 )
 	then
@@ -345,6 +380,7 @@ function TwilightHalionOnSpawn( unit )
 	-- react defensive
 	unit:DisableCombat( 1 );
 	
+	-- set unit field flag in combat
 	unit:SetFlag( 0x0006 + 0x0035, 0x00080000 );
 
 	-- create protected variables
@@ -361,7 +397,9 @@ function TwilightHalionOnCombat( unit )
 	-- add more protected variables
 	local vars = self[ tostring( unit ) ];
 	
-	vars.phase = PHASE_TWO; -- Should be shared or private?
+	-- combat in twilight realm
+	vars.phase = PHASE_TWO;
+	
 	vars.cleave = 3;
 	vars.darkBreath = 12;
 	
@@ -381,27 +419,33 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 	end
 	
 	-- call on combat here? will work?
-
-	local pct = unit:GetHealthPct();
+	if( vars.phase ~= PHASE_TWO and vars.phase ~= PHASE_THREE )
+	then
+		unit:TwilightHalionOnCombat( attacker );
+	end
 	
-	if( pct < 50 and vars.phase == PHASE_TWO )
+	if( unit:GetHealthPct() < 50 and vars.phase == PHASE_TWO )
 	then
 		unit:PlaySoundToSet( SOUND[ 9 ] );
 		unit:SendChatMessage( 14, 0, YELL[ 7 ] );
+		
+		-- combat in both realms
 		vars.phase = PHASE_THREE;
-		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 );
-		unit:CastSpell( SPELL_TWILIGHT_PHASING );
+		
+		-- phase spell from phase 2 to phase 3
+		unit:CastSpell( SPELL_TWILIGHT_DIVISION );
 	end
 
 	if( vars.phase == PHASE_THREE )
 	then
 		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
 
-		local iid = unit:GetInstanceID();
-		local controller = GetInstanceCreature( 724, iid, 200631 );
+		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 		if( controller )
 		then
 			controller:SetHealth( controller:GetHealth() - damage );
+			local varsbis = self[ tostring( controller ) ];
+			varsbis.twilightDamageTaken = varsbis.twilightDamageTaken + damage;
 		end
 	end
 end
@@ -411,8 +455,10 @@ function TwilightHalionOnTargetDied( unit, _, victim )
 	if( victim:IsPlayer() == true )
 	then
     	unit:PlaySoundToSet( SOUND[ 6 ] );
-    	unit:SendChatMessage( 14, 0, YELL[ 6 - 2 ] );
+    	unit:SendChatMessage( 14, 0, YELL[ 4 ] );
 	end
+	
+	-- send dead player out of twilight realm
 	unit:CastSpellOnTarget( SPELL_LEAVE_TWILIGHT_REALM, victim );
 end
 
@@ -425,14 +471,13 @@ function TwilightHalionOnDeath( unit )
 	local halion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 39863 );
 	if( halion )
 	then
-		if( twlightHalion:IsAlive() == true )
+		if( halion:IsAlive() == true )
 		then
 			halion:Kill();
 		end
 	end
 
-	local iid = unit:GetInstanceID();
-	local controller = GetInstanceCreature( 724, iid, 200631 );
+	local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 	if( controller )
 	then
 		if( controller:IsAlive() == true )
@@ -475,8 +520,12 @@ function TwilightHalionOnAIUpdate( unit )
 		
 	elseif( vars.soulConsumption <= 0 )
 	then
-		unit:FullCastSpellOnTarget( SPELL_SOUL_CONSUMPTION, unit:GetRandomPlayer( 0 ) ); -- Any
-		vars.soulConsumption = 28;	
+		local target = unit:GetRandomPlayer( 0 );
+		if( target )
+		then
+			unit:FullCastSpellOnTarget( SPELL_SOUL_CONSUMPTION, unit:GetRandomPlayer( 0 ) ); -- Any
+		end
+		vars.soulConsumption = 20;	
 	end
 end
 
@@ -499,10 +548,13 @@ function ControllerOnSpawn( unit )
 
 	materialCorporealityValue = 5,
 	materialDamageTaken = 0,
-	twilightDamageTaken = 0
+	twilightDamageTaken = 0,
 	--event = 0,
 	--timer = 4
-	
+	--temp	
+	eventStartIntro = 7,
+	phase = 0
+
 	};
 	
 	-- created shared variables
@@ -528,12 +580,13 @@ function ControllerOnCombat( unit )
 	vars.materialDamageTaken = 0;
 	vars.triggerBerserk = 1000 * 30 * 60;
 	vars.evadeCheck = 5;
+	-- temp
 	
 end
 
 function ControllerOnLeaveCombat( unit )
 
-	if( SHARED[ iid ].halionIsDone == true )
+	if( SHARED[ unit:GetInstanceID() ].halionIsDone == true )
 	then return; end
 	
 	local twlightHalion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 40142 );
@@ -549,36 +602,121 @@ function ControllerOnLeaveCombat( unit )
 	end
 end
 
-function ControllerOnAIUpdate( unit )
+function ControllerDoAction( unit )
 
 	local vars = self[ tostring( unit ) ];
-
-	vars.timer = vars.timer - 1;
-
-	if( vars.event == 0 )
+	
+	-- intro halion
+	if( action == 1 )
 	then
-		--[[ Developer notes: we have a problem here, since arcemu didnt implemented extra_flags why miss
-		CREATURE_FLAG_EXTRA_TRIGGER (creature is trigger-NPC (invisible to players only)). We can
-		manually make the trigger invisible but invisible creatures cast invisible spells. ]]
-
-		unit:CastSpell( SPELL_COSMETIC_FIRE_PILLAR );
-		vars.event = vars.event + 1;
-		vars.timer = 4;
-
-	elseif( vars.event == 1 and vars.timer == 0 )
+		vars.eventStartIntro = 2;
+		vars.phase = PHASE_INTRO;
+		
+	-- intro halion 2
+	elseif( action == 2 )
 	then
-		unit:SendChatMessage( 12, 0, "debug: event 1" );
-		for k, v in ipairs( unit:GetInRangeObjects() )
-		do
-			if( v:GetEntry() == TREES[ i ] )
+	
+	-- monitor corporeality
+	elseif( action == 3 )
+	then
+		-- try to get halion using guid
+		local halion = GetInstanceCreature( 724, unit:GetInstanceID(), 0, SHARED[ unit:GetInstanceID() ].dataHalion );
+		if not( halion )
+		then
+			local vars = self[ tostring( halion ) ];
+			
+			-- combat in both realms
+			vars.phase = PHASE_TREE;
+			
+			local twilightHalion = GetInstanceCreature( 724, unit:GetInstanceID(), 0, SHARED[ unit:GetInstanceID() ].dataTwilight );
+			if not( twilightHalion )
 			then
-				v:SetByte( GAMEOBJECT_BYTES_1, 0, 2 );
-				unit:SendChatMessage( 12, 0, "debug: got a tree" );
+				halion:RemoveAura( SPELL_TWILIGHT_PHASING );
+			
+				-- unit field flag not selectable
+				halion:RemoveFlag( 0x0006 + 0x0035, 0x02000000 );
 			end
 		end
+	
+	-- activate embers
+	elseif( action == 4 )
+	then
+	
+	end
+end
 
-		vars.event = vars.event + 1;
-		vars.timer = 4;
+--[[ Developer notes: we have a problem here, since arcemu didnt implemented extra_flags why miss
+CREATURE_FLAG_EXTRA_TRIGGER (creature is trigger-NPC (invisible to players only)). We can
+manually make the trigger invisible but invisible creatures cast invisible spells. ]]
+
+function ControllerOnAIUpdate( unit )
+
+	--if( unit:GetNextTarget() == nil ) then
+	--	unit:WipeThreatList();
+	--	return;
+	--end
+	
+	local vars = self[ tostring( unit ) ];
+
+	if( vars.eventStartIntro ~= nil ) then vars.eventStartIntro = vars.eventStartIntro - 1; end
+	if( vars.eventIntroProgress1 ~= nil ) then vars.eventIntroProgress1 = vars.eventIntroProgress1 - 1; end
+	if( vars.eventIntroProgress2 ~= nil ) then vars.eventIntroProgress2 = vars.eventIntroProgress2 - 1; end
+	if( vars.eventIntroProgress3 ~= nil ) then vars.eventIntroProgress3 = vars.eventIntroProgress3 - 1; end
+	
+	if( vars.eventStartIntro and vars.eventStartIntro <= 0 )
+	then
+		unit:CastSpell( SPELL_COSMETIC_FIRE_PILLAR );
+		vars.eventStartIntro = nil;
+		vars.eventIntroProgress1 = 4;
+
+	elseif( vars.eventIntroProgress1 and vars.eventIntroProgress1 <= 0 )
+	then
+		local burningTree3 = unit:GetGameObjectNearestCoords( 3117.12, 589.134, 71.3221, 203036 );
+		if( burningTree3 )
+		then
+			burningTree3:SetByte( 0x0006 + 0x000B, 0, 2 );
+		end
+		
+		local burningTree4 = unit:GetGameObjectNearestCoords( 3108.75, 484.34, 71.6583, 203037 );
+		if( burningTree4 )
+		then
+			burningTree4:SetByte( 0x0006 + 0x000B, 0, 2 );
+		end
+		
+		vars.eventIntroProgress1 = nil
+		vars.eventIntroProgress2 = 4;
+
+	elseif( vars.eventIntroProgress2 and vars.eventIntroProgress2 <= 0 )
+	then
+		local burningTree1 = unit:GetGameObjectNearestCoords( 3187.96, 586.766, 73.563, 203034 );
+		if( burningTree1 )
+		then
+			burningTree1:SetByte( 0x0006 + 0x000B, 0, 2 );
+		end
+		
+		local burningTree2 = unit:GetGameObjectNearestCoords( 3190.34, 486.561, 71.1216, 203035 );
+		if( burningTree2 )
+		then
+			burningTree2:SetByte( 0x0006 + 0x000B, 0, 2 );
+		end
+		
+		vars.eventIntroProgress2 = nil;
+		vars.eventIntroProgress3 = 4;
+	
+	elseif( vars.eventIntroProgress3 and vars.eventIntroProgress3 <= 0 )
+	then
+		unit:CastSpell( SPELL_FIERY_EXPLOSION );
+		
+		-- spawn halion
+		local halion = unit:SpawnCreature( 39863, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );
+		
+		-- TEST TRYING TO GET HALION GUID
+		HSHARED[ unit:GetInstanceID() ].dataHalion = halion:GetGUID();
+
+		unit:PlaySoundToSet( SOUND[ 1 ] );
+    	unit:SendChatMessage( 14, 0, YELL[ 1 ] );
+		
+		vars.eventIntroProgress3 = nil;
 	end
 end
 
@@ -613,7 +751,6 @@ RegisterServerHook( 33, SpellHalionTwilightPhasing );
 --[[ 
 		Debug commands disabled by default 
 
---]]
 
 local COMMANDS = { "halion", "port", "exit", "open", "close" };
 
@@ -655,12 +792,22 @@ function Commands( _, plr, message )
 				
 			else		
 
-				if( message == "#n" )
+				if( message == "#hp75" )
 				then
+					selection:SetHealthPct( 75 );
+
+					
+				elseif( message == "#hp50" )
+				then
+					selection:SetHealthPct( 50 );
 					
 				elseif( message == "#m" )
 				then
-
+					local iid = plr:GetInstanceID();
+					local controller = GetInstanceCreature( 724, iid, 200631 );
+					local p = self[ tostring( controller ) ].phase
+					
+					plr:SendBroadcastMessage( ""..p.."" );
 				end
 			end
 		end
@@ -668,3 +815,4 @@ function Commands( _, plr, message )
 end
 
 RegisterServerHook( 16, Commands );
+--]]
