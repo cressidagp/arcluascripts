@@ -764,7 +764,7 @@ function ControllerOnAIUpdate( unit )
 		
 		vars.eventIntroProgress3 = nil;
 		
-	elseif( vars.twilightMending <= 0 )
+	elseif( vars.twilightMending and vars.twilightMending <= 0 )
 	then
 		local iid = unit:GetInstanceID();
 		
@@ -775,7 +775,7 @@ function ControllerOnAIUpdate( unit )
 			twilightHalion:CastSpell( SPELL_TWILIGHT_MENDING );
 		end
 	
-	elseif( vars.triggerBerserk <= 0 )
+	elseif( vars.triggerBerserk and vars.triggerBerserk <= 0 )
 	then
 		local iid = unit:GetInstanceID();
 		
@@ -793,17 +793,17 @@ function ControllerOnAIUpdate( unit )
 			twilightHalion:CastSpell( SPELL_BERSERK );
 		end
 		
-	elseif( vars.shadowPulsars <= 0 )
+	elseif( vars.shadowPulsars and vars.shadowPulsars <= 0 )
 	then
 		-- ToDo
 		vars.shadowPulsars = 30;
 	
-	elseif( vars.checkCorporeality <= 0 )
+	elseif( vars.checkCorporeality and vars.checkCorporeality <= 0 )
 	then
 		-- ToDo
 		vars.checkCorporeality = 5;
 	
-	elseif( vars.activateEmbers <= 0 )
+	elseif( vars.activateEmbers and vars.activateEmbers <= 0 )
 	then
 		-- ToDo
 		
@@ -928,4 +928,4 @@ function Commands( _, plr, message )
 	end
 end
 
-RegisterServerHook( 16, Commands ); --]]
+RegisterServerHook( 16, Commands );--]]
