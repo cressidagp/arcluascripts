@@ -579,10 +579,8 @@ function ControllerOnSpawn( unit )
 	};
 	
 	-- created shared variables
-	local iid = unit:GetInstanceID();
-	
 	HSHARED = {}
-	HSHARED[ iid ] = {
+	HSHARED[ unit:GetInstanceID() ] = {
 	
 	halionIsDone = false
 
@@ -607,16 +605,20 @@ end
 
 function ControllerOnLeaveCombat( unit )
 
-	if( SHARED[ unit:GetInstanceID() ].halionIsDone == true )
+	local iid = unit:GetInstanceID();
+
+	if( SHARED[ iid ].halionIsDone == true )
 	then return; end
 	
-	local twlightHalion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 40142 );
-	if( twlightHalion )
+	-- get twilight halion using guid
+	local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
+	if( twilightHalion )
 	then
-		twlightHalion:Despawn( 1000, 0 );
+		twilightHalion:Despawn( 1000, 0 );
 	end	
 
-	local halion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 39863 );
+	-- get halion using guid
+	local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
 	if( halion )
 	then
 		halion:Despawn( 1000, 0 );
@@ -636,14 +638,15 @@ function ControllerDoAction( unit, action )
 	-- intro halion 2
 	elseif( action == 2 )
 	then
-		print("action 2")
 		unit:SendChatMessage( 14, 0, "action 2" );
 	
 	-- monitor corporeality
 	elseif( action == 3 )
 	then
+		local iid = unit:GetInstanceID();
+		
 		-- try to get halion using guid
-		local halion = GetInstanceCreature( 724, unit:GetInstanceID(), 0, SHARED[ unit:GetInstanceID() ].dataHalion );
+		local halion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataHalion );
 		if not( halion )
 		then
 			local vars = self[ tostring( halion ) ];
@@ -651,7 +654,8 @@ function ControllerDoAction( unit, action )
 			-- combat in both realms
 			vars.phase = PHASE_TREE;
 			
-			local twilightHalion = GetInstanceCreature( 724, unit:GetInstanceID(), 0, SHARED[ unit:GetInstanceID() ].dataTwilight );
+			-- try to get twilight halion using guid
+			local twilightHalion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataTwilight );
 			if not( twilightHalion )
 			then
 				halion:RemoveAura( SPELL_TWILIGHT_PHASING );
@@ -734,7 +738,7 @@ function ControllerOnAIUpdate( unit )
 		-- spawn halion
 		local halion = unit:SpawnCreature( 39863, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );
 		
-		-- TEST TRYING TO GET HALION GUID
+		-- try to get and store twilight halion guid to use it later
 		HSHARED[ unit:GetInstanceID() ].dataHalion = halion:GetGUID();
 
 		unit:PlaySoundToSet( SOUND[ 1 ] );
@@ -745,7 +749,9 @@ function ControllerOnAIUpdate( unit )
 	elseif( vars.twilightMending <= 0 )
 	then
 		local iid = unit:GetInstanceID();
-		local twilightHalion = GetInstanceCreature( 724, iid, 0, SHARED[ iid ].dataTwilight );
+		
+		-- get twilight halion using guid
+		local twilightHalion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataTwilight );
 		if( twilightHalion )
 		then
 			twilightHalion:CastSpell( SPELL_TWILIGHT_MENDING );
@@ -755,13 +761,15 @@ function ControllerOnAIUpdate( unit )
 	then
 		local iid = unit:GetInstanceID();
 		
-		local halion = GetInstanceCreature( 724, iid, 0, SHARED[ iid ].dataHalion );
+		-- get halion using guid
+		local halion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataHalion );
 		if( halion )
 		then
 			halion:CastSpell( SPELL_BERSERK );
 		end
 		
-		local twilightHalion = GetInstanceCreature( 724, iid, 0, SHARED[ iid ].dataTwilight );
+		-- get twilight halion using guid
+		local twilightHalion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataTwilight );
 		if( twilightHalion )
 		then
 			twilightHalion:CastSpell( SPELL_BERSERK );
