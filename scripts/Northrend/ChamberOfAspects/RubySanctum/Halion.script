@@ -107,6 +107,10 @@ local SPELL_TWILIGHT_PRECISION 	= 78243; -- not aura displayed... not working?
 local SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
 local SPELL_FIERY_EXPLOSION = 76010;
 
+-- Handled by Controller:
+local SPELL_TWILIGHT_MENDING = 75509;
+local SPELL_BERSERK = 26662;
+
 -- Spells (Misc):
 local SPELL_LEAVE_TWILIGHT_REALM	= 74812;
 local SPELL_TWILIGHT_PHASING	= 74808; -- phase spell from phase 1 to phase 2
@@ -199,10 +203,13 @@ function OnDamageTaken( unit, _, attacker, damage )
 		-- hacky: summon twilight halion
 		local twilightHalion = unit:SpawnCreature( 40142, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );
 		
-		-- try to get t halion guid to use it later
-		HSHARED[ unit:GetInstanceID() ].dataTwilight = twilightHalion:GetGUID();
+		local iid = unit:GetInstanceID();
 		
-		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
+		-- try to get and store twilight halion guid to use it later
+		HSHARED[ iid ].dataTwilight = twilightHalion:GetGUID();
+		
+		-- get controller using spawnid 
+		local controller = GetInstanceCreature( 724, iid, 200631 );
 		if( controller )
 		then
 			local varsbis = self[ tostring( controller ) ];
@@ -214,6 +221,7 @@ function OnDamageTaken( unit, _, attacker, damage )
 	then
 		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
 
+		-- get controller using spawnid 
 		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 		if( controller )
 		then
@@ -256,17 +264,21 @@ function OnDeath( unit )
 	monstersay table will do the job, instance collision checked. ]]
 
     unit:PlaySoundToSet( SOUND[ 5 ] );
+	
+	local iid = unit:GetInstanceID();
 
-	local twlightHalion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 40142 );
-	if( twlightHalion )
+	-- get twilight halion using guid
+	local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
+	if( twilightHalion )
 	then
-		if( twlightHalion:IsAlive() == true )
+		if( twilightHalion:IsAlive() == true )
 		then
-			twlightHalion:Kill();
+			twilightHalion:Kill();
 		end
 	end
 
-	local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
+	-- get controller using spawnid
+	local controller = GetInstanceCreature( 724, iid, 200631 );
 	if( controller )
 	then
 		if( controller:IsAlive() == true )
@@ -281,7 +293,8 @@ local meteorStrikePos = {};
 function OnAIUpdate( unit )
 
 	local vars = self[ tostring( unit ) ];
-
+	
+	-- combat in Twilight realm
 	if( vars.phase == PHASE_TWO ) then return; end
 
 	if( unit:GetNextTarget() == nil ) then
@@ -364,7 +377,11 @@ RegisterUnitEvent( 39863, 21, OnAIUpdate );
 
 function TwilightHalionOnSpawn( unit )
 
-	local halion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 39863 );
+	local iid = unit:GetInstanceID();
+
+	-- get halion using guid
+	local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
+
 	if not( halion ) then return; end
 	
 	halion:AddAura( SPELL_COPY_DAMAGE, 0 );
@@ -467,8 +484,11 @@ function TwilightHalionOnDeath( unit )
 	-- destroy table with variables to recycle resources
 
 	--self[ tostring( unit ) ] = nil;
+	
+	local iid = unit:GetInstanceID();
 
-	local halion = unit:GetClosestCreature( 3156.04, 533.27, 72.97, 39863 );
+	-- get halion using guid
+	local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
 	if( halion )
 	then
 		if( halion:IsAlive() == true )
@@ -476,8 +496,9 @@ function TwilightHalionOnDeath( unit )
 			halion:Kill();
 		end
 	end
-
-	local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
+	
+	-- get controller using spawnid 
+	local controller = GetInstanceCreature( 724, iid, 200631 );
 	if( controller )
 	then
 		if( controller:IsAlive() == true )
@@ -602,7 +623,7 @@ function ControllerOnLeaveCombat( unit )
 	end
 end
 
-function ControllerDoAction( unit )
+function ControllerDoAction( unit, action )
 
 	local vars = self[ tostring( unit ) ];
 	
@@ -615,6 +636,8 @@ function ControllerDoAction( unit )
 	-- intro halion 2
 	elseif( action == 2 )
 	then
+		print("action 2")
+		unit:SendChatMessage( 14, 0, "action 2" );
 	
 	-- monitor corporeality
 	elseif( action == 3 )
@@ -662,6 +685,7 @@ function ControllerOnAIUpdate( unit )
 	if( vars.eventIntroProgress1 ~= nil ) then vars.eventIntroProgress1 = vars.eventIntroProgress1 - 1; end
 	if( vars.eventIntroProgress2 ~= nil ) then vars.eventIntroProgress2 = vars.eventIntroProgress2 - 1; end
 	if( vars.eventIntroProgress3 ~= nil ) then vars.eventIntroProgress3 = vars.eventIntroProgress3 - 1; end
+	if( vars.triggerBerserk ~= nil ) then vars.triggerBerserk = vars.triggerBerserk - 1; end
 	
 	if( vars.eventStartIntro and vars.eventStartIntro <= 0 )
 	then
@@ -717,6 +741,31 @@ function ControllerOnAIUpdate( unit )
     	unit:SendChatMessage( 14, 0, YELL[ 1 ] );
 		
 		vars.eventIntroProgress3 = nil;
+		
+	elseif( vars.twilightMending <= 0 )
+	then
+		local iid = unit:GetInstanceID();
+		local twilightHalion = GetInstanceCreature( 724, iid, 0, SHARED[ iid ].dataTwilight );
+		if( twilightHalion )
+		then
+			twilightHalion:CastSpell( SPELL_TWILIGHT_MENDING );
+		end
+	
+	elseif( vars.triggerBerserk <= 0 )
+	then
+		local iid = unit:GetInstanceID();
+		
+		local halion = GetInstanceCreature( 724, iid, 0, SHARED[ iid ].dataHalion );
+		if( halion )
+		then
+			halion:CastSpell( SPELL_BERSERK );
+		end
+		
+		local twilightHalion = GetInstanceCreature( 724, iid, 0, SHARED[ iid ].dataTwilight );
+		if( twilightHalion )
+		then
+			twilightHalion:CastSpell( SPELL_BERSERK );
+		end
 	end
 end
 
@@ -749,7 +798,7 @@ RegisterServerHook( 33, SpellHalionTwilightPhasing );
 --]]
 
 --[[ 
-		Debug commands disabled by default 
+		Debug commands disabled by default
 
 
 local COMMANDS = { "halion", "port", "exit", "open", "close" };
@@ -808,11 +857,21 @@ function Commands( _, plr, message )
 					local p = self[ tostring( controller ) ].phase
 					
 					plr:SendBroadcastMessage( ""..p.."" );
+					
+				elseif( message == "#action1" )
+				then 
+					selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 2 );
+					
+				elseif( message == "#mending" )
+				then
+					local vars = self[ tostring( selection ) ];
+					vars.triggerBerserk = 3;
 				end
 			end
 		end
-    end
+	end
 end
 
 RegisterServerHook( 16, Commands );
---]]
+
+ --]]
