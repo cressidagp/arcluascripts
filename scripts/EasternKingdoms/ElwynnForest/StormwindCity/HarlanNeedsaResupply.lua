@@ -41,20 +41,20 @@ local CHAT = {
 
 [ 13 ] = "Now for that snack...",
 
-[ 14 ] = { "Good day, Elling!  Hullo Elaine!  Let me have a wheel of bleu cheese, eh?",
-[ 15 ] = { "Hullo, Trias clan!  A ball of your smoked mozzarella, if you please!",
-[ 16 ] = { "Good day, Corbett.  Here's your cheese, fresh made this morning!  And how are things at your shop?",
-[ 17 ] = { "Hi Corbett!  Here, you go!  I trust business is faring well at your clothier shop...?",
+[ 14 ] = "Good day, Elling!  Hullo Elaine!  Let me have a wheel of bleu cheese, eh?",
+[ 15 ] = "Hullo, Trias clan!  A ball of your smoked mozzarella, if you please!",
+[ 16 ] = "Good day, Corbett.  Here's your cheese, fresh made this morning!  And how are things at your shop?",
+[ 17 ] = "Hi Corbett!  Here, you go!  I trust business is faring well at your clothier shop...?",
 
-[ 18 ] = { "Yes ma'am, business is brisk!",
+[ 18 ] = "Yes ma'am, business is brisk!",
 
-[ 19 ] = { "Thank you kindly!",
-[ 20 ] = { "Thanks for the cheese!",
+[ 19 ] = "Thank you kindly!",
+[ 20 ] = "Thanks for the cheese!",
 
-[ 21 ] = { "I should get back before Rema starts to worry...",
-[ 22 ] = { "Time to get back to the shop...",
+[ 21 ] = "I should get back before Rema starts to worry...",
+[ 22 ] = "Time to get back to the shop...",
 
-[ 23 ] = { "I'm back!"
+[ 23 ] = "I'm back!"
 };
 
 HARLAN_RESUPPLY = {}
