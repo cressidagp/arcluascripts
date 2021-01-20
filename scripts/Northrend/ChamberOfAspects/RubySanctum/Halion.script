@@ -53,6 +53,8 @@ local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 --]]
 
+--print( "Lua memory before Halion: "..gcinfo().." Kb." );
+
 local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".HALION_DESTROYER", package.seeall );
@@ -101,7 +103,7 @@ local SPELL_SOUL_CONSUMPTION	= 74792;
 -- Spells (shared):
 local SPELL_CLEAVE	= 74524;
 local SPELL_TAIL_LASH	= 74531;
-local SPELL_TWILIGHT_PRECISION 	= 78243; -- not aura displayed... not working?
+local SPELL_TWILIGHT_PRECISION 	= 78243; -- not aura displayed
 
 -- Spells (Halion Controller):
 local SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
@@ -168,10 +170,13 @@ function OnCombat( unit )
 	
 	unit:RegisterAIUpdateEvent( 1000 );
 	
+	-- get controller using spawnid 
 	local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 	if( controller )
 	then
 		local vars = self[ tostring( controller ) ];
+		
+		-- combat in Physical realm
 		vars.phase = PHASE_ONE;
 	end
 end
@@ -190,7 +195,8 @@ function OnDamageTaken( unit, _, attacker, damage )
 	if( unit:GetHealthPct() < 75 and vars.phase == PHASE_ONE )
 	then
 		unit:PlaySoundToSet( 17507 );
-		unit:SendChatMessage( 14, 0, YELL[ 4 - 1 ] );
+		unit:SendChatMessage( 14, 0, YELL[ 3 ] );
+		unit:CancelSpell();
 		
 		-- combat in twilight realm
 		vars.phase = PHASE_TWO;
@@ -289,6 +295,14 @@ function OnDeath( unit )
 	end
 end
 
+function OnCastSpell( unit, event, spell_id )
+	
+	if( spell_id == SPELL_TWILIGHT_MENDING )
+	then
+		unit:SendChatMessage( 41, 0, TEXT[ 1 ] );
+	end
+end
+
 local meteorStrikePos = {};
 
 function OnAIUpdate( unit )
@@ -370,6 +384,7 @@ RegisterUnitEvent( 39863, 23, OnDamageTaken );
 RegisterUnitEvent( 39863, 2, OnLeaveCombat );
 RegisterUnitEvent( 39863, 3, OnTargetDied );
 RegisterUnitEvent( 39863, 4, OnDeath );
+RegisterUnitEvent( 39863, 29, OnCastSpell );
 RegisterUnitEvent( 39863, 21, OnAIUpdate );
 
 --[[
@@ -382,7 +397,6 @@ function TwilightHalionOnSpawn( unit )
 
 	-- get halion using guid
 	local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
-
 	if not( halion ) then return; end
 	
 	halion:AddAura( SPELL_COPY_DAMAGE, 0 );
@@ -400,24 +414,19 @@ function TwilightHalionOnSpawn( unit )
 	
 	-- set unit field flag in combat
 	unit:SetFlag( 0x0006 + 0x0035, 0x00080000 );
-
-	-- create protected variables
-	self[ tostring( unit )] = {
-
-	tailLash = 12,
-	soulConsumption = 15
-
-	};
+	
 end
 
 function TwilightHalionOnCombat( unit )
 
-	-- add more protected variables
+	-- create protected variables
 	local vars = self[ tostring( unit ) ];
 	
 	-- combat in twilight realm
 	vars.phase = PHASE_TWO;
 	
+	tailLash = 12,
+	soulConsumption = 15
 	vars.cleave = 3;
 	vars.darkBreath = 12;
 	
@@ -446,6 +455,7 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 	then
 		unit:PlaySoundToSet( 17508 );
 		unit:SendChatMessage( 14, 0, YELL[ 7 ] );
+		unit:CancelSpell();
 		
 		-- combat in both realms
 		vars.phase = PHASE_THREE;
@@ -484,7 +494,7 @@ function TwilightHalionOnDeath( unit )
 
 	-- destroy table with variables to recycle resources
 
-	--self[ tostring( unit ) ] = nil;
+	self[ tostring( unit ) ] = nil;
 	
 	local iid = unit:GetInstanceID();
 
@@ -506,6 +516,23 @@ function TwilightHalionOnDeath( unit )
 		then
 			controller:Kill();
 		end
+	end
+end
+
+function TwilightHalionOnCastSpell( unit, event, spell_id )
+	
+	if( spell_id == SPELL_TWILIGHT_DIVISION )
+	then
+		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
+		if( controller )
+		then
+			controller:RegisterLuaEvent( ControllerDoAction, 1000, 1, 3 );
+		end
+	end
+	
+	if( spell_id == SPELL_TWILIGHT_MENDING )
+	then
+		unit:SendChatMessage( 41, 0, TEXT[ 1 ] );
 	end
 end
 
@@ -556,6 +583,7 @@ RegisterUnitEvent( 40142, 1, TwilightHalionOnCombat );
 RegisterUnitEvent( 40142, 23, TwilightHalionOnDamageTaken );
 RegisterUnitEvent( 40142, 3, TwilightHalionOnTargetDied );
 RegisterUnitEvent( 40142, 4, TwilightHalionOnDeath );
+RegisterUnitEvent( 40142, 29, TwilightHalionOnCastSpell );
 RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
 
 --[[
@@ -569,13 +597,7 @@ function ControllerOnSpawn( unit )
 	self[ tostring( unit )] = {
 
 	materialCorporealityValue = 5,
-	materialDamageTaken = 0,
-	twilightDamageTaken = 0,
-	--event = 0,
-	--timer = 4
-	--temp	
 	eventStartIntro = 7,
-	phase = 0
 
 	};
 	
@@ -707,6 +729,7 @@ function ControllerOnAIUpdate( unit )
 	if( vars.eventIntroProgress1 ~= nil ) then vars.eventIntroProgress1 = vars.eventIntroProgress1 - 1; end
 	if( vars.eventIntroProgress2 ~= nil ) then vars.eventIntroProgress2 = vars.eventIntroProgress2 - 1; end
 	if( vars.eventIntroProgress3 ~= nil ) then vars.eventIntroProgress3 = vars.eventIntroProgress3 - 1; end
+	if( vars.twilightMending ~= nil ) then vars.twilightMending = vars.twilightMending - 1; end
 	if( vars.triggerBerserk ~= nil ) then vars.triggerBerserk = vars.triggerBerserk - 1; end
 	
 	if( vars.eventStartIntro and vars.eventStartIntro <= 0 )
@@ -800,7 +823,7 @@ function ControllerOnAIUpdate( unit )
 	
 	elseif( vars.checkCorporeality and vars.checkCorporeality <= 0 )
 	then
-		-- ToDo
+		UpdateCorporeality( unit );
 		vars.checkCorporeality = 5;
 	
 	elseif( vars.activateEmbers and vars.activateEmbers <= 0 )
@@ -814,10 +837,82 @@ function ControllerOnAIUpdate( unit )
 	end
 end
 
+function UpdateCorporeality( unit )
+	
+	local vars = self[ tostring( unit ) ];
+	
+	local oldValue = vars.materialCorporealityValue;
+	
+	if( vars.twilightDamageTaken == 0 or vars.materialDamageTaken == 0 )
+	then
+		vars.twilightMending = 0.1;
+		return;	end
+
+	local damageRatio = vars.materialDamageTaken / vars.twilightDamageTaken;
+	
+	 -- corporeality none
+	local action = 0;
+	
+	if( damageRatio <= 0.98 )
+	then
+		-- corporeality decrease
+		action = 3 ;
+		
+	elseif( 0.99 < damageRatio and damageRatio < 1.01 )
+	then
+		-- corporeality twilight mending
+		action = 1;
+	
+	elseif( 1.02 < damageRatio )
+	then
+		-- corporeality increase
+		action = 2;
+	end
+	
+	-- corporeality none
+	if( action == 0 )
+	then
+		vars.materialDamageTaken = 0;
+		vars.twilightDamageTaken = 0;
+		return;
+	
+	-- corporeality increase
+	elseif( action == 2 )
+	then
+		if( vars.materialCorporealityValue >= 11 - 1 ) then	return; end
+		
+		vars.materialCorporealityValue = vars.materialCorporealityValue + 1;
+	
+	-- corporeality decrease
+	elseif( action == 3 )
+	then
+		if( vars.materialCorporealityValue <= 0 ) then return; end
+		
+		vars.materialCorporealityValue = vars.materialCorporealityValue - 1;
+	
+	-- corporeality twilight mending
+	elseif( action == 1 )
+	then
+		vars.twilightMending = 0.1;
+		vars.materialDamageTaken = 0;
+		vars.twilightDamageTaken = 0;
+		return; 
+	end
+	
+	vars.materialDamageTaken = 0;
+    vars.twilightDamageTaken = 0;
+	
+	unit:SetWorldStateForZone( 5049, vars.materialCorporealityValue * 10 );
+	unit:SetWorldStateForZone( 5050, 100 - vars.materialCorporealityValue * 10 );
+	
+end
+
 RegisterUnitEvent( 40146, 18, ControllerOnSpawn );
 RegisterUnitEvent( 40146, 1, ControllerOnCombat );
 RegisterUnitEvent( 40146, 2, ControllerOnLeaveCombat );
 RegisterUnitEvent( 40146, 21, ControllerOnAIUpdate );
+
+--print( "Lua memory after Halion: "..gcinfo().." Kb." );
 
 --[[
 		Spell: Twilight Phasing (74808)
