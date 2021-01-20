@@ -1,9 +1,11 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	The Ruby Sanctum: General Zarithrian
 	Engine: A.L.E
 	
+	Instance: The Ruby Sanctum
+	Boss: General Zarithrian
+
 	Credits:
 
 	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
@@ -21,37 +23,37 @@
 
 	enUS locale:
 
---[ 1 ] = "Alexstrasza has chosen capable allies.... A pity that I must END YOU!";  -- OnCombat
-[ 1 ] = "You thought you stood a chance?";  -- OnTargetDied 1
-[ 2 ] = "It's for the best.";               -- OnTargetDied 2
-[ 3 ] = "Turn them to ash, minions!";       -- OnMinions
---[ 5 ] = "HALION! I....";  -- OnDeath
+	--[ 1 ] = "Alexstrasza has chosen capable allies.... A pity that I must END YOU!";  -- OnCombat
+	[ 1 ] = "You thought you stood a chance?";  -- OnTargetDied 1
+	[ 2 ] = "It's for the best.";               -- OnTargetDied 2
+	[ 3 ] = "Turn them to ash, minions!";       -- OnMinions
+	--[ 5 ] = "HALION! I....";  -- OnDeath
 	
 	esMX locale:
 	
---[ 1 ] = "Alexstrasza ha elegido aliados capaces.... ¡Una lástima que deba ELIMINARLOS!";  -- OnCombat
-[ 1 ] = "¿Creían que podrían?";  -- OnTargetDied 1
-[ 2 ] = "Mejor así.";               -- OnTargetDied 2
-[ 3 ] = "¡Haganlos cenizas, esbirros!";       -- OnMinions
---[ 5 ] = "HALION! Yo....";  -- OnDeath
+	--[ 1 ] = "Alexstrasza ha elegido aliados capaces.... ¡Una lástima que deba ELIMINARLOS!";  -- OnCombat
+	[ 1 ] = "¿Creían que podrían?";  -- OnTargetDied 1
+	[ 2 ] = "Mejor así.";               -- OnTargetDied 2
+	[ 3 ] = "¡Haganlos cenizas, esbirros!";       -- OnMinions
+	--[ 5 ] = "HALION! Yo....";  -- OnDeath
 
-local MAP_RUBY_SANCTUM	= 724;
+--]]
 
-local NPC_ZARITHRIAN	= 39746;
-local NPC_25M_ZARITHRIAN	= 39805;
+--local MAP_RUBY_SANCTUM	= 724;
 
-local NPC_ZARITHRIAN_SPAWN_STALKER	= 39794;
+--local NPC_ZARITHRIAN	= 39746;
+--local NPC_25M_ZARITHRIAN	= 39805;
 
-local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
+--local NPC_ZARITHRIAN_SPAWN_STALKER	= 39794;
 
--- For 3.3.5a
+--local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
+
+--[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
 local UNIT_FLAG_NOT_SELECTABLE		= 0x02000000
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
-local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
-
---]]
+local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800; --]]
 
 local mod = getfenv( 1 );
 assert( mod );
@@ -235,7 +237,7 @@ RegisterUnitEvent( 39746, 21, OnAIUpdate );
 
 --[[ 
 		Debug commands disabled by default 
---]]
+
 
 local COMMANDS = { "zar", "port", "removeflag", "minions", "gotostalker1", "gotostalker2", "open", "close", "summon" };
 
@@ -314,3 +316,4 @@ function Commands( _, plr, message )
 end
 
 RegisterServerHook( 16, Commands );
+--]]
