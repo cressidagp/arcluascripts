@@ -1,3 +1,4 @@
+-- Credits: Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 local instance_mod = require( "DUNGEON_FH" );
 
 if( type( instance_mod ) ~= "table" ) then error( "Forge of Souls Module is missing!", 1 ); end
