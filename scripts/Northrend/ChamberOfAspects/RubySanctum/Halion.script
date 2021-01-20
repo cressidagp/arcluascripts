@@ -42,6 +42,14 @@
 
 --local NPC_CONTROLLER_ID = 200631;
 
+--local NPC_ORB_CARRIER = 40081;
+--local NPC_25M_ORB_CARRIER = 40470;
+--local H_ORB_CARRIER = 40471;
+--local H_NPC_25M_ORB_CARRIER = 40472;
+
+--local NPC_ORB_1 = 40083;
+--local NPC_ORB_2 = 40100;
+
 --local TREES = { 203034, 203035, 203036, 203037 };
 
 --[[ For 3.3.5a
@@ -71,7 +79,7 @@ module( mod._NAME..".HALION_DESTROYER", package.seeall );
 -- Twilight:
 [ 8 ] = 17506;	-- SpherePulse
 [ 9 ] = 17508;	-- OnPhaseThree -- OK
-}; --]]
+};--]]
 
 local YELL = {
 -- Halion:
@@ -88,7 +96,9 @@ local YELL = {
 local TEXT = {
 [ 1 ] = "Without pressure in both realms, %s begins to regenerate.",  -- Shared (type 41)
 [ 2 ] = "Your efforts force %s further out of the physical realm!", -- (type 41)
-[ 3 ] = "Your companions' efforts force %s further into the physical realm!" -- (type 41)
+[ 3 ] = "Your companions' efforts force %s further into the physical realm!", -- (type 41)
+-- Shadow Orb
+[ 4 ] = "The orbiting spheres pulse with dark energy!" -- (type 41)
 };
 
 -- Spells (Halion):
@@ -108,6 +118,7 @@ local SPELL_TWILIGHT_PRECISION 	= 78243; -- not aura displayed
 -- Spells (Halion Controller):
 local SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
 local SPELL_FIERY_EXPLOSION = 76010;
+local SPELL_CLEAR_DEBUFFS	= 75396;
 
 -- Handled by Controller:
 local SPELL_TWILIGHT_MENDING = 75509;
@@ -119,11 +130,31 @@ local SPELL_TWILIGHT_PHASING	= 74808; -- phase spell from phase 1 to phase 2
 local SPELL_TWILIGHT_DIVISION	= 75063; -- phase spell from phase 2 to phase 3
 local SPELL_DUSK_SHROUD	= 75476;
 local SPELL_COPY_DAMAGE	= 74810;
-local SPELL_SUMMON_TWILIGHT_PORTAL	= 74809; -- Summons go 202794
+local SPELL_SUMMON_TWILIGHT_PORTAL	= 74809; -- summons go 202794
 local SPELL_SUMMON_EXIT_PORTALS = 74805;
 
+-- twilight, material
+local SPELL_CORPOREALITY = {
+{ 74836, 74831 },
+{ 74835, 74830 },
+{ 74834, 74829 },
+{ 74833, 74828 },
+{ 74832, 74827 },
+{ 74826, 74826 },
+{ 74827, 74832 },
+{ 74828, 74833 },
+{ 74829, 74834 },
+{ 74830, 74835 },
+{ 74831, 74836 }
+};
+
+-- Spells (Orb Carrier):
+local SPELL_TRACK_ROTATION	= 74758;
+local SPELL_TWILIGHT_CUTTER = 74768; -- unknown dummy effect
+local SPELL_TWILIGHT_CUTTER_TRIGGERED	= 74769;
+local SPELL_TWILIGHT_PULSE_PERIODIC	= 78861;
+
 -- Phases:
-local PHASE_ALL		= 0;
 local PHASE_INTRO	= 1;
 local PHASE_ONE		= 2; -- combat in Physical realm
 local PHASE_TWO		= 3; -- combat in Twilight realm
@@ -133,17 +164,19 @@ local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
-	-- set health acording to difficulty
 	local BOSS_HP = { 11156000, 40440500, 15339500, 58569000 };
 	
     local diff = unit:GetDungeonDifficulty();
 	
-    unit:SetMaxHealth( BOSS_HP[ diff + 1 ] );
-
-    unit:SetHealth( BOSS_HP[ diff + 1 ] );
+	-- set health acording to difficulty
+	if( diff >= 1 )
+	then
+		unit:SetMaxHealth( BOSS_HP[ diff + 1 ] );
+		unit:SetHealth( BOSS_HP[ diff + 1 ] );
+	end
 	
+	-- set unit field flags 2 enable power regen
 	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
-
 end
 
 function OnCombat( unit )
@@ -220,6 +253,8 @@ function OnDamageTaken( unit, _, attacker, damage )
 		if( controller )
 		then
 			local varsbis = self[ tostring( controller ) ];
+			
+			-- combat in twilight realm
 			varsbis.phase = PHASE_TWO;
 		end	
 	end
@@ -238,19 +273,20 @@ function OnDamageTaken( unit, _, attacker, damage )
 	end
 end
 
+--[[
 function OnLeaveCombat( unit )
 
 	-- destroy table with variables to recycle resources
 
 	self[ tostring( unit ) ] = nil;
 
-	--[[ Developer notes: contrary to popular believe, this is the right place
-	to remove ai update event since if a creature is dead the ai update will not trigger, so
-	one remove ai update event its more than enough. ]]
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
 
 	unit:RemoveAIUpdateEvent();
-
 end
+--]]
 
 function OnTargetDied( unit, _, victim )
 
@@ -381,7 +417,7 @@ end
 RegisterUnitEvent( 39863, 18, OnSpawn );
 RegisterUnitEvent( 39863, 1, OnCombat );
 RegisterUnitEvent( 39863, 23, OnDamageTaken );
-RegisterUnitEvent( 39863, 2, OnLeaveCombat );
+--RegisterUnitEvent( 39863, 2, OnLeaveCombat );
 RegisterUnitEvent( 39863, 3, OnTargetDied );
 RegisterUnitEvent( 39863, 4, OnDeath );
 RegisterUnitEvent( 39863, 29, OnCastSpell );
@@ -420,17 +456,20 @@ end
 function TwilightHalionOnCombat( unit )
 
 	-- create protected variables
-	local vars = self[ tostring( unit ) ];
+	self[ tostring( unit ) ] = {
 	
 	-- combat in twilight realm
-	vars.phase = PHASE_TWO;
+	phase = PHASE_TWO;
 	
-	tailLash = 12,
-	soulConsumption = 15
-	vars.cleave = 3;
-	vars.darkBreath = 12;
+	tailLash = 12;
+	soulConsumption = 15;
+	cleave = 3;
+	darkBreath = 12;
+	
+	};
 	
 	unit:AddAura( SPELL_TWILIGHT_PRECISION, 0 );
+	unit:RegisterAIUpdateEvent( 1000 );
 	
 end
 
@@ -477,6 +516,22 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 		end
 	end
 end
+
+--[[
+function TwilightOnLeaveCombat( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
+
+	unit:RemoveAIUpdateEvent();
+
+end
+--]]
 
 function TwilightHalionOnTargetDied( unit, _, victim )
 
@@ -581,6 +636,7 @@ end
 RegisterUnitEvent( 40142, 18, TwilightHalionOnSpawn );
 RegisterUnitEvent( 40142, 1, TwilightHalionOnCombat );
 RegisterUnitEvent( 40142, 23, TwilightHalionOnDamageTaken );
+--RegisterUnitEvent( 40142, 2, TwilightOnLeaveCombat );
 RegisterUnitEvent( 40142, 3, TwilightHalionOnTargetDied );
 RegisterUnitEvent( 40142, 4, TwilightHalionOnDeath );
 RegisterUnitEvent( 40142, 29, TwilightHalionOnCastSpell );
@@ -645,6 +701,11 @@ function ControllerOnLeaveCombat( unit )
 	then
 		halion:Despawn( 1000, 0 );
 	end
+end
+
+function ControllerOnDeath( unit )
+	
+	unit:CastSpell( SPELL_CLEAR_DEBUFFS );
 end
 
 --[[
@@ -803,14 +864,14 @@ function ControllerOnAIUpdate( unit )
 		local iid = unit:GetInstanceID();
 		
 		-- get halion using guid
-		local halion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataHalion );
+		local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
 		if( halion )
 		then
 			halion:CastSpell( SPELL_BERSERK );
 		end
 		
 		-- get twilight halion using guid
-		local twilightHalion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataTwilight );
+		local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
 		if( twilightHalion )
 		then
 			twilightHalion:CastSpell( SPELL_BERSERK );
@@ -818,7 +879,13 @@ function ControllerOnAIUpdate( unit )
 		
 	elseif( vars.shadowPulsars and vars.shadowPulsars <= 0 )
 	then
-		-- ToDo
+		-- get orb carrier using spawn id
+		local orbCarrier = GetInstanceCreature( 724, iid, 711234 );
+		if( orbCarrier )
+		then
+			-- action send warning shoot
+			orbCarrier:RegisterLuaEvent( OrbCarrierDoAction, 0.1, 1, 2 );
+		end
 		vars.shadowPulsars = 30;
 	
 	elseif( vars.checkCorporeality and vars.checkCorporeality <= 0 )
@@ -910,7 +977,113 @@ end
 RegisterUnitEvent( 40146, 18, ControllerOnSpawn );
 RegisterUnitEvent( 40146, 1, ControllerOnCombat );
 RegisterUnitEvent( 40146, 2, ControllerOnLeaveCombat );
+RegisterUnitEvent( 40146, 4, ControllerOnDeath );
 RegisterUnitEvent( 40146, 21, ControllerOnAIUpdate );
+
+--[[
+		Orb Carrier AI (40081)
+--]]
+
+function OrbCarrierOnAIUpdate( unit, event )
+
+	-- on aiupdate
+    if( event == 21 )
+    then
+		if( unit:IsCasting() == true ) then return; end
+		
+		unit:FullCastSpell( SPELL_TRACK_ROTATION );
+
+	-- on spawn
+	else
+        unit:RegisterAIUpdateEvent( 1000 );
+		
+		-- lets get orbs guid after 3 secs
+		unit:RegisterLuaEvent( OrbCarrierDoAction, 3000, 1, 1 );
+		
+		--for debug
+		--unit:RegisterLuaEvent( OrbCarrierDoAction, 5000, 1, 2 );
+    end	
+end
+
+function OrbCarrierDoAction( unit, action )
+
+	local iid = unit:GetInstanceID();
+	
+	-- store orbs guid for later use
+	if( action == 1 )
+	then
+		
+		local orb1 = unit:GetCreatureNearestCoords( 3153.75, 533.19, 72.97, 40083 );
+		if( orb1 )
+		then
+			HSHARED[ iid ].dataOrb1 = orb1:GetGUID();
+			
+			-- set unit field flag not selectable
+			orb1:SetFlag( 0x0006 + 0x0035, 0x02000000 );
+		end
+		
+		local orb2 = unit:GetCreatureNearestCoords( 3153.75, 533.19, 72.97, 40100 );
+		if( orb2 )
+		then
+			HSHARED[ iid ].dataOrb2 = orb2:GetGUID();
+			
+			-- set unit field flag not selectable
+			orb2:SetFlag( 0x0006 + 0x0035, 0x02000000 );
+		end
+		
+	-- action warning shot
+	elseif( action == 2 )
+	then
+		
+		local orb1 = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataOrb1 );
+		if( orb1 )
+		then
+			orb1:SendChatMessage( 41, 0, TEXT[ 4 ] );
+		end
+	
+		unit:RegisterLuaEvent( OrbCarrierDoAction, 5000, 1, 3 );
+			
+	-- action shoot
+	elseif( action == 3 )
+	then
+		local orb1 = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataOrb1 );
+		local orb2 = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataOrb2 );
+		if( orb1 and orb2 )
+		then
+			TriggerCutter( orb1, orb2 );
+		end
+		
+		local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
+		if( twilightHalion )
+		then
+			twilightHalion:PlaySoundToSet( 17506 );
+			twilightHalion:SendChatMessage( 14, 0, YELL[ 6 ] );
+		end
+	end
+end
+
+function TriggerCutter( caster, target )
+
+	caster:CastSpell( SPELL_TWILIGHT_PULSE_PERIODIC );
+	target:CastSpell( SPELL_TWILIGHT_PULSE_PERIODIC );
+	caster:CastSpellOnTarget( SPELL_TWILIGHT_CUTTER, target );	
+end
+
+RegisterUnitEvent( 40081, 18, OrbCarrierOnAIUpdate );
+RegisterUnitEvent( 40081, 21, OrbCarrierOnAIUpdate );
+
+--[[
+		Orb Carrier AI (40100)
+
+
+function OrbOnSpawn( unit )
+
+	HSHARED[ unit:GetInstanceID() ].dataOrb = unit:GetGUID();
+end
+
+RegisterUnitEvent( 40100, 18, OrbOnSpawn );
+
+--]]
 
 --print( "Lua memory after Halion: "..gcinfo().." Kb." );
 
@@ -955,7 +1128,7 @@ function Commands( _, plr, message )
 
 		elseif( message == "#port" )
 		then
-			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );
+			plr:Teleport( 724, 3110.10, 534.98, 73.01, 6.19 );
 			
 		elseif( message == "#exit" )
 		then
@@ -1016,7 +1189,7 @@ function Commands( _, plr, message )
 				elseif( message == "#mending" )
 				then
 					local vars = self[ tostring( selection ) ];
-					vars.triggerBerserk = 3;
+					vars.triggerBerserk = 3;				
 				end
 			end
 		end
