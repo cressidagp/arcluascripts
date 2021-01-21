@@ -18,17 +18,19 @@
 SET @ID1 := 135619;	-- Durotar: Minshinas Spirit
 SET @ID2 := 136215;	-- Stormwind: Corbett Schneider
 SET @ID3 := 5443;	-- Elwynn Forest: Matt
-SET @ID4 := 134426; -- Ruby Sanctum: Zarithrian
+SET @ID4 := 711234; -- Ruby Sanctum: Orb Carrier
 SET @ID5 := 134428; -- Ruby Sanctum: Baltharus
 SET @ID6 := 109436; -- Ruby Sanctum: Target Crystal
 SET @ID7 := 200631; -- Ruby Sanctum: Halion Controller
 SET @ID8 := 78482;	-- Terokkar Forest: Liutenant Gravelhammer
 SET @ID9 := 77081;	-- Nagrand: Warden Moibff Jill
 SET @ID10 := 66819; -- Azuremyst Isle: Zulduun
-SET @ID11 := 711234;-- Ruby Sanctum: Orb Carrier
 
+
+--
 -- 
 -- This will just remove what should be the "out of combat stuff", so the lua script will coexist with the "on combat" ai agent:
+--
 --
 
 DELETE FROM `ai_agents` WHERE `entry` = 474 and `spell` = 12544; -- Elwynn Forest: Defias Rogue Wizard cast "Frost Armor"
@@ -43,17 +45,24 @@ DELETE FROM `ai_agents` WHERE `entry` = 5826 and `spell` = 324; -- Durotar: Geol
 
 UPDATE `creature_proto` SET `auras` = '' WHERE `entry` IN ( 474, 476, 881, 1507, 1544, 3204, 3206, 5822, 5826 );
 
+
+--
 --
 -- The follows ai_agents are not working so lets port them to lua:
 --
+--
 
-DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest: Morgan the Collector dont want to cast "Gouge"
+DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest: Morgan the Collector dont cast "Gouge"
 
+
+--
 --
 -- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
 --
+--
 
 DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 1395, 1402, 1405, 3188, 7917, 16483, 16502, 18408 );
+
 
 --DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
 --DELETE FROM `npc_monstersay` WHERE `entry` = 794 and `event` = 0; -- Elwynn Forest: Matt
@@ -67,8 +76,11 @@ DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 1
 --DELETE FROM `npc_monstersay` WHERE `entry` = 16502 and `event` = 0; -- Azuremyst Isle: Zalduun
 --DELETE FROM `npc_monstersay` WHERE `entry` = 16483 and `event` = 0; -- Azuremyst Isle: Draenei Survivor
 
+
+--
 --
 -- The next npc_gossip_textid had been ported to lua since arcemu database structure dont have support for them:
+--
 --
 
 DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 8965, 16477, 16514, 16819, 17071, 17087 );
@@ -84,41 +96,59 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17071; -- Azuremyst Isle: Technician Zhanaa
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: Spirit of the Vale
 
+
 --
--- Forge of Souls:
+--
+-- Frozen Halls: Forge of Souls
+--
 --
 
 -- Bronjahm: monstersay OnCombat, OnDeath
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36497, 0, 100, 0, 14, 'Bronjahm', 'Finally, a captive audience!', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36497, 5, 100, 0, 14, 'Bronjahm', 'The Devourer awaits...', NULL, NULL, NULL, NULL);
-
 UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36497;
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36497, 0, 100, 0, 14, 'Bronjahm', 'Finally, a captive audience!', NULL, NULL, NULL, NULL);
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36497, 5, 100, 0, 14, 'Bronjahm', 'The Devourer awaits...', NULL, NULL, NULL, NULL);
 
 -- Corrupted Fragmented Soul:
 
 --UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36535;
 
--- Devourer Of Souls: monstersay OnCombat, OnDeath
-
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36502, 0, 100, 0, 14, 'Devourer Of Souls', 'You dare look upon the host of souls? I SHALL DEVOUR YOU WHOLE!', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36502, 5, 100, 0, 14, 'Devourer Of Souls', 'The swell of souls will not be abated! You only delay the inevitable.', NULL, NULL, NULL, NULL);
+-- Devourer Of Souls:
 
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 36502;
 
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36502, 0, 100, 0, 14, 'Devourer Of Souls', 'You dare look upon the host of souls? I SHALL DEVOUR YOU WHOLE!', NULL, NULL, NULL, NULL);
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36502, 5, 100, 0, 14, 'Devourer Of Souls', 'The swell of souls will not be abated! You only delay the inevitable.', NULL, NULL, NULL, NULL);
+
+
 --
--- Pit of Saron:
+--
+-- Frozen Halls: Pit of Saron
+--
 --
 
--- Forgemaster Garfrost: monstersay OnCombat, OnDeath, CircleWP, weapon slot1
-
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36494, 0, 100, 0, 14, 'Forgemaster Garfrost', 'Tiny creatures under feet, you bring Garfrost something good to eat!', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36494, 5, 100, 0, 14, 'Forgemaster Garfrost', 'Garfrost hope giant underpants clean. Save boss great shame. For later.', NULL, NULL, NULL, NULL);
+-- Forgemaster Garfrost:
 
 UPDATE `creature_spawns` SET `movetype` = 2, `slot1item` = 49346 WHERE `entry` = 36494;
 
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36494, 0, 100, 0, 14, 'Forgemaster Garfrost', 'Tiny creatures under feet, you bring Garfrost something good to eat!', NULL, NULL, NULL, NULL);
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36494, 5, 100, 0, 14, 'Forgemaster Garfrost', 'Garfrost hope giant underpants clean. Save boss great shame. For later.', NULL, NULL, NULL, NULL);
+
+
 --
--- Halls of Reflections:
+--
+-- Frozen Halls: Halls of Reflections
+--
 --
 
 -- Falric and Marwyn ( work but its the right invi type? )
@@ -274,69 +304,93 @@ UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134300 and `entry` = 381
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134322 and `entry` = 38177; -- Shadowy Mercenary
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134289 and `entry` = 38175; -- Ghostly Priest
 
--- Captain Falric: monstersay OnCombat, OnDeath
+-- Captain Falric:
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38112, 0, 100, 0, 14, 'Falric', 'Men, women, and children... None were spared the master\'s wrath. Your death will be no different.', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38112, 5, 100, 0, 14, 'Falric', 'Marwyn, finish them...', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (38112, 0, 100, 0, 14, 'Falric', 'Men, women, and children... None were spared the master\'s wrath. Your death will be no different.', NULL, NULL, NULL, NULL);
 
--- Captain Marwyn: monstersay OnCombat, OnDeath
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (38112, 5, 100, 0, 14, 'Falric', 'Marwyn, finish them...', NULL, NULL, NULL, NULL);
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38113, 0, 100, 0, 14, 'Marwyn', 'Death is all that you will find here', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (38113, 5, 100, 0, 14, 'Marwyn', 'Yes... Run... Run to meet your destiny... Its bitter, cold embrace, awaits you.', NULL, NULL, NULL, NULL);
+-- Captain Marwyn:
 
--- Frostworn General: monstersay OnCombat, OnDeath
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (38113, 0, 100, 0, 14, 'Marwyn', 'Death is all that you will find here', NULL, NULL, NULL, NULL);
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 0, 100, 0, 14, 'Frostworn General', 'You are not worthy to face the Lich King!', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (36723, 5, 100, 0, 14, 'Frostworn General', 'Master, I have failed...', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (38113, 5, 100, 0, 14, 'Marwyn', 'Yes... Run... Run to meet your destiny... Its bitter, cold embrace, awaits you.', NULL, NULL, NULL, NULL);
+
+-- Frostworn General:
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36723, 0, 100, 0, 14, 'Frostworn General', 'You are not worthy to face the Lich King!', NULL, NULL, NULL, NULL);
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (36723, 5, 100, 0, 14, 'Frostworn General', 'Master, I have failed...', NULL, NULL, NULL, NULL);
 
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 36723;
 
+
+--
 --
 -- Icecrown Citadel:
+--
 --
 
 -- Hack! Since arcemu cand handle gossip vehicles
 
 UPDATE `creature_proto` SET `vehicleid` = 0 WHERE `entry` = 37120; -- Hightlord Darion Mograine
 
+
 --
--- The Ruby Sanctum: 
+--
+-- Chamber of Aspects: The Ruby Sanctum
+--
 --
 
--- Xerex (40429):
+-- Xerex:
 
 UPDATE `creature_spawns` SET `flags` = 32768 WHERE `entry` = 40429;
 
--- General Zarithrian (39746):
+-- General Zarithrian:
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39746, 0, 100, 0, 14, 'General Zarithrian', 'Alexstrasza has chosen capable allies.... A pity that I must END YOU!', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39746, 5, 100, 0, 14, 'General Zarithrian', 'HALION! I....', NULL, NULL, NULL, NULL);
+UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `entry` = 39746;
 
-UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `id` = @ID4;
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (39746, 0, 100, 0, 14, 'General Zarithrian', 'Alexstrasza has chosen capable allies.... A pity that I must END YOU!', NULL, NULL, NULL, NULL);
 
--- Saviana Ragefire (39747):
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (39746, 5, 100, 0, 14, 'General Zarithrian', 'HALION! I....', NULL, NULL, NULL, NULL);
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39747, 0, 100, 0, 14, 'Saviana Ragefire', 'You will sssuffer for this intrusion!', NULL, NULL, NULL, NULL);
+-- Saviana Ragefire:
 
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39747;
 
--- Baltharus the Warborn (39751):
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39747, 0, 100, 0, 14, 'Saviana Ragefire', 'You will sssuffer for this intrusion!', NULL, NULL, NULL, NULL);
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (@ID5, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment has arrived.', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (@ID5, 5, 100, 0, 14, 'Baltharus the Warborn', 'I... didn\'t see that coming....', NULL, NULL, NULL, NULL);
+-- Baltharus the Warborn:
 
-UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = @ID5;
+UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39751;
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (39751, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment has arrived.', NULL, NULL, NULL, NULL);
+
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (39751, 5, 100, 0, 14, 'Baltharus the Warborn', 'I... didn\'t see that coming....', NULL, NULL, NULL, NULL);
 
 --UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
 
 UPDATE `creature_proto` SET `invisibility_type` = 0 WHERE `entry` = @ID6; -- crystal target: fix the channeling effect
 
--- Halion the Destroyer (39863):
+-- Halion the Destroyer:
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39863, 0, 100, 0, 14, 'Halion the Destroyer', 'Your world teeters on the brink of annihilation. You will ALL bear witness to the coming of a new age of DESTRUCTION!', NULL, NULL, NULL, NULL);
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39863, 5, 100, 0, 14, 'Halion the Destroyer', 'Relish this victory, mortals, for it will be your last. This world will burn with the master\'s return!', NULL, NULL, NULL, NULL);
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (39863, 0, 100, 0, 14, 'Halion the Destroyer', 'Your world teeters on the brink of annihilation. You will ALL bear witness to the coming of a new age of DESTRUCTION!', NULL, NULL, NULL, NULL);
 
--- Halion Controller (40146):
+REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
+VALUES (39863, 5, 100, 0, 14, 'Halion the Destroyer', 'Relish this victory, mortals, for it will be your last. This world will burn with the master\'s return!', NULL, NULL, NULL, NULL);
+
+-- Halion Controller:
 
 UPDATE `creature_proto` SET `invisibility_type` = 1 WHERE `entry` = 40146;
 
@@ -345,12 +399,12 @@ DELETE FROM `creature_spawns` WHERE `id` = @ID7 AND `entry` = 40146;
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
 VALUES (@ID7, 40146, 724, 3156.04, 533.27, 72.97, 0.00, 0, 169, 14, 33554688, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33);
 
--- Orb Carrier (40081):
+-- Orb Carrier:
 
-DELETE FROM `creature_spawns` WHERE `id` = @ID11 AND `entry` = 40081;
+DELETE FROM `creature_spawns` WHERE `id` = @ID4 AND `entry` = 40081;
 
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
-VALUES (@ID11, 40081, 724, 3153.75, 533.19, 72.97, 0.00, 0, 169, 14, 33554688, 50331648, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 32);
+VALUES (@ID4, 40081, 724, 3153.75, 533.19, 72.97, 0.00, 0, 169, 14, 33554688, 50331648, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 32);
 
 DELETE FROM `vehicle_accessories` WHERE `creature_entry` = 40081 AND `seat` = 0;
 INSERT INTO `vehicle_accessories` (`creature_entry`, `accessory_entry`, `seat`) VALUES (40081, 40083, 0);
@@ -369,14 +423,20 @@ UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40042;
 UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40043;
 UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40044;
 
+
+--
 --
 -- This one will be handled in lua:
+--
 --
 
 DELETE FROM `creature_spawns` WHERE `id` = @ID1 AND `entry` = 3289; -- Durotar: Minshinas Spirit
 
+
+--
 --
 -- This table store waypoints of creatures not spawned in world:
+--
 --
 
 DROP TABLE IF EXISTS `waypoints_lua`;
@@ -686,9 +746,14 @@ UPDATE `creature_spawns` SET `flags` = 4608 WHERE `entry` = 16483; -- UNIT_FLAG_
 
 UPDATE `creature_spawns` SET `displayid` = 0, `flags` = 33024, `bytes0` = 0 WHERE `entry` = 16971; -- UNIT_FLAG_NOT_ATTACKABLE_9 + UNIT_FLAG_UNKNOWN_16
 
+
+--
+--
 --
 --
 -- DONT ADD MORE STUFF FROM HERE
+--
+--
 --
 --
 
