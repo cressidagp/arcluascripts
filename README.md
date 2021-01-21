@@ -22,6 +22,8 @@ Bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?sh
 
 To run properly require the contents of 0Misc folder from [ArcEmu github repository.](https://github.com/arcemu/arcemu/tree/master/src/scripts/lua/0Misc)
 
+Also require [ArcDB.](https://github.com/DarkAngel39/ArcDB)
+
 
 ## Instalation
 
