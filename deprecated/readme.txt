@@ -26,3 +26,7 @@ Proenitus.lua
 Seer_Skaltesh.lua
 Shawn.lua
 Spirit_of_the_Vale.lua
+
+****) This one are attemps to do more efficient scripts:
+
+Brother_Sarno.lua
