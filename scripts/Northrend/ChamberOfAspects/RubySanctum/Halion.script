@@ -22,7 +22,9 @@
 	*) 76010: has a dummy effect (0) but no handler for it.
 	*) 74637: has a dummy effect (0) but no handler for it.
 	*) 75396: has a scripted effect (0) but no handler for it.
-	*) add localization
+	*) corporeality cast and spell selector.
+	*) add localization.
+	*) implement better test/debug commands.
 	
 	enUS locale:
 	
