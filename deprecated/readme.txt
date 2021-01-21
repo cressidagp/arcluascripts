@@ -14,8 +14,10 @@ Saviana_Ragefire.lua
 
 **) Deprecated since it will be handled in database:
 
-The_Three_Beggars.lua
 Meven_Korgal.lua
+The_Three_Beggars.lua
+Tosamina.lua
+Warden_Thelwater.lua
 
 ***) Ported to gossip plugin:
 
@@ -32,4 +34,3 @@ Spirit_of_the_Vale.lua
 Brother_Sarno.lua
 Morgan_the_Collector1.lua
 Morgan_the_Collector2.lua
-Warden_Thelwater.lua
