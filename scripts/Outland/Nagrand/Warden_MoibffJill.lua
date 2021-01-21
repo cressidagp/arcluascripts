@@ -1,31 +1,35 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Negrand: Warden Moibff Jill (Telaar)
 	Engine: A.L.E
+	
+	Zone: Nagrand: 
+	Creature Warden Moibff Jill (Telaar)
+	
+	Credits:
 
-  Credits:
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 
-  *) Trinity for texts, timers and waypoints.
-  *) Hypersniper for his lua guides and some job in the lua engine.
-  *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-  *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	enUS locale:
 
-  enUS:
+	[ 1 ] = "New posting going up! Adventurers and heroes, gather round the bulletin board!",
+	[ 2 ] = "That should get Telaar the assistance it needs!"
 
-  [ 1 ] = "New posting going up! Adventurers and heroes, gather round the bulletin board!";
-  [ 2 ] = "That should get Telaar the assistance it needs!";
+	esMX locale:
 
-  esMX:
-
-  [ 1 ] = "¡Nueva publicación! ¡Aventureros y héroes, reuníos alrededor del tablero de anuncios!";
-  [ 2 ] = "¡Eso debería brindarle a Telaar la ayuda que necesita!";
+	[ 1 ] = "¡Nueva publicación! ¡Aventureros y héroes, reuníos alrededor del tablero de anuncios!",
+	[ 2 ] = "¡Eso debería brindarle a Telaar la ayuda que necesita!"
 
 --]]
 
-local TEXT = {
-[ 1 ] = "New posting going up! Adventurers and heroes, gather round the bulletin board!";
-[ 2 ] = "That should get Telaar the assistance it needs!";
+--local WARDEN_MOIBFFJILL = 18408;
+
+local chat = {
+[ 1 ] = "New posting going up! Adventurers and heroes, gather round the bulletin board!",
+[ 2 ] = "That should get Telaar the assistance it needs!"
 };
 
 MOIBFFJILL = {}
@@ -37,7 +41,7 @@ function MOIBFFJILL.DoStuff( unit )
 
 	if( args.action == 0 and args.time <= 0 )
 	then
-		unit:SendChatMessage( 12, 7, TEXT[ 1 ] );
+		unit:SendChatMessage( 12, 7, chat[ 1 ] );
 		args.action = 1;
 		args.time = 0;
 
@@ -55,13 +59,14 @@ function MOIBFFJILL.DoStuff( unit )
 
 	elseif( args.action == 3 and args.time <= 0 )
 	then
-		unit:SendChatMessage( 12, 7, TEXT[ 2 ] );
+		unit:SendChatMessage( 12, 7, chat[ 2 ] );
 		unit:Emote( 5, 0 );
 		args.action = 4;
 	end
 end
 
 function MOIBFFJILL.OnReachWP( unit, _, waypointId )
+
 	if( waypointId == 1 )
 	then
 		unit:SetFacing( 4.69494 );
