@@ -343,8 +343,6 @@ function OnCastSpell( unit, event, spell_id )
 	end
 end
 
-local meteorStrikePos = {};
-
 function OnAIUpdate( unit )
 
 	local vars = self[ tostring( unit ) ];
