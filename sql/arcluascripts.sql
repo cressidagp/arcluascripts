@@ -3,6 +3,8 @@
 	
 	APPLY THIS FILE TO YOUR WORLD DATABASE IF YOU USE ARCLUASCRIPTS.
 	
+	-- FOR ARC-DB ONLY! --
+	
 	For ArcEmu with A.L.E
 	
 	www.ArcEmu.org

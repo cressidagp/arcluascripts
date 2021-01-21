@@ -11,7 +11,7 @@ WARNING: this stuff its experimental, use it at your own risk. Feel free to [ope
 
 Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips, Quests, DummySpells and a couple of gm/dev commands.
 
-Scripts folder has been organizated per map id, with the hope of a per map feature could eventually be implemented.
+Scripts folder has been organizated per map id, with the hope of a multi interpreter feature could eventually be implemented.
 
 All script has been writed to prevent [variable collision.](http://arcemu.org/forums/index.php?showtopic=19907)
 
@@ -27,7 +27,7 @@ To run properly require the contents of 0Misc folder from [ArcEmu github reposit
 
 1. Copy all files from scripts folder in to your ArcEmu scripts folder.
 
-2. Apply arcluascripts.sql to your world database.
+2. Apply arcluascripts.sql to your world database (for ArcDB only, i may do for NCDB if i can find it).
 
 
 ## Credits to
