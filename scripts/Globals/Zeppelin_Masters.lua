@@ -1,11 +1,18 @@
 --[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Zeppelin Masters
 	Engine: A.L.E
-	Credits: i take the creature texts from Trinity so thanks to them.
+	
+	Creatures: Zeppelin Masters
+	
+	Credits:
 
-	enUS:
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
+
+	enUS locale:
 	
 	{ 9564, 164871, "The zeppelin to Undercity has just arrived! All aboard to Tirisfall Glades!" },
 	{ 9566, 164871, "The zeppelin to Orgrimmar has just arrived! All aboard for Durotar!" },
@@ -20,7 +27,7 @@
 	{ 34765, 190549, "The zeppelin to Thunder Bluff has arrived! All aboard for a smooth ride across the Barrens!" },
 	{ 34766, 190549, "Step right up! The zeppelin to Orgrimmar has arrived! All aboard to Durotar!" }
 	
-	esMX:
+	esMX locale:
 
 	{ 9564, 164871, "¡El zepelín a Entrañas acaba de llegar! ¡Todos a bordo hacia los Claros de Tirisfal!" },
 	{ 9566, 164871, "¡El zepelín a Orgrimmar acaba de llegar! ¡Todos a bordo para Durotar!" },
@@ -39,7 +46,7 @@
 
 local NPC_ENTRY = { 3149, 3150, 9564, 9566, 12136, 12137, 26537, 26538, 26539, 26540, 34765, 34766 };
 
-local DATA = {
+local data = {
 { 9564, 164871, "The zeppelin to Undercity has just arrived! All aboard to Tirisfall Glades!" },   -- Frezza, The Thundercaller
 { 9566, 164871, "The zeppelin to Orgrimmar has just arrived! All aboard for Durotar!" },           -- Zappeta, The Thundercaller
 { 12136, 175080, "The zeppelin to Grom'gol has just arrived! All aboard for Stranglethorn!" },     -- Snurk, The Iron Eagle
@@ -58,9 +65,7 @@ ZEPPELIN_MASTERS = {}
 
 function ZEPPELIN_MASTERS.Reset( unit )
 
-    local sUnit = tostring( unit );
-	
-    ZEPPELIN_MASTERS[ sUnit ].var = false;
+    ZEPPELIN_MASTERS[ tostring( unit ) ].var = false;
 	
 end
 
@@ -69,37 +74,29 @@ function ZEPPELIN_MASTERS.CheckForTransport( unit )
     local sUnit = tostring( unit );
 	
     if( unit:IsAlive() == true and ZEPPELIN_MASTERS[ sUnit ].var == false )
-	
     then
 	
-        for i = 1, #DATA 
-		
+        for i = 1, #data
 		do
 		
-            if( unit:GetEntry() == DATA[ i ][ 1 ] )
-			
+            if( unit:GetEntry() == data[ i ][ 1 ] )
             then
 			
-                local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), DATA[ i ][ 2 ] );
+                local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), data[ i ][ 2 ] );
 				
                 if( zep ~= nil )
-				
                 then
 				
-                    unit:SendChatMessage( 14, 0, DATA[ i ][ 3 ] );
+                    unit:SendChatMessage( 14, 0, data[ i ][ 3 ] );
 					
                     ZEPPELIN_MASTERS[ sUnit ].var = true;
 					
                     unit:RegisterEvent( ZEPPELIN_MASTERS.Reset, 90000, 1 );
 					
-                end
-				
-            end
-			
-        end
-		
-    end
-	
+                end	
+            end	
+        end	
+    end	
 end
 
 function ZEPPELIN_MASTERS.OnSpawn( unit )
