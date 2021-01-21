@@ -13,9 +13,9 @@
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
-	enUS locale: "Greetings, "..BROTHER_SARNO.newVisitor:GetPlayerClass().."! Welcome to the Cathedral of Light!"
+	enUS locale: "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!"
 	
-	esMX locale: "¡Saludos, "..BROTHER_SARNO.newVisitor:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
+	esMX locale: "¡Saludos, "..BROTHER_SARNO.target:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
 	
 --]]
 
@@ -35,9 +35,10 @@ function BROTHER_SARNO.OnWelcome( unit )
 
     if( unit:IsHostile( BROTHER_SARNO.newVisitor ) == false and BROTHER_SARNO.canWelcome == 1 )
     then
-
+		-- set orientation to stored player
         unit:SetUInt64Value( 0x0006 + 0x000C, BROTHER_SARNO.newVisitor:GetGUID() );
-        unit:SendChatMessage( 12, 0, "Greetings, "..BROTHER_SARNO.newVisitor:GetPlayerClass().."! Welcome to the Cathedral of Light!" );
+		
+        unit:SendChatMessage( 12, 0, "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!" );
         unit:Emote( 3, 0 );
         unit:RegisterEvent( ClearTarget, 9000, 1 );
 		
@@ -48,7 +49,6 @@ function BROTHER_SARNO.OnWelcome( unit )
         BROTHER_SARNO.canWelcome = false;
 
         unit:RegisterAIUpdateEvent( 60000 );
-
     end
 end
 
@@ -61,8 +61,7 @@ function BROTHER_SARNO.OnSpawnOrAIUpdate( unit, event )
         unit:RemoveAIUpdateEvent();
     
 	-- for some reason, OnWelcome will not trigger if we dont have OnSpawn.
-    elseif( event == 18 )
-    then
+    else
 		-- enabled at spawn
         BROTHER_SARNO.canWelcome = true;
     end
