@@ -29,15 +29,15 @@
 
 --local NPC_MYRA_TYRNGAARDE = 5109;
 
-CHAT = {
+local chat = {
 [ 1 ] = "Fresh bread, baked this very morning!",
 [ 2 ] = "Come get yer fresh bread!",
 [ 3 ] = "Fresh bread for sale!"
 };
 
-MYRA = {}
+MYRA_TYRNGAARDE = {}
 
-function MYRA.OoCRandomChat( unit, event )
+function MYRA_TYRNGAARDE.OoCRandomChat( unit, event )
 
 	-- on ai update
     if( event == 21 )
@@ -45,7 +45,7 @@ function MYRA.OoCRandomChat( unit, event )
 	
 		if( unit:IsInCombat() == false )
 		then
-		    unit:SendChatMessage( 12, 7, CHAT[ math.random( 1, 3 ) ] );
+		    unit:SendChatMessage( 12, 7, chat[ math.random( 1, 3 ) ] );
             unit:ModifyAIUpdateEvent( math.random( 40000, 60000 ) );
 		end
 	
@@ -55,5 +55,5 @@ function MYRA.OoCRandomChat( unit, event )
     end
 end
 
-RegisterUnitEvent( 5109, 18, MYRA.OoCRandomChat );
-RegisterUnitEvent( 5109, 21, MYRA.OoCRandomChat );
+RegisterUnitEvent( 5109, 18, MYRA_TYRNGAARDE.OoCRandomChat );
+RegisterUnitEvent( 5109, 21, MYRA_TYRNGAARDE.OoCRandomChat );

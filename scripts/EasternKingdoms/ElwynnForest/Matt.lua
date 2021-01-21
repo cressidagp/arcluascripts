@@ -27,7 +27,7 @@
 
 --local NPC_MATT = 794;
 
-local CHAT = {
+local chat = {
 [ 1 ] = "Dang! Fish arent biting here either. I am gonna go back to my ol fishin hole!",
 [ 2 ] = "Gee, fish sure dont seem to be biting here. Maybe I should go over to Crystal Lake to try my luck there!"
 };
@@ -77,7 +77,7 @@ function MATT.ChatOnReachWP( unit, event, waypointId )
 			unit:SetByteValue( 0x7A, 0, 0 );
 			
 			unit:SetFacing( 2.617 );
-			unit:SendChatMessage( 12, 7, CHAT[ 1 ] );
+			unit:SendChatMessage( 12, 7, chat[ 1 ] );
 			
 		elseif( currentWaypoint == 26 )
         then
@@ -85,7 +85,7 @@ function MATT.ChatOnReachWP( unit, event, waypointId )
             unit:SetByteValue( 0x7A, 0, 0 );
 			
 			unit:SetFacing( 2.118 );
-            unit:SendChatMessage( 12, 7, CHAT[ 2 ] );
+            unit:SendChatMessage( 12, 7, chat[ 2 ] );
         end
     end
 end

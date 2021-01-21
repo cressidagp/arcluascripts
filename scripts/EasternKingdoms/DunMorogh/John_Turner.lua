@@ -31,7 +31,7 @@
 
 --local NPC_JOHN_TURNER = 6175;
 
-local CHAT = {
+local chat = {
 [ 1 ] = "¡Don't forget the orphans of Stormwind!",
 [ 2 ] = "Help the children of Stormwind... victims of the war and plague!",
 [ 3 ] = "Give of your hearts and your purses! Give to the children of Stormwind who have lost their parents.",
@@ -47,7 +47,7 @@ function JOHN_TURNER.OoCRandomChat( unit, event )
     then
 		if( unit:IsInCombat() == false )
 		then
-			unit:SendChatMessage( 12, 7, CHAT[math.random( 1, 3 ) ] );
+			unit:SendChatMessage( 12, 7, chat[math.random( 1, 4 ) ] );
 			unit:ModifyAIUpdateEvent( math.random( 120000, 135000 ) );
 		end
 		

@@ -22,7 +22,7 @@
 --local NO_DESPAWN = 0;
 --local NEVER_RESPAWN = 0;
 
-local CHAT = {
+local chat = {
 [ 1 ] = "Business must be good down at the bazaar.  I'll get him resupplied right away!",
 [ 2 ] = "Corbett, dear. Harlan needs a load of knitted shirts and pants as soon as we can manage.",
 [ 3 ] = "Corbett, you there? Harlan needs another load of knitted goods. Can you take it to him?",
@@ -71,13 +71,13 @@ function HARLAN_RESUPPLY.OnComplete( plr, questID )
         if( rema ~= nil )
         then
 
-            rema:SendChatMessage( 12, 7, CHAT[ 1 ] );
+            rema:SendChatMessage( 12, 7, chat[ 1 ] );
 
-            rema:EventChat( 12, 7, CHAT[ math.random( 2, 3 ) ], 6000 );
+            rema:EventChat( 12, 7, chat[ math.random( 2, 3 ) ], 6000 );
 
             local corbett = rema:SpawnCreature( 1433, -8773.65, 717.401, 99.534, 3.8705, 35, 0, 1, 1, 1, 1, 0 );
 
-            corbett:EventChat( 12, 7, CHAT[ 4 ], 9000 );
+            corbett:EventChat( 12, 7, chat[ 4 ], 9000 );
 
             corbett:StopMovement( 15000 );
 
@@ -113,47 +113,47 @@ function HARLAN_RESUPPLY.OnReachWP( unit, event, wpID )
     if( wpID == 4 )
     then
 
-        unit:SendChatMessage( 12, 7, CHAT[ math.random( 5, 6 ) ] );
+        unit:SendChatMessage( 12, 7, chat[ math.random( 5, 6 ) ] );
 
     elseif( wpID == 31 )
     then
 
-        unit:SendChatMessage( 12, 7, CHAT[ math.random( 7, 8 ) ] );
+        unit:SendChatMessage( 12, 7, chat[ math.random( 7, 8 ) ] );
 
         local harlan = unit:GetCreatureNearestCoords( -8782.90, 640.19, 97.41, 1427 );
 
         if( harlan ~= nil )
         then
-            harlan:EventChat( 12, 7, CHAT[ math.random( 9, 10 ) ], 5000 );
-            unit:EventChat( 12, 7, CHAT[ math.random( 11, 12 ) ], 10000 );
+            harlan:EventChat( 12, 7, chat[ math.random( 9, 10 ) ], 5000 );
+            unit:EventChat( 12, 7, chat[ math.random( 11, 12 ) ], 10000 );
         end
 
     elseif( wpID == 34 )
     then
 
-        unit:SendChatMessage( 12, 7, CHAT[ 13 ] );
+        unit:SendChatMessage( 12, 7, chat[ 13 ] );
 
     elseif( wpID == 41 )
     then
 
-        unit:SendChatMessage( 12, 7, CHAT[ math.random( 14, 15 ) ] );
+        unit:SendChatMessage( 12, 7, chat[ math.random( 14, 15 ) ] );
 
         local elaine = unit:GetCreatureNearestCoords( -8845.68, 566.49, 94.77, 483 );
 
         if( elaine ~= nil )
         then
-            elaine:EventChat( 12, 7, CHAT[ math.random( 16, 17 ) ], 5000 );
-            unit:EventChat( 12, 7, CHAT[ 18 ], 10000 );
-            unit:EventChat( 12, 7, CHAT[ math.random( 19, 20 ) ], 15000 );
+            elaine:EventChat( 12, 7, chat[ math.random( 16, 17 ) ], 5000 );
+            unit:EventChat( 12, 7, chat[ 18 ], 10000 );
+            unit:EventChat( 12, 7, chat[ math.random( 19, 20 ) ], 15000 );
         end
 
     elseif( wpID == 44 )
     then
-        unit:SendChatMessage( 12, 7, CHAT[ math.random( 21, 22 ) ] );
+        unit:SendChatMessage( 12, 7, chat[ math.random( 21, 22 ) ] );
 
     elseif( wpID == 64 )
     then
-        unit:SendChatMessage( 12, 7, CHAT[ 23 ] );
+        unit:SendChatMessage( 12, 7, chat[ 23 ] );
 
     elseif( wpID == 70 )
     then

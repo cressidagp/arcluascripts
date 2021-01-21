@@ -31,7 +31,7 @@
 --local EMOTE_ONESHOT_WAVE = 3;
 --local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
 
-local CHAT = {
+local chat = {
 [ 1 ] = "Welcome to the Lion's Pride In.  Make yourself at home!",
 [ 2 ] = "So much to do, so much to do!  Where does the time go?",
 [ 3 ] = "If your glass is full may it be again!"
@@ -66,7 +66,7 @@ function INNKEEPER_FARLEY.OnSpawnOnAIUpdate( unit, event )
 				if( unit:IsHostile( target ) == false and unit:GetDistanceYards( target ) < 20 )
 				then
 					unit:SetUInt64Value( 0x0006 + 0x000C, target:GetGUID() );
-					unit:SendChatMessage( 12, 7, CHAT[ 1 ] );
+					unit:SendChatMessage( 12, 7, chat[ 1 ] );
 					unit:Emote( 3, 0 );
 					vars.welcomeTime = 40;
 				end
@@ -74,7 +74,7 @@ function INNKEEPER_FARLEY.OnSpawnOnAIUpdate( unit, event )
 		
 		elseif( vars.randomChatTime <= 0 )
 		then
-			unit:SendChatMessage( 12, 7, CHAT[ math.random( 2, 3 ) ] );
+			unit:SendChatMessage( 12, 7, chat[ math.random( 2, 3 ) ] );
 			vars.randomChatTime = math.random( 150, 180 );
 		end
 	

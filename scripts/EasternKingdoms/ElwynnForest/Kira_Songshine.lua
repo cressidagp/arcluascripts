@@ -29,7 +29,7 @@
 
 --local NPC_KIRA_SONGSHINE = 3937;
 
-local CHAT = {
+local chat = {
 [ 1 ] = "Fresh bread, baked this very morning!",
 [ 2 ] = "Come get yer fresh bread!",
 [ 3 ] = "Fresh bread for sale!"
@@ -44,7 +44,7 @@ function KIRA_SONGSHINE.OoCRandomChat( unit, event )
 	then
         if( unit:IsInCombat() == false )
         then
-            unit:SendChatMessage( 12, 7, CHAT[ math.random( 1, 3 ) ] );
+            unit:SendChatMessage( 12, 7, chat[ math.random( 1, 3 ) ] );
             unit:ModifyAIUpdateEvent( math.random( 30000, 45000 ) );
         end
 		
