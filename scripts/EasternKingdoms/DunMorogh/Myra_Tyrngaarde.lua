@@ -35,6 +35,8 @@ CHAT = {
 [ 3 ] = "Fresh bread for sale!"
 };
 
+MYRA = {}
+
 function MYRA.OoCRandomChat( unit, event )
 
 	-- on ai update
