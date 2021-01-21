@@ -32,3 +32,4 @@ Spirit_of_the_Vale.lua
 Brother_Sarno.lua
 Morgan_the_Collector1.lua
 Morgan_the_Collector2.lua
+Warden_Thelwater.lua

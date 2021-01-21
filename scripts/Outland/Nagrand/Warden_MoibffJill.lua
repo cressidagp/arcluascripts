@@ -3,8 +3,8 @@
 	www.ArcEmu.org
 	Engine: A.L.E
 	
-	Zone: Nagrand: 
-	Creature Warden Moibff Jill (Telaar)
+	Zone: Nagrand
+	Creature: Warden Moibff Jill (Telaar)
 	
 	Credits:
 
