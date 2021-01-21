@@ -13,9 +13,9 @@
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
-	enUS locale: "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!"
+	enUS locale: "Greetings, "..BROTHER_SARNO.newVisitor:GetPlayerClass().."! Welcome to the Cathedral of Light!"
 	
-	esMX locale: "¡Saludos, "..BROTHER_SARNO.target:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
+	esMX locale: "¡Saludos, "..BROTHER_SARNO.newVisitor:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
 	
 --]]
 
@@ -33,20 +33,19 @@ end
 
 function BROTHER_SARNO.OnWelcome( unit )
 
-    if( unit:IsHostile( BROTHER_SARNO.target ) == false and BROTHER_SARNO.var == 1 )
+    if( unit:IsHostile( BROTHER_SARNO.newVisitor ) == false and BROTHER_SARNO.canWelcome == 1 )
     then
 
-        unit:SetUInt64Value( 0x0006 + 0x000C, BROTHER_SARNO.target:GetGUID() );
-
-        unit:SendChatMessage( 12, 0, "¡Saludos, "..BROTHER_SARNO.target:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!" );
-
+        unit:SetUInt64Value( 0x0006 + 0x000C, BROTHER_SARNO.newVisitor:GetGUID() );
+        unit:SendChatMessage( 12, 0, "Greetings, "..BROTHER_SARNO.newVisitor:GetPlayerClass().."! Welcome to the Cathedral of Light!" );
         unit:Emote( 3, 0 );
-
         unit:RegisterEvent( ClearTarget, 9000, 1 );
+		
+		-- lets clean up to save some resources
+        BROTHER_SARNO.newVisitor = nil; 
 
-        BROTHER_SARNO.target = nil; -- lets clean up to save some resources
-
-        BROTHER_SARNO.var = 0; -- disabled till aiupdate
+		-- disabled till aiupdate
+        BROTHER_SARNO.canWelcome = false;
 
         unit:RegisterAIUpdateEvent( 60000 );
 
@@ -54,29 +53,30 @@ function BROTHER_SARNO.OnWelcome( unit )
 end
 
 function BROTHER_SARNO.OnSpawnOrAIUpdate( unit, event )
-
-    -- Developers note: for some reason, OnWelcome will not trigger if we dont have OnSpawn.
-
-    if( event == 18 )
+	
+	if( event == 21 )
     then
-        BROTHER_SARNO.var = 1; -- enabled at spawn
-		
-    elseif( event == 21 )
-    then
-        BROTHER_SARNO.var = 1; -- enabled after aiupdate
+		-- enabled after ai update
+        BROTHER_SARNO.canWelcome = true; 
         unit:RemoveAIUpdateEvent();
+    
+	-- for some reason, OnWelcome will not trigger if we dont have OnSpawn.
+    elseif( event == 18 )
+    then
+		-- enabled at spawn
+        BROTHER_SARNO.canWelcome = true;
     end
 end
 
-function BROTHER_SARNO.OnAreaTrigger( event, plr, ATID )
+function BROTHER_SARNO.OnAreaTrigger( _, plr, areaTriggerId )
 
-    if( ATID == 1125 )
+    if( areaTriggerId == 1125 )
     then
         local unit = plr:GetCreatureNearestCoords( -8556.00, 835.86, 106.60, 7917 );
         if( unit ~= nil )
         then
             unit:RegisterEvent( BROTHER_SARNO.OnWelcome, 1000, 1 );
-            BROTHER_SARNO.target = plr;
+            BROTHER_SARNO.newVisitor = plr;
         end
     end
 end
