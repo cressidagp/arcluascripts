@@ -28,8 +28,8 @@
 local SECRET = 69; -- The happiest number
 
 local CHAT = {
-[ 1 ] = "I would like to whisper my secret code to you to receive Tyrael's Hilt.";
-[ 2 ] = "You're secret code is not a valid one...";
+[ 1 ] = "I would like to whisper my secret code to you to receive Tyrael's Hilt.",
+[ 2 ] = "You're secret code is not a valid one..."
 };
 
 ELDERS = {}

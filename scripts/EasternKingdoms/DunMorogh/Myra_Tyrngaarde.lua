@@ -29,7 +29,7 @@
 
 --local NPC_MYRA_TYRNGAARDE = 5109;
 
-MYRA = {
+CHAT = {
 [ 1 ] = "Fresh bread, baked this very morning!",
 [ 2 ] = "Come get yer fresh bread!",
 [ 3 ] = "Fresh bread for sale!"
@@ -43,7 +43,7 @@ function MYRA.OoCRandomChat( unit, event )
 	
 		if( unit:IsInCombat() == false )
 		then
-		    unit:SendChatMessage( 12, 7, MYRA[ math.random( 1, 3 ) ] );
+		    unit:SendChatMessage( 12, 7, CHAT[ math.random( 1, 3 ) ] );
             unit:ModifyAIUpdateEvent( math.random( 40000, 60000 ) );
 		end
 	

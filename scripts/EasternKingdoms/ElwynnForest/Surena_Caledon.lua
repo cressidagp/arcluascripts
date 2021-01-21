@@ -15,6 +15,9 @@
 	
 --]]
 
+--local NPC_SURENA_CALEDON = 881;
+--local SPELL_FROST_ARMOR = 12544;
+
 SURENA_CALEDON = {}
 
 function SURENA_CALEDON.OoCCastBuff( unit, event )
@@ -24,13 +27,13 @@ function SURENA_CALEDON.OoCCastBuff( unit, event )
     then
         if( unit:IsInCombat() == false and unit:HasAura( 12544 ) == false )
         then
-            unit:FullCastSpell( 12544 ); -- Frost Amor
+            unit:FullCastSpell( 12544 );
             unit:ModifyAIUpdateEvent( 1800000 );
         end
 	
 	-- on spawn
     else
-		local n = math.random( 3, 6 );
+		local n = math.random( 3, 5 );
 		unit:RegisterAIUpdateEvent( n * 1000 );
 
     end

@@ -19,6 +19,8 @@
 
 --]]
 
+--local NPC_VIZZKICLIK = 6568;
+
 VIZZKLICK = {}
 
 function VIZZKLICK.OnHelloOnSelect( unit, event, plr, id, selection )
