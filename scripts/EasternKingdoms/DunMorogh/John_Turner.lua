@@ -15,7 +15,7 @@
 	
 	enUS locale:
 	
-	[ 1 ] = "¡Don't forget the orphans of Stormwind!",
+	[ 1 ] = "Don't forget the orphans of Stormwind!",
 	[ 2 ] = "Help the children of Stormwind... victims of the war and plague!",
 	[ 3 ] = "Give of your hearts and your purses! Give to the children of Stormwind who have lost their parents.",
 	[ 4 ] = "Give to the charities who seek to help the victims of these hard times! Please."

@@ -13,12 +13,13 @@
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
-	enUS: "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!"
+	enUS locale: "Greetings, "..BROTHER_SARNO.target:GetPlayerClass().."! Welcome to the Cathedral of Light!"
 	
-	esMX: "¡Saludos, "..BROTHER_SARNO.target:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
+	esMX locale: "¡Saludos, "..BROTHER_SARNO.target:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
 	
 --]]
 
+--local NPC_BROTHER_SARNO = 7917;
 --local EMOTE_ONESHOT_WAVE = 3;
 --local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
 

@@ -4,7 +4,7 @@
 	Engine: A.L.E
 	
 	Zone: Tirisfall Glades
-	Creature: Meven Korgal (1667);
+	Creature: Meven Korgal
 	
 	Credits:
 	
@@ -21,7 +21,7 @@
 
 --local NPC_MEVEN_KORGAL = 1667;
 
-local CHAT = {
+local yell = {
 [ 1 ] = "These undead atrocities will be destroyed!",
 [ 2 ] = "We must be vigilant to eradicate this plague!",
 [ 3 ] = "Keep up the good work.  This scourge will be cleansed!",
@@ -31,36 +31,17 @@ local CHAT = {
 
 MEVEN_KORGAL = {}
 
-function MEVEN_KORGAL.Yell( unit )
+function MEVEN_KORGAL.RandomYell( unit )
+
 	if( unit:IsInCombat() == false )
 	then
-		local chance = math.random( 1, 5 );
-		if( chance == 1 )
-		then
-			unit:SendChatMessage( 14, 0, CHAT[ chance ] );
-
-		elseif( chance == 2 )
-		then
-			unit:SendChatMessage( 14, 0, CHAT[ chance ] );
-
-		elseif( chance == 3 )
-		then
-			unit:SendChatMessage( 14, 0, CHAT[ chance ] );
-
-		elseif( chance == 4 )
-		then
-			unit:SendChatMessage( 14, 0, CHAT[ chance ] );
-
-		else
-			unit:SendChatMessage( 14, 0, CHAT[ chance ] );
-        end
-		unit:RemoveEvents();
-		unit:RegisterEvent( MEVEN_KORGAL.Yell, math.random( 90000, 120000 ), 0 );
+		unit:SendChatMessage( 14, 0, yell[ math.random( 1, 5 ) ] );
+		unit:RegisterEvent( MEVEN_KORGAL.RandomYell, math.random( 90000, 120000 ), 0 );
 	end
 end
 
 function MEVEN_KORGAL.OnSpawn( unit )
-	unit:RegisterEvent( MEVEN_KORGAL.Yell, math.random( 25000, 40000 ), 0 );
+	unit:RegisterEvent( MEVEN_KORGAL.RandomYell, math.random( 25000, 40000 ), 1 );
 end
 
 RegisterUnitEvent( 1667, 18, MEVEN_KORGAL.OnSpawn );

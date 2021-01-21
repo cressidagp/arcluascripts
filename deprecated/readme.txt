@@ -15,6 +15,7 @@ Saviana_Ragefire.lua
 **) Deprecated since it will be handled in database:
 
 The_Three_Beggars.lua
+Meven_Korgal.lua
 
 ***) Ported to gossip plugin:
 
