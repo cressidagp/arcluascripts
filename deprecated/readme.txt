@@ -30,3 +30,5 @@ Spirit_of_the_Vale.lua
 ****) This one are attemps to do more efficient scripts:
 
 Brother_Sarno.lua
+Morgan_the_Collector1.lua
+Morgan_the_Collector2.lua

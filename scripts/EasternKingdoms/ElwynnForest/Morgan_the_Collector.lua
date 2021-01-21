@@ -4,7 +4,7 @@
 	Engine: A.L.E
 	
 	Zone: Elwynn Forest
-	Creature: Morgan the Collector (473)
+	Creature: Morgan the Collector
 
 	Credits:
 	
@@ -14,6 +14,10 @@
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
 --]]
+
+--NPC_MORGAN_THE_COLLECTOR = 473;
+--SPELL_GOUGE = 1776;
+
 MORGAN_THE_COLLECTOR = {}
 
 function MORGAN_THE_COLLECTOR.CastGouge( unit )
