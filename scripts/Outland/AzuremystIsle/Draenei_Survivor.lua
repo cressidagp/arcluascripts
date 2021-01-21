@@ -1,49 +1,51 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Azuremyst Isle: Draenei Survivor
 	Engine: A.L.E
+	
+	Zone: Azuremyst Isle: 
+	Creature: Draenei Survivor
 
 	Credits:
 
-	*) Trinity for texts, spells, timers and flags.
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 
-	enUS:
+	enUS locale:
 
-	[ 1 ] = "The last thing I remember is the ship falling and us getting into the pods.  I'll go see how I can help.  Thank you!";
-	[ 2 ] = "Where am I?  Who are you?  Oh no!  What happened to the ship?";
-	[ 3 ] = "$C, you saved me!  I owe you a debt that I can never repay.  I'll go see if I can help the others.";
-	[ 4 ] = "Ugh... what is this place?  Is that all that's left of the ship over there?";
-	[ 5 ] = "Oh, the pain...";
-	[ 6 ] = "Everything hurts. Please, make it stop...";
-	[ 7 ] = "Ughhh... I hurt.  Can you help me?";
-	[ 8 ] = "I don't know if I can make it. Please help me...";
+	[ 1 ] = "The last thing I remember is the ship falling and us getting into the pods.  I'll go see how I can help.  Thank you!",
+	[ 2 ] = "Where am I?  Who are you?  Oh no!  What happened to the ship?",
+	[ 3 ] = "$C, you saved me!  I owe you a debt that I can never repay.  I'll go see if I can help the others.",
+	[ 4 ] = "Ugh... what is this place?  Is that all that's left of the ship over there?",
+	[ 5 ] = "Oh, the pain...",
+	[ 6 ] = "Everything hurts. Please, make it stop...",
+	[ 7 ] = "Ughhh... I hurt.  Can you help me?",
+	[ 8 ] = "I don't know if I can make it. Please help me..."
 
-	esMX:
+	esMX locale:
 
-	[ 1 ] = "Lo último que recuerdo es la nave cayendo y nosotros entrando en cápsulas. Iré a ver cómo puedo ayudar. ¡Gracias!";
-	[ 2 ] = "¿Dónde estoy? ¿Quién eres tú? ¡Oh no! ¿Qué pasó con la nave?";
-	[ 3 ] = "$C, ¡me salvaste! Tengo una deuda que nunca podré saldar. Iré a ver si puedo ayudar a los demás.";
-	[ 4 ] = "Ugh ... ¿Qué es este lugar? ¿Eso allí es todo lo que queda de la nave?";
-	[ 5 ] = "Oh, el dolor...";
-	[ 6 ] = "Todo duele. Por favor, haz que pare...";
-	[ 7 ] = "Ughhh ... me duele. ¿Me puedes ayudar?";
-	[ 8 ] = "No sé si podré hacerlo. Por favor, ayúdame...";
+	[ 1 ] = "Lo último que recuerdo es la nave cayendo y nosotros entrando en cápsulas. Iré a ver cómo puedo ayudar. ¡Gracias!",
+	[ 2 ] = "¿Dónde estoy? ¿Quién eres tú? ¡Oh no! ¿Qué pasó con la nave?",
+	[ 3 ] = "$C, ¡me salvaste! Tengo una deuda que nunca podré saldar. Iré a ver si puedo ayudar a los demás.",
+	[ 4 ] = "Ugh ... ¿Qué es este lugar? ¿Eso allí es todo lo que queda de la nave?",
+	[ 5 ] = "Oh, el dolor...",
+	[ 6 ] = "Todo duele. Por favor, haz que pare...",
+	[ 7 ] = "Ughhh ... me duele. ¿Me puedes ayudar?",
+	[ 8 ] = "No sé si podré hacerlo. Por favor, ayúdame...",
 
 --]]
 
 local TEXT = {
-[ 1 ] = "The last thing I remember is the ship falling and us getting into the pods.  I'll go see how I can help.  Thank you!";
-[ 2 ] = "Where am I?  Who are you?  Oh no!  What happened to the ship?";
-[ 3 ] = "$C, you saved me!  I owe you a debt that I can never repay.  I'll go see if I can help the others.";
-[ 4 ] = "Ugh... what is this place?  Is that all that's left of the ship over there?";
-[ 5 ] = "Oh, the pain...";
-[ 6 ] = "Everything hurts. Please, make it stop...";
-[ 7 ] = "Ughhh... I hurt.  Can you help me?";
-[ 8 ] = "I don't know if I can make it. Please help me...";
+[ 1 ] = "The last thing I remember is the ship falling and us getting into the pods.  I'll go see how I can help.  Thank you!",
+[ 2 ] = "Where am I?  Who are you?  Oh no!  What happened to the ship?",
+[ 3 ] = "$C, you saved me!  I owe you a debt that I can never repay.  I'll go see if I can help the others.",
+[ 4 ] = "Ugh... what is this place?  Is that all that's left of the ship over there?",
+[ 5 ] = "Oh, the pain...",
+[ 6 ] = "Everything hurts. Please, make it stop...",
+[ 7 ] = "Ughhh... I hurt.  Can you help me?",
+[ 8 ] = "I don't know if I can make it. Please help me..."
 };
 
 --local SPELL_IRRIDATION = 35046;
