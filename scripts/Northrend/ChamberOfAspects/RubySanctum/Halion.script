@@ -4,7 +4,7 @@
 	Engine: A.L.E
 	
 	Instance: The Ruby Sanctum
-	Boss: Halion the Destroyer (39863)
+	Boss: Halion the Destroyer
 
 	Credits:
 
@@ -22,8 +22,8 @@
 	*) 76010: has a dummy effect (0) but no handler for it.
 	*) 74637: has a dummy effect (0) but no handler for it.
 	*) 75396: has a scripted effect (0) but no handler for it.
-	*) corporeality cast and spell selector.
-	*) add localization.
+	*) corporeality cast and spell selector
+	*) add localization
 	*) implement better test/debug commands.
 	
 	enUS locale:
@@ -31,35 +31,36 @@
 	esMX locale:
 	
 --]]	
-	
---local MAP_RUBY_SANCTUM	= 724;
 
---local NPC_HALION	= 39863;
---local NPC_25M_HALION	= 39864;
---local H_NPC_HALION	= 39944;
---local H_NPC_25M_HALION	= 39945;
+--[[ Constants:
+local MAP_RUBY_SANCTUM	= 724;
 
---local NPC_TWILIGHT_HALION	= 40142;
---local NPC_25M_TWILIGHT_HALION	= 40143;
---local H_NPC_TWILIGHT_HALION = 40144;
---local H_NPC_25M_TWILIGHT_HALION	= 40145;
+local NPC_HALION	= 39863;
+local NPC_25M_HALION	= 39864;
+local H_NPC_HALION	= 39944;
+local H_NPC_25M_HALION	= 39945;
 
---local NPC_CONTROLLER = 40146;
+local NPC_TWILIGHT_HALION	= 40142;
+local NPC_25M_TWILIGHT_HALION	= 40143;
+local H_NPC_TWILIGHT_HALION = 40144;
+local H_NPC_25M_TWILIGHT_HALION	= 40145;
 
---local NPC_CONTROLLER_ID = 200631;
+local NPC_CONTROLLER = 40146;
+local NPC_CONTROLLER_ID = 200631;
 
---local NPC_ORB_CARRIER = 40081;
---local NPC_25M_ORB_CARRIER = 40470;
---local H_ORB_CARRIER = 40471;
---local H_NPC_25M_ORB_CARRIER = 40472;
-
---local NPC_ORB_1 = 40083;
---local NPC_ORB_2 = 40100;
+local NPC_ORB_CARRIER = 40081;
+local NPC_25M_ORB_CARRIER = 40470;
+local H_ORB_CARRIER = 40471;
+local H_NPC_25M_ORB_CARRIER = 40472;
+local NPC_ORB_1 = 40083;
+local NPC_ORB_2 = 40100;
+--]]
 
 --local TREES = { 203034, 203035, 203036, 203037 };
 
 --[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1		= 0x0006 + 0x000B;
+local UNIT_FIELD_SUMMONEDBY		= 0x0006 + 0x0008;
 local UNIT_FIELD_FLAGS			= 0x0006 + 0x0035;
 local UNIT_FLAG_COMBAT			= 0x00080000;
 local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000;
@@ -67,13 +68,14 @@ local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 --]]
 
---print( "Lua memory before Halion: "..gcinfo().." Kb." );
+print( "Lua memory before Halion: "..gcinfo().." Kb." );
 
 local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".HALION_DESTROYER", package.seeall );
 
---[[local SOUND = {
+--[[ not more needed so lets save some bytes
+local SOUND = {
 -- Halion:
 [ 1 ] = 17499;  -- Intro
 [ 2 ] = 17500;  -- OnCombat
@@ -160,6 +162,19 @@ local SPELL_TWILIGHT_CUTTER = 74768; -- unknown dummy effect
 local SPELL_TWILIGHT_CUTTER_TRIGGERED	= 74769;
 local SPELL_TWILIGHT_PULSE_PERIODIC	= 78861;
 
+-- Spells (Meteor Strike):
+local SPELL_METEOR_STRIKE_COUNTDOWN	= 74641;
+local SPELL_METEOR_STRIKE_AOE_DAMAGE	= 74648;
+local SPELL_METEOR_STRIKE_FIRE_AURA_1	= 74713;
+local SPELL_METEOR_STRIKE_FIRE_AURA_2	= 74718;
+local SPELL_BIRTH_NO_VISUAL	= 40031;
+
+--[[ Worldstates:
+local WORLDSTATE_CORPOREALITY_MATERIAL = 5049;
+local WORLDSTATE_CORPOREALITY_TWILIGHT = 5050;
+local WORLDSTATE_CORPOREALITY_TOGGLE   = 5051;
+--]]
+
 -- Phases:
 local PHASE_INTRO	= 1;
 local PHASE_ONE		= 2; -- combat in Physical realm
@@ -189,8 +204,10 @@ function OnCombat( unit )
 
 	-- create protected variables
 	self[ tostring( unit )] = {
-
+	
+	-- set combat in Physical realm
 	phase = PHASE_ONE,
+	
 	cleave = math.random( 6, 10 ),
 	tailLash = math.random( 7, 12 ),
 	flameBreath = math.random( 5, 15 ),
@@ -200,8 +217,8 @@ function OnCombat( unit )
 	
 	};
 
-	--[[ Developer notes: we dont need to send the chat here since
-    our monstersay table will do the job, instance collision checked. ]]
+	-- Developer notes: we dont need to send the chat here since
+    -- our monstersay table will do the job, instance collision checked.
 
     unit:PlaySoundToSet( 17500 );
 
@@ -215,7 +232,7 @@ function OnCombat( unit )
 	then
 		local vars = self[ tostring( controller ) ];
 		
-		-- combat in Physical realm
+		-- set combat in Physical realm
 		vars.phase = PHASE_ONE;
 	end
 end
@@ -237,7 +254,7 @@ function OnDamageTaken( unit, _, attacker, damage )
 		unit:SendChatMessage( 14, 0, YELL[ 3 ] );
 		unit:CancelSpell();
 		
-		-- combat in twilight realm
+		-- set combat in twilight realm
 		vars.phase = PHASE_TWO;
 		
 		-- set not attacable
@@ -260,7 +277,7 @@ function OnDamageTaken( unit, _, attacker, damage )
 		then
 			local varsbis = self[ tostring( controller ) ];
 			
-			-- combat in twilight realm
+			-- set combat in twilight realm
 			varsbis.phase = PHASE_TWO;
 		end	
 	end
@@ -403,7 +420,7 @@ function OnAIUpdate( unit )
 			local meteorStrikePos = { target:GetLocation() };
 			unit:FullCastSpellAoE( meteorStrikePos[ 1 ], meteorStrikePos[ 2 ], meteorStrikePos[ 3 ], SPELL_METEOR_STRIKE );
 			unit:PlaySoundToSet( 17505 );
-			unit:SendChatMessage( 14, 0, YELL[ 3 ] );
+			unit:SendChatMessage( 14, 0, YELL[ 2 ] );
 		end
 		vars.meteorStrike = 38;
 	
@@ -462,7 +479,7 @@ function TwilightHalionOnCombat( unit )
 	-- create protected variables
 	self[ tostring( unit ) ] = {
 	
-	-- combat in twilight realm
+	-- set combat in twilight realm
 	phase = PHASE_TWO;
 	
 	tailLash = 12;
@@ -500,7 +517,7 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 		unit:SendChatMessage( 14, 0, YELL[ 7 ] );
 		unit:CancelSpell();
 		
-		-- combat in both realms
+		-- set combat in both realms
 		vars.phase = PHASE_THREE;
 		
 		-- phase spell from phase 2 to phase 3
@@ -510,7 +527,8 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 	if( vars.phase == PHASE_THREE )
 	then
 		if( unit:GetPhase() ~= attacker:GetPhase() ) then return; end
-
+		
+		-- get controller using spawnid
 		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 		if( controller )
 		then
@@ -712,12 +730,6 @@ function ControllerOnDeath( unit )
 	unit:CastSpell( SPELL_CLEAR_DEBUFFS );
 end
 
---[[
-local WORLDSTATE_CORPOREALITY_MATERIAL = 5049;
-local WORLDSTATE_CORPOREALITY_TWILIGHT = 5050;
-local WORLDSTATE_CORPOREALITY_TOGGLE   = 5051;
---]]
-
 function ControllerDoAction( unit, action )
 
 	local vars = self[ tostring( unit ) ];
@@ -746,7 +758,7 @@ function ControllerDoAction( unit, action )
 		then
 			local vars = self[ tostring( halion ) ];
 			
-			-- combat in both realms
+			-- set combat in both realms
 			vars.phase = PHASE_TREE;
 			
 			-- try to get twilight halion using guid
@@ -1077,19 +1089,33 @@ RegisterUnitEvent( 40081, 18, OrbCarrierOnAIUpdate );
 RegisterUnitEvent( 40081, 21, OrbCarrierOnAIUpdate );
 
 --[[
-		Orb Carrier AI (40100)
-
-
-function OrbOnSpawn( unit )
-
-	HSHARED[ unit:GetInstanceID() ].dataOrb = unit:GetGUID();
-end
-
-RegisterUnitEvent( 40100, 18, OrbOnSpawn );
+		Meteor Strike Initial AI (40029)
 
 --]]
 
---print( "Lua memory after Halion: "..gcinfo().." Kb." );
+function MeteorStrike( unit, event )
+
+	-- on spawn
+	if( event == 18 )
+	then
+		print("meteor on spawn")
+		unit:Root();
+		
+		-- get controller using spawnid
+		local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
+		
+		-- set summoned by controller
+		unit:SetUInt64Value( 0x0006 + 0x0008, controller:GetGUID() );
+		
+		unit:CastSpell( SPELL_METEOR_STRIKE_COUNTDOWN );
+        unit:CastSpell( SPELL_BIRTH_NO_VISUAL );
+		
+	end
+end
+
+RegisterUnitEvent( 40029, 18, MeteorStrike );
+
+print( "Lua memory after Halion: "..gcinfo().." Kb." );
 
 --[[
 		Spell: Twilight Phasing (74808)
@@ -1114,10 +1140,10 @@ end
 RegisterServerHook( 33, SpellHalionTwilightPhasing );
 --]]
 --[[ 
-		Debug commands disabled by default
+		Debug commands disabled by default--]]
 
 
-local COMMANDS = { "halion", "port", "exit", "open", "close", "hp75", "hp50", "action1", "action2", "action3", "action4" };
+local COMMANDS = { "halion", "port", "exit", "open", "close", "hp75", "hp50", "action1", "action2", "action3", "action4", "meteor" };
 
 function Commands( _, plr, message )
 
@@ -1147,57 +1173,61 @@ function Commands( _, plr, message )
 		then
 			local flameRing = plr:GetGameObjectNearestCoords( 3154.99, 535.64, 72.89, 203007 );
 			flameRing:SetByte( 0x0006 + 0x000B, 0, 1 );
-			
-		else
 		
+		elseif( message == "#hp75" )
+		then
 			local selection = plr:GetSelection();
-			if( selection == nil)
-			then
-				plr:SendBroadcastMessage( "You need to select something first." );
+			selection:SetHealthPct( 75 );
+		
+		elseif( message == "#hp50" )
+		then
+			local selection = plr:GetSelection();
+			selection:SetHealthPct( 50 );
+					
+		elseif( message == "#m" )
+		then
+			local selection = plr:GetSelection();
+			local iid = plr:GetInstanceID();
+			local controller = GetInstanceCreature( 724, iid, 200631 );
+			local p = self[ tostring( controller ) ].phase
+			plr:SendBroadcastMessage( ""..p.."" );
+					
+		elseif( message == "#action1" )
+		then 
+			local selection = plr:GetSelection();
+			selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 1 );
 				
-			else		
-
-				if( message == "#hp75" )
-				then
-					selection:SetHealthPct( 75 );
-
-					
-				elseif( message == "#hp50" )
-				then
-					selection:SetHealthPct( 50 );
-					
-				elseif( message == "#m" )
-				then
-					local iid = plr:GetInstanceID();
-					local controller = GetInstanceCreature( 724, iid, 200631 );
-					local p = self[ tostring( controller ) ].phase
-					
-					plr:SendBroadcastMessage( ""..p.."" );
-					
-				elseif( message == "#action1" )
-				then 
-					selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 1 );
+		elseif( message == "#action2" )
+		then 
+			local selection = plr:GetSelection();
+			selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 2 );
 				
-				elseif( message == "#action2" )
-				then 
-					selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 2 );
-				
-				elseif( message == "#action3" )
-				then 
-					selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 3 );
+		elseif( message == "#action3" )
+		then 
+			local selection = plr:GetSelection();
+			selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 3 );
 
-				elseif( message == "#action4" )
-				then 
-					selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 4 );	
-					
-				elseif( message == "#mending" )
-				then
-					local vars = self[ tostring( selection ) ];
-					vars.triggerBerserk = 3;				
-				end
-			end
+		elseif( message == "#action4" )
+		then
+			local selection = plr:GetSelection();
+			selection:RegisterLuaEvent( ControllerDoAction, 1000, 1, 4 );	
+		
+		elseif( message == "#mending" )
+		then
+			local selection = plr:GetSelection();
+			local vars = self[ tostring( selection ) ];
+			vars.triggerBerserk = 3;
+				
+		elseif( message == "#meteor" )
+		then
+			local selection = plr:GetSelection();
+			local target = selection:GetRandomPlayer(0);
+			local meteorStrikePos = { target:GetLocation() };
+			selection:FullCastSpellAoE( meteorStrikePos[ 1 ], meteorStrikePos[ 2 ], meteorStrikePos[ 3 ], SPELL_METEOR_STRIKE );
+			selection:PlaySoundToSet( 17505 );
+			selection:SendChatMessage( 14, 0, YELL[ 2 ] );
 		end
 	end
 end
 
-RegisterServerHook( 16, Commands );--]]
+RegisterServerHook( 16, Commands );
