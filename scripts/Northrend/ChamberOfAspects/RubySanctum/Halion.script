@@ -27,7 +27,6 @@
 	*) add localization.
 	*) implement better test/debug commands.
 	*) make dummy creatures invisible ( model 168?).
-	*) root meteor dummy creatures through database.
 	*)
 	*)
 	*) The End: get rid of yell = {} and text = {} to save some KB.
@@ -36,7 +35,13 @@
 	
 	esMX locale:
 	
---]]	
+--]]
+
+--print( "Lua memory before Halion: "..gcinfo().." Kb." );
+
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".HALION_DESTROYER", package.seeall );
 
 --[[ Constants:
 local MAP_RUBY_SANCTUM	= 724;
@@ -73,12 +78,6 @@ local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000;
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 --]]
-
---print( "Lua memory before Halion: "..gcinfo().." Kb." );
-
-local mod = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".HALION_DESTROYER", package.seeall );
 
 --[[ not more needed so lets save some bytes
 local sound = {
@@ -163,7 +162,7 @@ local SPELL_BIRTH_NO_VISUAL	= 40031;
 --]]
 
 -- twilight, material
-local SPELL_CORPOREALITY = {
+local spell_corporeality = {
 { 74836, 74831 },
 { 74835, 74830 },
 { 74834, 74829 },
@@ -386,7 +385,7 @@ function OnAIUpdate( unit )
 	if( vars.phase == PHASE_TWO ) then return; end
 
 	if( unit:GetNextTarget() == nil ) then
-		unit:WipeThreatList()
+		unit:WipeThreatList();
 		return;
 	end
 	
@@ -639,10 +638,10 @@ end
 
 function TwilightHalionOnAIUpdate( unit )
 
-	if( unit:IsCasting() == true ) then return; end
+	if( unit:GetCurrentSpell() ~= nil ) then return; end
 
 	if( unit:GetNextTarget() == nil ) then
-		unit:WipeThreatList()
+		unit:WipeThreatList();
 		return;
 	end
 	
@@ -1135,7 +1134,9 @@ function MeteorStrikeMark( unit, event )
 	if( event == 18 )
 	then
 		print("meteor strike mark")
-		unit:Root();
+		
+		-- ported to database
+		--unit:Root();
 		
 		-- get controller using spawnid
 		--local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
@@ -1183,15 +1184,28 @@ RegisterUnitEvent( 40029, 18, MeteorStrikeMark );
 
 function MeteorSkikeCrap( unit, event )
 
-	print("meteor strike: "..unit:GetEntry().."")
-	unit:Root();
-	
+	-- on ai update
+	if( event == 21 )
+	then
+		print("meteor strike on ai: "..unit:GetEntry().."")
+	else
+
+		print("meteor strike on spawn: "..unit:GetEntry().."")
+		-- ported to database
+		--unit:Root();
+		unit:RegisterAIUpdateEvent( 1000 );
+		
+	end
 end
 
 RegisterUnitEvent( 40041, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40042, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40043, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40044, 18, MeteorStrikeCrap );
+RegisterUnitEvent( 40041, 21, MeteorStrikeCrap );
+RegisterUnitEvent( 40042, 21, MeteorStrikeCrap );
+RegisterUnitEvent( 40043, 21, MeteorStrikeCrap );
+RegisterUnitEvent( 40044, 21, MeteorStrikeCrap );
 
 --[[
 
@@ -1209,6 +1223,8 @@ function OnAuraRemove( _, aura )
 	then
 		local unit = aura:GetCaster();
 		unit:RegisterLuaEvent( MeteorStrikeDoAction, 100, 1, 1 );
+		
+		-- some attemps that didnt work
 		--MeteorStrikeDoAction( unit, action )
 		--unit:RegisterEvent( MeteorStrikeDoAction, 1000, 1, 1)
     end
@@ -1218,7 +1234,8 @@ RegisterServerHook( 31, OnAuraRemove );
 
 --print( "Lua memory after Halion: "..gcinfo().." Kb." );
 
---[[
+--[[ FAILED EXPERIMENTAL STUFF
+
 		Spell: Twilight Phasing (74808)
 
 
@@ -1239,6 +1256,7 @@ function SpellHalionTwilightPhasing( _, _, spellid, spellObject )
 end
 
 RegisterServerHook( 33, SpellHalionTwilightPhasing );
+
 --]]
 --[[
 		Debug commands disabled by default

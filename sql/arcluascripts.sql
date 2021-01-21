@@ -345,18 +345,29 @@ DELETE FROM `creature_spawns` WHERE `id` = @ID7 AND `entry` = 40146;
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
 VALUES (@ID7, 40146, 724, 3156.04, 533.27, 72.97, 0.00, 0, 169, 14, 33554688, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33);
 
--- Orb Carrier (40081)
+-- Orb Carrier (40081):
 
 DELETE FROM `creature_spawns` WHERE `id` = @ID11 AND `entry` = 40081;
 
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
 VALUES (@ID11, 40081, 724, 3153.75, 533.19, 72.97, 0.00, 0, 169, 14, 33554688, 50331648, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 32);
 
-DELETE FROM `vehicle_accessories` WHERE `creature_entry`=40081 AND `seat`=0;
+DELETE FROM `vehicle_accessories` WHERE `creature_entry` = 40081 AND `seat` = 0;
 INSERT INTO `vehicle_accessories` (`creature_entry`, `accessory_entry`, `seat`) VALUES (40081, 40083, 0);
 
-DELETE FROM `vehicle_accessories` WHERE `creature_entry`=40081 AND `seat`=1;
+DELETE FROM `vehicle_accessories` WHERE `creature_entry` = 40081 AND `seat` = 1;
 INSERT INTO `vehicle_accessories` (`creature_entry`, `accessory_entry`, `seat`) VALUES (40081, 40100, 1);
+
+-- Meteor Strike Mark:
+
+UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40029;
+
+-- Meteor Strike Crap:
+
+UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40041;
+UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40042;
+UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40043;
+UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40044;
 
 --
 -- This one will be handled in lua:
@@ -689,4 +700,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-20_20-13_Halion');
+('2021-01-21_18-25_MeteorStrike');
