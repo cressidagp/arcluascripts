@@ -75,16 +75,16 @@ module( mod._NAME..".HALION_DESTROYER", package.seeall );
 
 --[[local SOUND = {
 -- Halion:
-[ 1 ] = 17499;  -- Intro -- OK
-[ 2 ] = 17500;  -- OnCombat -- OK
-[ 3 ] = 17505;  -- OnMeteorStrike -- OK
-[ 4 ] = 17507;  -- OnPhaseTwo -- OK
-[ 5 ] = 17503;  -- OnDeath -- OK
-[ 6 ] = 17501;  -- OnTargetDied -- OK
+[ 1 ] = 17499;  -- Intro
+[ 2 ] = 17500;  -- OnCombat
+[ 3 ] = 17505;  -- OnMeteorStrike
+[ 4 ] = 17507;  -- OnPhaseTwo
+[ 5 ] = 17503;  -- OnDeath
+[ 6 ] = 17501;  -- OnTargetDied
 [ 7 ] = 17504;  -- OnBerserk
 -- Twilight:
 [ 8 ] = 17506;	-- SpherePulse
-[ 9 ] = 17508;	-- OnPhaseThree -- OK
+[ 9 ] = 17508;	-- OnPhaseThree
 };--]]
 
 local YELL = {
@@ -109,7 +109,7 @@ local TEXT = {
 
 -- Spells (Halion):
 local SPELL_FLAME_BREATH	= 74525;
-local SPELL_METEOR_STRIKE	= 74637; -- aoe?, need a dummy effect
+local SPELL_METEOR_STRIKE	= 74637; -- aoe?
 local SPELL_FIERY_COMBUSTION	= 74562;
 
 -- Spells (Twilight Halion):
@@ -122,7 +122,7 @@ local SPELL_TAIL_LASH	= 74531;
 local SPELL_TWILIGHT_PRECISION 	= 78243; -- not aura displayed
 
 -- Spells (Halion Controller):
-local SPELL_COSMETIC_FIRE_PILLAR	= 76006; -- need a dummy effect and 2 dummys aura effect
+local SPELL_COSMETIC_FIRE_PILLAR	= 76006;
 local SPELL_FIERY_EXPLOSION = 76010;
 local SPELL_CLEAR_DEBUFFS	= 75396;
 
