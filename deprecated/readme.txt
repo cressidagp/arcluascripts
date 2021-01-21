@@ -15,6 +15,7 @@ Saviana_Ragefire.lua
 **) Deprecated since it will be handled in database:
 
 Meven_Korgal.lua
+Shellene.lua
 The_Three_Beggars.lua
 Tosamina.lua
 Warden_Thelwater.lua
