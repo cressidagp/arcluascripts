@@ -25,6 +25,7 @@ SET @ID7 := 200631; -- Ruby Sanctum: Halion Controller
 SET @ID8 := 78482;	-- Terokkar Forest: Liutenant Gravelhammer
 SET @ID9 := 77081;	-- Nagrand: Warden Moibff Jill
 SET @ID10 := 66819; -- Azuremyst Isle: Zulduun
+SET @ID11 := 12221; -- Tirisfall Glades: Meven Korgal
 
 
 --
@@ -95,6 +96,22 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16819; -- Hellfire Peninsula: Danath Trollbane
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17071; -- Azuremyst Isle: Technician Zhanaa
 --DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: Spirit of the Vale
+
+--
+--
+-- Deprecated scripts ported to database
+--
+--
+
+-- Tirisfall Glades: Meven Korgal
+
+DELETE FROM `creature_timed_emotes` WHERE `spawnid` = @ID11;
+
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 1, 1, 0, 'These undead atrocities will be destroyed!', 14, 0, 25000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 2, 1, 0, 'We must be vigilant to eradicate this plague!', 14, 0, 40000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 3, 1, 0, 'Keep up the good work.  This scourge will be cleansed!', 14, 0, 90000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 4, 1, 0, 'The Scarlet Crusade will scour these lands!', 14, 0, 120000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 5, 1, 0, 'Let none with the foul taint of plague live!', 14, 0, 120000);
 
 
 --
@@ -765,4 +782,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-21_18-25_MeteorStrike');
+('2021-01-22_00-14_MevenKorgal');

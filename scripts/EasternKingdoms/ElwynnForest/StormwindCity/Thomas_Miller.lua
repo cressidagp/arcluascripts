@@ -22,10 +22,10 @@
 	
 	esMX locale:
 	
-	[ 1 ] = "Pan casero a la venta!",
-	[ 2 ] = "Pan recién horneado para la venta!",
-	[ 3 ] = "Panecillos, criollos y pan. Recién horneados!",
-	[ 4 ] = "Calentito, saludable pan!"	
+	[ 1 ] = "¡Pan casero a la venta!",
+	[ 2 ] = "¡Pan recién horneado para la venta!",
+	[ 3 ] = "¡Panecillos, criollos y pan. Recién horneados!",
+	[ 4 ] = "¡Calentito, saludable pan!"	
 
 --]]
 
