@@ -26,6 +26,7 @@ SET @ID8 := 78482;	-- Terokkar Forest: Liutenant Gravelhammer
 SET @ID9 := 77081;	-- Nagrand: Warden Moibff Jill
 SET @ID10 := 66819; -- Azuremyst Isle: Zulduun
 SET @ID11 := 12221; -- Tirisfall Glades: Meven Korgal
+SET @ID12 := 133321 -- Darnassus: Archmage Mordent Evenshade 
 
 
 --
@@ -107,11 +108,31 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 
 
 DELETE FROM `creature_timed_emotes` WHERE `spawnid` = @ID11;
 
-INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 1, 1, 0, 'These undead atrocities will be destroyed!', 14, 0, 25000);
-INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 2, 1, 0, 'We must be vigilant to eradicate this plague!', 14, 0, 40000);
-INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 3, 1, 0, 'Keep up the good work.  This scourge will be cleansed!', 14, 0, 90000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 0, 1, 0, NULL, 0, 0, 25000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 1, 1, 0, 'These undead atrocities will be destroyed!', 14, 0, 40000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 2, 1, 0, 'We must be vigilant to eradicate this plague!', 14, 0, 90000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 3, 1, 0, 'Keep up the good work.  This scourge will be cleansed!', 14, 0, 120000);
 INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 4, 1, 0, 'The Scarlet Crusade will scour these lands!', 14, 0, 120000);
 INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID11, 5, 1, 0, 'Let none with the foul taint of plague live!', 14, 0, 120000);
+
+-- Darnassus: Archmage Mordent Evenshade
+
+DELETE FROM `creature_timed_emotes` WHERE `spawnid` = @ID11;
+
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 0, 1, 0, NULL, 0, 0, 5000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 1, 3, 1, 'Sentinel, I would speak with your High Priestess.', 12, 7, 30000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 2, 3, 6, 'Must I? I doubt Tyrande has more pressing business.', 12, 7, 150000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 3, 3, 1, 'The lure of power is great. Mistakes were made.', 12, 7, 180000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 4, 3, 5, 'I will not return until I am heard. There is too much at stake.', 12, 7, 150000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 5, 3, 1, 'There is change on the wind, and we cannot ignore it. I have traveled from the dust and ruin of the past to come to an accord.', 12, 7, 180000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 6, 3, 1, 'The time may soon come when the kaldorei require the knowledge and skill we have to offer.', 12, 7, 150000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 7, 3, 1, 'I will wait, Sentinel... but I will have my audience.', 12, 7, 180000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 8, 3, 0, '%s looks over at the moonwell with a sigh.', 16, 0, 150000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 9, 3, 1, 'Calm yourself, Sentinel. I do not seek to use it. I am merely... remembering.', 12, 7, 180000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 10, 3, 1, 'Enough. I have been apart from this for centuries. The well within this temple may be a pale spectre of the Well of Eternity, but it still holds the same... beauty. Purity.', 12, 7, 180000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 11, 3, 0, 'I had forgotten.', 12, 7, 150000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 12, 3, 6, 'I do not believe admiration and wistful thoughts are against the societal norm.', 12, 7, 180000);
+INSERT INTO `creature_timed_emotes` (`spawnid`, `rowid`, `type`, `value`, `msg`, `msg_type`, `msg_lang`, `expire_after`) VALUES (@ID12, 13, 3, 1, 'You were the one who challenged me for merely looking. I still await my audience with Tyrande.', 12, 7, 150000);
 
 
 --
@@ -782,4 +803,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-22_00-14_MevenKorgal');
+('2021-01-22_13-13_Morbent');
