@@ -55,7 +55,7 @@ UPDATE `creature_proto` SET `auras` = '' WHERE `entry` IN ( 474, 476, 881, 1507,
 --
 
 DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest: Morgan the Collector dont cast "Gouge"
-
+DELETE FROM `ai_agents` WHERE `entry` = 94 and `spell` = 53; -- Elwynn Forest: Defias Cutpurse dont cast "Backstab"
 
 --
 --
@@ -66,17 +66,17 @@ DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest
 DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 1395, 1402, 1405, 3188, 7917, 16483, 16502, 18408 );
 
 
---DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
---DELETE FROM `npc_monstersay` WHERE `entry` = 794 and `event` = 0; -- Elwynn Forest: Matt
---DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
---DELETE FROM `npc_monstersay` WHERE `entry` = 1395 and `event` = 0; -- Stormwind City: Ol Beasley
---DELETE FROM `npc_monstersay` WHERE `entry` = 1402 and `event` = 0; -- Stormwind City: Topper McNabb
---DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind City: Morris Lawry
---DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
---DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: Master Gadrin
---DELETE FROM `npc_monstersay` WHERE `entry` = 18408 and `event` = 0; -- Nagrand: Warden Moibff Jill
---DELETE FROM `npc_monstersay` WHERE `entry` = 16502 and `event` = 0; -- Azuremyst Isle: Zalduun
---DELETE FROM `npc_monstersay` WHERE `entry` = 16483 and `event` = 0; -- Azuremyst Isle: Draenei Survivor
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 295 and `event` = 0; -- Elwynn Forest: Innkeeper Farley
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 794 and `event` = 0; -- Elwynn Forest: Matt
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 466 and `event` = 0; -- Stormwind City: General Marcus Jonathan
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 1395 and `event` = 0; -- Stormwind City: Ol Beasley
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 1402 and `event` = 0; -- Stormwind City: Topper McNabb
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 1405 and `event` = 0; -- Stormwind City: Morris Lawry
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 7917 and `event` = 0; -- Stormwind City: Brother Sarno
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 3188 and `event` = 0; -- Durotar: Master Gadrin
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 18408 and `event` = 0; -- Nagrand: Warden Moibff Jill
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 16502 and `event` = 0; -- Azuremyst Isle: Zalduun
+-- DELETE FROM `npc_monstersay` WHERE `entry` = 16483 and `event` = 0; -- Azuremyst Isle: Draenei Survivor
 
 
 --
@@ -87,16 +87,16 @@ DELETE FROM `npc_monstersay` WHERE `event` = 0 and `entry` IN ( 295, 466, 794, 1
 
 DELETE FROM `npc_gossip_textid` WHERE `creatureid` IN ( 3442, 6119, 6568, 8962, 8965, 16477, 16514, 16819, 17071, 17087 );
 
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 3442; -- The Barrens: Sputtervalve
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6119; -- Dun Morogh: Tog
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6568; -- Tanaris: Vizzklick
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8962; -- Redridge Mountains: Hilary
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains: Shawn
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16477; -- Azuremyst Isle: Proenitus
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16514; -- Azuremyst Isle: Botanist Taerix
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16819; -- Hellfire Peninsula: Danath Trollbane
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17071; -- Azuremyst Isle: Technician Zhanaa
---DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: Spirit of the Vale
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 3442; -- The Barrens: Sputtervalve
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6119; -- Dun Morogh: Tog
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 6568; -- Tanaris: Vizzklick
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8962; -- Redridge Mountains: Hilary
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 8965; -- Redridge Mountains: Shawn
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16477; -- Azuremyst Isle: Proenitus
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16514; -- Azuremyst Isle: Botanist Taerix
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 16819; -- Hellfire Peninsula: Danath Trollbane
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17071; -- Azuremyst Isle: Technician Zhanaa
+-- DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: Spirit of the Vale
 
 --
 --
@@ -172,7 +172,7 @@ VALUES (36497, 5, 100, 0, 14, 'Bronjahm', 'The Devourer awaits...', NULL, NULL, 
 
 -- Corrupted Fragmented Soul:
 
---UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36535;
+-- UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36535;
 
 -- Devourer Of Souls:
 
@@ -225,10 +225,10 @@ DELETE FROM `creature_spawns` WHERE `id` = 133989 and `entry` = 37158; -- Quelda
 
 -- Archmage Koreln
 
---DELETE FROM `creature_spawns` WHERE `id` = 200632 and `entry` = 37582;
+-- DELETE FROM `creature_spawns` WHERE `id` = 200632 and `entry` = 37582;
 
---INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
---VALUES (200632, 37582, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30685, 1770, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 35781, 0, 0, 0, 64);
+-- INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
+-- VALUES (200632, 37582, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30685, 1770, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 35781, 0, 0, 0, 64);
 
 -- Dark Ranger Loralen
 
@@ -239,15 +239,15 @@ VALUES (200633, 37779, 668, 5232.68, 1931.46, 707.78, 0.84, 0, 30687, 1770, 0, 0
 
 -- Fix Jaina spawn pos ( testing no pre-spawned )
 
---UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134006;
---UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134006;
---UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134006;
---UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134006;
+-- UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134006;
+-- UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134006;
+-- UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134006;
+-- UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134006;
 
---UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134007;
---UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134007;
---UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134007;
---UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134007;
+-- UPDATE `creature_spawns` SET `position_x` = '5236.659' WHERE `entry` = 37221 and `id` = 134007;
+-- UPDATE `creature_spawns` SET `position_y` = '1929.894' WHERE `entry` = 37221 and `id` = 134007;
+-- UPDATE `creature_spawns` SET `position_z` = '707.7781' WHERE `entry` = 37221 and `id` = 134007;
+-- UPDATE `creature_spawns` SET `orientation` = '0.8726646' WHERE `entry` = 37221 and `id` = 134007;
 
 -- Fix Sylvana spawn pos and display ( testing pre-spawned )
 
@@ -265,8 +265,8 @@ UPDATE `creature_spawns` SET `orientation` = '0.8377581' WHERE `entry` = 37223 a
 
 -- Starting to phase shift people for Alliance set
 
---UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134006 and `entry` = 37221; -- Jaina (enemy to horde, big one)
---UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134007 and `entry` = 37221; -- Jaina (friend to alliance, big one)
+-- UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134006 and `entry` = 37221; -- Jaina (enemy to horde, big one)
+-- UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134007 and `entry` = 37221; -- Jaina (friend to alliance, big one)
 UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134252 and `entry` = 38112; -- Falric
 UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134254 and `entry` = 38113; -- Marwyn
 
@@ -435,7 +435,7 @@ VALUES (39751, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment ha
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
 VALUES (39751, 5, 100, 0, 14, 'Baltharus the Warborn', 'I... didn\'t see that coming....', NULL, NULL, NULL, NULL);
 
---UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
+-- UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
 
 UPDATE `creature_proto` SET `invisibility_type` = 0 WHERE `entry` = @ID6; -- crystal target: fix the channeling effect
 
@@ -822,4 +822,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-22_14-32_SentinelStillbough');
+('2021-01-23_17-22_DefiasCutpurse');
