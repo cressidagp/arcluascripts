@@ -26,8 +26,8 @@ SET @ID8 := 78482;	-- Terokkar Forest: Liutenant Gravelhammer
 SET @ID9 := 77081;	-- Nagrand: Warden Moibff Jill
 SET @ID10 := 66819; -- Azuremyst Isle: Zulduun
 SET @ID11 := 12221; -- Tirisfall Glades: Meven Korgal
-SET @ID12 := 133321 -- Darnassus: Archmage Mordent Evenshade 
-SET @ID13 := 133322 -- Darnassus: Sentinel Stillbough
+SET @ID12 := 133321; -- Darnassus: Archmage Mordent Evenshade 
+SET @ID13 := 133322; -- Darnassus: Sentinel Stillbough
 
 --
 -- 
