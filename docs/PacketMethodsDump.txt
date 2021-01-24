@@ -1,0 +1,35 @@
+-- Normal Operations
+
+CreatePacket
+GetObjectType
+GetOpcode
+GetSize
+
+-- Read Operations
+
+ReadByte
+ReadDouble
+ReadFloat
+ReadGUID
+ReadLong
+ReadShort
+ReadString
+ReadUByte
+ReadULong
+ReadUShort
+ReadWoWGuid
+
+-- Write Operations
+
+WriteByte
+WriteDouble
+WriteFloat
+WriteGUID
+WriteLong
+WriteShort
+WriteString
+WriteUByte
+WriteULong
+WriteUShort
+WriteWoWGuid
+
