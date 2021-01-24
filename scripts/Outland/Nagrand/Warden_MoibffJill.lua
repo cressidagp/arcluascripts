@@ -15,21 +15,21 @@
 
 	enUS locale:
 
-	[ 1 ] = "New posting going up! Adventurers and heroes, gather round the bulletin board!",
-	[ 2 ] = "That should get Telaar the assistance it needs!"
+	"New posting going up! Adventurers and heroes, gather round the bulletin board!",
+	"That should get Telaar the assistance it needs!"
 
 	esMX locale:
 
-	[ 1 ] = "¡Nueva publicación! ¡Aventureros y héroes, reuníos alrededor del tablero de anuncios!",
-	[ 2 ] = "¡Eso debería brindarle a Telaar la ayuda que necesita!"
+	"¡Nueva publicación! ¡Aventureros y héroes, reuníos alrededor del tablero de anuncios!",
+	"¡Eso debería brindarle a Telaar la ayuda que necesita!"
 
 --]]
 
 --local WARDEN_MOIBFFJILL = 18408;
 
 local chat = {
-[ 1 ] = "New posting going up! Adventurers and heroes, gather round the bulletin board!",
-[ 2 ] = "That should get Telaar the assistance it needs!"
+"New posting going up! Adventurers and heroes, gather round the bulletin board!",
+"That should get Telaar the assistance it needs!"
 };
 
 MOIBFFJILL = {}

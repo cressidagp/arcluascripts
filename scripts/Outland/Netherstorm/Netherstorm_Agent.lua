@@ -13,28 +13,28 @@
 
   enUS:
 
-  [ 1 ] = "Good thing that we're surrounded by neighbors with excess machine parts.";
-  [ 2 ] = "Maybe I should gather up some other agents and head out there after this shift?";
-  [ 3 ] = "Hmm, arcane annihilators are pretty tough.  I wonder if Papa Wheeler knows what he's asking for?";
-  [ 4 ] = "Last time someone went out to try to collect the bounty on Netherock, all we got back was a compressed layer of foolhardy adventurer!";
-  [ 5 ] = "Netherock?!  That thing'll squish you flat with one step of its massive foot!  No thanks!";
+  "Good thing that we're surrounded by neighbors with excess machine parts.";
+  "Maybe I should gather up some other agents and head out there after this shift?";
+  "Hmm, arcane annihilators are pretty tough.  I wonder if Papa Wheeler knows what he's asking for?";
+  "Last time someone went out to try to collect the bounty on Netherock, all we got back was a compressed layer of foolhardy adventurer!";
+  "Netherock?!  That thing'll squish you flat with one step of its massive foot!  No thanks!";
 
   esMX:
 
-  [ 1 ] = "Menos mal que estamos rodeados de vecinos con exceso de piezas de máquina.";
-  [ 2 ] = "¿Quizás debería reunir a otros agentes y salir después de este turno?";
-  [ 3 ] = "Hmm, los aniquiladores arcanos son bastante duros. Me pregunto si Papa Wheeler sabe lo que pide.";
-  [ 4 ] = "La última vez que alguien salió para intentar cobrar la recompensa por Netherock, ¡todo lo que obtuvimos fue una capa comprimida de aventurero temerario!";
-  [ 5 ] = "¡¿Netherock ?! ¡Esa cosa te aplastará con un paso de su enorme pie! ¡No, gracias!";
+  "Menos mal que estamos rodeados de vecinos con exceso de piezas de máquina.";
+  "¿Quizás debería reunir a otros agentes y salir después de este turno?";
+  "Hmm, los aniquiladores arcanos son bastante duros. Me pregunto si Papa Wheeler sabe lo que pide.";
+  "La última vez que alguien salió para intentar cobrar la recompensa por Netherock, ¡todo lo que obtuvimos fue una capa comprimida de aventurero temerario!";
+  "¡¿Netherock ?! ¡Esa cosa te aplastará con un paso de su enorme pie! ¡No, gracias!";
 
 --]]
 
 local TEXT = {
-[ 1 ] = "Good thing that we're surrounded by neighbors with excess machine parts.";
-[ 2 ] = "Maybe I should gather up some other agents and head out there after this shift?";
-[ 3 ] = "Hmm, arcane annihilators are pretty tough.  I wonder if Papa Wheeler knows what he's asking for?";
-[ 4 ] = "Last time someone went out to try to collect the bounty on Netherock, all we got back was a compressed layer of foolhardy adventurer!";
-[ 5 ] = "Netherock?!  That thing'll squish you flat with one step of its massive foot!  No thanks!";
+"Good thing that we're surrounded by neighbors with excess machine parts.";
+"Maybe I should gather up some other agents and head out there after this shift?";
+"Hmm, arcane annihilators are pretty tough.  I wonder if Papa Wheeler knows what he's asking for?";
+"Last time someone went out to try to collect the bounty on Netherock, all we got back was a compressed layer of foolhardy adventurer!";
+"Netherock?!  That thing'll squish you flat with one step of its massive foot!  No thanks!";
 };
 
 NETHERSTORM_AGENT = {}

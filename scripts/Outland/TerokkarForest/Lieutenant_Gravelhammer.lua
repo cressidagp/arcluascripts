@@ -18,34 +18,34 @@
 --]]
 
 local TEXT_GRAVEL = {
-[ 1 ] = "Rifling through the stacks of books and scrolls on the table, %s begins to examine one in particular with interest.";
+"Rifling through the stacks of books and scrolls on the table, %s begins to examine one in particular with interest.";
 
-[ 2 ] = "What?  What's this?!";
-[ 3 ] = "That is not even remotely imaginable!";
-[ 4 ] = "Looks like I picked a bad day to stop drinking.";
-[ 5 ] = "How did this get missed?!";
+"What?  What's this?!";
+"That is not even remotely imaginable!";
+"Looks like I picked a bad day to stop drinking.";
+"How did this get missed?!";
 
-[ 6 ] = "Cap'n, sir, we have a slight problem."; -- emote 1 from here to end
+"Cap'n, sir, we have a slight problem."; -- emote 1 from here to end
 
-[ 7 ] = "As you say, sir.  It would appear that someone failed to mention to me that the druids at the Cenarion Thicket have been wiped out!";
-[ 8 ] = "Bad news.  We've been hit again.  They're gone, but the front sentry tower is on fire.";
-[ 9 ] = "One of our merchants has gone missing!";
-[ 10 ] = "That group that recently arrived from Honor Hold -- they're mercs!  They're starting to stir up trouble.  Maybe I should have a talk with them?";
-[ 11 ] = "One of our scouts is reporting that a shadowy group has moved into the ruins of Grangol'var Village.  Oops, this report is over a week old.";
-[ 12 ] = "We have reports from a scout in the field that one of the Cenarion druids has been taken captive up at Firewing Point.";
+"As you say, sir.  It would appear that someone failed to mention to me that the druids at the Cenarion Thicket have been wiped out!";
+"Bad news.  We've been hit again.  They're gone, but the front sentry tower is on fire.";
+"One of our merchants has gone missing!";
+"That group that recently arrived from Honor Hold -- they're mercs!  They're starting to stir up trouble.  Maybe I should have a talk with them?";
+"One of our scouts is reporting that a shadowy group has moved into the ruins of Grangol'var Village.  Oops, this report is over a week old.";
+"We have reports from a scout in the field that one of the Cenarion druids has been taken captive up at Firewing Point.";
 
-[ 13 ] = "Aye, aye, sir.  Right away!"; -- emote 66
+"Aye, aye, sir.  Right away!"; -- emote 66
 };
 
 local TEXT_AURIC = {
-{ 1, "At ease, lieutenant.  Go on.", 66 },
-{ 2, "What is it now, Gravel?", 6 },
-{ 3, "What else could possibly go wrong?", 6 },
-{ 4, "Yes, lieutenant?  Report.", 1 },
-{ 5, "That's troubling news indeed.  See to it that it's taken care of immediately!", 1 },
-{ 6, "I don't have time for this, lieutenant.  Make sure that you handle it.", 1 },
-{ 7, "If we're to help with that in any way we'll need more people.  Call some of the scouts in to help with that.", 1 },
-{ 8, "Lieutenant, I want you to make that your top priority.  Notify anyone that you think can help.", 1 }
+"At ease, lieutenant.  Go on.", 66 },
+"What is it now, Gravel?", 6 },
+"What else could possibly go wrong?", 6 },
+"Yes, lieutenant?  Report.", 1 },
+"That's troubling news indeed.  See to it that it's taken care of immediately!", 1 },
+"I don't have time for this, lieutenant.  Make sure that you handle it.", 1 },
+"If we're to help with that in any way we'll need more people.  Call some of the scouts in to help with that.", 1 },
+"Lieutenant, I want you to make that your top priority.  Notify anyone that you think can help.", 1 }
 };
 
 GRAVELHAMMER = {}
@@ -94,8 +94,8 @@ function GRAVELHAMMER.OutOfCombat( unit )
       elseif( args.time <= 0 and args.action == 5 )
       then
         local i = math.random( 1, 4 );
-        args.captain:SendChatMessage( 12, 7, TEXT_AURIC[ i ][ 2 ] );
-        args.captain:Emote( TEXT_AURIC[ i ][ 3 ], 0 );
+        args.captain:SendChatMessage( 12, 7, TEXT_AURIC[ i ][ 1 ] );
+        args.captain:Emote( TEXT_AURIC[ i ][ 2 ], 0 );
         args.time = 6;
         args.action = 6;
 
@@ -108,8 +108,8 @@ function GRAVELHAMMER.OutOfCombat( unit )
       elseif( args.time <= 0 and args.action == 7 )
       then
           local i = math.random( 5, 8 );
-          args.captain:SendChatMessage( 12, 7, TEXT_AURIC[ i ][ 2 ] );
-          args.captain:Emote( TEXT_AURIC[ i ][ 3 ], 0 );
+          args.captain:SendChatMessage( 12, 7, TEXT_AURIC[ i ][ 1 ] );
+          args.captain:Emote( TEXT_AURIC[ i ][ 2 ], 0 );
           args.time = 8;
           args.action = 8;
 

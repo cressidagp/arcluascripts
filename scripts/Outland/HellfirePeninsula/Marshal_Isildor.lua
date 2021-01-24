@@ -15,10 +15,10 @@
 	
 	enUS locale:
 	
-	[ 1 ] = "What could be taking so long?",
-	[ 2 ] = "How long can it take to pick a handful of weeds?",
-	[ 3 ] = "At this rate I could have gathered them myself!",
-	[ 4 ] = "If you want something done right, do it yourself!",
+	"What could be taking so long?",
+	"How long can it take to pick a handful of weeds?",
+	"At this rate I could have gathered them myself!",
+	"If you want something done right, do it yourself!",
 	
 	esMX locale:
 
@@ -27,10 +27,10 @@
 --local NPC_MARSHAL_ISILDOR = 19308;
 
 local chat = {
-[ 1 ] = "This war - and don't mistake this for anything but a war - is not going to win itself. If we do not fight, scratch, claw, and kick for every speck of land on this shattered world, all will be lost.",
-[ 2 ] = "How many more soldiers need to die before we start paying attention out there?",
-[ 3 ] = "Do you think that demons will play fair? These beasts are more savage than orcs and more cunning than the undead. Do not attempt to engage Legion by normal standards of war.",
-[ 4 ] = "I regret to inform you all that we sent home another ten soldiers today - in body bags.",
+"This war - and don't mistake this for anything but a war - is not going to win itself. If we do not fight, scratch, claw, and kick for every speck of land on this shattered world, all will be lost.",
+"How many more soldiers need to die before we start paying attention out there?",
+"Do you think that demons will play fair? These beasts are more savage than orcs and more cunning than the undead. Do not attempt to engage Legion by normal standards of war.",
+"I regret to inform you all that we sent home another ten soldiers today - in body bags.",
 };
 
 MARSHAL_ISILDOR = {}
