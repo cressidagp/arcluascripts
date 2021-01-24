@@ -1,0 +1,5 @@
+AddPathNode
+CreateTaxi
+GetId
+GetNodeCount
+GetObjectType
