@@ -35,3 +35,7 @@ Spirit_of_the_Vale.lua
 Brother_Sarno.lua
 Morgan_the_Collector1.lua
 Morgan_the_Collector2.lua
+
+*****) The next one has been merged.
+
+Kira_Songshine.lua + Myra_Tyrngaarde.lua = Bread_Vendors.lua
