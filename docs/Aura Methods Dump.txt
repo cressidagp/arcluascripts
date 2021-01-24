@@ -1,0 +1,14 @@
+GetAuraSlot
+GetCaster
+GetDuration
+GetObjectType
+GetSpellId
+GetTarget
+GetTimeLeft
+GetVar
+SetAuraSlot
+SetDuration
+SetNegative
+SetPositive
+SetVar
+Remove
