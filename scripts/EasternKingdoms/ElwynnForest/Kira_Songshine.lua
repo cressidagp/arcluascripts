@@ -15,24 +15,24 @@
 	
 	enUS locale:
 	
-	[ 1 ] = "Fresh bread, baked this very morning!",
-	[ 2 ] = "Come get yer fresh bread!",
-	[ 3 ] = "Fresh bread for sale!"
+	"Fresh bread, baked this very morning!",
+	"Come get yer fresh bread!",
+	"Fresh bread for sale!"
 	
 	esMX locale:
 
-	[ 1 ] = "¡Pan casero, horneado esta mañana!",
-	[ 2 ] = "¡Venga a buscar su pan casero!",
-	[ 3 ] = "¡Pan casero a la venta!"
+	"¡Pan casero, horneado esta mañana!",
+	"¡Venga a buscar su pan casero!",
+	"¡Pan casero a la venta!"
 
 --]]
 
 --local NPC_KIRA_SONGSHINE = 3937;
 
 local chat = {
-[ 1 ] = "Fresh bread, baked this very morning!",
-[ 2 ] = "Come get yer fresh bread!",
-[ 3 ] = "Fresh bread for sale!"
+"Fresh bread, baked this very morning!",
+"Come get yer fresh bread!",
+"Fresh bread for sale!"
 };
 
 KIRA_SONGSHINE = {}
