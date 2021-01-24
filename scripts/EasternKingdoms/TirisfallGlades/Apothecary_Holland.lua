@@ -15,14 +15,14 @@
 	
 	enUS locale:
 	
-	[ 1 ] = "What could be taking so long?",
-	[ 2 ] = "How long can it take to pick a handful of weeds?",
-	[ 3 ] = "At this rate I could have gathered them myself!",
-	[ 4 ] = "If you want something done right, do it yourself!",
-	[ 5 ] = "As if I had all eternity.",
-	[ 6 ] = "Ah, this must be him now... no?  Bah!",
-	[ 7 ] = "Maybe I should have just bought some off of Faruza?",
-	[ 8 ] = "I had to go and requisition an Abomination... an Abomination!"
+	"What could be taking so long?",
+	"How long can it take to pick a handful of weeds?",
+	"At this rate I could have gathered them myself!",
+	"If you want something done right, do it yourself!",
+	"As if I had all eternity.",
+	"Ah, this must be him now... no?  Bah!",
+	"Maybe I should have just bought some off of Faruza?",
+	"I had to go and requisition an Abomination... an Abomination!"
 	
 	esMX locale:
 
@@ -31,14 +31,14 @@
 --local NPC_APOTHECARY_HOLLAND = 10665;
 
 local chat = {
-[ 1 ] = "What could be taking so long?",
-[ 2 ] = "How long can it take to pick a handful of weeds?",
-[ 3 ] = "At this rate I could have gathered them myself!",
-[ 4 ] = "If you want something done right, do it yourself!",
-[ 5 ] = "As if I had all eternity.",
-[ 6 ] = "Ah, this must be him now... no?  Bah!",
-[ 7 ] = "Maybe I should have just bought some off of Faruza?",
-[ 8 ] = "I had to go and requisition an Abomination... an Abomination!"
+"What could be taking so long?",
+"How long can it take to pick a handful of weeds?",
+"At this rate I could have gathered them myself!",
+"If you want something done right, do it yourself!",
+"As if I had all eternity.",
+"Ah, this must be him now... no?  Bah!",
+"Maybe I should have just bought some off of Faruza?",
+"I had to go and requisition an Abomination... an Abomination!"
 };
 
 APOTHECARY_HOLLAND = {}

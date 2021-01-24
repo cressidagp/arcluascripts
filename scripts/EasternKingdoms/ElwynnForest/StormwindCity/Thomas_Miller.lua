@@ -15,27 +15,27 @@
 
 	enUS locale:
 	
-	[ 1 ] = "Fresh bread for sale!",
-	[ 2 ] = "Freshly baked bread for sale!",
-	[ 3 ] = "Rolls, buns and bread. Baked fresh!",
-	[ 4 ] = "Warm, wholesome bread!"
+	"Fresh bread for sale!",
+	"Freshly baked bread for sale!",
+	"Rolls, buns and bread. Baked fresh!",
+	"Warm, wholesome bread!"
 	
 	esMX locale:
 	
-	[ 1 ] = "¡Pan casero a la venta!",
-	[ 2 ] = "¡Pan recién horneado para la venta!",
-	[ 3 ] = "¡Panecillos, criollos y pan. Recién horneados!",
-	[ 4 ] = "¡Calentito, saludable pan!"	
+	"¡Pan casero a la venta!",
+	"¡Pan recién horneado para la venta!",
+	"¡Panecillos, criollos y pan. Recién horneados!",
+	"¡Calentito, saludable pan!"	
 
 --]]
 
 --NPC_THOMAS_MILLER = 3518;
 
 local chat = {
-[ 1 ] = "Fresh bread for sale!",
-[ 2 ] = "Freshly baked bread for sale!",
-[ 3 ] = "Rolls, buns and bread. Baked fresh!",
-[ 4 ] = "Warm, wholesome bread!"
+"Fresh bread for sale!",
+"Freshly baked bread for sale!",
+"Rolls, buns and bread. Baked fresh!",
+"Warm, wholesome bread!"
 };
 
 THOMAS_MILLER = {}

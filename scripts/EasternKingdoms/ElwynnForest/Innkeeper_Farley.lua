@@ -15,15 +15,15 @@
 
 	enUS locale:
 
-	[ 1 ] = "Welcome to the Lion's Pride In.  Make yourself at home!",
-	[ 2 ] = "So much to do, so much to do!  Where does the time go?",
-	[ 3 ] = "If your glass is full may it be again!"
+	"Welcome to the Lion's Pride In.  Make yourself at home!",
+	"So much to do, so much to do!  Where does the time go?",
+	"If your glass is full may it be again!"
 
 	esMX local:
 
-	[ 1 ] = "¡Bienvenido a la Posada Orgullo del León.  Siéntete como en casa!",
-	[ 2 ] = "¡Tanto que hacer, tanto que hacer!  ¿Donde se va el tiempo?",
-	[ 3 ] = "¡Si tu copa esta llena puede volver a estarlo!"
+	"¡Bienvenido a la Posada Orgullo del León.  Siéntete como en casa!",
+	"¡Tanto que hacer, tanto que hacer!  ¿Donde se va el tiempo?",
+	"¡Si tu copa esta llena puede volver a estarlo!"
 
 --]]
 
@@ -32,9 +32,9 @@
 --local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
 
 local chat = {
-[ 1 ] = "Welcome to the Lion's Pride In.  Make yourself at home!",
-[ 2 ] = "So much to do, so much to do!  Where does the time go?",
-[ 3 ] = "If your glass is full may it be again!"
+"Welcome to the Lion's Pride In.  Make yourself at home!",
+"So much to do, so much to do!  Where does the time go?",
+"If your glass is full may it be again!"
 };
 
 INNKEEPER_FARLEY = {}

@@ -15,15 +15,15 @@
 	
 	enUS locale:
 	
-	[ 1 ] = "We have yet to meet our quota for the wood demand. Now back to work with you.",
-	[ 2 ] = "Daylight is still upon us so let's see that axe of yours chopping some more wood.",
-	[ 3 ] = "We need to get this wagon filled by the end of the day. So back to work with you. Chop, chop!"
+	"We have yet to meet our quota for the wood demand. Now back to work with you.",
+	"Daylight is still upon us so let's see that axe of yours chopping some more wood.",
+	"We need to get this wagon filled by the end of the day. So back to work with you. Chop, chop!"
 	
 	esMX locale:
 
-	[ 1 ] = "We have yet to meet our quota for the wood demand. Ahora regresen a trabajar.",
-	[ 2 ] = "Daylight is still upon us so let's see that axe of yours chopping some more wood.",
-	[ 3 ] = "Necesitamos llenar este vagon para el final del día. Asique vuelta al trabajo. Corten, corten!"
+	"We have yet to meet our quota for the wood demand. Ahora regresen a trabajar.",
+	"Daylight is still upon us so let's see that axe of yours chopping some more wood.",
+	"Necesitamos llenar este vagon para el final del día. Asique vuelta al trabajo. Corten, corten!"
 	
 --]]
 
@@ -31,16 +31,12 @@
 --local NPC_EASTVALE_PEASANT = 11328;
 
 local chat = {
-[ 1 ] = "We have yet to meet our quota for the wood demand. Now back to work with you.",
-[ 2 ] = "Daylight is still upon us so let's see that axe of yours chopping some more wood.",
-[ 3 ] = "We need to get this wagon filled by the end of the day. So back to work with you. Chop, chop!"
+"We have yet to meet our quota for the wood demand. Now back to work with you.",
+"Daylight is still upon us so let's see that axe of yours chopping some more wood.",
+"We need to get this wagon filled by the end of the day. So back to work with you. Chop, chop!"
 };
 
-local emote = {
-[ 1 ] = 25;
-[ 2 ] = 1;
-[ 3 ] = 5;
-};
+local emote = { 25, 1, 5 };
 
 SUPERVISOR_RAELEN = {}
 
