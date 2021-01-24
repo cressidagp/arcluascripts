@@ -1,0 +1,6 @@
+GetColumn
+GetColumnCount
+GetRowCount
+NextRow
+
+

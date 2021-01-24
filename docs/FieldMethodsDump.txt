@@ -1,0 +1,13 @@
+GetBool
+GetByte
+GetFloat
+GetGUID
+GetLong
+GetShort
+GetString
+GetUByte
+GetULong
+GetUShort
+
+
+
