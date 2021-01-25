@@ -1,8 +1,9 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	The Ruby Sanctum
 	Engine: A.L.E
+	
+	The Ruby Sanctum
 
 	Credits:
 
@@ -20,77 +21,79 @@
 	
 	enUS locale:
 
-[ 1 ] = "Thank you! I could not have held out for much longer.... A terrible thing has happened here.";
-[ 2 ] = "We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault.";
-[ 3 ] = "The Black dragonkin materialized from thin air, and set upon us before we could react.";
-[ 4 ] = "We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance.";
-[ 5 ] = "They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum.";
-[ 6 ] = "The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work.";
-[ 7 ] = "In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon.";
-[ 8 ] = "I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!";
-[ 9 ] = "Help! I am trapped within this tree!  I require aid!";
-[ 10 ] = "Your power wanes, ancient one.... Soon you will join your friends.";
+	"Thank you! I could not have held out for much longer.... A terrible thing has happened here.";
+	"We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault.";
+	"The Black dragonkin materialized from thin air, and set upon us before we could react.";
+	"We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance.";
+	"They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum.";
+	"The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work.";
+	"In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon.";
+	"I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!";
+	"Help! I am trapped within this tree!  I require aid!";
+	"Your power wanes, ancient one.... Soon you will join your friends.";
 
 	esMX locale:
 
-[ 1 ] = "¡Gracias! No podía aguantar mucho más.... A ocurrido algo terrible en este lugar.";
-[ 2 ] = "Creíamos que el sagrario estaba bien fortificado, pero no estabamos preparados para este tipo de asalto.";
-[ 3 ] = "El dragonante Negro se apareció de la nada, y nos enbistió antes de que pudieramos reaccionar.";
-[ 4 ] = "Era nuestro fin. Con mis hermanos pereciendo a mi alrededor logre la retirada hasta aqui. Donde barrique la entrada";
-[ 5 ] = "Nos masacraron con una eficacia fria, pero pareciann mas interesado en los huevos guardados aquim en el Sagrario.";
-[ 6 ] = "El comandante de las fuerzas terrestres es un salvaje cruel llamado Zarithrian ground here is a cruel brute named Zarithrian, pero me temo que hay fuerzas superiores en el medio.";
-[ 7 ] = "En su asalto inicial, pude ver fugazmente a su verdadero lider, un temible dragon crepuscular.";
-[ 8 ] = "Desconozco sus verdaderos plates heroes, pero si s esto: no hay que permitirles que los lleven a coboI know not: No hay que permitirles que los lleven a cabo.";
-[ 9 ] = "¡Ayudenme! ¡Estoy atrapado dentro de este arbol!";
-[ 10 ] = "Tu poder mengua, anciano... Pronto te unirás a tus amigos.";
+	"¡Gracias! No podía aguantar mucho más.... A ocurrido algo terrible en este lugar.";
+	"Creíamos que el sagrario estaba bien fortificado, pero no estabamos preparados para este tipo de asalto.";
+	"El dragonante Negro se apareció de la nada, y nos enbistió antes de que pudieramos reaccionar.";
+	"Era nuestro fin. Con mis hermanos pereciendo a mi alrededor logre la retirada hasta aqui. Donde barrique la entrada";
+	"Nos masacraron con una eficacia fria, pero pareciann mas interesado en los huevos guardados aquim en el Sagrario.";
+	"El comandante de las fuerzas terrestres es un salvaje cruel llamado Zarithrian ground here is a cruel brute named Zarithrian, pero me temo que hay fuerzas superiores en el medio.";
+	"En su asalto inicial, pude ver fugazmente a su verdadero lider, un temible dragon crepuscular.";
+	"Desconozco sus verdaderos plates heroes, pero si s esto: no hay que permitirles que los lleven a coboI know not: No hay que permitirles que los lleven a cabo.";
+	"¡Ayudenme! ¡Estoy atrapado dentro de este arbol!";
+	"Tu poder mengua, anciano... Pronto te unirás a tus amigos.";
+
+--]]
 	
-local MAP_RUBY_SANCTUM	= 724;
+--local MAP_RUBY_SANCTUM	= 724;
 
-local NPC_XERESTRASZA	= 40429;
-local NPC_BALTHARUS		= 39751;
+--local NPC_XERESTRASZA	= 40429;
+--local NPC_BALTHARUS		= 39751;
 
-local FACTION_HOSTILE = 14;
+--local FACTION_HOSTILE = 14;
 
-local AREA_TRIGGER = 5867; -- Baltharus plateau
+--local AREA_TRIGGER = 5867; -- Baltharus plateau
 
--- For 3.3.5a
+--[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local GAMEOBJECT_DYNAMIC =  0x0006 + 0x0008;
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
-
 --]]
 
-local SOUND = {
-[ 1 ] = 17491;	-- Xerex event 1
-[ 2 ] = 17492;	-- Xerex event 2
-[ 3 ] = 17493;	-- Xerex event 3
-[ 4 ] = 17494;	-- Xerex event 4
-[ 5 ] = 17495;	-- Xerex event 5
-[ 6 ] = 17496;	-- Xerex event 6
-[ 7 ] = 17497;	-- Xerex event 7
-[ 8 ] = 17498;	-- Xerex event 8
-[ 9 ] = 17490;	-- Xerex Intro
-[ 10 ] = 17525;	-- Baltharus Intro
+local sound = {
+17491,	-- Xerex event 1
+17492,	-- Xerex event 2
+17493,	-- Xerex event 3
+17494,	-- Xerex event 4
+17495,	-- Xerex event 5
+17496,	-- Xerex event 6
+17497,	-- Xerex event 7
+17498,	-- Xerex event 8
+17490,	-- Xerex Intro
+17525	-- Baltharus Intro
 };
 
-local CHAT = {
-[ 1 ] = "Thank you! I could not have held out for much longer.... A terrible thing has happened here.";
-[ 2 ] = "We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault.";
-[ 3 ] = "The Black dragonkin materialized from thin air, and set upon us before we could react.";
-[ 4 ] = "We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance.";
-[ 5 ] = "They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum.";
-[ 6 ] = "The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work.";
-[ 7 ] = "In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon.";
-[ 8 ] = "I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!";
-[ 9 ] = "Help! I am trapped within this tree!  I require aid!";
-[ 10 ] = "Your power wanes, ancient one.... Soon you will join your friends.";
+local chat = {
+"Thank you! I could not have held out for much longer.... A terrible thing has happened here.",
+"We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault.",
+"The Black dragonkin materialized from thin air, and set upon us before we could react.",
+"We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance.",
+"They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum.",
+"The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work.",
+"In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon.",
+"I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!",
+"Help! I am trapped within this tree!  I require aid!",
+"Your power wanes, ancient one.... Soon you will join your friends."
 };
 
--- WorldStates:
---local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
---local WORLDSTATE_CORPOREALITY_TWILIGHT  = 5050;
---local WORLDSTATE_CORPOREALITY_TOGGLE    = 5051;
+--[[ WorldStates:
+local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
+local WORLDSTATE_CORPOREALITY_TWILIGHT  = 5050;
+local WORLDSTATE_CORPOREALITY_TOGGLE    = 5051;
+--]]
 
 -- Spells:
 --local SPELL_RALLY = 75416;
@@ -99,9 +102,9 @@ RUBY_SANCTUM = {}
 
 function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
 
-    --[[ Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
-    are created. But then if player from opposite faction enter variables wont be created with the same idd number.
-    so will have no more choice than spend resources getting instance id again. ]]
+    -- Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
+    -- are created. But then if player from opposite faction enter variables wont be created with the same idd number.
+    -- so will have no more choice than spend resources getting instance id again. ]]
 
     local iid = plr:GetInstanceID();
 
@@ -191,15 +194,15 @@ function RUBY_SANCTUM.XerexDoAction( unit )
 	if( RUBY_SANCTUM[ iid ].action == 1 )
 	then
 		RUBY_SANCTUM[ iid ].introDone = true;
-		unit:PlaySoundToSet( SOUND[ 9 ] );
-        unit:SendChatMessage( 14, 0, CHAT[ 9 ] );
+		unit:PlaySoundToSet( sound[ 9 ] );
+        unit:SendChatMessage( 14, 0, chat[ 9 ] );
 		unit:Emote( 5, 0 );
 		
 	-- baltharus death
 	elseif( RUBY_SANCTUM[ iid ].action == 2 )
 	then
-		unit:PlaySoundToSet( SOUND[ 1 ] );
-        unit:SendChatMessage( 14, 0, CHAT[ 1 ] );
+		unit:PlaySoundToSet( sound[ 1 ] );
+        unit:SendChatMessage( 14, 0, chat[ 1 ] );
 		unit:Emote( 5, 0 );
 		
 		RUBY_SANCTUM[ iid ].isIntro = false;
@@ -222,8 +225,8 @@ function RUBY_SANCTUM.BaltharusDoAction( unit )
 	-- intro baltharus
 	if( RUBY_SANCTUM[ iid ].action == 1 )
 	then
-		unit:PlaySoundToSet( SOUND[ 10 ] );
-        unit:SendChatMessage( 14, 0, CHAT[ 10 ] );
+		unit:PlaySoundToSet( sound[ 10 ] );
+        unit:SendChatMessage( 14, 0, chat[ 10 ] );
 	end	
 end
 
@@ -244,38 +247,38 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	
 	if( RUBY_SANCTUM[ iid ].event1 <= 0 )
 	then
-		unit:PlaySoundToSet( SOUND[ 2 ] );
-        unit:SendChatMessage( 12, 0, CHAT[ 2 ] );
+		unit:PlaySoundToSet( sound[ 2 ] );
+        unit:SendChatMessage( 12, 0, chat[ 2 ] );
 	
 	elseif( RUBY_SANCTUM[ iid ].event2 <= 0 )
 	then
-		unit:PlaySoundToSet( SOUND[ 3 ] );
-        unit:SendChatMessage( 12, 0, CHAT[ 3 ] );
+		unit:PlaySoundToSet( sound[ 3 ] );
+        unit:SendChatMessage( 12, 0, chat[ 3 ] );
 	
 	elseif( RUBY_SANCTUM[ iid ].event3 <= 0 )
 	then
-		unit:PlaySoundToSet( SOUND[ 4 ] );
-        unit:SendChatMessage( 12, 0, CHAT[ 4 ] );
+		unit:PlaySoundToSet( sound[ 4 ] );
+        unit:SendChatMessage( 12, 0, chat[ 4 ] );
 
 	elseif( RUBY_SANCTUM[ iid ].event4 <= 0 )
 	then
-		unit:PlaySoundToSet( SOUND[ 5 ] );
-        unit:SendChatMessage( 12, 0, CHAT[ 5 ] );
+		unit:PlaySoundToSet( sound[ 5 ] );
+        unit:SendChatMessage( 12, 0, chat[ 5 ] );
 
 	elseif( RUBY_SANCTUM[ iid ].event5 <= 0 )
 	then
-		unit:PlaySoundToSet( SOUND[ 6 ] );
-        unit:SendChatMessage( 12, 0, CHAT[ 6 ] );
+		unit:PlaySoundToSet( sound[ 6 ] );
+        unit:SendChatMessage( 12, 0, chat[ 6 ] );
 		
 	elseif( RUBY_SANCTUM[ iid ].event6 <= 0 )
 	then
-		unit:PlaySoundToSet( SOUND[ 7 ] );
-        unit:SendChatMessage( 12, 0, CHAT[ 7 ] );
+		unit:PlaySoundToSet( sound[ 7 ] );
+        unit:SendChatMessage( 12, 0, chat[ 7 ] );
 		
 	elseif( RUBY_SANCTUM[ iid ].event7 <= 0 )
 	then
-		unit:PlaySoundToSet( SOUND[ 8 ] );
-        unit:SendChatMessage( 12, 0, CHAT[ 8 ] );
+		unit:PlaySoundToSet( sound[ 8 ] );
+        unit:SendChatMessage( 12, 0, chat[ 8 ] );
 		unit:Emote( 5, 0 );
 		unit:RemoveAIUpdateEvent();
 		unit:SetNPCFlags( 3 );
@@ -316,14 +319,15 @@ RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
 RegisterInstanceEvent( 724, 5, RUBY_SANCTUM.OnCreatureDeath );
 RegisterInstanceEvent( 724, 3, RUBY_SANCTUM.OnAreaTrigger );
 
-RegisterGameObjectEvent( 203034, 2, RUBY_SANCTUM.GoOnSpawn );
-RegisterGameObjectEvent( 203035, 2, RUBY_SANCTUM.GoOnSpawn );
-RegisterGameObjectEvent( 203036, 2, RUBY_SANCTUM.GoOnSpawn );
-RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203034, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203035, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203036, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
 
 --[[ 
 		Debug commands disabled by default 
---]]
+
+
 
 local COMMANDS = { "ruby", "port", "exit", "xerex", "open", "close" };
 
@@ -384,3 +388,4 @@ function RubyCommands( _, plr, message )
 end
 
 RegisterServerHook( 16, RubyCommands );
+--]]
