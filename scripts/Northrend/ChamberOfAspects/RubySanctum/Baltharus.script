@@ -4,7 +4,7 @@
 	Engine: A.L.E
 	
 	Instance: The Ruby Sanctum
-	Boss: Baltharus the Warborn (39751)
+	Boss: Baltharus the Warborn
 	
 	Credits:
 
@@ -19,8 +19,10 @@
 	
 	*) 76221: has an apply dummy aura effect but no handler for it.
 	*) tried to port the channel to database but didnt work.
+	*) after OnLeaveCombat it should channel again.
 	*) 34098: has a scripted effect (0) but no handler for it.
 	*) proper fix enervating brand.
+	*) send ai reaction defensive.
 	
 	enUS locale:
 	
@@ -42,20 +44,25 @@
 
 --]]
 
---local MAP_RUBY_SANCTUM	= 724;
+--print( "Lua memory before Baltharus: "..gcinfo().." Kb." );
 
---local NPC_BALTHARUS		= 39751;
---local NPC_25M_BALTHARUS	= 39920;
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".BALTHARUS_THE_WARBORN", package.seeall );
 
---local NPC_CRYSTAL_TARGET = 26712;
+--[[ Constants:
+local MAP_RUBY_SANCTUM	= 724;
 
---local NPC_BALTHARUS_CLONE		= 39899;
---local NPC_25M_BALTHARUS_CLONE	= 39922;
+local NPC_BALTHARUS		= 39751;
+local NPC_25M_BALTHARUS	= 39920;
+
+local NPC_CRYSTAL_TARGET = 26712;
+
+local NPC_BALTHARUS_CLONE		= 39899;
+local NPC_25M_BALTHARUS_CLONE	= 39922;
+--]]
 
 --local BOSS_HP = { 3486250, 11156000, 3486250, 11156000 };
-
---local PHASE_INTRO	= 1;
---local PHASE_COMBAT	= 2;
 
 --[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1			= 0x0006 + 0x000B;
@@ -65,29 +72,18 @@ local UNIT_FIELD_FLAGS_2			= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;	
 --]]
 
-local mod = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".BALTHARUS_WARBORN", package.seeall );
-
-local SOUND = {
---[ 1 ] = 17525;  -- Intro
-[ 2 ] = 17520;  -- OnCombat
-[ 3 ] = 17521;  -- OnTargetDied 1
-[ 4 ] = 17522;  -- OnTargetDied 2
-[ 5 ] = 17524;  -- OnClone
-[ 6 ] = 17523;  -- OnDeath
+local sound = { 
+17521, -- OnTargetDied 1
+17522, -- OnTargetDied 2
 };
 
-local YELL = {
---[ 1 ] = "Your power wanes, ancient one.... Soon you will join your friends.";	-- Intro
---[ 2 ] = "Ah, the entertainment has arrived.";									-- OnCombat
-[ 2 ] = "Baltharus leaves no survivors!";										-- OnTargetDied 1
-[ 3 ] = "This world has enough heroes.";										-- OnTargetDied 2
-[ 4 ] = "Twice the pain and half the fun.";										-- OnClone
---[ 6 ] = "I... didn't see that coming....";									-- OnDeath
+local yell = {
+"Baltharus leaves no survivors!",	-- OnTargetDied 1
+"This world has enough heroes.",	-- OnTargetDied 2
+"Twice the pain and half the fun."	-- OnClone
 };
 
--- Spells:
+--[[ Spells:
 local SPELL_BARRIER_CHANNEL		= 76221; -- Intro
 local SPELL_ENERVATING_BRAND	= 74502; -- Spell casted on AIUpdate function
 local SPELL_ENERVATING_BRAND_2	= 74505; -- Triggerd on plr by 74502?
@@ -98,6 +94,16 @@ local SPELL_CLONE				= 74511;
 local SPELL_REPELLING_WAVE		= 74509;
 local SPELL_CLEAR_DEBUFFS		= 34098;
 local SPELL_SPAWN_EFFECT		= 64195;
+--]]
+
+--local PHASE_INTRO	= 1;
+--local PHASE_COMBAT = 2;
+
+--[[
+
+		Baltharus The Warborn AI ( 39751 )
+		
+--]]
 
 local self = getfenv( 1 );
 
@@ -122,10 +128,8 @@ function OnSpawn( unit )
     };
 	
 	-- created shared variables
-	local iid = unit:GetInstanceID();
-	
 	SHARED = {}
-	SHARED[ iid ] = {
+	SHARED[ unit:GetInstanceID() ] = {
 	
 	sharedHealth = unit:GetMaxHealth()
 	
@@ -137,7 +141,8 @@ function OnSpawn( unit )
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
 	if( crystal )
 	then
-		unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
+		-- spell barrier channel
+		unit:ChannelSpell( 76221, crystal );
 	end
 	
 	--unit:RegisterEvent( DoAction, 7000, 1 );
@@ -146,21 +151,24 @@ end
 
 function OnCombat( unit )
 
-	-- add more protected variables and set phase to combat
+	-- add more protected variables 
 	local vars = self[ tostring( unit ) ];
 	
 	vars.diff = unit:GetDungeonDifficulty() + 1;
+	
+	-- set phase to combat
 	vars.phase = 2;
+	
 	vars.cleave = 13;
 	vars.enervatingBrand = 13;
 	vars.bladeTempest = 18;
 	
 	unit:StopChannel();
 
-    --[[ Developer notes: we dont need to send the chat here since
-    our monstersay table will do the job, instance collision checked. ]]
+    -- Developer notes: we dont need to send the chat here since
+    -- our monstersay table will do the job, instance collision checked.
 
-	unit:PlaySoundToSet( SOUND[ 2 ] );
+	unit:PlaySoundToSet( 17520 );
 
     unit:RegisterAIUpdateEvent( 1000 );
 	
@@ -178,18 +186,25 @@ function DoAction( unit )
 	-- intro
 	--elseif( vars.action == 1 )
 	--then
-	--	unit:PlaySoundToSet( SOUND[ 1 ] );
-	--	unit:SendChatMessage( 14, 0, YELL[ 1 ] );
+	--	unit:PlaySoundToSet( 17525 );
+	--	unit:SendChatMessage( 14, 0, yell[ 1 ] );
 	--	vars.action = 0;
 	
 	-- clone
+
 	elseif( vars.action == 2 )
 	then
-		unit:PlaySoundToSet( SOUND[ 5 ] );
-		unit:SendChatMessage( 14, 0, YELL[ 5 - 1 ] );
-		unit:CastSpell( SPELL_CLEAR_DEBUFFS );
-		unit:CastSpell( SPELL_CLONE );
-		unit:CastSpell( SPELL_REPELLING_WAVE );
+		unit:PlaySoundToSet( 17524 );
+		unit:SendChatMessage( 14, 0, yell[ 3 ] );
+		
+		-- spell clear debuffs
+		unit:CastSpell( 34098 );
+		
+		-- spell clone
+		unit:CastSpell( 74511 );
+		
+		-- spell repelling wave 
+		unit:CastSpell( 74509 );
 	end
 end
 
@@ -225,8 +240,7 @@ function OnDamageTaken( unit, _, _, damage )
 	
 	if( hp > damage )
 	then
-		local iid = unit:GetInstanceID();
-		SHARED[ iid ].sharedHealth = unit:GetHealth() - damage;	
+		SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetHealth() - damage;	
 	end
 end
 
@@ -236,9 +250,9 @@ function OnLeaveCombat( unit )
 
 	--self[ tostring( unit ) ] = nil;
 
-	--[[ Developer notes: contrary to popular believe, this is the right place
-	to remove ai update event since if a creature is dead the ai update will not trigger, so
-	one remove ai update event its more than enough. ]]
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
 
 	unit:RemoveAIUpdateEvent();
 	
@@ -250,13 +264,14 @@ function OnLeaveCombat( unit )
 	vars.cloneCount = 0;
 	
 	-- reset shared variables
-	local iid = unit:GetInstanceID();
-	SHARED[ iid ].sharedHealth = unit:GetMaxHealth();
+	SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetMaxHealth();
 	
+	-- get the channel target
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
 	if( crystal )
 	then
-		unit:ChannelSpell( SPELL_BARRIER_CHANNEL, crystal );
+		-- spell barrier channel 
+		unit:ChannelSpell( 76221, crystal );
 	end
 end
 
@@ -264,9 +279,9 @@ function OnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-    	local rand = math.random( 3, 4 );
-    	unit:PlaySoundToSet( SOUND[ rand ] );
-    	unit:SendChatMessage( 14, 0, YELL[ rand - 1 ] );
+    	local rand = math.random( 1, 2 );
+    	unit:PlaySoundToSet( sound[ rand ] );
+    	unit:SendChatMessage( 14, 0, yell[ rand ] );
 	end
 end
 
@@ -278,24 +293,24 @@ function OnDeath( unit )
 	
 	SHARED[ unit:GetInstanceID() ] = nil;
 
-    --[[ Developer notes: we dont need to send the chat here since our
-    monstersay table will do the job, instance collision checked. ]]
+    -- Developer notes: we dont need to send the chat here since our
+    -- monstersay table will do the job, instance collision checked.
 
-	unit:PlaySoundToSet( SOUND[ 6 ] );
+	unit:PlaySoundToSet( 17523 );
 	
-	-- open tree door
+	-- get tree door
 	local firefield = unit:GetGameObjectNearestCoords( 3153.27, 380.47, 86.36, 203005 );
-	
 	if( firefield )
 	then
+		-- open tree door
 		firefield:SetByte( 0x0006 + 0x000B, 0, 0 );
 	end
 
-	-- get out tree
+	-- get the lady in the tree
     local xerestrasza = unit:GetCreatureNearestCoords( 3155.54, 342.39, 84.60, 40429 );
-	
     if( xerestrasza )
     then
+		-- come out lady and meet the party
         xerestrasza:MoveTo( 3151.236, 379.8733, 86.31996, 0 );
     end
 end
@@ -307,8 +322,8 @@ function OnAIUpdate( unit )
 		return;
 	end
 
-	local iid = unit:GetInstanceID();
-	unit:SetHealth( SHARED[ iid ].sharedHealth );
+	-- update baltharus health acording to shared health
+	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );
 
 	--if( unit:IsCasting() == true ) then return; end
 
@@ -329,7 +344,7 @@ function OnAIUpdate( unit )
 
 	if( vars.cleave <= 0 )
 	then
-		unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
+		unit:CastSpellOnTarget( 40504, unit:GetMainTank() );
 		vars.cleave = math.random( 20, 24 );
 
 	elseif( vars.enervatingBrand <= 0 )
@@ -337,15 +352,18 @@ function OnAIUpdate( unit )
 		local raidMode = { 2, 4, 2, 4 };
 		local targetNum = raidMode[ vars.diff ];
 
-		for i = 1, targetNum  -- targetNum its the "for" limiter
+		-- targetNum its the "for" limiter
+		for i = 1, targetNum  
 		do
-			local target = unit:GetRandomPlayer( 2 );  -- range 45
+			 -- range 45 its fine?
+			local target = unit:GetRandomPlayer( 2 ); 
 			if( target )
 			then
-				unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, target );
+				-- cast spell enervating brand
+				unit:CastSpellOnTarget( 74502, target );
 				
-				-- hack fix: empower self
-				unit:CastSpell( SPELL_SIPHONED_MIGHT );
+				-- hack fix: empower self (spell siphoned might)
+				unit:CastSpell( 74507 );
 			end
 		end
 
@@ -354,7 +372,7 @@ function OnAIUpdate( unit )
 	elseif( vars.bladeTempest <= 0 )
 	then
 		unit:Root();
-		unit:FullCastSpell( SPELL_BLADE_TEMPEST );
+		unit:FullCastSpell( 75125 );
 		vars.bladeTempest = 24;
 	end
 end
@@ -368,7 +386,9 @@ RegisterUnitEvent( 39751, 4 , OnDeath );
 RegisterUnitEvent( 39751, 21, OnAIUpdate );
 
 --[[
-		Clone AI (39899)
+
+		Clone AI ( 39899 )
+		
 --]]
 
 function CloneOnSpawn( unit )
@@ -379,8 +399,8 @@ function CloneOnSpawn( unit )
 	
 	};
 	
-	local iid = unit:GetInstanceID();
-	unit:SetHealth( SHARED[ iid ].sharedHealth );
+	-- set same health as original baltharus
+	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );
 
 	unit:EquipWeapons( 28365, 0, 0 );
 	unit:SetFlag( 0x0006 + 0x0035, 0x00000040 );
@@ -408,8 +428,7 @@ function CloneOnDamageTaken( unit, _, _, damage )
 
 	if( hp > damage )
 	then
-		local iid = unit:GetInstanceID();
-		SHARED[ iid ].sharedHealth = unit:GetHealth() - damage;
+		SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetHealth() - damage;
 	end
 end
 
@@ -419,11 +438,13 @@ function CloneOnLeaveCombat( unit )
 
 	--self[ tostring( unit ) ] = nil;
 
-	--[[ Developer notes: contrary to popular believe, this is the right place
-	to remove ai update event since if a creature is dead the ai update will not trigger, so
-	one remove ai update event its more than enough. ]]
-
-	unit:CastSpell( SPELL_SPAWN_EFFECT );
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
+	
+	-- spell spawn effect
+	unit:CastSpell( 64195 );
+	
 	unit:RemoveAIUpdateEvent();
 
 end
@@ -435,8 +456,8 @@ function CloneOnAIUpdate( unit )
 		return;
 	end
 	
-	local iid = unit:GetInstanceID();
-	unit:SetHealth( SHARED[ iid ].sharedHealth );	
+	-- update clone health acording to shared health
+	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );	
 	
 	--if( unit:IsCasting() == true ) then return; end
 
@@ -457,7 +478,7 @@ function CloneOnAIUpdate( unit )
 
 	if( vars.cleave <= 0 )
 	then
-		unit:CastSpellOnTarget( SPELL_CLEAVE, unit:GetMainTank() );
+		unit:CastSpellOnTarget( 40504, unit:GetMainTank() );
 		vars.cleave = math.random( 20, 24 );
 
 	elseif( vars.enervatingBrand <= 0 )
@@ -465,15 +486,18 @@ function CloneOnAIUpdate( unit )
 		local raidMode = { 2, 4, 2, 4 };
 		local targetNum = raidMode[ vars.diff ];
 
-		for i = 1, targetNum -- targetNum its the "for" limiter
+		-- targetNum its the "for" limiter
+		for i = 1, targetNum 
 		do
-			local target = unit:GetRandomPlayer( 2 );  -- range 45
+			-- range 45 its fine?
+			local target = unit:GetRandomPlayer( 2 );  
 			if( target )
 			then
-				unit:CastSpellOnTarget( SPELL_ENERVATING_BRAND, unit:GetRandomPlayer( 2 ) ); -- range 45
+				-- cast spell enervating brand
+				unit:CastSpellOnTarget( 74502, unit:GetRandomPlayer( 2 ) ); -- range 45
 				
-				-- hack fix: empower self
-				unit:CastSpell( SPELL_SIPHONED_MIGHT );
+				-- hack fix: empower self (spell siphoned might)
+				unit:CastSpell( 74507 );
 			end
 		end
 
@@ -482,7 +506,7 @@ function CloneOnAIUpdate( unit )
 	elseif( vars.bladeTempest <= 0 )
 	then
 		unit:Root();
-		unit:FullCastSpell( SPELL_BLADE_TEMPEST );
+		unit:FullCastSpell( 75125 );
 		vars.bladeTempest = 24;
 	end
 end
@@ -492,6 +516,8 @@ RegisterUnitEvent( 39899, 1 , CloneOnCombat );
 RegisterUnitEvent( 39899, 23, CloneOnDamageTaken );
 RegisterUnitEvent( 39899, 2 , CloneOnLeaveCombat );
 RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
+
+--print( "Lua memory after Baltharus: "..gcinfo().." Kb." );
 
 --[[
 		Spell: Enervating Brand
@@ -513,7 +539,6 @@ end
 RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --]]
-
 --[[ 
 		Debug commands disabled by default 
 
@@ -561,12 +586,12 @@ function Commands( _, plr, message )
 			
 				elseif( message == "#spawneffect" )
 				then
-					selection:CastSpell( SPELL_SPAWN_EFFECT );
+					selection:CastSpell( 64195 );
 			
 				elseif( message == "#clone" )
 				then
-					selection:CastSpell( SPELL_CLONE );
-					selection:CastSpell( SPELL_REPELLING_WAVE );
+					selection:CastSpell( 74511 );
+					selection:CastSpell( 74509 );
 					
 				elseif( message == "#damage" )
 				then
@@ -574,7 +599,7 @@ function Commands( _, plr, message )
 					
 				elseif( message == "#enervating" )
 				then
-					selection:CastSpellOnTarget( SPELL_ENERVATING_BRAND, selection:GetRandomPlayer( 0 ) );
+					selection:CastSpellOnTarget( 74502, selection:GetRandomPlayer( 0 ) );
 				
 				elseif( message == "#enervating2" )
 				then
@@ -582,7 +607,7 @@ function Commands( _, plr, message )
 				
 				elseif( message == "#siphon" )
 				then
-					selection:CastSpell( SPELL_SIPHONED_MIGHT );
+					selection:CastSpell( 74507 );
 				end
 			end
 		end
