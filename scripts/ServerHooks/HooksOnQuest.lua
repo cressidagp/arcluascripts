@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Outland Quest Hooks
+	Quest Hooks
 	Engine: A.L.E
 
   Credits:
@@ -17,11 +17,9 @@
 
 --]]
 
-QUESTS_HOOK_OUTLAND = {}
+QUESTS_HOOK = {}
 
-function QUESTS_HOOK_OUTLAND.OnComplete( event, plr, questID, questEnder )
-
-    if( plr:GetMapId() ~= 530 ) then return; end
+function QUESTS_HOOK.OnComplete( event, plr, questID, questEnder )
 
     if( questID == 10254 ) -- Force Commander Danath
     then
@@ -30,4 +28,4 @@ function QUESTS_HOOK_OUTLAND.OnComplete( event, plr, questID, questEnder )
     end
 end
 
-RegisterServerHook( 22, QUESTS_HOOK_OUTLAND.OnComplete );
+RegisterServerHook( 22, QUESTS_HOOK.OnComplete );
