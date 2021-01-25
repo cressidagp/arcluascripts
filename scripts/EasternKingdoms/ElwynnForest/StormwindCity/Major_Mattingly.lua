@@ -13,6 +13,11 @@
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
+	https://wow.gamepedia.com/Major_Mattingly
+	https://wow.gamepedia.com/Overlord_Runthak 14392
+	
+	two in one chance?
+	
 --]]
 
 --local SPELL_RALLYNG_CRY = 22888; -- Rallyng Cry of the Dragonslayer

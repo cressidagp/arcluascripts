@@ -32,4 +32,3 @@ WriteUByte
 WriteULong
 WriteUShort
 WriteWoWGuid
-
