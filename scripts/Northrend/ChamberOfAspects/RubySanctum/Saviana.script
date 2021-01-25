@@ -4,7 +4,7 @@
 	Engine: A.L.E
 	
 	Instance: The Ruby Sanctum
-	Boss: Saviana Ragefire (39747)
+	Boss: Saviana Ragefire
 
 	Credits:
 
@@ -21,20 +21,21 @@
 	*) 74452: has a dummy effect (0) but no handler for it (need a proper fix).
 	*) 74454: has a dummy effect (0) but no handler for it (need a proper fix).
 	*) 74455: has a scripted effect (0) but no handler for it.
+	*) remove spell constants
 
 	enUS locale:
 
-	--[ 1 ] = "You will sssuffer for this intrusion!";	-- OnCombat
-	[ 1 ] = "Burn in the master's flame!";			-- OnCast: "Conflagration"
-	[ 2 ] = "Halion will be pleased.";			-- OnTargetDied 1
-	[ 3 ] = "As it should be....";				-- OnTargetDied 2
+	"You will sssuffer for this intrusion!",-- OnCombat
+	"Burn in the master's flame!",			-- OnCast: "Conflagration"
+	"Halion will be pleased.",		-- OnTargetDied 1
+	"As it should be...."				-- OnTargetDied 2
 	
 	esMX locale:
 	
-	--[ 1 ] = "¡Sssufrirás por esta intrusión!";	-- OnCombat
-	[ 1 ] = "¡Ardan en las llamas del amo!";	-- OnCast: "Conflagration"
-	[ 2 ] = "Halion estará felíz.";			-- OnTargetDied 1
-	[ 3 ] = "Como debía ser....";			-- OnTargetDied 2
+	"¡Sssufrirás por esta intrusión!",	-- OnCombat
+	"¡Ardan en las llamas del amo!",	-- OnCast: "Conflagration"
+	"Halion estará felíz.",		-- OnTargetDied 1
+	"Como debía ser...."			-- OnTargetDied 2
 	
 --]]
 	
@@ -53,19 +54,15 @@ local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".SAVIANA_RAGEFIRE", package.seeall );
 
-local SOUND = {
-[ 1 ] = 17528;  -- OnCombat
-[ 2 ] = 17532;  -- OnCast: "Conflagration"
-[ 3 ] = 17530;  -- OnTargetDied 1
-[ 4 ] = 17529;  -- OnTargetDied 2
-[ 5 ] = 17531;	-- OnDeath (just a sound effect, not text).
+local sound = {
+17530,  -- OnTargetDied 1
+17529  -- OnTargetDied 2
 };
 
-local YELL = {
---[ 1 ] = "You will sssuffer for this intrusion!";	-- OnCombat
-[ 1 ] = "Burn in the master's flame!";			-- OnCast: "Conflagration"
-[ 2 ] = "Halion will be pleased.";			-- OnTargetDied 1
-[ 3 ] = "As it should be....";				-- OnTargetDied 2
+local yell = {
+"Halion will be pleased.", -- OnTargetDied 1
+"As it should be....", -- OnTargetDied 2
+"Burn in the master's flame!" -- OnCast: "Conflagration"
 };
 
 -- Spells:
@@ -108,7 +105,7 @@ function OnCombat( unit )
 	--[[ Developer notes: we dont need to send the chat here since
 	our monstersay table will do the job, instance collision checked. ]]
 
-	unit:PlaySoundToSet( SOUND[ 1 ] );
+	unit:PlaySoundToSet( 17528 );
 
 	unit:RegisterAIUpdateEvent( 1000 );
 
@@ -133,8 +130,8 @@ function OnTargetDied( unit, _, victim )
 	if( victim:IsPlayer() == true )
 	then
 		local ran = math.random( 3, 4 );
-		unit:PlaySoundToSet( SOUND[ rand ] );
-		unit:SendChatMessage( 14, 0, YELL[ rand - 1 ] );
+		unit:PlaySoundToSet( sound[ rand ] );
+		unit:SendChatMessage( 14, 0, yell[ rand ] );
 	end
 end
 
@@ -144,7 +141,7 @@ function OnDeath( unit )
 
 	self[ tostring( unit ) ] = nil;
 
-	unit:PlaySoundToSet( SOUND[ 5 ] );
+	unit:PlaySoundToSet( 17531 );
 
 end
 
@@ -169,12 +166,12 @@ function OnAIUpdate( unit )
 
 	if( vars.flameBreath <= 0 )
 	then
-		unit:FullCastSpellOnTarget( SPELL_FLAME_BREATH, unit:GetMainTank() );
+		unit:FullCastSpellOnTarget( 74403, unit:GetMainTank() );
 		vars.flameBreath = math.random( 20, 30 );
 
 	elseif( vars.enrage <= 0 )
 	then
-		unit:CastSpell( SPELL_ENRAGE );
+		unit:CastSpell( 78722 );
 		unit:SendChatMessage( 16, 0, "%s becomes enraged!" );
 		vars.enrage = 24;
 
@@ -208,9 +205,10 @@ function MovementInform( unit )
 
 	elseif( vars.movement == 4 )
 	then
-		unit:FullCastSpell( SPELL_CONFLAGRATION )
-		unit:PlaySoundToSet( SOUND[ 2 ] );
-		unit:SendChatMessage( 14, 0, YELL[ 1 ] );
+		-- spell conflagration
+		unit:FullCastSpell( 74452 )
+		unit:PlaySoundToSet( 17532 );
+		unit:SendChatMessage( 14, 0, yell[ 3 ] );
 
 	elseif( vars.movement == 8 )
 	then
@@ -274,7 +272,9 @@ function ConflagrationDummy( effectIndex, spellObject )
 		local target = caster:GetRandomPlayer( 0 );
 		if( target ) 
 		then
+			-- spell conflagration 2
 			caster:FullCastSpellOnTarget( SPELL_CONFLAGRATION_2, target );
+			-- spell flame beacon
 			caster:CastSpellOnTarget( SPELL_FLAME_BEACON, target );
 		end
 	end
