@@ -4,7 +4,7 @@
 	Engine: A.L.E
 	
 	Zone: Durotar
-	Creature: Gazzuz
+	Creatures: Demon Skin casters
 
 	Credits:
 
