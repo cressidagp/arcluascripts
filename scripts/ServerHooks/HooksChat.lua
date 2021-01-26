@@ -1,13 +1,20 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Hooks Chat
 	Engine: A.L.E
-	Credits: nil
+	
+	Hooks Chat
+	
+	Credits:
+
+	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) Hypersniper for his lua guides and some job in the lua engine.
+	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 
 --]]
 
-local COMMANDS = { "help", "gprint", "removeauras", "getphase", "jail", "entry" };
+local COMMANDS = { "help", "gprint", "removeauras", "getphase", "jail", "entry", "movetype" };
 
 HOOKS_CHAT = {}
 
@@ -32,39 +39,39 @@ function HOOKS_CHAT.AllCommands( event, plr, msg )
 
 			plr:SendBroadcastMessage( "Lua global table has been printed." );
 			
-		else
-			local target = plr:GetSelection();
-			if( target == nil )
-			then
-				plr:SendBroadcastMessage( "You dont have a target." );
 				
-			else
-				if( msg == "#removeauras" )
-				then
-					target:RemoveAllAuras();
+		elseif( msg == "#removeauras" )
+		then
+			local selection = plr:GetSelection();
+			selection:RemoveAllAuras();
 				
-				elseif( msg == "#getphase" )
-				then
-					plr:SendBroadcastMessage( "Phase: "..target:GetPhase().."" );
+		elseif( msg == "#getphase" )
+		then
+			local selection = plr:GetSelection();
+			plr:SendBroadcastMessage( "Phase: "..selection:GetPhase().."" );
 				
-				elseif( msg == "#jail" )
-				then
-					target:Teleport( 0, -8667.677, 624.130, 95.69, 2.2 );
-					target:SendBroadcastMessage( "You are in jail." );
-					plr:SendBroadcastMessage( "Player has been send to jail." );					
+		elseif( msg == "#jail" )
+		then
+			local selection = plr:GetSelection();
+			selection:Teleport( 0, -8667.677, 624.130, 95.69, 2.2 );
+			selection:SendBroadcastMessage( "You are in jail." );
+			plr:SendBroadcastMessage( "Player has been send to jail." );					
 			
-				elseif( msg == "#entry" )
-				then
-					plr:SendBroadcastMessage( "Entry: "..target:GetEntry().."" );
-				
-				--[[ debug rangecheck
-				elseif( msg == "#distance" )
-				then 
-					plr:SendBroadcastMessage( "Distance: "..plr:GetDistance( target ).."" );
-					plr:SendBroadcastMessage( "Use .debug dist to get distance in yards." );
-				--]]
-				end
-			end
+		elseif( msg == "#entry" )
+		then
+			plr:SendBroadcastMessage( "Entry: "..selection:GetEntry().."" );
+					
+		elseif( msg == "#movetype" )
+		then
+			local selection = plr:GetSelection();
+			plr:SendBroadcastMessage( "Entry: "..selection:GetMovementType().."" );
+					
+		--[[ debug rangecheck
+		elseif( msg == "#distance" )
+		then 
+			plr:SendBroadcastMessage( "Distance: "..plr:GetDistance( target ).."" );
+			plr:SendBroadcastMessage( "Use .debug dist to get distance in yards." );
+		--]]
 		end
 	end
 end
