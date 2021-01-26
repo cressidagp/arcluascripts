@@ -46,22 +46,21 @@
 	"Tu poder mengua, anciano... Pronto te unirás a tus amigos.";
 
 --]]
-	
---local MAP_RUBY_SANCTUM	= 724;
 
---local NPC_XERESTRASZA	= 40429;
---local NPC_BALTHARUS		= 39751;
-
---local FACTION_HOSTILE = 14;
-
---local AREA_TRIGGER = 5867; -- Baltharus plateau
+--[[ Constants:
+local MAP_RUBY_SANCTUM	= 724;
+local NPC_XERESTRASZA	= 40429;
+local NPC_BALTHARUS		= 39751;
+local FACTION_HOSTILE = 14;
+local AT_BALTHARUS_PLATEAU = 5867;
+]]
 
 --[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local GAMEOBJECT_DYNAMIC =  0x0006 + 0x0008;
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
---]]
+]]
 
 local sound = {
 17491,	-- Xerex event 1
@@ -93,18 +92,19 @@ local chat = {
 local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
 local WORLDSTATE_CORPOREALITY_TWILIGHT  = 5050;
 local WORLDSTATE_CORPOREALITY_TOGGLE    = 5051;
---]]
+]]
 
--- Spells:
---local SPELL_RALLY = 75416;
+--[[ Spells:
+local SPELL_RALLY = 75416;
+]]
 
 RUBY_SANCTUM = {}
 
-function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
+function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 
     -- Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
     -- are created. But then if player from opposite faction enter variables wont be created with the same idd number.
-    -- so will have no more choice than spend resources getting instance id again. ]]
+    -- So will have no more choice than spend resources getting instance id again.
 
     local iid = plr:GetInstanceID();
 
@@ -124,7 +124,7 @@ function RUBY_SANCTUM.OnPlayerEnter( iid, plr )
     end
 end
 
-function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
+function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 
     local iid = killer:GetInstanceID();
 
@@ -172,9 +172,9 @@ function RUBY_SANCTUM.OnCreatureDeath( iid, victim, killer )
 		
 		if( controller )
 		then
-			-- All hail Halion!
-			--controller:CastSpell( 76006 );
-			controller:SpawnCreature( 39863, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );
+			--[[
+			controller:CastSpell( 76006 );
+			controller:SpawnCreature( 39863, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );]]
 		end
     end
 end
@@ -285,7 +285,7 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	end
 end
 
-function RUBY_SANCTUM.OnAreaTrigger( iid, plr, areaTriggerID )
+function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 
 	local iid = plr:GetInstanceID();
 
@@ -325,8 +325,7 @@ RegisterInstanceEvent( 724, 3, RUBY_SANCTUM.OnAreaTrigger );
 --RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
 
 --[[ 
-		Debug commands disabled by default 
-
+		DEBUG COMMANDS DISABLED BY DEFAULT 
 
 
 local COMMANDS = { "ruby", "port", "exit", "xerex", "open", "close" };
@@ -354,7 +353,7 @@ function RubyCommands( _, plr, message )
 		then
 			local iid = plr:GetInstanceID();
 			local xerex = GetInstanceCreature( 724, iid, 134456 );
-			xerex:SendChatMessage( 12, 0, CHAT[ 6 ] );
+			xerex:SendChatMessage( 12, 0, chat[ 6 ] );
 			
 		elseif( message == "#open" )
 		then
@@ -365,24 +364,6 @@ function RubyCommands( _, plr, message )
 		then
 			local firefield = plr:GetGameObjectNearestCoords( 3153.27, 380.47, 86.36, 203005 );
 			firefield:SetByte( 0x0006 + 0x000B, 0, 1 );
-			
-		else
-		
-			local selection = plr:GetSelection();
-			if( selection == nil)
-			then
-				plr:SendBroadcastMessage( "You need to select something first." );
-				
-			else		
-
-				if( message == "#n" )
-				then
-					
-				elseif( message == "#m" )
-				then
-
-				end
-			end
 		end
     end
 end

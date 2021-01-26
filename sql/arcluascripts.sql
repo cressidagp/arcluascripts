@@ -289,7 +289,6 @@ UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134313 and `entry` = 3817
 UPDATE `creature_spawns` SET `phase` = 64 WHERE `id` = 134299 and `entry` = 38175; -- Ghostly Priest
 
 -- Starting to phase shift people for Horde set
-
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134009 and `entry` = 37223; -- Sylvanas (enemy to horde)
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134010 and `entry` = 37223; -- Sylvanas
 UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134253 and `entry` = 38112; -- Falric
@@ -552,8 +551,7 @@ REPLACE INTO `waypoints_lua` (`entry`, `wid`, `p_x`, `p_y`, `p_z`, `p_o`, `wtime
 --
 -- Elwynn Forest: Matt
 --
-
-UPDATE `creature_spawns` SET `position_x` = -9387.13, `position_y` = -117.859, `position_z` = 58.862, `orientation` = 2.818  WHERE `id` = @ID3 and `entry` = '794';
+UPDATE `creature_spawns` SET `position_x` = -9387.13, `position_y` = -117.859, `position_z` = 58.862, `orientation` = 2.818  WHERE `id` = @ID3 and `entry` = 794;
 
 UPDATE `creature_spawns` SET `movetype` = 2 WHERE `entry` = 794;
 
@@ -613,10 +611,7 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID3, 52, -9383.48, -114.425, 59.0793, 0, 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID3, 53, -9385.67, -116.133, 59.0943, 0, 0, 0, 0, 0, 0, 0, 0);
 
---
 -- Terokkar Forest: Liutenant Gravelhammer
---
-
 UPDATE `creature_spawns` SET `movetype` = 4, `bytes2` = 0 WHERE `entry` = 18713;
 
 DELETE FROM `creature_waypoints` WHERE `spawnid` = @ID8;
@@ -639,7 +634,6 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID9, 3, -2565.83, 7274.23, 15.55, 23000, 0, 0, 0, 0, 0, 0, 0);
 
 -- Azuremyst Isle: Zulduun
-
 UPDATE `creature_spawns` SET `movetype` = 2 WHERE `entry` = 16502;
 
 DELETE FROM `creature_waypoints` WHERE `spawnid` = @ID10;
@@ -752,18 +746,14 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 
 -- Azuremyst Isle: quest "Healing the Lake"
 -- Dirty hack: set id to 1 will help to prevent trigger the quest end event when clicking in the gameobject
-
 UPDATE `quests` SET `flags` = 128, `ReqKillMobOrGOId1` = 1, `ReqKillMobOrGOCount1` = 1 WHERE `entry` = 9294;
 
 -- Azuremyst Isle: Draenei Survivor
-
 UPDATE `creature_proto` SET `auras` = 35046 WHERE `entry` = 16483;
 UPDATE `creature_spawns` SET `flags` = 4608 WHERE `entry` = 16483; -- UNIT_FLAG_UNKNOWN_10 + UNIT_FLAG_PVP
 
 -- Azuremyst Isle: Injured Draenei
-
 UPDATE `creature_spawns` SET `displayid` = 0, `flags` = 33024, `bytes0` = 0 WHERE `entry` = 16971; -- UNIT_FLAG_NOT_ATTACKABLE_9 + UNIT_FLAG_UNKNOWN_16
-
 
 --
 --
