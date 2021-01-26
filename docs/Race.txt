@@ -1,0 +1,12 @@
+Race Ids:
+1 - Human
+2 - Orc
+3 - Dwarf
+4 - Nightelf
+5 - Undead
+6 - Tauren
+7 - Gnome
+8 - Troll
+9 - Goblin
+10 - Bloodelf
+11 - Draenei
