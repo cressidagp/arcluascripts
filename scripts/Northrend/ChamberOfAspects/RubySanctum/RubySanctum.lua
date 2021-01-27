@@ -47,6 +47,8 @@
 
 --]]
 
+--print( "Lua memory before Ruby Sanctum: "..gcinfo().." KB." );
+
 --[[ Constants:
 local MAP_RUBY_SANCTUM	= 724;
 local NPC_XERESTRASZA	= 40429;
@@ -135,6 +137,12 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
     then
         RUBY_SANCTUM[ iid ].baltharusIsDead = true;
 		
+		local xerex = GetInstanceCreature( 724, iid, 134456 );
+		if( xerex )
+		then
+			xerex:RegisterEvent( RUBY_SANCTUM.DoAction, 2000, 1 );
+		end
+		
         if( RUBY_SANCTUM[ iid ].savianaIsDead == true )
         then
             local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
@@ -145,7 +153,7 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 				flame:SetByte( 0x0006 + 0x000B, 0, 0 );
 			end
         end
-
+		
 	-- saviana
     elseif( entry == 39747 )
     then
@@ -179,12 +187,7 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
     end
 end
 
-function RUBY_SANCTUM.XerexOnSpawn( unit )
-
-	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
-end
-
-function RUBY_SANCTUM.XerexDoAction( unit )
+function RUBY_SANCTUM.DoAction( unit )
 
 	local iid = unit:GetInstanceID();
 	
@@ -197,13 +200,21 @@ function RUBY_SANCTUM.XerexDoAction( unit )
 		unit:PlaySoundToSet( sound[ 9 ] );
         unit:SendChatMessage( 14, 0, chat[ 9 ] );
 		unit:Emote( 5, 0 );
+	
+	-- intro baltharus
+	elseif( RUBY_SANCTUM[ iid ].action == 2 )
+	then
+		unit:PlaySoundToSet( sound[ 10 ] );
+        unit:SendChatMessage( 14, 0, chat[ 10 ] );
 		
 	-- baltharus death
-	elseif( RUBY_SANCTUM[ iid ].action == 2 )
+	elseif( RUBY_SANCTUM[ iid ].action == 3 )
 	then
 		unit:PlaySoundToSet( sound[ 1 ] );
         unit:SendChatMessage( 14, 0, chat[ 1 ] );
 		unit:Emote( 5, 0 );
+		
+		unit:RegisterAIUpdateEvent( 1000 );
 		
 		RUBY_SANCTUM[ iid ].isIntro = false;
 		
@@ -215,19 +226,8 @@ function RUBY_SANCTUM.XerexDoAction( unit )
 		RUBY_SANCTUM[ iid ].event5 = 51;
 		RUBY_SANCTUM[ iid ].event6 = 61;
 		RUBY_SANCTUM[ iid ].event7 = 69;
+		RUBY_SANCTUM[ iid ].vars = 0;
 	end
-end
-
-function RUBY_SANCTUM.BaltharusDoAction( unit )
-
-	local iid = unit:GetInstanceID();
-	
-	-- intro baltharus
-	if( RUBY_SANCTUM[ iid ].action == 1 )
-	then
-		unit:PlaySoundToSet( sound[ 10 ] );
-        unit:SendChatMessage( 14, 0, chat[ 10 ] );
-	end	
 end
 
 function RUBY_SANCTUM.XerexOnAIUpdate( unit )
@@ -245,90 +245,118 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	RUBY_SANCTUM[ iid ].event6 = RUBY_SANCTUM[ iid ].event6 - 1;
 	RUBY_SANCTUM[ iid ].event7 = RUBY_SANCTUM[ iid ].event7 - 1;
 	
-	if( RUBY_SANCTUM[ iid ].event1 <= 0 )
+	if( RUBY_SANCTUM[ iid ].event1 <= 0 and RUBY_SANCTUM[ iid ].vars == 0 )
 	then
 		unit:PlaySoundToSet( sound[ 2 ] );
         unit:SendChatMessage( 12, 0, chat[ 2 ] );
+		RUBY_SANCTUM[ iid ].vars = 1;
 	
-	elseif( RUBY_SANCTUM[ iid ].event2 <= 0 )
+	elseif( RUBY_SANCTUM[ iid ].event2 <= 0 and RUBY_SANCTUM[ iid ].vars == 1 )
 	then
 		unit:PlaySoundToSet( sound[ 3 ] );
         unit:SendChatMessage( 12, 0, chat[ 3 ] );
+		RUBY_SANCTUM[ iid ].vars = 2;
 	
-	elseif( RUBY_SANCTUM[ iid ].event3 <= 0 )
+	elseif( RUBY_SANCTUM[ iid ].event3 <= 0 and RUBY_SANCTUM[ iid ].vars == 2 )
 	then
 		unit:PlaySoundToSet( sound[ 4 ] );
         unit:SendChatMessage( 12, 0, chat[ 4 ] );
+		RUBY_SANCTUM[ iid ].vars = 3;
 
-	elseif( RUBY_SANCTUM[ iid ].event4 <= 0 )
+	elseif( RUBY_SANCTUM[ iid ].event4 <= 0 and RUBY_SANCTUM[ iid ].vars == 3 )
 	then
 		unit:PlaySoundToSet( sound[ 5 ] );
         unit:SendChatMessage( 12, 0, chat[ 5 ] );
+		RUBY_SANCTUM[ iid ].vars = 4;
 
-	elseif( RUBY_SANCTUM[ iid ].event5 <= 0 )
+	elseif( RUBY_SANCTUM[ iid ].event5 <= 0 and RUBY_SANCTUM[ iid ].vars == 4 )
 	then
 		unit:PlaySoundToSet( sound[ 6 ] );
         unit:SendChatMessage( 12, 0, chat[ 6 ] );
+		RUBY_SANCTUM[ iid ].vars = 5;
 		
-	elseif( RUBY_SANCTUM[ iid ].event6 <= 0 )
+	elseif( RUBY_SANCTUM[ iid ].event6 <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
 	then
 		unit:PlaySoundToSet( sound[ 7 ] );
         unit:SendChatMessage( 12, 0, chat[ 7 ] );
+		RUBY_SANCTUM[ iid ].vars = 6;
 		
-	elseif( RUBY_SANCTUM[ iid ].event7 <= 0 )
+	elseif( RUBY_SANCTUM[ iid ].event7 <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
 	then
 		unit:PlaySoundToSet( sound[ 8 ] );
         unit:SendChatMessage( 12, 0, chat[ 8 ] );
 		unit:Emote( 5, 0 );
 		unit:RemoveAIUpdateEvent();
 		unit:SetNPCFlags( 3 );
+		RUBY_SANCTUM[ iid ].vars = nil;
 	end
 end
 
 function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 
 	local iid = plr:GetInstanceID();
-
+	
+	-- on baltharus plateau
     if( areaTriggerID == 5867 )
     then
+		-- get xerex using spawnid
 		local xerex = GetInstanceCreature( 724, iid, 134456 );
 		if( xerex )
 		then
-			xerex:RegisterEvent( RUBY_SANCTUM.XerexDoAction, 1000, 1 );
+			xerex:RegisterEvent( RUBY_SANCTUM.DoAction, 1000, 1 );
 		end
 		
+		-- get baltharus using spawnid
 		local baltharus = GetInstanceCreature( 724, iid, 134428 );
 		if( baltharus )
 		then
-			baltharus:RegisterEvent( RUBY_SANCTUM.BaltharusDoAction, 7000, 1 );
+			baltharus:RegisterEvent( RUBY_SANCTUM.DoAction, 7000, 1 );
 		end
     end
 end
 
-function RUBY_SANCTUM.GoOnSpawn( go )
-
-	-- 3: green, 2: flames to burned, 1: flames to green, 0: burned
-	go:SetByte( 0x0006 + 0x000B, 0, 3 );
-	go:SetUInt32Value( 0x0006 + 0x0008, 1 );
-end
-
-RegisterUnitEvent( 40429, 18, RUBY_SANCTUM.XerexOnSpawn );
 RegisterUnitEvent( 40429, 21, RUBY_SANCTUM.XerexOnAIUpdate );
-
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
 RegisterInstanceEvent( 724, 5, RUBY_SANCTUM.OnCreatureDeath );
 RegisterInstanceEvent( 724, 3, RUBY_SANCTUM.OnAreaTrigger );
 
---RegisterGameObjectEvent( 203034, 2, RUBY_SANCTUM.GoOnSpawn );
---RegisterGameObjectEvent( 203035, 2, RUBY_SANCTUM.GoOnSpawn );
---RegisterGameObjectEvent( 203036, 2, RUBY_SANCTUM.GoOnSpawn );
---RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
+--print( "Lua memory after Ruby Sanctum: "..gcinfo().." KB." );
+
+--[[
+function RUBY_SANCTUM.GoOnSpawn( go )
+	
+	state 0: from green to black (close)
+	state 1: from black to green (open)
+	state 2: 
+	state 3: green (set to this at database )
+	go:SetByte( 0x0006 + 0x000B, 0, 3 );
+	go:SetUInt32Value( 0x0006 + 0x0008, 1 );
+end
+
+RegisterGameObjectEvent( 203034, 2, RUBY_SANCTUM.GoOnSpawn );
+RegisterGameObjectEvent( 203035, 2, RUBY_SANCTUM.GoOnSpawn );
+RegisterGameObjectEvent( 203036, 2, RUBY_SANCTUM.GoOnSpawn );
+RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
+
+-- fire ring 203007
+ 0: spawn fire on, then fire off
+ 1: spawn fire on
+ 2: spawn fire on, then fire off
+ 3: 
+ 
+-- deactivate gameobject
+function RUBY_SANCTUM.GoOnSpawn( go )
+	go:SetUInt32Value( 0x0006 + 0x0008, 0 );
+end
+
+RegisterGameObjectEvent( 203007, 2, RUBY_SANCTUM.GoOnSpawn );
+--]]
 
 --[[ 
-		DEBUG COMMANDS DISABLED BY DEFAULT 
+		DEBUG COMMANDS DISABLED BY DEFAULT
 
 
-local COMMANDS = { "ruby", "port", "exit", "xerex", "open", "close" };
+local COMMANDS = { "ruby", "port", "exit", "xerex", "open", "close", "phase1", "phase32" };
 
 function RubyCommands( _, plr, message )
 
@@ -364,6 +392,15 @@ function RubyCommands( _, plr, message )
 		then
 			local firefield = plr:GetGameObjectNearestCoords( 3153.27, 380.47, 86.36, 203005 );
 			firefield:SetByte( 0x0006 + 0x000B, 0, 1 );
+		
+		elseif( message == "#phase1" )
+		then
+			plr:PhaseSet( 1 )
+		
+		elseif( message == "#phase32" )
+		then
+			plr:PhaseSet( 32 )
+		
 		end
     end
 end
