@@ -1,3 +1,4 @@
+
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
@@ -41,7 +42,7 @@
 
 local mod = getfenv( 1 );
 assert( mod );
-module( mod._NAME..".HALION_DESTROYER", package.seeall );
+module( mod._NAME..".HALION_THE_DESTROYER", package.seeall );
 
 --[[ Constants:
 local MAP_RUBY_SANCTUM	= 724;
@@ -65,7 +66,7 @@ local H_ORB_CARRIER = 40471;
 local H_NPC_25M_ORB_CARRIER = 40472;
 local NPC_ORB_1 = 40083;
 local NPC_ORB_2 = 40100;
---]]
+]]
 
 --local TREES = { 203034, 203035, 203036, 203037 };
 
@@ -77,7 +78,7 @@ local UNIT_FLAG_COMBAT			= 0x00080000;
 local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000;
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
---]]
+]]
 
 --[[ not more needed so lets save some bytes
 local sound = {
@@ -92,26 +93,25 @@ local sound = {
 -- Twilight:
 [ 8 ] = 17506,	-- SpherePulse
 [ 9 ] = 17508	-- OnPhaseThree
-};--]]
+};
+]]
 
 local yell = {
--- Halion:
-[ 1 ] = "Meddlesome insects! You are too late. The Ruby Sanctum is lost!",	-- Intro
-[ 2 ] = "The heavens burn!",	-- OnMeterStrike
-[ 3 ] = "You will find only suffering within the realm of twilight! Enter if you dare!",	-- OnPhaseTwo
-[ 4 ] = "Another \"hero\" falls.",	-- OnTargetDied
-[ 5 ] = "Not good enough....",	-- OnBerserk
--- Twilight:
-[ 6 ] = "Beware the shadow!",
-[ 7 ] = "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!"
+"Meddlesome insects! You are too late. The Ruby Sanctum is lost!",	-- Halion: Intro
+"The heavens burn!", -- OnMeterStrike
+"You will find only suffering within the realm of twilight! Enter if you dare!",	-- OnPhaseTwo
+"Another \"hero\" falls.",	-- OnTargetDied
+"Not good enough....",	-- OnBerserk
+"Beware the shadow!", -- Twilight
+"I am the light and the darkness! Cower, mortals, before the herald of Deathwing!"
 };
 
 local text = {
-[ 1 ] = "Without pressure in both realms, %s begins to regenerate.",  -- Shared (type 41)
-[ 2 ] = "Your efforts force %s further out of the physical realm!", -- (type 41)
-[ 3 ] = "Your companions' efforts force %s further into the physical realm!", -- (type 41)
+"Without pressure in both realms, %s begins to regenerate.",  -- Shared (type 41)
+"Your efforts force %s further out of the physical realm!", -- (type 41)
+"Your companions' efforts force %s further into the physical realm!", -- (type 41)
 -- Shadow Orb
-[ 4 ] = "The orbiting spheres pulse with dark energy!" -- (type 41)
+"The orbiting spheres pulse with dark energy!" -- (type 41)
 };
 
 --[[ Spells (Halion):
@@ -158,8 +158,7 @@ local SPELL_METEOR_STRIKE_AOE_DAMAGE	= 74648;
 local SPELL_METEOR_STRIKE_FIRE_AURA_1	= 74713;
 local SPELL_METEOR_STRIKE_FIRE_AURA_2	= 74718;
 local SPELL_BIRTH_NO_VISUAL	= 40031;
-
---]]
+]]
 
 -- twilight, material
 local spell_corporeality = {
@@ -176,11 +175,11 @@ local spell_corporeality = {
 { 74831, 74836 }
 };
 
---[[ Worldstates:
+--[[ WorldStates:
 local WORLDSTATE_CORPOREALITY_MATERIAL = 5049;
 local WORLDSTATE_CORPOREALITY_TWILIGHT = 5050;
 local WORLDSTATE_CORPOREALITY_TOGGLE   = 5051;
---]]
+]]
 
 -- Phases:
 local PHASE_INTRO	= 1;
@@ -208,9 +207,6 @@ function OnSpawn( unit )
 		unit:SetMaxHealth( BOSS_HP[ diff + 1 ] );
 		unit:SetHealth( BOSS_HP[ diff + 1 ] );
 	end
-	
-	-- set unit field flags 2 enable power regen
-	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
 end
 
 function OnCombat( unit )
@@ -693,6 +689,8 @@ RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
 		
 --]]
 
+local HSHARED = {}
+
 -- def unit flags 256 + 33554432 (256 for development :P)
 function ControllerOnSpawn( unit )
 
@@ -712,7 +710,7 @@ function ControllerOnSpawn( unit )
 
 	};
 
-	unit:RegisterAIUpdateEvent( 1000 );
+	--unit:RegisterAIUpdateEvent( 1000 );
 
 end
 
@@ -724,7 +722,6 @@ function ControllerOnCombat( unit )
 	vars.twilightDamageTaken = 0;
 	vars.materialDamageTaken = 0;
 	vars.triggerBerserk = 1000 * 30 * 60;
-	--vars.evadeCheck = 5;
 	
 end
 
@@ -732,7 +729,7 @@ function ControllerOnLeaveCombat( unit )
 
 	local iid = unit:GetInstanceID();
 
-	if( SHARED[ iid ].halionIsDone == true )
+	if( HSHARED[ iid ].halionIsDone == true )
 	then return; end
 	
 	-- get twilight halion using guid
@@ -814,16 +811,16 @@ function ControllerDoAction( unit, action )
 	end
 end
 
---[[ Developer notes: we have a problem here, since arcemu didnt implemented extra_flags why miss
-CREATURE_FLAG_EXTRA_TRIGGER (creature is trigger-NPC (invisible to players only)). We can
-manually make the trigger invisible but invisible creatures cast invisible spells. ]]
+-- Developer notes: we have a problem here, since arcemu didnt implemented extra_flags why miss
+-- CREATURE_FLAG_EXTRA_TRIGGER (creature is trigger-NPC (invisible to players only)). We can
+-- manually make the trigger invisible but invisible creatures cast invisible spells.
 
 function ControllerOnAIUpdate( unit )
 
-	--if( unit:GetNextTarget() == nil ) then
-	--	unit:WipeThreatList();
-	--	return;
-	--end
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList();
+		return;
+	end
 	
 	local vars = self[ tostring( unit ) ];
 
@@ -897,7 +894,7 @@ function ControllerOnAIUpdate( unit )
 		local iid = unit:GetInstanceID();
 		
 		-- get twilight halion using guid
-		local twilightHalion = GetInstanceCreature( 724, iid, SHARED[ iid ].dataTwilight );
+		local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
 		if( twilightHalion )
 		then
 			twilightHalion:CastSpell( 75509 );
@@ -940,11 +937,6 @@ function ControllerOnAIUpdate( unit )
 	elseif( vars.activateEmbers and vars.activateEmbers <= 0 )
 	then
 		-- ToDo
-		
-	--[[elseif( vars.evadeCheck <= 0 )
-	then
-		-- ToDo
-		vars.evadeCheck = 5; --]]
 	end
 end
 
@@ -1042,7 +1034,7 @@ function OrbCarrierOnAIUpdate( unit, event )
 
 	-- on spawn
 	else
-        unit:RegisterAIUpdateEvent( 1000 );
+        --unit:RegisterAIUpdateEvent( 1000 );
 		
 		-- lets get orbs guid after 3 secs
 		unit:RegisterLuaEvent( OrbCarrierDoAction, 3000, 1, 1 );
@@ -1259,7 +1251,7 @@ RegisterServerHook( 33, SpellHalionTwilightPhasing );
 
 --]]
 --[[
-		Debug commands disabled by default
+		DEBUG COMMANDS DISABLED BY DEFAULT
 
 
 local COMMANDS = { "halion", "port", "exit", "open", "close", "hp75", "hp50", "action1", "action2", "action3", "action4", "meteor" };
