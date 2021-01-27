@@ -1,9 +1,10 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Hooks Zone
 	Engine: A.L.E
-
+	
+	Hooks Zone
+	
 	Credits:
 
 	*) Hypersniper for his lua guides and some job in the lua engine.

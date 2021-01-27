@@ -64,7 +64,7 @@ function HOOKS_CHAT.AllCommands( event, plr, msg )
 		elseif( msg == "#movetype" )
 		then
 			local selection = plr:GetSelection();
-			plr:SendBroadcastMessage( "Entry: "..selection:GetMovementType().."" );
+			plr:SendBroadcastMessage( "Type: "..selection:GetMoveType().."" );
 					
 		--[[ debug rangecheck
 		elseif( msg == "#distance" )
