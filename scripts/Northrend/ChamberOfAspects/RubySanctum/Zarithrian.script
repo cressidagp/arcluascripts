@@ -39,6 +39,8 @@
 
 --]]
 
+--print( "Lua memory before Zarithrian: "..gcinfo().." Kb." );
+
 --[[ Constants:
 local MAP_RUBY_SANCTUM	= 724;
 local NPC_ZARITHRIAN	= 39746;
@@ -52,8 +54,6 @@ local NPC_ZARITHRIAN_SPAWN_STALKER	= 39794;
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
 local UNIT_FLAG_NOT_SELECTABLE		= 0x02000000
-local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
-local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
 ]]
 
 local mod = getfenv( 1 );
@@ -92,8 +92,6 @@ function OnSpawn( unit )
 		unit:SetHealth( 14098395 );
 	end
 	
-	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
-
 	-- [[ Moved this to SQL file.
 	-- unit:DisableCombat( true ); --]]
 
@@ -125,9 +123,9 @@ function OnLeaveCombat( unit )
 
 	self[ tostring( unit ) ] = nil;
 
-	--[[ Developer notes: contrary to popular believe, this is the right place
-	to remove ai update event since if a creature is dead the ai update will not trigger, so
-	one remove ai update event its more than enough. ]]
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
 
 	unit:RemoveAIUpdateEvent();
 
@@ -149,8 +147,8 @@ function OnDeath( unit )
 
 	self[ tostring( unit ) ] = nil;
 
-	--[[ Developer notes: we dont need to send the chat here since our
-	monstersay table will do the job, instance collision checked. ]]
+	-- Developer notes: we dont need to send the chat here since our
+	-- monstersay table will do the job, instance collision checked.
 
 	unit:PlaySoundToSet( 17515 );
 
@@ -235,9 +233,10 @@ RegisterUnitEvent( 39746, 3, OnTargetDied );
 RegisterUnitEvent( 39746, 4, OnDeath );
 RegisterUnitEvent( 39746, 21, OnAIUpdate );
 
+--print( "Lua memory after Zarithrian: "..gcinfo().." Kb." );
 
 --[[ 
-		Debug commands disabled by default 
+		DEBUG COMMANDS DISABLED BY DEFAULT
 
 
 local COMMANDS = { "zar", "port", "removeflag", "minions", "gotostalker1", "gotostalker2", "open", "close", "summon" };
