@@ -248,7 +248,7 @@ function FlameBreathDummy( effectIndex, spellObject )
 	
 end
 
-RegisterDummySpell( SPELL_FLAME_BREATH, FlameBreathDummy );
+RegisterDummySpell( 74403, FlameBreathDummy );
 
 
 --[[
