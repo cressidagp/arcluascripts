@@ -133,10 +133,10 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 	local entry = victim:GetEntry();
 	
 	-- baltharus
-    if( entry == 39751 )
-    then
-        RUBY_SANCTUM[ iid ].baltharusIsDead = true;
-		
+	if( entry == 39751 )
+	then
+		RUBY_SANCTUM[ iid ].baltharusIsDead = true;
+
 		local xerex = GetInstanceCreature( 724, iid, 134456 );
 		if( xerex )
 		then
@@ -155,8 +155,8 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 		end
 		
 	-- saviana
-    elseif( entry == 39747 )
-    then
+	elseif( entry == 39747 )
+	then
         RUBY_SANCTUM[ iid ].savianaIsDead = true;
 
         if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
@@ -395,11 +395,11 @@ function RubyCommands( _, plr, message )
 		
 		elseif( message == "#phase1" )
 		then
-			plr:PhaseSet( 1 )
+			plr:PhaseSet( 1 );
 		
 		elseif( message == "#phase32" )
 		then
-			plr:PhaseSet( 32 )
+			plr:PhaseSet( 32 );
 		
 		end
     end
