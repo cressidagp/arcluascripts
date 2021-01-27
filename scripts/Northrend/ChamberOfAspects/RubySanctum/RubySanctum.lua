@@ -17,7 +17,6 @@
 	ToDo:
 
 	*) clear up variables if all players leave instance... need a new instance hook.
-	*) i should merge sound and chat tables.
 	*) 75416: need spellscript?.
 	
 	enUS locale:
@@ -65,30 +64,17 @@ local UNIT_FIELD_FLAGS	= 0x0006 + 0x0035;
 local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000
 ]]
 
-local sound = {
-17491,	-- Xerex event 1
-17492,	-- Xerex event 2
-17493,	-- Xerex event 3
-17494,	-- Xerex event 4
-17495,	-- Xerex event 5
-17496,	-- Xerex event 6
-17497,	-- Xerex event 7
-17498,	-- Xerex event 8
-17490,	-- Xerex Intro
-17525	-- Baltharus Intro
-};
-
-local chat = {
-"Thank you! I could not have held out for much longer.... A terrible thing has happened here.",
-"We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault.",
-"The Black dragonkin materialized from thin air, and set upon us before we could react.",
-"We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance.",
-"They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum.",
-"The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work.",
-"In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon.",
-"I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!",
-"Help! I am trapped within this tree!  I require aid!",
-"Your power wanes, ancient one.... Soon you will join your friends."
+local talk = {
+{ 17491, "Thank you! I could not have held out for much longer.... A terrible thing has happened here." }, -- Xerex event 1
+{ 17492, "We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault." },
+{ 17493, "The Black dragonkin materialized from thin air, and set upon us before we could react." },
+{ 17494, "We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance." },
+{ 17495, "They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum." },
+{ 17496, "The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work." },
+{ 17497, "In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon." },
+{ 17498, "I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!" },
+{ 17490, "Help! I am trapped within this tree!  I require aid!" }, -- Xerex Intro
+{ 17525, "Your power wanes, ancient one.... Soon you will join your friends." }	-- Baltharus Intro
 };
 
 --[[ WorldStates:
@@ -208,21 +194,21 @@ function RUBY_SANCTUM.DoAction( unit )
 	if( RUBY_SANCTUM[ iid ].action == 1 )
 	then
 		RUBY_SANCTUM[ iid ].introDone = true;
-		unit:PlaySoundToSet( sound[ 9 ] );
-		unit:SendChatMessage( 14, 0, chat[ 9 ] );
+		unit:PlaySoundToSet( talk[ 9 ][ 1 ] );
+		unit:SendChatMessage( 14, 0, talk[ 9 ][ 2 ] );
 		unit:Emote( 5, 0 );
 	
 	-- intro baltharus
 	elseif( RUBY_SANCTUM[ iid ].action == 2 )
 	then
-		unit:PlaySoundToSet( sound[ 10 ] );
-		unit:SendChatMessage( 14, 0, chat[ 10 ] );
+		unit:PlaySoundToSet( talk[ 10 ][ 1 ] );
+		unit:SendChatMessage( 14, 0, talk[ 10 ][ 2 ] );
 		
 	-- baltharus death
 	elseif( RUBY_SANCTUM[ iid ].action == 3 )
 	then
-		unit:PlaySoundToSet( sound[ 1 ] );
-		unit:SendChatMessage( 14, 0, chat[ 1 ] );
+		unit:PlaySoundToSet( talk[ 1 ][ 1 ] );
+		unit:SendChatMessage( 14, 0, talk[ 1 ][ 2 ] );
 		unit:Emote( 5, 0 );
 		
 		unit:RegisterAIUpdateEvent( 1000 );
@@ -258,32 +244,32 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	
 	if( RUBY_SANCTUM[ iid ].event1 <= 0 and RUBY_SANCTUM[ iid ].vars == 0 )
 	then
-		unit:PlaySoundToSet( sound[ 2 ] );
-		unit:SendChatMessage( 12, 0, chat[ 2 ] );
+		unit:PlaySoundToSet( talk[ 2 ][ 1 ] );
+		unit:SendChatMessage( 12, 0, talk[ 2 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 1;
 	
 	elseif( RUBY_SANCTUM[ iid ].event2 <= 0 and RUBY_SANCTUM[ iid ].vars == 1 )
 	then
-		unit:PlaySoundToSet( sound[ 3 ] );
-		unit:SendChatMessage( 12, 0, chat[ 3 ] );
+		unit:PlaySoundToSet( talk[ 3 ][ 1 ] );
+		unit:SendChatMessage( 12, 0, talk[ 3 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 2;
 	
 	elseif( RUBY_SANCTUM[ iid ].event3 <= 0 and RUBY_SANCTUM[ iid ].vars == 2 )
 	then
-		unit:PlaySoundToSet( sound[ 4 ] );
-		unit:SendChatMessage( 12, 0, chat[ 4 ] );
+		unit:PlaySoundToSet( talk[ 4 ][ 1 ] );
+		unit:SendChatMessage( 12, 0, talk[ 4 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 3;
 
 	elseif( RUBY_SANCTUM[ iid ].event4 <= 0 and RUBY_SANCTUM[ iid ].vars == 3 )
 	then
-		unit:PlaySoundToSet( sound[ 5 ] );
-		unit:SendChatMessage( 12, 0, chat[ 5 ] );
+		unit:PlaySoundToSet( talk[ 5 ][ 1 ] );
+		unit:SendChatMessage( 12, 0, talk[ 5 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 4;
 
 	elseif( RUBY_SANCTUM[ iid ].event5 <= 0 and RUBY_SANCTUM[ iid ].vars == 4 )
 	then
-		unit:PlaySoundToSet( sound[ 6 ] );
-		unit:SendChatMessage( 12, 0, chat[ 6 ] );
+		unit:PlaySoundToSet( talk[ 6 ][ 1 ] );
+		unit:SendChatMessage( 12, 0, talk[ 6 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 5;
 		
 	elseif( RUBY_SANCTUM[ iid ].event6 <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
@@ -294,8 +280,8 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 		
 	elseif( RUBY_SANCTUM[ iid ].event7 <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
 	then
-		unit:PlaySoundToSet( sound[ 8 ] );
-		unit:SendChatMessage( 12, 0, chat[ 8 ] );
+		unit:PlaySoundToSet( talk[ 8 ][ 1 ] );
+		unit:SendChatMessage( 12, 0, talk[ 8 ][ 2 ] );
 		unit:Emote( 5, 0 );
 		unit:RemoveAIUpdateEvent();
 		unit:SetNPCFlags( 3 );
