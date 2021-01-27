@@ -21,7 +21,7 @@
 	*) 74452: has a dummy effect (0) but no handler for it (need a proper fix).
 	*) 74454: has a dummy effect (0) but no handler for it (need a proper fix).
 	*) 74455: has a scripted effect (0) but no handler for it.
-	*) remove spell constants
+	*) cleanup spells constants.
 
 	enUS locale:
 
@@ -38,17 +38,15 @@
 	"Como debía ser...."			-- OnTargetDied 2
 	
 --]]
-	
---local MAP_RUBY_SANCTUM	= 724;
 
---local NPC_SAVIANA	= 39747;
---local NPC_25M_SAVIANA	= 39823;
+--print( "Lua memory before Saviana: "..gcinfo().." Kb." );
 
---local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
-
---[[ For 3.3.5a
-local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
-local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800; --]]
+--[[ Constants:
+local MAP_RUBY_SANCTUM	= 724;
+local NPC_SAVIANA	= 39747;
+local NPC_25M_SAVIANA	= 39823;
+local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
+]]
 
 local mod = getfenv( 1 );
 assert( mod );
@@ -65,13 +63,15 @@ local yell = {
 "Burn in the master's flame!" -- OnCast: "Conflagration"
 };
 
--- Spells:
-local SPELL_FLAME_BREATH        = 74403;
+--[[ Spells:
+local SPELL_FLAME_BREATH	= 74403;
+local SPELL_ENRAGE	= 78722;
+]]
+
 local SPELL_CONFLAGRATION       = 74452; -- Currently make all units agro caster if player?
 local SPELL_FLAME_BEACON        = 74453; -- Seems to trigger 74455
 local SPELL_CONFLAGRATION_2     = 74454; -- Launch big fire ball but dont make harm.
 local SPELL_CONFLAGRATION_3	= 74455; -- Does nothing.
-local SPELL_ENRAGE              = 78722;
 
 local self = getfenv( 1 );
 
@@ -85,9 +85,7 @@ function OnSpawn( unit )
 		unit:SetMaxHealth( 13945000 );
 		unit:SetHealth( 13945000 );
 	end
-	
-	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
-	
+
 end
 
 function OnCombat( unit )
@@ -102,8 +100,8 @@ function OnCombat( unit )
 
 	};
 
-	--[[ Developer notes: we dont need to send the chat here since
-	our monstersay table will do the job, instance collision checked. ]]
+	-- Developer notes: we dont need to send the chat here since
+	-- our monstersay table will do the job, instance collision checked.
 
 	unit:PlaySoundToSet( 17528 );
 
@@ -117,9 +115,9 @@ function OnLeaveCombat( unit )
 
 	self[ tostring( unit ) ] = nil;
 
-	--[[ Developer notes: contrary to popular believe, this is the right place
-	to remove ai update event since if a creature is dead the ai update will not trigger, so
-	one remove ai update event its more than enough. ]]
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
 
 	unit:RemoveAIUpdateEvent();
 
@@ -301,9 +299,10 @@ end
 
 RegisterDummySpell( SPELL_CONFLAGRATION_2, ConflagrationDummy2 );
 
+--print( "Lua memory after Saviana: "..gcinfo().." Kb." );
 
 --[[ 
-		Debug commands disabled by default 
+		DEBUG COMMANDS DISABLED BY DEFAULT
 
 
 local COMMANDS = { "saviana", "port", "damage", "fly", "land", "move1", "move2", "move3", "beacon", "conf" };
