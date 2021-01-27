@@ -52,15 +52,12 @@ module( mod._NAME..".BALTHARUS_THE_WARBORN", package.seeall );
 
 --[[ Constants:
 local MAP_RUBY_SANCTUM	= 724;
-
 local NPC_BALTHARUS		= 39751;
 local NPC_25M_BALTHARUS	= 39920;
-
 local NPC_CRYSTAL_TARGET = 26712;
-
 local NPC_BALTHARUS_CLONE		= 39899;
 local NPC_25M_BALTHARUS_CLONE	= 39922;
---]]
+]]
 
 --local BOSS_HP = { 3486250, 11156000, 3486250, 11156000 };
 
@@ -68,9 +65,7 @@ local NPC_25M_BALTHARUS_CLONE	= 39922;
 local GAMEOBJECT_BYTES_1			= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
 local UNIT_FLAG_PLUS_MOB			= 0x00000040;
-local UNIT_FIELD_FLAGS_2			= 0x0006 + 0x0036;
-local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;	
---]]
+]]
 
 local sound = { 
 17521, -- OnTargetDied 1
@@ -94,10 +89,12 @@ local SPELL_CLONE				= 74511;
 local SPELL_REPELLING_WAVE		= 74509;
 local SPELL_CLEAR_DEBUFFS		= 34098;
 local SPELL_SPAWN_EFFECT		= 64195;
---]]
+]]
 
---local PHASE_INTRO	= 1;
---local PHASE_COMBAT = 2;
+--[[ Phases:
+local PHASE_INTRO	= 1;
+local PHASE_COMBAT = 2;
+]]
 
 --[[
 
@@ -134,8 +131,6 @@ function OnSpawn( unit )
 	sharedHealth = unit:GetMaxHealth()
 	
 	};
-	
-	unit:SetFlag( 0x0006 + 0x0036, 0x0000800 );
 	
 	-- moved this to database but didnt work
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
@@ -540,7 +535,7 @@ RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --]]
 --[[ 
-		Debug commands disabled by default 
+		DEBUG COMMANDS DISABLED BY DEFAULT
 
 
 local COMMANDS = { "baltharus", "port", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
