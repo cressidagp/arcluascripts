@@ -16,8 +16,9 @@
 	
 	ToDo:
 
-	*) More clean up
-	*) 75416: need spellscript?
+	*) clear up variables if all players leave instance... need a new instance hook.
+	*) i should merge sound and chat tables.
+	*) 75416: need spellscript?.
 	
 	enUS locale:
 
@@ -59,9 +60,9 @@ local AT_BALTHARUS_PLATEAU = 5867;
 
 --[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
-local GAMEOBJECT_DYNAMIC =  0x0006 + 0x0008;
-local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
-local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
+local GAMEOBJECT_DYNAMIC	= 0x0006 + 0x0008;
+local UNIT_FIELD_FLAGS	= 0x0006 + 0x0035;
+local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000
 ]]
 
 local sound = {
@@ -100,19 +101,19 @@ local WORLDSTATE_CORPOREALITY_TOGGLE    = 5051;
 local SPELL_RALLY = 75416;
 ]]
 
-RUBY_SANCTUM = {}
+local RUBY_SANCTUM = {}
 
 function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 
-    -- Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
-    -- are created. But then if player from opposite faction enter variables wont be created with the same idd number.
-    -- So will have no more choice than spend resources getting instance id again.
+	-- Developer notes: i discover argument iid isnt safe. If a player enter the function triggers and variables
+	-- are created. But then if player from opposite faction enter variables will be created with the same idd number.
+	-- So will have no more choice than spend resources getting instance id again.
 
-    local iid = plr:GetInstanceID();
+	local iid = plr:GetInstanceID();
 
 	-- create protected variables
-    if( RUBY_SANCTUM[ iid ] == nil )
-    then
+	if( RUBY_SANCTUM[ iid ] == nil )
+	then
 		RUBY_SANCTUM[ iid ] = {
 
 		isIntro = true,
@@ -132,11 +133,12 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 
 	local entry = victim:GetEntry();
 	
-	-- baltharus
+	-- victinm is baltharus
 	if( entry == 39751 )
 	then
 		RUBY_SANCTUM[ iid ].baltharusIsDead = true;
 
+		-- get xerex using spawnid
 		local xerex = GetInstanceCreature( 724, iid, 134456 );
 		if( xerex )
 		then
@@ -145,16 +147,16 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 		
 		if( RUBY_SANCTUM[ iid ].savianaIsDead == true )
 		then
+			-- get flame walls using coords
 			local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
-			
 			if( flame )
 			then
-				-- open door
+				-- disable flame walls
 				flame:SetByte( 0x0006 + 0x000B, 0, 0 );
 			end
 		end
 		
-	-- saviana
+	-- victim is saviana
 	elseif( entry == 39747 )
 	then
         RUBY_SANCTUM[ iid ].savianaIsDead = true;
@@ -162,27 +164,36 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
         if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
         then
 
+			-- remove fire so player can go to zarithrian
             local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
-			
 			if( flame )
 			then
 				-- open door
 				flame:SetByte( 0x0006 + 0x000B, 0, 0 );
 			end
-        end
+		
+			-- get zarithrian using spawnid
+			local zarithrian = GetInstanceCreature( 724, iid, 134456 );
+			if( zarithrian )
+			then
+				-- remove unit field flag not selectable so player can try to kill him
+				zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x02000000);
+			
+				-- make him capable of enter combat so he can try of kill players
+				zarithrian:DisableCombat( 0 );
+			end
+		end
 
-	-- zarithrian
+	-- victim is zarithrian
     elseif( entry == 39746 )
     then
         RUBY_SANCTUM[ iid ].zarithrianIsDead = true;
 		
+		-- get controller using coords
         local controller = victim:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
-		
 		if( controller )
 		then
-			--[[
-			controller:CastSpell( 76006 );
-			controller:SpawnCreature( 39863, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );]]
+			controller:RegisterAIUpdateEvent( 1000 );
 		end
     end
 end
@@ -402,7 +413,7 @@ function RubyCommands( _, plr, message )
 			plr:PhaseSet( 32 );
 		
 		end
-    end
+	end
 end
 
 RegisterServerHook( 16, RubyCommands );
