@@ -113,22 +113,22 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 	-- create protected variables
     if( RUBY_SANCTUM[ iid ] == nil )
     then
-	    RUBY_SANCTUM[ iid ] = {
+		RUBY_SANCTUM[ iid ] = {
 
 		isIntro = true,
 		isDone = false,
-        baltharusIsDead = false,
-        savianaIsDead = false,
-        zarithrianIsDead = false,
+		baltharusIsDead = false,
+		savianaIsDead = false,
+		zarithrianIsDead = false,
 		action = 0
-		
-        };
-    end
+
+		};
+	end
 end
 
 function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 
-    local iid = killer:GetInstanceID();
+	local iid = killer:GetInstanceID();
 
 	local entry = victim:GetEntry();
 	
@@ -143,16 +143,16 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 			xerex:RegisterEvent( RUBY_SANCTUM.DoAction, 2000, 1 );
 		end
 		
-        if( RUBY_SANCTUM[ iid ].savianaIsDead == true )
-        then
-            local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+		if( RUBY_SANCTUM[ iid ].savianaIsDead == true )
+		then
+			local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
 			
 			if( flame )
 			then
 				-- open door
 				flame:SetByte( 0x0006 + 0x000B, 0, 0 );
 			end
-        end
+		end
 		
 	-- saviana
     elseif( entry == 39747 )
@@ -198,20 +198,20 @@ function RUBY_SANCTUM.DoAction( unit )
 	then
 		RUBY_SANCTUM[ iid ].introDone = true;
 		unit:PlaySoundToSet( sound[ 9 ] );
-        unit:SendChatMessage( 14, 0, chat[ 9 ] );
+		unit:SendChatMessage( 14, 0, chat[ 9 ] );
 		unit:Emote( 5, 0 );
 	
 	-- intro baltharus
 	elseif( RUBY_SANCTUM[ iid ].action == 2 )
 	then
 		unit:PlaySoundToSet( sound[ 10 ] );
-        unit:SendChatMessage( 14, 0, chat[ 10 ] );
+		unit:SendChatMessage( 14, 0, chat[ 10 ] );
 		
 	-- baltharus death
 	elseif( RUBY_SANCTUM[ iid ].action == 3 )
 	then
 		unit:PlaySoundToSet( sound[ 1 ] );
-        unit:SendChatMessage( 14, 0, chat[ 1 ] );
+		unit:SendChatMessage( 14, 0, chat[ 1 ] );
 		unit:Emote( 5, 0 );
 		
 		unit:RegisterAIUpdateEvent( 1000 );
@@ -248,43 +248,43 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	if( RUBY_SANCTUM[ iid ].event1 <= 0 and RUBY_SANCTUM[ iid ].vars == 0 )
 	then
 		unit:PlaySoundToSet( sound[ 2 ] );
-        unit:SendChatMessage( 12, 0, chat[ 2 ] );
+		unit:SendChatMessage( 12, 0, chat[ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 1;
 	
 	elseif( RUBY_SANCTUM[ iid ].event2 <= 0 and RUBY_SANCTUM[ iid ].vars == 1 )
 	then
 		unit:PlaySoundToSet( sound[ 3 ] );
-        unit:SendChatMessage( 12, 0, chat[ 3 ] );
+		unit:SendChatMessage( 12, 0, chat[ 3 ] );
 		RUBY_SANCTUM[ iid ].vars = 2;
 	
 	elseif( RUBY_SANCTUM[ iid ].event3 <= 0 and RUBY_SANCTUM[ iid ].vars == 2 )
 	then
 		unit:PlaySoundToSet( sound[ 4 ] );
-        unit:SendChatMessage( 12, 0, chat[ 4 ] );
+		unit:SendChatMessage( 12, 0, chat[ 4 ] );
 		RUBY_SANCTUM[ iid ].vars = 3;
 
 	elseif( RUBY_SANCTUM[ iid ].event4 <= 0 and RUBY_SANCTUM[ iid ].vars == 3 )
 	then
 		unit:PlaySoundToSet( sound[ 5 ] );
-        unit:SendChatMessage( 12, 0, chat[ 5 ] );
+		unit:SendChatMessage( 12, 0, chat[ 5 ] );
 		RUBY_SANCTUM[ iid ].vars = 4;
 
 	elseif( RUBY_SANCTUM[ iid ].event5 <= 0 and RUBY_SANCTUM[ iid ].vars == 4 )
 	then
 		unit:PlaySoundToSet( sound[ 6 ] );
-        unit:SendChatMessage( 12, 0, chat[ 6 ] );
+		unit:SendChatMessage( 12, 0, chat[ 6 ] );
 		RUBY_SANCTUM[ iid ].vars = 5;
 		
 	elseif( RUBY_SANCTUM[ iid ].event6 <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
 	then
 		unit:PlaySoundToSet( sound[ 7 ] );
-        unit:SendChatMessage( 12, 0, chat[ 7 ] );
+		unit:SendChatMessage( 12, 0, chat[ 7 ] );
 		RUBY_SANCTUM[ iid ].vars = 6;
 		
 	elseif( RUBY_SANCTUM[ iid ].event7 <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
 	then
 		unit:PlaySoundToSet( sound[ 8 ] );
-        unit:SendChatMessage( 12, 0, chat[ 8 ] );
+		unit:SendChatMessage( 12, 0, chat[ 8 ] );
 		unit:Emote( 5, 0 );
 		unit:RemoveAIUpdateEvent();
 		unit:SetNPCFlags( 3 );
@@ -297,8 +297,8 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 	local iid = plr:GetInstanceID();
 	
 	-- on baltharus plateau
-    if( areaTriggerID == 5867 )
-    then
+	if( areaTriggerID == 5867 )
+	then
 		-- get xerex using spawnid
 		local xerex = GetInstanceCreature( 724, iid, 134456 );
 		if( xerex )
@@ -312,7 +312,7 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 		then
 			baltharus:RegisterEvent( RUBY_SANCTUM.DoAction, 7000, 1 );
 		end
-    end
+	end
 end
 
 RegisterUnitEvent( 40429, 21, RUBY_SANCTUM.XerexOnAIUpdate );
