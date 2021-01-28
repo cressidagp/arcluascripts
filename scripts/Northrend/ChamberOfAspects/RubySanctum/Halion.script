@@ -42,6 +42,7 @@
 local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".HALION_THE_DESTROYER", package.seeall );
+local self = getfenv( 1 );
 
 --[[ Constants:
 local MAP_RUBY_SANCTUM	= 724;
@@ -190,11 +191,9 @@ local PHASE_ONE		= 2; -- combat in Physical realm
 local PHASE_TWO		= 3; -- combat in Twilight realm
 local PHASE_THREE	= 4; -- combat in both realms
 
-local self = getfenv( 1 );
-
 --[[
 
-		Halion AI (39863)
+		Halion AI ( 39863 )
 		
 --]]
 
@@ -300,21 +299,21 @@ function OnDamageTaken( unit, _, attacker, damage )
 	-- from phase combat in physical world set to...
 	if( unit:GetHealthPct() < 75 and vars.phase == PHASE_ONE )
 	then
+		-- set combat in twilight realm
+		vars.phase = PHASE_TWO;
+		
 		unit:PlaySoundToSet( 17507 );
 		unit:SendChatMessage( 14, 0, yell[ 3 ] );
 		unit:CancelSpell();
 		
-		-- set combat in twilight realm
-		vars.phase = PHASE_TWO;
-		
 		-- set not attacable
 		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 );
 		
-		-- spell summon twilight portal
-		unit:CastSpell( 74809 );
-		
 		-- phase spell from phase 1 to phase 2 (spell twilight phasing)
 		unit:CastSpell( 74808 );
+		
+		-- spell summon twilight portal
+		unit:CastSpell( 74809 );
 		
 		--[[ send all players to twilight realm
 		local tbl = unit:GetInRangePlayers();
@@ -379,10 +378,6 @@ function OnAIUpdate( unit )
 		unit:WipeThreatList();
 		return;
 	end
-	
-	--if( unit:IsCasting() == true ) then return; end
-
-	--if( unit:GetAIState() == 2 ) then return; end
 
 	if( unit:GetCurrentSpell() ~= nil ) then return; end
 
@@ -447,38 +442,10 @@ RegisterUnitEvent( 39863, 4, OnDeath );
 RegisterUnitEvent( 39863, 23, OnDamageTaken );
 RegisterUnitEvent( 39863, 29, OnCastSpell );
 RegisterUnitEvent( 39863, 21, OnAIUpdate );
---RegisterUnitEvent( 39863, 2, OnLeaveCombat );
---RegisterUnitEvent( 39863, 3, OnTargetDied );
-
---[[
-function OnLeaveCombat( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: contrary to popular believe, this is the right place
-	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
-	-- one remove ai update event its more than enough.
-
-	unit:RemoveAIUpdateEvent();
-end
-]]
-
---[[
-function OnTargetDied( unit, _, victim )
-
-	if( victim:IsPlayer() == true )
-	then
-    	unit:PlaySoundToSet( 17501 );
-    	unit:SendChatMessage( 14, 0, yell[ 4 ] );
-	end
-end
-]]
 
 --[[
 
-		Twilight Halion AI (40142)
+		Twilight Halion AI ( 40142 )
 		
 --]]
 
@@ -536,8 +503,7 @@ function TwilightHalionOnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-		local rand = math.random( 1, 2 );
-		if( rand == 1 )
+		if( math.random( 1, 2 ) == 1 )
 		then
 			unit:PlaySoundToSet( 17501 );
 			unit:SendChatMessage( 14, 0, yell[ 4 ] );
@@ -593,22 +559,23 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 	end
 	
 	-- call on combat here? will work?
-	if( vars.phase ~= PHASE_TWO and vars.phase ~= PHASE_THREE )
+	--[[if( vars.phase ~= PHASE_TWO and vars.phase ~= PHASE_THREE )
 	then
 		unit:TwilightHalionOnCombat( attacker );
-	end
+	end]]
 	
 	if( unit:GetHealthPct() < 50 and vars.phase == PHASE_TWO )
 	then
-		unit:PlaySoundToSet( 17508 );
-		unit:SendChatMessage( 14, 0, yell[ 7 ] );
-		unit:CancelSpell();
-		
 		-- set combat in both realms
 		vars.phase = PHASE_THREE;
 		
+		unit:CancelSpell();
+		
 		-- phase spell from phase 2 to phase 3 (spell twilight division)
 		unit:CastSpell( 75063 );
+
+		unit:PlaySoundToSet( 17508 );
+		unit:SendChatMessage( 14, 0, yell[ 7 ] );
 	end
 
 	if( vars.phase == PHASE_THREE )
@@ -687,23 +654,6 @@ function TwilightHalionOnAIUpdate( unit )
 	end
 end
 
---[[
-function TwilightOnLeaveCombat( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: contrary to popular believe, this is the right place
-	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
-	-- one remove ai update event its more than enough.
-
-	unit:RemoveAIUpdateEvent();
-
-end
-]]
-
-
 RegisterUnitEvent( 40142, 18, TwilightHalionOnSpawn );
 RegisterUnitEvent( 40142, 1, TwilightHalionOnCombat );
 RegisterUnitEvent( 40142, 3, TwilightHalionOnTargetDied );
@@ -711,11 +661,10 @@ RegisterUnitEvent( 40142, 4, TwilightHalionOnDeath );
 RegisterUnitEvent( 40142, 23, TwilightHalionOnDamageTaken );
 RegisterUnitEvent( 40142, 29, TwilightHalionOnCastSpell );
 RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
---RegisterUnitEvent( 40142, 2, TwilightOnLeaveCombat );
 
 --[[
 
-		Halion Controller AI (40146)
+		Halion Controller AI ( 40146 )
 		
 --]]
 
@@ -728,7 +677,7 @@ function ControllerOnSpawn( unit )
 	self[ tostring( unit )] = {
 
 	materialCorporealityValue = 5,
-	eventStartIntro = 7,
+	eventStartIntro = 7
 
 	};
 	
@@ -948,6 +897,8 @@ function ControllerOnAIUpdate( unit )
 			twilightHalion:CastSpell( 26662 );
 		end
 		
+		vars.isEnraged = true;
+		
 	elseif( vars.shadowPulsars and vars.shadowPulsars <= 0 )
 	then
 		-- get orb carrier using spawn id
@@ -1048,7 +999,7 @@ RegisterUnitEvent( 40146, 21, ControllerOnAIUpdate );
 
 --[[
 
-		Orb Carrier AI (40081)
+		Orb Carrier AI ( 40081 )
 		
 --]]
 
@@ -1146,7 +1097,7 @@ RegisterUnitEvent( 40081, 21, OrbCarrierOnAIUpdate );
 
 --[[
 
-		Meteor Strike Mark AI (40029)
+		Meteor Strike Mark AI ( 40029 )
 		
 --]]
 
@@ -1231,13 +1182,28 @@ RegisterUnitEvent( 40044, 21, MeteorStrikeCrap );
 
 --[[
 
-		Aura: Meteor Strike Mark (74641)
+		GameObject: Twilight Portal ( 202794 )
+
+--]]
+
+function PortalOnActivate( go, event, plr )
+
+	-- send player to twilight realm (spell twilight realm)
+	plr:CastSpell( 74807 );
+	
+end
+
+RegisterGameObjectEvent( 202794, 4, PortalOnActivate );
+
+--[[
+
+		Aura: Meteor Strike Mark ( 74641 )
 
 --]]
 
 function OnAuraRemove( _, aura )
 
-	-- Currently there isnt a RegisterDummyAura method in our lua engine so i need
+	-- Developers note: currently there isnt a RegisterDummyAura method in our lua engine so i need
 	-- to be creative. This is the only aura hook i have. If a new one pop up then 
 	-- i will move both of them to a separate file to consolidate into one function.
 
@@ -1256,30 +1222,6 @@ RegisterServerHook( 31, OnAuraRemove );
 
 --print( "Lua memory after Halion: "..gcinfo().." Kb." );
 
---[[ FAILED EXPERIMENTAL STUFF
-
-		Spell: Twilight Phasing (74808)
-
-
-function SpellHalionTwilightPhasing( _, _, spellid, spellObject )
-
-	if( spellid == 74808 )
-	then
-		local caster = spellObject:GetCaster();
-		local x = caster:GetX();
-		local y = caster:GetY();
-		local z = caster:GetZ();
-		local o = caster:GetO();
-
-	caster:CastSpellAoE( x, y, z, SPELL_SUMMON_TWILIGHT_PORTAL );
-	caster:SpawnCreature( 40142, x, y, z, o, 14, 0, 1, 1, 1, 1, 0 );
-
-	end
-end
-
-RegisterServerHook( 33, SpellHalionTwilightPhasing );
-
---]]
 --[[
 		DEBUG COMMANDS DISABLED BY DEFAULT
 
