@@ -1,4 +1,3 @@
-
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
@@ -28,8 +27,8 @@
 	*) add localization.
 	*) implement better test/debug commands.
 	*) make dummy creatures invisible ( model 168?).
-	*)
-	*)
+	*) spell dusk shroud: how much time will persist?
+	*) improve tail lash
 	*) The End: get rid of yell = {} and text = {} to save some KB.
 	
 	enUS locale:
@@ -88,11 +87,12 @@ local sound = {
 [ 3 ] = 17505,  -- OnMeteorStrike
 [ 4 ] = 17507,  -- OnPhaseTwo
 [ 5 ] = 17503,  -- OnDeath
-[ 6 ] = 17501,  -- OnTargetDied
-[ 7 ] = 17504,  -- OnBerserk
+[ 6 ] = 17501,  -- OnTargetDied1
+[ 7 ] = 17502,	-- OnTargetDied2
+[ 8 ] = 17504,  -- OnBerserk
 -- Twilight:
-[ 8 ] = 17506,	-- SpherePulse
-[ 9 ] = 17508	-- OnPhaseThree
+[ 9 ] = 17506,	-- SpherePulse
+[ 10 ] = 17508	-- OnPhaseThree
 };
 ]]
 
@@ -175,6 +175,9 @@ local spell_corporeality = {
 { 74831, 74836 }
 };
 
+-- set twilight realm as a negative buff
+SetDBCSpellVar( 74807, "c_is_flags", 0x01000 );
+
 --[[ WorldStates:
 local WORLDSTATE_CORPOREALITY_MATERIAL = 5049;
 local WORLDSTATE_CORPOREALITY_TWILIGHT = 5050;
@@ -234,8 +237,6 @@ function OnCombat( unit )
 	-- spell twilight precision
 	unit:AddAura( 78243, 0 );
 	
-	unit:RegisterAIUpdateEvent( 1000 );
-	
 	-- get controller using spawnid 
 	local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
 	if( controller )
@@ -244,6 +245,44 @@ function OnCombat( unit )
 		
 		-- set combat in Physical realm
 		vars.phase = PHASE_ONE;
+	end
+	
+	unit:RegisterAIUpdateEvent( 1000 );
+	
+end
+
+function OnDeath( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	-- Developer notes: we dont need to send the chat here since our
+	-- monstersay table will do the job, instance collision checked. ]]
+
+    unit:PlaySoundToSet( 17503 );
+	
+	local iid = unit:GetInstanceID();
+
+	-- get twilight halion using guid
+	local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
+	if( twilightHalion )
+	then
+		if( twilightHalion:IsAlive() == true )
+		then
+			twilightHalion:Kill();
+			HSHARED[ iid ].dataTwilight = nil;
+		end
+	end
+
+	-- get controller using spawnid
+	local controller = GetInstanceCreature( 724, iid, 200631 );
+	if( controller )
+	then
+		if( controller:IsAlive() == true )
+		then
+			controller:Kill();
+		end
 	end
 end
 
@@ -258,6 +297,7 @@ function OnDamageTaken( unit, _, attacker, damage )
         damage = hp - 1;
 	end
 	
+	-- from phase combat in physical world set to...
 	if( unit:GetHealthPct() < 75 and vars.phase == PHASE_ONE )
 	then
 		unit:PlaySoundToSet( 17507 );
@@ -270,8 +310,19 @@ function OnDamageTaken( unit, _, attacker, damage )
 		-- set not attacable
 		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 );
 		
+		-- spell summon twilight portal
+		unit:CastSpell( 74809 );
+		
 		-- phase spell from phase 1 to phase 2 (spell twilight phasing)
 		unit:CastSpell( 74808 );
+		
+		--[[ send all players to twilight realm
+		local tbl = unit:GetInRangePlayers();
+		
+		for _, v in ipairs( tbl ) 
+		do
+			plrs:CastSpell( 74807 );
+		end]]
 		
 		-- hacky: summon twilight halion
 		local twilightHalion = unit:SpawnCreature( 40142, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 1, 0 );
@@ -306,64 +357,6 @@ function OnDamageTaken( unit, _, attacker, damage )
 	end
 end
 
---[[
-function OnLeaveCombat( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: contrary to popular believe, this is the right place
-	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
-	-- one remove ai update event its more than enough.
-
-	unit:RemoveAIUpdateEvent();
-end
---]]
-
-function OnTargetDied( unit, _, victim )
-
-	if( victim:IsPlayer() == true )
-	then
-    	unit:PlaySoundToSet( 17501 );
-    	unit:SendChatMessage( 14, 0, yell[ 4 ] );
-	end
-end
-
-function OnDeath( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: we dont need to send the chat here since our
-	-- monstersay table will do the job, instance collision checked. ]]
-
-    unit:PlaySoundToSet( 17503 );
-	
-	local iid = unit:GetInstanceID();
-
-	-- get twilight halion using guid
-	local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
-	if( twilightHalion )
-	then
-		if( twilightHalion:IsAlive() == true )
-		then
-			twilightHalion:Kill();
-		end
-	end
-
-	-- get controller using spawnid
-	local controller = GetInstanceCreature( 724, iid, 200631 );
-	if( controller )
-	then
-		if( controller:IsAlive() == true )
-		then
-			controller:Kill();
-		end
-	end
-end
-
 function OnCastSpell( unit, event, spell_id )
 	
 	-- spell twilight mending
@@ -373,11 +366,13 @@ function OnCastSpell( unit, event, spell_id )
 	end
 end
 
+local meteorStrikePos = { 0, 0, 0 };
+
 function OnAIUpdate( unit )
 
 	local vars = self[ tostring( unit ) ];
 	
-	-- set combat in Twilight realm
+	-- dont bother with this func when combat in Twilight realm
 	if( vars.phase == PHASE_TWO ) then return; end
 
 	if( unit:GetNextTarget() == nil ) then
@@ -448,12 +443,38 @@ end
 
 RegisterUnitEvent( 39863, 18, OnSpawn );
 RegisterUnitEvent( 39863, 1, OnCombat );
-RegisterUnitEvent( 39863, 23, OnDamageTaken );
---RegisterUnitEvent( 39863, 2, OnLeaveCombat );
-RegisterUnitEvent( 39863, 3, OnTargetDied );
 RegisterUnitEvent( 39863, 4, OnDeath );
+RegisterUnitEvent( 39863, 23, OnDamageTaken );
 RegisterUnitEvent( 39863, 29, OnCastSpell );
 RegisterUnitEvent( 39863, 21, OnAIUpdate );
+--RegisterUnitEvent( 39863, 2, OnLeaveCombat );
+--RegisterUnitEvent( 39863, 3, OnTargetDied );
+
+--[[
+function OnLeaveCombat( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
+
+	unit:RemoveAIUpdateEvent();
+end
+]]
+
+--[[
+function OnTargetDied( unit, _, victim )
+
+	if( victim:IsPlayer() == true )
+	then
+    	unit:PlaySoundToSet( 17501 );
+    	unit:SendChatMessage( 14, 0, yell[ 4 ] );
+	end
+end
+]]
 
 --[[
 
@@ -478,7 +499,7 @@ function TwilightHalionOnSpawn( unit )
 	
 	unit:SetHealth( halion:GetHealth() );
 	
-	-- ToDo: set phase mask: 0x00000020 // 6 -- 32
+	-- set phase mask: 0x00000020 // 6 -- 32
 	unit:SetPhase( 32 );
 	
 	-- react defensive
@@ -509,6 +530,55 @@ function TwilightHalionOnCombat( unit )
 	
 	unit:RegisterAIUpdateEvent( 1000 );
 	
+end
+
+function TwilightHalionOnTargetDied( unit, _, victim )
+
+	if( victim:IsPlayer() == true )
+	then
+		local rand = math.random( 1, 2 );
+		if( rand == 1 )
+		then
+			unit:PlaySoundToSet( 17501 );
+			unit:SendChatMessage( 14, 0, yell[ 4 ] );
+		else
+			unit:PlaySoundToSet (17502 );
+		end
+	end
+	
+	-- send dead player out of twilight realm (spell leave twilight realm)
+	unit:CastSpellOnTarget( 74812, victim );
+	
+end
+
+function TwilightHalionOnDeath( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+	
+	local iid = unit:GetInstanceID();
+
+	-- get halion using guid
+	local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
+	if( halion )
+	then
+		if( halion:IsAlive() == true )
+		then
+			halion:Kill();
+			HSHARED[ iid ].dataHalion = nil;
+		end
+	end
+	
+	-- get controller using spawnid 
+	local controller = GetInstanceCreature( 724, iid, 200631 );
+	if( controller )
+	then
+		if( controller:IsAlive() == true )
+		then
+			controller:Kill();
+		end
+	end
 end
 
 function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
@@ -552,63 +622,6 @@ function TwilightHalionOnDamageTaken( unit, _, attacker, damage )
 			controller:SetHealth( controller:GetHealth() - damage );
 			local varsbis = self[ tostring( controller ) ];
 			varsbis.twilightDamageTaken = varsbis.twilightDamageTaken + damage;
-		end
-	end
-end
-
---[[
-function TwilightOnLeaveCombat( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: contrary to popular believe, this is the right place
-	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
-	-- one remove ai update event its more than enough.
-
-	unit:RemoveAIUpdateEvent();
-
-end
---]]
-
-function TwilightHalionOnTargetDied( unit, _, victim )
-
-	if( victim:IsPlayer() == true )
-	then
-    	unit:PlaySoundToSet( 17501 );
-    	unit:SendChatMessage( 14, 0, yell[ 4 ] );
-	end
-	
-	-- send dead player out of twilight realm (spell leave twilight realm)
-	unit:CastSpellOnTarget( 74812, victim );
-end
-
-function TwilightHalionOnDeath( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-	
-	local iid = unit:GetInstanceID();
-
-	-- get halion using guid
-	local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
-	if( halion )
-	then
-		if( halion:IsAlive() == true )
-		then
-			halion:Kill();
-		end
-	end
-	
-	-- get controller using spawnid 
-	local controller = GetInstanceCreature( 724, iid, 200631 );
-	if( controller )
-	then
-		if( controller:IsAlive() == true )
-		then
-			controller:Kill();
 		end
 	end
 end
@@ -674,14 +687,31 @@ function TwilightHalionOnAIUpdate( unit )
 	end
 end
 
+--[[
+function TwilightOnLeaveCombat( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
+
+	unit:RemoveAIUpdateEvent();
+
+end
+]]
+
+
 RegisterUnitEvent( 40142, 18, TwilightHalionOnSpawn );
 RegisterUnitEvent( 40142, 1, TwilightHalionOnCombat );
-RegisterUnitEvent( 40142, 23, TwilightHalionOnDamageTaken );
---RegisterUnitEvent( 40142, 2, TwilightOnLeaveCombat );
 RegisterUnitEvent( 40142, 3, TwilightHalionOnTargetDied );
 RegisterUnitEvent( 40142, 4, TwilightHalionOnDeath );
+RegisterUnitEvent( 40142, 23, TwilightHalionOnDamageTaken );
 RegisterUnitEvent( 40142, 29, TwilightHalionOnCastSpell );
 RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
+--RegisterUnitEvent( 40142, 2, TwilightOnLeaveCombat );
 
 --[[
 
@@ -925,7 +955,7 @@ function ControllerOnAIUpdate( unit )
 		if( orbCarrier )
 		then
 			-- action send warning shoot
-			orbCarrier:RegisterLuaEvent( OrbCarrierDoAction, 0.1, 1, 2 );
+			orbCarrier:RegisterLuaEvent( OrbCarrierDoAction, 1000, 1, 2 );
 		end
 		vars.shadowPulsars = 30;
 	
@@ -1108,7 +1138,7 @@ function TriggerCutter( caster, target )
 	target:CastSpell( 78861 );
 	
 	-- spell twilight cutter
-	caster:CastSpellOnTarget( 74768, target );	
+	caster:CastSpellOnTarget( 74768, target );
 end
 
 RegisterUnitEvent( 40081, 18, OrbCarrierOnAIUpdate );
