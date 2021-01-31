@@ -513,7 +513,7 @@ function TwilightHalionOnTargetDied( unit, _, victim )
 			unit:PlaySoundToSet( 17501 );
 			unit:SendChatMessage( 14, 0, yell[ 4 ] );
 		else
-			unit:PlaySoundToSet (17502 );
+			unit:PlaySoundToSet ( 17502 );
 		end
 	end
 	
@@ -735,6 +735,11 @@ function ControllerOnDeath( unit )
 	
 	-- spell clear debuffs
 	unit:CastSpell( 75396 );
+	
+	-- open fire ring
+	local flameRing = unit:GetGameObjectNearestCoords( 3154.99, 535.64, 72.89, 203007 );
+	flameRing:SetByte( 0x0006 + 0x000B, 0, 0 );
+	
 end
 
 function ControllerDoAction( unit, action )
