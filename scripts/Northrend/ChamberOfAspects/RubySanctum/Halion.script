@@ -41,9 +41,9 @@
 
 --print( "Lua memory before Halion: "..gcinfo().." Kb." );
 
-local mod = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".HALION_THE_DESTROYER", package.seeall );
+--local mod = getfenv( 1 );
+--assert( mod );
+--module( mod._NAME..".HALION_THE_DESTROYER", package.seeall );
 local self = getfenv( 1 );
 
 --[[ Constants:
@@ -518,7 +518,8 @@ function TwilightHalionOnTargetDied( unit, _, victim )
 	end
 	
 	-- send dead player out of twilight realm (spell leave twilight realm)
-	unit:CastSpellOnTarget( 74812, victim );
+	--unit:CastSpellOnTarget( 74812, victim );
+	victim:RemoveAura( 74807 );
 	
 end
 
