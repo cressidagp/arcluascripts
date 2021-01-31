@@ -41,9 +41,9 @@
 
 --print( "Lua memory before Halion: "..gcinfo().." Kb." );
 
---local mod = getfenv( 1 );
---assert( mod );
---module( mod._NAME..".HALION_THE_DESTROYER", package.seeall );
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".HALION_THE_DESTROYER", package.seeall );
 local self = getfenv( 1 );
 
 --[[ Constants:
