@@ -17,17 +17,19 @@
 	
 	ToDo:
 
+	*) Twilight Precision: so far, all my attems to fix aura display using SetDBCSpellVar has failed.
+	*) get correct scale for exit portals.
 	*) 76006: has a dummy effect (1) but no handler for it.
 	*) 76006: has an apply dummy aura effect but no handler for it.
 	*) 76010: has a dummy effect (0) but no handler for it.
 	*) 74637: has a dummy effect (0) but no handler for it.
 	*) 75396: has a scripted effect (0) but no handler for it.
 	*) 74641: has an apply dummy aura effect but no handler for it.
+	*) 74812: has an aplly dummy aura effect but no handler for it.
 	*) corporeality cast and spell selector.
 	*) add localization.
 	*) implement better test/debug commands.
 	*) make dummy creatures invisible ( model 168?).
-	*) spell dusk shroud: how much time will persist?
 	*) improve tail lash
 	*) The End: get rid of yell = {} and text = {} to save some KB.
 	
@@ -66,6 +68,8 @@ local H_ORB_CARRIER = 40471;
 local H_NPC_25M_ORB_CARRIER = 40472;
 local NPC_ORB_1 = 40083;
 local NPC_ORB_2 = 40100;
+local NPC_ORB_3 = ?
+local NPC_ORB_4 = ?
 ]]
 
 --local TREES = { 203034, 203035, 203036, 203037 };
@@ -139,13 +143,14 @@ local SPELL_TWILIGHT_MENDING = 75509;
 local SPELL_BERSERK = 26662;
 
 -- Spells (Misc):
-local SPELL_LEAVE_TWILIGHT_REALM	= 74812;
 local SPELL_TWILIGHT_PHASING	= 74808; -- phase spell from phase 1 to phase 2
 local SPELL_TWILIGHT_DIVISION	= 75063; -- phase spell from phase 2 to phase 3
 local SPELL_DUSK_SHROUD	= 75476;
 local SPELL_COPY_DAMAGE	= 74810;
 local SPELL_SUMMON_TWILIGHT_PORTAL	= 74809; -- summons go 202794
-local SPELL_SUMMON_EXIT_PORTALS = 74805;
+local SPELL_LEAVE_TWILIGHT_REALM	= 74812;
+
+local SPELL_SUMMON_EXIT_PORTALS	= 74805; -- this spell dont exist, server side?
 
 -- Spells (Orb Carrier):
 local SPELL_TRACK_ROTATION	= 74758;
@@ -773,8 +778,10 @@ function ControllerDoAction( unit, action )
 			end
 		end
 		
-		-- summon twilight exit portals
-		unit:CastSpell( 74805 );
+		-- summon twilight exit portals at phase 32
+		-- ToDo: use GetLocation() here
+		-- witch scale?
+		unit:SpawnGameObject( 202796, unit:GetX(), unit:GetY(), unit:GetZ(), unit:GetO(), 0, 1, 32 );
 		
 		-- display worldstates
 		unit:SetWorldStateForZone( 5051, 1 );
@@ -1188,12 +1195,23 @@ RegisterUnitEvent( 40044, 21, MeteorStrikeCrap );
 
 function PortalOnActivate( go, event, plr )
 
-	-- send player to twilight realm (spell twilight realm)
-	plr:CastSpell( 74807 );
+	local entry = go:GetEntry();
+
+	if( entry == 202794 )
+	then
+		-- send player to twilight realm (spell twilight realm)
+		plr:CastSpell( 74807 );
 	
+	elseif( entry == 202796 )
+	then
+		-- send player out of twilight realm (spell leave twilight realm)
+		--plr:CastSpell( 74812 );
+		plr:RemoveAura( 74807 )
+	end
 end
 
 RegisterGameObjectEvent( 202794, 4, PortalOnActivate );
+RegisterGameObjectEvent( 202796, 4, PortalOnActivate );
 
 --[[
 
