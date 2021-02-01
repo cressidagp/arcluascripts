@@ -41,11 +41,17 @@
 
 --print( "Lua memory before Zarithrian: "..gcinfo().." Kb." );
 
+local mod = getfenv( 1 );
+assert( mod );
+module( mod._NAME..".GENERAL_ZARITHRIAN", package.seeall );
+local self = getfenv( 1 );
+
 --[[ Constants:
 local MAP_RUBY_SANCTUM	= 724;
 local NPC_ZARITHRIAN	= 39746;
 local NPC_25M_ZARITHRIAN	= 39805;
 local NPC_ZARITHRIAN_SPAWN_STALKER	= 39794;
+local NPC_ONYX_FLAMECALLER = 39814;
 ]]
 
 --local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
@@ -55,11 +61,6 @@ local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
 local UNIT_FLAG_NOT_SELECTABLE		= 0x02000000
 ]]
-
-local mod = getfenv( 1 );
-assert( mod );
-module( mod._NAME..".GENERAL_ZARITHRIAN", package.seeall );
-local self = getfenv( 1 );
 
 local sound = {
 17513, -- OnTargetDied 1
@@ -249,6 +250,23 @@ RegisterUnitEvent( 39746, 2, OnLeaveCombat );
 RegisterUnitEvent( 39746, 3, OnTargetDied );
 RegisterUnitEvent( 39746, 4, OnDeath );
 RegisterUnitEvent( 39746, 21, OnAIUpdate );
+
+--[[
+
+		Onyx Flamecaller AI ( 39814 )
+		
+--]]
+
+function OnyxOnSpawn( unit, event )
+
+	unit:EquipWeapons( 19355, 0, 0 );
+	
+	-- move to general
+	unit:MoveTo( 3009.15, 531.27, 89.24 );
+	
+end
+
+RegisterUnitEvent( 39814, 18, OnyxOnSpawn );
 
 --print( "Lua memory after Zarithrian: "..gcinfo().." Kb." );
 
