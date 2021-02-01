@@ -13,7 +13,7 @@
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 	
-	yt
+	https://www.youtube.com/watch?v=V9GN5FdWOu8
 	
 	ToDo:
 
@@ -59,6 +59,7 @@ local UNIT_FLAG_NOT_SELECTABLE		= 0x02000000
 local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".GENERAL_ZARITHRIAN", package.seeall );
+local self = getfenv( 1 );
 
 local sound = {
 17513, -- OnTargetDied 1
@@ -78,8 +79,6 @@ local SPELL_SUMMON_FLAMECALLER    = 74398; -- Zarithrian Spawn Stalker
 local SPELL_BLAST_NOVA            = 74392; -- Onyx Flamecaller
 local SPELL_LAVA_GOUT             = 74394; -- Onyx Flamecaller
 ]]
-
-local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
@@ -105,7 +104,8 @@ function OnCombat( unit )
 	cleaveArmor = 8,
 	intimidatingRoar = 14,
 	summonMinions = 15,
-	summonMinions25 = 16
+	summonMinions25 = 16,
+	flameWalls = 5
 	};
 
 	unit:PlaySoundToSet( 17512 );
@@ -151,7 +151,13 @@ function OnDeath( unit )
 	-- monstersay table will do the job, instance collision checked.
 
 	unit:PlaySoundToSet( 17515 );
-
+	
+	local flameWalls = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+	if( flameWalls )
+	then
+		-- disable fire
+		flame:SetByte( 0x0006 + 0x000B, 0, 0 );
+	end
 end
 
 function OnAIUpdate( unit )
@@ -173,6 +179,7 @@ function OnAIUpdate( unit )
 	vars.summonMinions = vars.summonMinions - 1;
 	vars.summonMinions25 = vars.summonMinions25 - 1;
 	vars.intimidatingRoar = vars.intimidatingRoar - 1;
+	if( flameWalls ~= nil ) then flameWalls = flameWalls - 1; end
 
 	if( vars.cleaveArmor <= 0 )
     then
@@ -223,6 +230,16 @@ function OnAIUpdate( unit )
 		end
 		vars.summonMinions25 = 45;
 		unit:SendChatMessage( 12, 0, "debug: minions 2" ); -- CLEAN ME!
+		
+	elseif( vars.flameWalls <= 0 )
+	then
+		local flameWalls = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+		if( flameWalls )
+		then
+			-- enable fire wo players cant run away
+			flame:SetByte( 0x0006 + 0x000B, 0, 1 );
+			vars.flameWalls = nil;
+		end
 	end
 end
 
