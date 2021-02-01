@@ -408,7 +408,7 @@ function OnAIUpdate( unit )
 		unit:FullCastSpell( 74525 );
 		vars.flameBreath = math.random( 5, 15 );
 
-	elseif( vars.flameRingTime == false and vars.flameRingTime <= 0 )
+	elseif( vars.flameRingTime and vars.flameRingTime <= 0 )
 	then
 		local flameRing = unit:GetGameObjectNearestCoords( 3154.99, 535.64, 72.89, 203007 );
 		if( flameRing )
