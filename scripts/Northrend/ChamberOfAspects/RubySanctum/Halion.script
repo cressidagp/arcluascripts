@@ -646,7 +646,7 @@ function TwilightHalionOnAIUpdate( unit )
 
 	elseif( vars.tailLash <= 0 )
 	then
-		unit:FullCastSpellOnTarget( 74531, unit:GetRandomPlayer( 0 ) ); -- AoE?
+		unit:FullCastSpellOnTarget( 74531, unit:GetRandomPlayer( 0 ) );
 		vars.tailLash = math.random( 12, 16 );
 	
 	elseif( vars.darkBreath <= 0 )
@@ -659,7 +659,7 @@ function TwilightHalionOnAIUpdate( unit )
 		local target = unit:GetRandomPlayer( 0 );
 		if( target )
 		then
-			unit:FullCastSpellOnTarget( 74792, target );
+			unit:CastSpellOnTarget( 74792, target );
 		end
 		vars.soulConsumption = 20;	
 	end
