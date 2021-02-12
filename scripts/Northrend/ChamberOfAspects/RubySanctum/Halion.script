@@ -26,11 +26,10 @@
 	*) 75396: has a scripted effect (0) but no handler for it.
 	*) 74641: has an apply dummy aura effect but no handler for it.
 	*) 74812: has an aplly dummy aura effect but no handler for it.
-	*) corporeality cast and spell selector.
 	*) add localization.
 	*) implement better test/debug commands.
 	*) improve tail lash
-	*) npc combustion and consumption.
+	*) npc combustion and consumption
 	*) npc living inferno
 	*) npc living embers
 	*) The End: get rid of yell = {} and text = {} to save some KB.
@@ -68,16 +67,24 @@ local NPC_ORB_CARRIER = 40081;
 local NPC_25M_ORB_CARRIER = 40470;
 local H_ORB_CARRIER = 40471;
 local H_NPC_25M_ORB_CARRIER = 40472;
+
 local NPC_ORB_1 = 40083;
 local NPC_ORB_2 = 40100;
 local NPC_ORB_3 = ?
 local NPC_ORB_4 = ?
 
 local NPC_METEOR_STRIKE_MARK = 40029;
+local NPC_METEOR_STRIKE_CRAP = { 40041, 40042, 40043, 40041 };
 local NPC_METEOR_STRIKE_FLAME = 40055;
-]]
 
---local TREES = { 203034, 203035, 203036, 203037 };
+local NPC_COMBUSTION = 40001;
+local NPC_CONSUMPTION = 40135;
+
+local NPC_LIVING_INFERNO = 40681;
+local NPC_LIVING_EMBER = 40683;
+
+local GO_TREES = { 203034, 203035, 203036, 203037 };
+]]
 
 --[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1		= 0x0006 + 0x000B;
@@ -700,9 +707,6 @@ function ControllerOnSpawn( unit )
 
 	};
 
-	-- comment this to disable auto halion spawn
-	--unit:RegisterAIUpdateEvent( 1000 );
-
 end
 
 function ControllerOnCombat( unit )
@@ -1008,6 +1012,21 @@ function UpdateCorporeality( unit )
 	unit:SetWorldStateForZone( 5049, vars.materialCorporealityValue * 10 );
 	unit:SetWorldStateForZone( 5050, 100 - vars.materialCorporealityValue * 10 );
 	
+	local iid = unit:GetInstanceID();
+		
+	-- get halion using guid
+	local halion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataHalion );
+	if( halion )
+	then
+		halion:CastSpell( spell_corporeality[ vars.materialCorporealityValue ][ 2 ] );
+	end
+	
+	-- get twilight halion using guid
+	local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
+	if( twilightHalion )
+	then
+		twilightHalion:CastSpell( spell_corporeality[ vars.materialCorporealityValue ][ 1 ] );		
+	end
 end
 
 RegisterUnitEvent( 40146, 18, ControllerOnSpawn );
@@ -1041,6 +1060,7 @@ function OrbCarrierOnAIUpdate( unit, event )
 		
 		--for debug
 		--unit:RegisterLuaEvent( OrbCarrierDoAction, 5000, 1, 2 );
+		unit:RegisterLuaEvent( OrbCarrierDoAction, 5000, 1, 3 );
     end	
 end
 
@@ -1089,7 +1109,16 @@ function OrbCarrierDoAction( unit, action )
 		local orb2 = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataOrb2 );
 		if( orb1 and orb2 )
 		then
-			TriggerCutter( orb1, orb2 );
+			-- orbs can be killed?
+			orb1:SetInvincible();
+			orb2:SetInvincible();
+			
+			-- spell twilight pulse periodic
+			orb1:CastSpell( 78861 );
+			orb2:CastSpell( 78861 );
+			
+			-- spell twilight cutter
+			orb1:ChannelSpell( 74768, orb2 );
 		end
 		
 		local twilightHalion = GetInstanceCreature( 724, iid, HSHARED[ iid ].dataTwilight );
@@ -1099,16 +1128,6 @@ function OrbCarrierDoAction( unit, action )
 			twilightHalion:SendChatMessage( 14, 0, yell[ 6 ] );
 		end
 	end
-end
-
-function TriggerCutter( caster, target )
-
-	-- spell twilight pulse periodic
-	caster:CastSpell( 78861 );
-	target:CastSpell( 78861 );
-	
-	-- spell twilight cutter
-	caster:CastSpellOnTarget( 74768, target );
 end
 
 RegisterUnitEvent( 40081, 18, OrbCarrierOnAIUpdate );
@@ -1135,7 +1154,7 @@ function MeteorStrikeMark( unit )
 	local position = { unit:GetLocation() };
 
 	local angles = { 0, 0, 0, 0 };
-	
+		
 	angles[ 1 ] = position[ 4 ];
 	angles[ 2 ] = position[ 4 ] + randomAdjust;
 	angles[ 3 ] = position[ 4 ] + math.pi;
@@ -1154,8 +1173,7 @@ end
 
 function MeteorStrikeDoAction( unit, action )
 	
-	-- mark:
-	-- meteor strike aoe
+	-- mark: meteor strike aoe
 	if( action == 1 )
 	then
 		-- spell meteor strike aoe damage
@@ -1164,8 +1182,7 @@ function MeteorStrikeDoAction( unit, action )
 		-- spell meteor strike fire aura 1
         unit:CastSpell( 74713 );
 	
-	-- crap:
-	-- meteor strike burn
+	-- crap: meteor strike burn
 	elseif( action == 2 )
 	then
 		-- spell meteor strike fire aura 2
@@ -1228,6 +1245,31 @@ end
 
 RegisterUnitEvent( 40055, 18, MeteorStrikeFlame );
 RegisterUnitEvent( 40055, 21, MeteorStrikeFlame );
+
+--[[
+
+		Combustion and Consumption AI ( 40001, 40135 )
+		
+--]]
+
+function CombustionAndConsumption( unit, event )
+
+	print("CombustionAndConsumption")
+
+	unit:Root();
+	
+	local entry = unit:GetEntry();
+	
+	if( entry == 40001 )
+	then
+		--unit:SetPhase( 1 );
+	else
+		--unit:SetPhase( 32 );
+	end
+end
+
+RegisterUnitEvent( 40001, 18, CombustionAndConsumption );
+RegisterUnitEvent( 40135, 18, CombustionAndConsumption );
 
 --[[
 
@@ -1370,6 +1412,24 @@ function Commands( _, plr, message )
 			selection:PlaySoundToSet( 17505 );
 			selection:SendChatMessage( 14, 0, yell[ 2 ] );
 		
+		elseif( message == "#combustion" )
+		then
+			local selection = plr:GetSelection();
+			local target = selection:GetRandomPlayer( 0 );
+			if( target )
+			then
+				selection:CastSpellOnTarget( 74562, target );
+			end
+			
+		elseif( message == "#consumption" )
+		then
+			local selection = plr:GetSelection();
+			local target = selection:GetRandomPlayer( 0 );
+			if( target )
+			then
+				selection:FullCastSpellOnTarget( 74792, target );
+			end
+		
 		elseif( message == "#controller" )
 		then
 			-- get controller using coords
@@ -1377,6 +1437,28 @@ function Commands( _, plr, message )
 			if( controller )
 			then
 				controller:RegisterAIUpdateEvent( 1000 );
+			end
+			
+		elseif( message == "#phase1" )
+		then
+			plr:PhaseSet( 1 );
+			
+		elseif( message == "#phase32" )
+		then
+			plr:PhaseSet( 32 );
+			
+		elseif( message == "ist" )
+		then
+			local target = plr:GetSelection();
+			local v = IsTwilight( target )
+			print(""..v.."")
+		
+		elseif( message == "#thalion" )
+		then
+			local controller = plr:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
+			if( controller )
+			then
+				controller:SpawnCreature( 40142, 3156.67, 533.8108, 72.98822, 3.159046, 14, 0, 1, 1, 1, 32, 0 );
 			end
 		end
 	end
