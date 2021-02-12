@@ -1189,10 +1189,7 @@ RegisterUnitEvent( 40029, 18, MeteorStrikeMark );
 
 function MeteorStrikeCrap( unit, event )
 
-	print("meteor strike crap on spawn: "..unit:GetEntry().."")
-	
-	-- ported to database
-	--unit:Root();
+	--print("meteor strike crap on spawn: "..unit:GetEntry().."")
 	
 	unit:RegisterLuaEvent( MeteorStrikeDoAction, 100, 1, 2 );
 	
@@ -1229,7 +1226,6 @@ function MeteorStrikeFlame( unit, event )
 	
 	-- on spawn
 	else
-		unit:Root();
 		unit:RegisterAIUpdateEvent( 1000 );
 		print( "meteor strike flame spawned" );
 	end

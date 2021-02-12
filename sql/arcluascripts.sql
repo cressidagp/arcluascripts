@@ -439,10 +439,10 @@ INSERT INTO `vehicle_accessories` (`creature_entry`, `accessory_entry`, `seat`) 
 UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40029;
 
 -- Meteor Strike Crap
-UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40041;
-UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40042;
-UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40043;
-UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40044;
+UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` IN ( 40041, 40042, 40043, 40044 );
+
+-- Meteor Strike Flame
+UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40055;
 
 --
 --
