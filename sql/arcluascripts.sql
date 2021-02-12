@@ -416,7 +416,7 @@ REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `
 VALUES (39863, 5, 100, 0, 14, 'Halion the Destroyer', 'Relish this victory, mortals, for it will be your last. This world will burn with the master\'s return!', NULL, NULL, NULL, NULL);
 
 -- Halion Controller
-UPDATE `creature_proto` SET `invisibility_type` = 1 WHERE `entry` = 40146;
+UPDATE `creature_proto` SET `invisibility_type` = 0 WHERE `entry` = 40146;
 
 DELETE FROM `creature_spawns` WHERE `id` = @ID7 AND `entry` = 40146;
 
@@ -443,6 +443,10 @@ UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` IN ( 40041, 40042, 40043,
 
 -- Meteor Strike Flame
 UPDATE `creature_proto` SET `rooted` = 1 WHERE `entry` = 40055;
+
+-- Set debug mode off :P
+UPDATE `creature_names` SET `male_displayid` = 11686, `female_displayid` = 11686 WHERE `entry` IN ( 40029, 40041, 40042, 40043, 40044, 40055 );
+UPDATE `creature_spawns` SET `displayid` = 11686 WHERE `entry` IN ( 40146, 40081 );
 
 --
 --
@@ -773,4 +777,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-01-23_17-22_DefiasCutpurse');
+('2021-02-12_00-27_MeteorStrike');

@@ -29,8 +29,10 @@
 	*) corporeality cast and spell selector.
 	*) add localization.
 	*) implement better test/debug commands.
-	*) make dummy creatures invisible ( model 169 visible, 11686 invisible ).
 	*) improve tail lash
+	*) npc combustion
+	*) npc living inferno
+	*) npc living embers
 	*) The End: get rid of yell = {} and text = {} to save some KB.
 	
 	enUS locale:
@@ -1123,7 +1125,7 @@ function MeteorStrikeMark( unit, event )
 	-- on spawn
 	if( event == 18 )
 	then
-		print("meteor strike mark")
+		--print("meteor strike mark")
 		
 		-- ported to database
 		--unit:Root();
@@ -1187,7 +1189,7 @@ RegisterUnitEvent( 40029, 18, MeteorStrikeMark );
 		
 --]]
 
-function MeteorStrikeCrap( unit, event )
+function MeteorStrikeCrap( unit )
 
 	--print("meteor strike crap on spawn: "..unit:GetEntry().."")
 	
@@ -1222,12 +1224,11 @@ function MeteorStrikeFlame( unit, event )
 		-- spell meteor strike fire aura 2
 		unit:CastSpell( 74718 );
 		unit:RemoveAIUpdateEvent();
-		print( "meteor strike flame removed aiupdate" );
 	
 	-- on spawn
 	else
 		unit:RegisterAIUpdateEvent( 1000 );
-		print( "meteor strike flame spawned" );
+		--print( "meteor strike flame spawned" );
 	end
 end
 
