@@ -28,10 +28,10 @@
 	*) 74812: has an aplly dummy aura effect but no handler for it.
 	*) add localization.
 	*) implement better test/debug commands.
-	*) improve tail lash
-	*) npc combustion and consumption
-	*) npc living inferno
-	*) npc living embers
+	*) improve tail lash.
+	*) npc combustion and consumption.
+	*) npc living inferno.
+	*) npc living embers.
 	*) The End: get rid of yell = {} and text = {} to save some KB.
 	
 	enUS locale:
@@ -1427,7 +1427,7 @@ function Commands( _, plr, message )
 			local target = selection:GetRandomPlayer( 0 );
 			if( target )
 			then
-				selection:FullCastSpellOnTarget( 74792, target );
+				selection:CastSpellOnTarget( 74792, target );
 			end
 		
 		elseif( message == "#controller" )
@@ -1446,12 +1446,6 @@ function Commands( _, plr, message )
 		elseif( message == "#phase32" )
 		then
 			plr:PhaseSet( 32 );
-			
-		elseif( message == "ist" )
-		then
-			local target = plr:GetSelection();
-			local v = IsTwilight( target )
-			print(""..v.."")
 		
 		elseif( message == "#thalion" )
 		then
