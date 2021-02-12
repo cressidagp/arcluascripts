@@ -659,7 +659,7 @@ function TwilightHalionOnAIUpdate( unit )
 		local target = unit:GetRandomPlayer( 0 );
 		if( target )
 		then
-			unit:FullCastSpellOnTarget( 74792, unit:GetRandomPlayer( 0 ) ); -- Any
+			unit:FullCastSpellOnTarget( 74792, target );
 		end
 		vars.soulConsumption = 20;	
 	end
