@@ -30,7 +30,7 @@
 	*) add localization.
 	*) implement better test/debug commands.
 	*) improve tail lash
-	*) npc combustion
+	*) npc combustion and consumption.
 	*) npc living inferno
 	*) npc living embers
 	*) The End: get rid of yell = {} and text = {} to save some KB.
@@ -1120,41 +1120,35 @@ RegisterUnitEvent( 40081, 21, OrbCarrierOnAIUpdate );
 		
 --]]
 
-function MeteorStrikeMark( unit, event )
+function MeteorStrikeMark( unit )
 
-	-- on spawn
-	if( event == 18 )
-	then
-		--print("meteor strike mark")
+	--print("meteor strike mark")
 		
-		-- ported to database
-		--unit:Root();
+	-- spell meteor strike countdown
+	unit:CastSpell( 74641 );
 		
-		-- spell meteor strike countdown
-		unit:CastSpell( 74641 );
+	-- spell birth no visual
+	unit:CastSpell( 40031 );
 		
-		-- spell birth no visual
-        unit:CastSpell( 40031 );
+	local randomAdjust = math.random( math.pi / 5, math.pi / 2 );
 		
-		local randomAdjust = math.random( math.pi / 5, math.pi / 2 );
-		
-		local position = { unit:GetLocation() };
+	local position = { unit:GetLocation() };
 
-		local angles = { 0, 0, 0, 0 };
-		angles[ 1 ] = position[ 4 ];
-		angles[ 2 ] = position[ 4 ] + randomAdjust;
-		angles[ 3 ] = position[ 4 ] + math.pi;
-		angles[ 4 ] = angles[ 3 ] + randomAdjust;
+	local angles = { 0, 0, 0, 0 };
+	
+	angles[ 1 ] = position[ 4 ];
+	angles[ 2 ] = position[ 4 ] + randomAdjust;
+	angles[ 3 ] = position[ 4 ] + math.pi;
+	angles[ 4 ] = angles[ 3 ] + randomAdjust;
 		
-		local meteorStrikeCrap = { 40041, 40042, 40043, 40044 };
-		for i = 1, #meteorStrikeCrap
-		do
-			-- GetNearPosition( dist, angle )
-			local newx = position[ 1 ] + 10 * math.cos( angles[ i ] );
-			local newy = position[ 2 ] + 10 * math.sin( angles[ i ] );
-			local newz = unit:GetLandHeight( newx, newy );
-			unit:SpawnCreature( meteorStrikeCrap[ i ], newx, newy, newz, 1.5, 14, 30000, 1, 1, 1, 1, 0 );
-		end
+	local meteorStrikeCrap = { 40041, 40042, 40043, 40044 };
+	for i = 1, #meteorStrikeCrap
+	do
+		-- GetNearPosition( dist, angle )
+		local newx = position[ 1 ] + 10 * math.cos( angles[ i ] );
+		local newy = position[ 2 ] + 10 * math.sin( angles[ i ] );
+		local newz = unit:GetLandHeight( newx, newy );
+		unit:SpawnCreature( meteorStrikeCrap[ i ], newx, newy, newz, 1.5, 14, 30000, 1, 1, 1, 1, 0 );
 	end
 end
 
