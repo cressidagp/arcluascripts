@@ -17,7 +17,7 @@
 	
 	ToDo:
 
-	*) Twilight Precision: so far, all my attems to fix aura display using SetDBCSpellVar has failed.
+	*) Twilight Precision: so far, all my attems to fix aura display using SetDBCSpellVar had failed.
 	*) get correct scale for exit portals.
 	*) 76006: has a dummy effect (1) but no handler for it.
 	*) 76006: has an apply dummy aura effect but no handler for it.
@@ -29,7 +29,7 @@
 	*) corporeality cast and spell selector.
 	*) add localization.
 	*) implement better test/debug commands.
-	*) make dummy creatures invisible ( model 168?).
+	*) make dummy creatures invisible ( model 169 visible, 11686 invisible ).
 	*) improve tail lash
 	*) The End: get rid of yell = {} and text = {} to save some KB.
 	
@@ -70,6 +70,9 @@ local NPC_ORB_1 = 40083;
 local NPC_ORB_2 = 40100;
 local NPC_ORB_3 = ?
 local NPC_ORB_4 = ?
+
+local NPC_METEOR_STRIKE_MARK = 40029;
+local NPC_METEOR_STRIKE_FLAME = 40055;
 ]]
 
 --local TREES = { 203034, 203035, 203036, 203037 };
@@ -695,6 +698,7 @@ function ControllerOnSpawn( unit )
 
 	};
 
+	-- comment this to disable auto halion spawn
 	--unit:RegisterAIUpdateEvent( 1000 );
 
 end
@@ -809,10 +813,10 @@ end
 
 function ControllerOnAIUpdate( unit )
 
-	if( unit:GetNextTarget() == nil ) then
-		unit:WipeThreatList();
-		return;
-	end
+	--if( unit:GetNextTarget() == nil ) then
+	--	unit:WipeThreatList();
+	--	return;
+	--end
 	
 	local vars = self[ tostring( unit ) ];
 
@@ -947,7 +951,7 @@ function UpdateCorporeality( unit )
 
 	local damageRatio = vars.materialDamageTaken / vars.twilightDamageTaken;
 	
-	 -- corporeality none
+	-- corporeality none
 	local action = 0;
 	
 	if( damageRatio <= 0.98 )
@@ -1124,18 +1128,31 @@ function MeteorStrikeMark( unit, event )
 		-- ported to database
 		--unit:Root();
 		
-		-- get controller using spawnid
-		--local controller = GetInstanceCreature( 724, unit:GetInstanceID(), 200631 );
-		
-		-- set summoned by controller
-		--unit:SetUInt64Value( 0x0006 + 0x0008, controller:GetGUID() );
-		
 		-- spell meteor strike countdown
 		unit:CastSpell( 74641 );
 		
 		-- spell birth no visual
         unit:CastSpell( 40031 );
 		
+		local randomAdjust = math.random( math.pi / 5, math.pi / 2 );
+		
+		local position = { unit:GetLocation() };
+
+		local angles = { 0, 0, 0, 0 };
+		angles[ 1 ] = position[ 4 ];
+		angles[ 2 ] = position[ 4 ] + randomAdjust;
+		angles[ 3 ] = position[ 4 ] + math.pi;
+		angles[ 4 ] = angles[ 3 ] + randomAdjust;
+		
+		local meteorStrikeCrap = { 40041, 40042, 40043, 40044 };
+		for i = 1, #meteorStrikeCrap
+		do
+			-- GetNearPosition( dist, angle )
+			local newx = position[ 1 ] + 10 * math.cos( angles[ i ] );
+			local newy = position[ 2 ] + 10 * math.sin( angles[ i ] );
+			local newz = unit:GetLandHeight( newx, newy );
+			unit:SpawnCreature( meteorStrikeCrap[ i ], newx, newy, newz, 1.5, 14, 30000, 1, 1, 1, 1, 0 );
+		end
 	end
 end
 
@@ -1157,6 +1174,8 @@ function MeteorStrikeDoAction( unit, action )
 	then
 		-- spell meteor strike fire aura 2
 		unit:CastSpell( 74718 );
+		
+		unit:RegisterEvent( SpawnMeteorFlame, 500, 1 );
 	end
 end
 
@@ -1164,38 +1183,64 @@ RegisterUnitEvent( 40029, 18, MeteorStrikeMark );
 
 --[[
 
-		Meteor Strike Crap AI ()
+		Meteor Strike Crap AI ( 40041, 42, 43, 44 )
 		
 --]]
 
-function MeteorSkikeCrap( unit, event )
+function MeteorStrikeCrap( unit, event )
 
-	-- on ai update
-	if( event == 21 )
-	then
-		print("meteor strike on ai: "..unit:GetEntry().."")
-	else
+	print("meteor strike crap on spawn: "..unit:GetEntry().."")
+	
+	-- ported to database
+	--unit:Root();
+	
+	unit:RegisterLuaEvent( MeteorStrikeDoAction, 100, 1, 2 );
+	
+end
 
-		print("meteor strike on spawn: "..unit:GetEntry().."")
-		-- ported to database
-		--unit:Root();
-		unit:RegisterAIUpdateEvent( 1000 );
-		
-	end
+function SpawnMeteorFlame( unit )
+
+	local position = { unit:GetLocation() };
+	
+	-- spawn flame just for 25 secs
+	unit:SpawnCreature( 40055, position[ 1 ], position[ 2 ], position[ 3 ], 1.5, 14, 25000, 1, 1, 1, 1, 0 );	
 end
 
 RegisterUnitEvent( 40041, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40042, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40043, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40044, 18, MeteorStrikeCrap );
-RegisterUnitEvent( 40041, 21, MeteorStrikeCrap );
-RegisterUnitEvent( 40042, 21, MeteorStrikeCrap );
-RegisterUnitEvent( 40043, 21, MeteorStrikeCrap );
-RegisterUnitEvent( 40044, 21, MeteorStrikeCrap );
 
 --[[
 
-		GameObject: Twilight Portal ( 202794 )
+		Meteor Strike Flame AI ( 40055 )
+		
+--]]
+
+function MeteorStrikeFlame( unit, event )
+
+	-- on aiupdate
+	if( event == 21 )
+	then
+		-- spell meteor strike fire aura 2
+		unit:CastSpell( 74718 );
+		unit:RemoveAIUpdateEvent();
+		print( "meteor strike flame removed aiupdate" );
+	
+	-- on spawn
+	else
+		unit:Root();
+		unit:RegisterAIUpdateEvent( 1000 );
+		print( "meteor strike flame spawned" );
+	end
+end
+
+RegisterUnitEvent( 40055, 18, MeteorStrikeFlame );
+RegisterUnitEvent( 40055, 21, MeteorStrikeFlame );
+
+--[[
+
+		GameObject: Twilight Portal ( 202794, 202796 )
 
 --]]
 
@@ -1250,7 +1295,7 @@ RegisterServerHook( 31, OnAuraRemove );
 		DEBUG COMMANDS DISABLED BY DEFAULT
 
 
-local COMMANDS = { "halion", "port", "exit", "open", "close", "hp75", "hp50", "action1", "action2", "action3", "action4", "meteor" };
+local COMMANDS = { "halion", "port", "exit", "open", "close", "hp75", "hp50", "action1", "action2", "action3", "action4", "meteor", "controller" };
 
 function Commands( _, plr, message )
 
@@ -1333,8 +1378,18 @@ function Commands( _, plr, message )
 			selection:FullCastSpellAoE( meteorStrikePos[ 1 ], meteorStrikePos[ 2 ], meteorStrikePos[ 3 ], 74637 );
 			selection:PlaySoundToSet( 17505 );
 			selection:SendChatMessage( 14, 0, yell[ 2 ] );
+		
+		elseif( message == "#controller" )
+		then
+			-- get controller using coords
+			local controller = plr:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
+			if( controller )
+			then
+				controller:RegisterAIUpdateEvent( 1000 );
+			end
 		end
 	end
 end
 
-RegisterServerHook( 16, Commands );--]]
+RegisterServerHook( 16, Commands );
+]]
