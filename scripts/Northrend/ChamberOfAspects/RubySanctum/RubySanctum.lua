@@ -274,8 +274,8 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 		
 	elseif( RUBY_SANCTUM[ iid ].event6 <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
 	then
-		unit:PlaySoundToSet( sound[ 7 ] );
-		unit:SendChatMessage( 12, 0, chat[ 7 ] );
+		unit:PlaySoundToSet( talk[ 7 ][ 1 ] );
+		unit:SendChatMessage( 12, 0, talk[ 7 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 6;
 		
 	elseif( RUBY_SANCTUM[ iid ].event7 <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
