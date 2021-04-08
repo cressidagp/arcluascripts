@@ -1050,7 +1050,8 @@ function OrbCarrierOnAIUpdate( unit, event )
 		if( unit:IsCasting() == true ) then return; end
 		
 		-- spell track rotation
-		unit:FullCastSpell( 74758 );
+		-- this spell seems to be causing stuck in loading screen when player leaves ruby sanctum
+		--unit:FullCastSpell( 74758 );
 
 	-- on spawn
 	else

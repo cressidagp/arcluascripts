@@ -7,7 +7,7 @@
 
 	Credits:
 
-	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) TrinityCore for texts, sound ids, timers, spell ids and some inspiration.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
@@ -103,12 +103,11 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 		RUBY_SANCTUM[ iid ] = {
 
 		isIntro = true,
-		isDone = false,
+		introDone = false,
 		baltharusIsDead = false,
 		savianaIsDead = false,
 		zarithrianIsDead = false,
 		action = 0
-
 		};
 	end
 end
@@ -193,7 +192,6 @@ function RUBY_SANCTUM.DoAction( unit )
 	-- intro xerex
 	if( RUBY_SANCTUM[ iid ].action == 1 )
 	then
-		RUBY_SANCTUM[ iid ].introDone = true;
 		unit:PlaySoundToSet( talk[ 9 ][ 1 ] );
 		unit:SendChatMessage( 14, 0, talk[ 9 ][ 2 ] );
 		unit:Emote( 5, 0 );
@@ -201,6 +199,7 @@ function RUBY_SANCTUM.DoAction( unit )
 	-- intro baltharus
 	elseif( RUBY_SANCTUM[ iid ].action == 2 )
 	then
+		RUBY_SANCTUM[ iid ].introDone = true;
 		unit:PlaySoundToSet( talk[ 10 ][ 1 ] );
 		unit:SendChatMessage( 14, 0, talk[ 10 ][ 2 ] );
 		
@@ -216,13 +215,7 @@ function RUBY_SANCTUM.DoAction( unit )
 		RUBY_SANCTUM[ iid ].isIntro = false;
 		
 		-- add protected variables
-		RUBY_SANCTUM[ iid ].event1 = 16;
-		RUBY_SANCTUM[ iid ].event2 = 25;
-		RUBY_SANCTUM[ iid ].event3 = 32;
-		RUBY_SANCTUM[ iid ].event4 = 42;
-		RUBY_SANCTUM[ iid ].event5 = 51;
-		RUBY_SANCTUM[ iid ].event6 = 61;
-		RUBY_SANCTUM[ iid ].event7 = 69;
+		RUBY_SANCTUM[ iid ].timer = 16;
 		RUBY_SANCTUM[ iid ].vars = 0;
 	end
 end
@@ -234,58 +227,60 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	if( RUBY_SANCTUM[ iid ].isIntro == true )
 	then return; end
 	
-	RUBY_SANCTUM[ iid ].event1 = RUBY_SANCTUM[ iid ].event1 - 1;
-	RUBY_SANCTUM[ iid ].event2 = RUBY_SANCTUM[ iid ].event2 - 1;
-	RUBY_SANCTUM[ iid ].event3 = RUBY_SANCTUM[ iid ].event3 - 1;
-	RUBY_SANCTUM[ iid ].event4 = RUBY_SANCTUM[ iid ].event4 - 1;
-	RUBY_SANCTUM[ iid ].event5 = RUBY_SANCTUM[ iid ].event5 - 1;
-	RUBY_SANCTUM[ iid ].event6 = RUBY_SANCTUM[ iid ].event6 - 1;
-	RUBY_SANCTUM[ iid ].event7 = RUBY_SANCTUM[ iid ].event7 - 1;
+	RUBY_SANCTUM[ iid ].timer = RUBY_SANCTUM[ iid ].timer - 1;
 	
-	if( RUBY_SANCTUM[ iid ].event1 <= 0 and RUBY_SANCTUM[ iid ].vars == 0 )
+	if( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 0 )
 	then
 		unit:PlaySoundToSet( talk[ 2 ][ 1 ] );
 		unit:SendChatMessage( 12, 0, talk[ 2 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 1;
+		RUBY_SANCTUM[ iid ].timer = 9;
 	
-	elseif( RUBY_SANCTUM[ iid ].event2 <= 0 and RUBY_SANCTUM[ iid ].vars == 1 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 1 )
 	then
 		unit:PlaySoundToSet( talk[ 3 ][ 1 ] );
 		unit:SendChatMessage( 12, 0, talk[ 3 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 2;
+		RUBY_SANCTUM[ iid ].timer = 7;
 	
-	elseif( RUBY_SANCTUM[ iid ].event3 <= 0 and RUBY_SANCTUM[ iid ].vars == 2 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 2 )
 	then
 		unit:PlaySoundToSet( talk[ 4 ][ 1 ] );
 		unit:SendChatMessage( 12, 0, talk[ 4 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 3;
+		RUBY_SANCTUM[ iid ].timer = 10;
 
-	elseif( RUBY_SANCTUM[ iid ].event4 <= 0 and RUBY_SANCTUM[ iid ].vars == 3 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 3 )
 	then
 		unit:PlaySoundToSet( talk[ 5 ][ 1 ] );
 		unit:SendChatMessage( 12, 0, talk[ 5 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 4;
+		RUBY_SANCTUM[ iid ].timer = 9;
 
-	elseif( RUBY_SANCTUM[ iid ].event5 <= 0 and RUBY_SANCTUM[ iid ].vars == 4 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 4 )
 	then
 		unit:PlaySoundToSet( talk[ 6 ][ 1 ] );
 		unit:SendChatMessage( 12, 0, talk[ 6 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 5;
+		RUBY_SANCTUM[ iid ].timer = 10;
 		
-	elseif( RUBY_SANCTUM[ iid ].event6 <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
 	then
 		unit:PlaySoundToSet( talk[ 7 ][ 1 ] );
 		unit:SendChatMessage( 12, 0, talk[ 7 ][ 2 ] );
 		RUBY_SANCTUM[ iid ].vars = 6;
+		RUBY_SANCTUM[ iid ].timer = 8;
 		
-	elseif( RUBY_SANCTUM[ iid ].event7 <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
 	then
 		unit:PlaySoundToSet( talk[ 8 ][ 1 ] );
 		unit:SendChatMessage( 12, 0, talk[ 8 ][ 2 ] );
 		unit:Emote( 5, 0 );
+		
 		unit:RemoveAIUpdateEvent();
 		unit:SetNPCFlags( 3 );
 		RUBY_SANCTUM[ iid ].vars = nil;
+		RUBY_SANCTUM[ iid ].timer = nil;
 	end
 end
 
@@ -402,5 +397,4 @@ function RubyCommands( _, plr, message )
 	end
 end
 
-RegisterServerHook( 16, RubyCommands );
---]]
+RegisterServerHook( 16, RubyCommands );--]]
