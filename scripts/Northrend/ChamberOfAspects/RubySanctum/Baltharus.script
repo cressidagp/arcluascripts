@@ -139,8 +139,6 @@ function OnSpawn( unit )
 		unit:ChannelSpell( 76221, crystal );
 	end
 	
-	--unit:RegisterEvent( DoAction, 7000, 1 );
-	
 end
 
 function OnCombat( unit )
