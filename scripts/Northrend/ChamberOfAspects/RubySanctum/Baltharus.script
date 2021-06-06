@@ -132,12 +132,13 @@ function OnSpawn( unit )
 	};
 	
 	-- moved this to database but didnt work
-	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-	if( crystal )
-	then
+	--makes player stuck on loading screen when leaving instance
+	--local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+	--if( crystal )
+	--then
 		-- spell barrier channel
-		unit:ChannelSpell( 76221, crystal );
-	end
+		--unit:ChannelSpell( 76221, crystal );
+	--end
 	
 end
 
@@ -155,7 +156,7 @@ function OnCombat( unit )
 	vars.enervatingBrand = 13;
 	vars.bladeTempest = 18;
 	
-	unit:StopChannel();
+	--unit:StopChannel();
 
     -- Developer notes: we dont need to send the chat here since
     -- our monstersay table will do the job, instance collision checked.
