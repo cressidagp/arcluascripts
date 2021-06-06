@@ -119,7 +119,6 @@ function OnSpawn( unit )
 	self[ tostring( unit )] = {
 
     phase = 1,
-	action = 1,
 	cloneCount = 0
 
     };
@@ -171,36 +170,17 @@ end
 
 function DoAction( unit )
 
-	local vars = self[ tostring( unit ) ];
-	
-	-- react agresive
-	if( vars.action == nil )
-	then
-		unit:DisableCombat( 0 );
-	
-	-- intro
-	--elseif( vars.action == 1 )
-	--then
-	--	unit:PlaySoundToSet( 17525 );
-	--	unit:SendChatMessage( 14, 0, yell[ 1 ] );
-	--	vars.action = 0;
-	
-	-- clone
-
-	elseif( vars.action == 2 )
-	then
-		unit:PlaySoundToSet( 17524 );
-		unit:SendChatMessage( 14, 0, yell[ 3 ] );
+	unit:PlaySoundToSet( 17524 );
+	unit:SendChatMessage( 14, 0, yell[ 3 ] );
 		
-		-- spell clear debuffs
-		unit:CastSpell( 34098 );
+	-- spell clear debuffs
+	unit:CastSpell( 34098 );
 		
-		-- spell clone
-		unit:CastSpell( 74511 );
+	-- spell clone
+	unit:CastSpell( 74511 );
 		
-		-- spell repelling wave 
-		unit:CastSpell( 74509 );
-	end
+	-- spell repelling wave 
+	unit:CastSpell( 74509 );
 end
 
 function OnDamageTaken( unit, _, _, damage )
@@ -214,7 +194,6 @@ function OnDamageTaken( unit, _, _, damage )
 		if( hp < 50 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
-			vars.action = 2;
 			unit:RegisterEvent( DoAction, 1000, 1 );
 		end
 		
@@ -222,13 +201,11 @@ function OnDamageTaken( unit, _, _, damage )
 		if( hp < 66 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
-			vars.action = 2;
 			unit:RegisterEvent( DoAction, 1000, 1 );
 
 		elseif( hp < 33 and vars.cloneCount == 1 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
-			vars.action = 2;
 			unit:RegisterEvent( DoAction, 1000, 1 );
 		end
 	end
@@ -255,7 +232,6 @@ function OnLeaveCombat( unit )
 	local vars = self[ tostring( unit ) ];
 	
 	vars.phase = 1;
-	vars.action = 1;
 	vars.cloneCount = 0;
 	
 	-- reset shared variables
