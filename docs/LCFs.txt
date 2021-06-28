@@ -1,0 +1,80 @@
+-- Lua Convenient Functions by Paroxysm
+
+Creature:
+
+	SetUnselectable
+	SetSelectable
+	SetUnattackable
+	SetAttackable
+	SetChannelTarget
+	GetChannelTarget
+	SpawnLocalCreature
+	SpawnLocalGameObject
+	MonsterYell
+	MonsterSay
+	MonsterEmote
+	MonsterWhisper
+	MonsterYellToPlayer
+	MonsterSayToPlayer
+	MonsterWhisperToPlayer
+	BossRaidEmote
+	MoveToUnit
+	GetSpawnLocation
+	RegisterLuaEvent
+	IsCasting
+	SetCreator
+	GetCreator
+	GetLocalCreature
+	GetLocalGameObject
+
+Player:
+
+	GetStrength
+	GetAgility
+	GetStamina
+	GetIntellect
+	GetSpirit
+	IsAlliance
+	IsHorde
+	IsHeroic
+	SpawnLocalCreature
+	SpawnLocalGameObject
+	MoveToUnit
+	RegisterLuaEvent
+	RemoveLuaEvent
+	IsCasting
+	GetLocalCreature
+	GetLocalGameObject
+
+GameObject:
+
+	SetUnclickable
+	SetClickable
+	IsUnclickable
+	IsClickable
+	Respawn
+	Close
+	IsOpen
+	IsClosed
+	Open
+	RegisterLuaEvent
+	SetCreator
+	GetLocalCreature
+	GetLocalGameObject
+	SpawnLocalCreature
+	SpawnLocalGameObject
+	GetCreator
+
+Extra:
+
+	HandleOnZone
+	HandleOnAreaTrigger
+	RegisterZoneHook
+	RemoveZoneHook
+	RegisterAreaTrigger
+	RemoveAreaTrigger
+	RegisterLuaEvent
+	RemoveLuaEvent
+	UpdateCallBacks
+	BindMethod
+	CreateClosure
