@@ -23,15 +23,15 @@
 
 --]]
 
-FORCE_TARGET_SALUTE = {}
+FORCE_TARGET_SALUTE = {};
 
 function FORCE_TARGET_SALUTE.DummyHandler( _, spellObject )
-
-	local caster = spellObject:GetCaster();
 
 	local target = spellObject:GetTarget();
 
 	if( target == nil ) then return; end
+	
+	local caster = spellObject:GetCaster();
 
 	caster:Emote( 66, 0 );
 	target:Emote( 66, 0 );
