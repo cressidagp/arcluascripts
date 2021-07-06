@@ -17,15 +17,13 @@ function GO_SCALE_FIX.OnSpawn( go )
 	
 	local entry = go:GetEntry();
 	
-	local scale = go:GetScale();
-	
 	--
 	-- Case: Farm Chicken Egg
 	--
 	
 	if( entry == 161513 )
 	then
-		if( scale ~= 0.2 )
+		if( go:GetScale() ~= 0.2 )
 		then
 			go:SetScale( 0.2 );
 			go:Update();
@@ -37,7 +35,7 @@ function GO_SCALE_FIX.OnSpawn( go )
 	
 	elseif( entry == 181597 )
 	then
-		if( scale ~= 0.3 )
+		if( go:GetScale() ~= 0.3 )
 		then
 			go:SetScale( 0.3 );
 			go:Update();
