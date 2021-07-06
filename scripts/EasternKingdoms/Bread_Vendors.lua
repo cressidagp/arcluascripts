@@ -46,10 +46,10 @@ function BREAD_VENDORS.OutOfCombatChat( unit, event )
 	
 	if( event == 21 )
 	then
-        if( unit:IsInCombat() == false )
-        then
-            unit:SendChatMessage( 12, 7, chat[ math.random( 1, 3 ) ] );
-			
+		if( unit:IsInCombat() == false )
+		then
+			unit:SendChatMessage( 12, 7, chat[ math.random( 1, 3 ) ] );
+
 			local entry = unit:GetEntry();
 			
 			-- Kira Songshine
@@ -59,7 +59,7 @@ function BREAD_VENDORS.OutOfCombatChat( unit, event )
 			else
 				unit:ModifyAIUpdateEvent( math.random( 40000, 60000 ) );
 			end	
-        end
+		end
 	
 	--	
 	-- on spawn
