@@ -46,4 +46,4 @@ Voodoo_Troll.lua + Geolord_Mottle.lua + Vile_Fin_Minor_Oracle.lua = Lightning_Sh
 ******) Deprecated since they will be handled by Area Trigger hook:
 
 Brother_Sarno2.lua
-Inkeeper_Farley.lua
+Innkeeper_Farley.lua
