@@ -57,7 +57,7 @@ local chat = {
 [ 23 ] = "I'm back!"
 };
 
-HARLAN_RESUPPLY = {}
+HARLAN_RESUPPLY = {};
 
 function HARLAN_RESUPPLY.OnComplete( plr, questID )
 

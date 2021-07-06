@@ -1,4 +1,4 @@
---[[	
+﻿--[[	
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E	
@@ -23,7 +23,7 @@
 --local EMOTE_ONESHOT_WAVE = 3;
 --local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
 
-BROTHER_SARNO = {}
+BROTHER_SARNO = {};
 
 function BROTHER_SARNO.ResetTarget( unit )
 

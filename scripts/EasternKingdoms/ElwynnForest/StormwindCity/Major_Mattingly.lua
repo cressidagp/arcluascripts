@@ -37,7 +37,7 @@ local TEXT = { -- Yell, Yell, and them spawn onyxia head
 --local QUEST_2 = 7496; -- Celebrating Good Times
 --local QUEST_3 = 7497;
 
-MAJOR_MATTINGLY = {}
+MAJOR_MATTINGLY = {};
 
 function MAJOR_MATTINGLY.OnSpawn( unit, event )
 

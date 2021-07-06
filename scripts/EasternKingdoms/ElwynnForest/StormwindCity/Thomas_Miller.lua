@@ -1,4 +1,4 @@
---[[ 
+﻿--[[ 
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -38,15 +38,15 @@ local chat = {
 "Warm, wholesome bread!"
 };
 
-THOMAS_MILLER = {}
+THOMAS_MILLER = {};
 
 function THOMAS_MILLER.OnReachWP( unit, _, waypointId )
 
-    if( waypointId == 2 or waypointId == 23 )
-    then
-	    unit:SendChatMessage( 12, 7, chat[math.random( 1, 4 )] );
-        unit:EventChat( 12, 7, chat[math.random( 1, 4 )], 4000 );
-    end
+	if( waypointId == 2 or waypointId == 23 )
+	then
+		unit:SendChatMessage( 12, 7, chat[math.random( 1, 4 )] );
+		unit:EventChat( 12, 7, chat[math.random( 1, 4 )], 4000 );
+	end
 end
 
 RegisterUnitEvent( 3518, 19, THOMAS_MILLER.OnReachWP );

@@ -22,7 +22,7 @@
 --local EMOTE_ONESHOT_WAVE = 3;
 --local EMOTE_ONESHOT_SALUTE = 66;
 
-GENERAL_MARCUS_JONATHAN = {}
+GENERAL_MARCUS_JONATHAN = {};
 
 function GENERAL_MARCUS_JONATHAN.OnEmote( unit, _, plr, emoteId )
 
