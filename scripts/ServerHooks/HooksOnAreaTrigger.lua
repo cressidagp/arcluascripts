@@ -60,7 +60,7 @@ function HOOKS_AT.OnAreaTrigger( _, plr, areaTriggerId )
 			if( brother:IsHostile( plr ) == false )
 			then
 				brother:SetUInt64Value( 0x0006 + 0x000C, plr:GetGUID() );
-				brother:EventChat( 12, 0, "¡Saludos, "..plr:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!", 2000 );
+				brother:EventChat( 12, 0, "Greetings, "..plr:GetPlayerClass().."! Welcome to the Cathedral of Light!", 2000 );
 				brother:RegisterEvent( HOOKS_AT.Wave, 2000, 1 );
 				brother:RegisterEvent( HOOKS_AT.ClearTarget, 9000, 1 );
 			end
