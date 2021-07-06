@@ -1,4 +1,5 @@
 --[[
+
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -12,18 +13,18 @@
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
 	
-	enUS locale: "Greetings, "..plr:GetPlayerClass().."! Welcome to the Cathedral of Light!"
 	enUs locale: "Welcome to the Lion's Pride In.  Make yourself at home!"
+	enUS locale: "Greetings, "..plr:GetPlayerClass().."! Welcome to the Cathedral of Light!"
 	
-	esMX locale: "¡Saludos, "..plr:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
 	esMX locale: "¡Bienvenido a la Posada Orgullo del León.  Siéntete como en casa!"
+	esMX locale: "¡Saludos, "..plr:GetPlayerClass().."! ¡Bienvenido a la Catedral de la Luz!"
+	
+--]]
 
 --local NPC_INKEEPER_FARLEY = 295;
 --local NPC_BROTHER_SARNO = 7917;
 --local EMOTE_ONESHOT_WAVE = 3;
 --local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
-
---]]
 
 HOOKS_AT = {};
 
@@ -51,8 +52,8 @@ function HOOKS_AT.OnAreaTrigger( _, plr, areaTriggerId )
 	-- Cathedral of Light
 	--
 	
-    elseif( areaTriggerId == 1125 )
-    then
+	elseif( areaTriggerId == 1125 )
+	then
         local brother = plr:GetCreatureNearestCoords( -8556.00, 835.86, 106.60, 7917 );
         if( brother ~= nil )
         then
@@ -67,13 +68,15 @@ function HOOKS_AT.OnAreaTrigger( _, plr, areaTriggerId )
     end
 end
 
+-- keep it at botton or it will not work
 function HOOKS_AT.Wave( unit )
 
 	unit:Emote( 3, 0 );
 	
 end
 
-function HOOKS_AT.ClearTarget(unit)
+-- keep it at botton or it will not work
+function HOOKS_AT.ClearTarget( unit )
 
 	unit:SetUInt64Value( 0x0006 + 0x000C, 0 );
 	
