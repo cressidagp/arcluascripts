@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Negrand: Thane Yoregar (Wildhammer Stronghold)

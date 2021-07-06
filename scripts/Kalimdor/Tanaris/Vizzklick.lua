@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -40,4 +40,3 @@ end
 
 RegisterUnitGossipEvent( 6568, 1, VIZZKLICK.OnHelloOnSelect );
 RegisterUnitGossipEvent( 6568, 2, VIZZKLICK.OnHelloOnSelect );
-

@@ -13,6 +13,8 @@
 	
 --]]
 
+GO_SCALE_FIX = {};
+
 function GO_SCALE_FIX.OnSpawn( go )
 	
 	local entry = go:GetEntry();

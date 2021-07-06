@@ -10,9 +10,9 @@
   *) Hypersniper for his lua guides and some job in the lua engine.
   *) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
   *) ArcEmu developers for ArcEmu and his ArcEmu Lua Engine, specially to dfighter1985.
-  
+
   enUS:
-  
+
   esMX:
 
 --]]
@@ -38,17 +38,17 @@ local TEXT_GRAVEL = {
 };
 
 local TEXT_AURIC = {
-"At ease, lieutenant.  Go on.", 66 },
-"What is it now, Gravel?", 6 },
-"What else could possibly go wrong?", 6 },
-"Yes, lieutenant?  Report.", 1 },
-"That's troubling news indeed.  See to it that it's taken care of immediately!", 1 },
-"I don't have time for this, lieutenant.  Make sure that you handle it.", 1 },
-"If we're to help with that in any way we'll need more people.  Call some of the scouts in to help with that.", 1 },
-"Lieutenant, I want you to make that your top priority.  Notify anyone that you think can help.", 1 }
+{ "At ease, lieutenant.  Go on.", 66 },
+{ "What is it now, Gravel?", 6 },
+{ "What else could possibly go wrong?", 6 },
+{ "Yes, lieutenant?  Report.", 1 },
+{ "That's troubling news indeed.  See to it that it's taken care of immediately!", 1 },
+{ "I don't have time for this, lieutenant.  Make sure that you handle it.", 1 },
+{ "If we're to help with that in any way we'll need more people.  Call some of the scouts in to help with that.", 1 },
+{ "Lieutenant, I want you to make that your top priority.  Notify anyone that you think can help.", 1 }
 };
 
-GRAVELHAMMER = {};
+GRAVELHAMMER = {}
 
 function GRAVELHAMMER.OutOfCombat( unit )
 
@@ -140,11 +140,11 @@ function GRAVELHAMMER.OnReachWP( unit, _, waypointId )
     unit:SetMovementType( 4 ); -- stop waypoint map
     unit:SetFacing( 4.15388 );
     unit:RegisterAIUpdateEvent( math.random( 300000, 900000 ) );
-	
+
 	-- destroy table with variables to recycle resources
-	
+
     GRAVELHAMMER[ tostring( unit ) ] = nil;
-	
+
   end
 end
 

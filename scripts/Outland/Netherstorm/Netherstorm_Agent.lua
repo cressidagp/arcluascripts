@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Netherstorm: Netherstorm Agent (Area 52)

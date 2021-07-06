@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Quest: "Strange Brew"
