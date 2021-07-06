@@ -17,9 +17,9 @@
 
 --]]
 
-QUESTS_HOOK = {}
+HOOKS_QUEST = {};
 
-function QUESTS_HOOK.OnComplete( event, plr, questID, questEnder )
+function HOOKS_QUEST.OnComplete( event, plr, questID, questEnder )
 
     if( questID == 10254 ) -- Force Commander Danath
     then
@@ -28,4 +28,4 @@ function QUESTS_HOOK.OnComplete( event, plr, questID, questEnder )
     end
 end
 
-RegisterServerHook( 22, QUESTS_HOOK.OnComplete );
+RegisterServerHook( 22, HOOKS_QUEST.OnComplete );

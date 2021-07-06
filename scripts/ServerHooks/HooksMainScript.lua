@@ -20,7 +20,7 @@
 
 local GM_ITEMS = { 2586, 12064, 11508, 43651 };
 
-HOOKS = {}
+HOOKS = {};
 
 function HOOKS.Consolidated( event, plr )
 

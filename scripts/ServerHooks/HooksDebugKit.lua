@@ -17,7 +17,7 @@
 
 --
 
-HOOKS_DEBUG = {}
+HOOKS_DEBUG = {};
 
 function HOOKS_DEBUG.Consolidated( event, plr, argC, argD )
 

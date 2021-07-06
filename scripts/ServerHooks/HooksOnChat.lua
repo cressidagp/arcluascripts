@@ -16,7 +16,7 @@
 
 local COMMANDS = { "help", "gprint", "removeauras", "getphase", "jail", "entry", "movetype" };
 
-HOOKS_CHAT = {}
+HOOKS_CHAT = {};
 
 function HOOKS_CHAT.AllCommands( event, plr, msg )
 

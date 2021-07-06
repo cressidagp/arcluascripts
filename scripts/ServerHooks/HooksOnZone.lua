@@ -16,7 +16,7 @@ local SPELL_UNDYING_RESOLVE	= 51915;
 
 --]]
 
-HOOKS_ZONE = {}
+HOOKS_ZONE = {};
 
 function HOOKS_ZONE.OnEnterOrLeave( _, plr, _, OldZoneId )
 
