@@ -30,7 +30,7 @@ function KEYANOMIR.OnSpawnAndDeath( unit, event )
 	--
 
 	if( event == 18 )
-    then
+	then
         local minion = unit:SpawnCreature( 18232, 9715.04, -7311.68, 24.84, 4.8, 1604, 0, 0, 0, 0, 1, 0 );
 		
         local guid = unit:GetGUID();

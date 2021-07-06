@@ -36,42 +36,17 @@ MATT = {};
 
 function MATT.ChatOnReachWP( unit, event, waypointId )
 
-	-- on spawn
-    if( event == 18 )
-    then
-        unit:RegisterAIUpdateEvent( 1000 );
-
-	-- on reach waypoint
-    elseif( event == 19 )
-    then
-
-		-- crystal lake
-        if( waypointId == 1 )
-        then
-			-- set fishing pole at hand
-            unit:SetByteValue( 0x7A, 0, 1 ); 
-            unit:ModifyAIUpdateEvent( 3597000 );
-
-		-- goldshire pond
-        elseif( waypointId == 26 )
-        then
-			-- set fishing pole at hand
-            unit:SetByteValue( 0x7A, 0, 1 );
-            unit:ModifyAIUpdateEvent( 90000 );
-		
-		elseif( waypointId == 2 or waypointId == 27 )
-		then
-			unit:ModifyAIUpdateEvent( 1000 );	
-        end
-
+	--
 	-- on ai update
-    elseif( event == 21 )
-    then
-        local currentWaypoint = unit:GetCurrentWaypoint();
+	--
+	
+	if( event == 21 )
+	then
+		local currentWaypoint = unit:GetCurrentWaypoint();
 	
 		--print(""..currentWaypoint.."");
 		
-        if( currentWaypoint == 1 )
+		if( currentWaypoint == 1 )
 		then
 			-- hide pole
 			unit:SetByteValue( 0x7A, 0, 0 );
@@ -80,14 +55,46 @@ function MATT.ChatOnReachWP( unit, event, waypointId )
 			unit:SendChatMessage( 12, 7, chat[ 1 ] );
 			
 		elseif( currentWaypoint == 26 )
-        then
+		then
 			-- hide pole
-            unit:SetByteValue( 0x7A, 0, 0 );
+			unit:SetByteValue( 0x7A, 0, 0 );
 			
 			unit:SetFacing( 2.118 );
-            unit:SendChatMessage( 12, 7, chat[ 2 ] );
-        end
-    end
+			unit:SendChatMessage( 12, 7, chat[ 2 ] );
+		end
+
+	--
+	-- on reach waypoint
+	--
+	
+	elseif( event == 19 )
+	then
+		-- crystal lake
+		if( waypointId == 1 )
+		then
+			-- set fishing pole at hand
+			unit:SetByteValue( 0x7A, 0, 1 ); 
+			unit:ModifyAIUpdateEvent( 3597000 );
+
+		-- goldshire pond
+		elseif( waypointId == 26 )
+		then
+			-- set fishing pole at hand
+			unit:SetByteValue( 0x7A, 0, 1 );
+			unit:ModifyAIUpdateEvent( 90000 );
+		
+		elseif( waypointId == 2 or waypointId == 27 )
+		then
+			unit:ModifyAIUpdateEvent( 1000 );	
+		end
+
+	--
+	-- on spawn
+	--
+	
+	else
+		unit:RegisterAIUpdateEvent( 1000 );
+	end
 end
 
 RegisterUnitEvent( 794, 18, MATT.ChatOnReachWP );
