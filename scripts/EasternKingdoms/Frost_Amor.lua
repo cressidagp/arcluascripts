@@ -26,23 +26,27 @@ OOC_FROST_ARMOR = {};
 
 function OOC_FROST_ARMOR.CastBuff( unit, event )
 
+	--
 	-- on ai update
-    if( event == 21 )
-    then
-        if( unit:IsInCombat() == false and unit:HasAura( 12544 ) == false )
-        then
-            unit:FullCastSpell( 12544 );
-            unit:ModifyAIUpdateEvent( 1800000 );
-        end
+	--
 	
+	if( event == 21 )
+	then
+		if( unit:IsInCombat() == false and unit:HasAura( 12544 ) == false )
+		then
+			unit:FullCastSpell( 12544 );
+			unit:ModifyAIUpdateEvent( 1800000 );
+		end
+	
+	--
 	-- on spawn
-    else
+	--
+	
+	else
 		local n = math.random( 3, 5 );
 		unit:RegisterAIUpdateEvent( n * 1000 );
-
-    end
+	end
 end
-
 
 RegisterUnitEvent( 474, 18, OOC_FROST_ARMOR.CastBuff );
 RegisterUnitEvent( 474, 21, OOC_FROST_ARMOR.CastBuff );

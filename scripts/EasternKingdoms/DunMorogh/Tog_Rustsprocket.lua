@@ -21,22 +21,30 @@
 
 --local NPC_TOG_RUSTSPROCKET = 6119;
 
-TOG_RUSTSPROCKET = {}
+TOG_RUSTSPROCKET = {};
 
 function TOG_RUSTSPROCKET.OnHelloOnSelect( unit, event, plr, id, selection )
+
+	--
+	-- on hello
+	--
 
 	if( event == 1 )
 	then
 		if( plr:GetPlayerClass() == "Warlock" and plr:GetLevel() >= 10 )
 		then
 			unit:GossipCreateMenu( 767, plr, 0 );
-			unit:GossipMenuAddItem( 0, "What message?", 1, 0 );
+			unit:GossipMenuAddItem( 0, "¿Qué mensaje?", 1, 0 );
 			unit:GossipSendMenu( plr );
 		else
 			unit:GossipCreateMenu( 766, plr, 0 );
 			unit:GossipSendMenu( plr );
 		end
-
+	
+	--
+	-- on selection
+	--
+	
 	else
 		if( selection == 1 )
 		then

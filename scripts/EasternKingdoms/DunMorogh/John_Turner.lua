@@ -38,23 +38,29 @@ local chat = {
 "Give to the charities who seek to help the victims of these hard times! Please."
 };
 
-JOHN_TURNER = {}
+JOHN_TURNER = {};
 
 function JOHN_TURNER.OoCRandomChat( unit, event )
 
+	--
 	-- on ai update
-    if( event == 21 )
-    then
+	--
+	
+	if( event == 21 )
+	then
 		if( unit:IsInCombat() == false )
 		then
 			unit:SendChatMessage( 12, 7, chat[math.random( 1, 4 ) ] );
 			unit:ModifyAIUpdateEvent( math.random( 120000, 135000 ) );
 		end
-		
+	
+	--
 	-- on spawn
-    else
-        unit:RegisterAIUpdateEvent( math.random( 5000, 12000 ) );
-    end
+	--
+	
+	else
+		unit:RegisterAIUpdateEvent( math.random( 5000, 12000 ) );
+	end
 end
 
 RegisterUnitEvent( 6175, 18, JOHN_TURNER.OoCRandomChat );
