@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -21,7 +21,7 @@
 
 --local NPC_SPUTTERVALVE = 3442;
 
-SPUTTERVALVE = {}
+SPUTTERVALVE = {};
 
 function SPUTTERVALVE.OnHelloOnSelect( unit, event, plr, id, selection )
 

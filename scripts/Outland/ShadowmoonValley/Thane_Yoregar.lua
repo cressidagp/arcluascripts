@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Negrand: Thane Yoregar (Wildhammer Stronghold)
@@ -17,7 +17,7 @@
 
 --]]
 
-THANE_YOREGAR = {}
+THANE_YOREGAR = {};
 
 function THANE_YOREGAR.Chat( unit )
   if( unit:IsInCombat() == false )

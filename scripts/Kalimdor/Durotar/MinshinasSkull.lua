@@ -15,7 +15,7 @@ local FACTION_FRIENDLY = 35;
 local EMOTE_ONESHOT_BOW = 2;
 local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
 
-MINSHINAS_SKULL = {}
+MINSHINAS_SKULL = {};
 
 function MINSHINAS_SKULL.ResetTarget( unit )
 

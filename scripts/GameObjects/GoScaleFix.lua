@@ -11,7 +11,7 @@
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 --]]
 
-GO_SCALE_FIX = {}
+GO_SCALE_FIX = {};
 
 function GO_SCALE_FIX.OnSpawn( go )
 

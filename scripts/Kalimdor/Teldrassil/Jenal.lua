@@ -21,7 +21,7 @@
 
 --local NPC_JENAL = 9047;
 
-JENAL = {}
+JENAL = {};
 
 function JENAL.OnHelloSelect( unit, event, plr, id, selection )
 

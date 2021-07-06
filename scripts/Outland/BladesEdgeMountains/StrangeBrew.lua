@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Quest: "Strange Brew"
@@ -17,7 +17,7 @@
 
 --]]
 
-STRANGE_BREW = {}
+STRANGE_BREW = {};
 
 function STRANGE_BREW.OnComplete( plr, questID )
 

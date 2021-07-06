@@ -18,7 +18,7 @@
 -- local GO_CHEST = 3239;
 -- local NPC_MARINE = 3129
 
-BENEDICT_CHEST = {}
+BENEDICT_CHEST = {};
 
 function BENEDICT_CHEST.OnActivate( go, event )
 

@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -21,7 +21,7 @@
 
 --local NPC_ARCANIST_VANDRIL = 16197;
 
-ARCANIST_VANDRIL = {}
+ARCANIST_VANDRIL = {};
 
 function ARCANIST_VANDRIL.OnHelloOnSelect( unit, event, plr, id, selection )
 

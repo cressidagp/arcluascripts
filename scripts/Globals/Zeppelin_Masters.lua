@@ -1,4 +1,4 @@
---[[  
+﻿--[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -61,7 +61,7 @@ local data = {
 { 34766, 190549, "Step right up! The zeppelin to Orgrimmar has arrived! All aboard to Durotar!" }                  -- Krendle, The Zephyr
 };
 
-ZEPPELIN_MASTERS = {}
+ZEPPELIN_MASTERS = {};
 
 function ZEPPELIN_MASTERS.Reset( unit )
 

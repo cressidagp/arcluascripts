@@ -18,7 +18,7 @@
 --local UNIT_STAND_STATE_SIT    = 1;
 --local UNIT_STAND_STATE_SLEEP  = 3;
 
-INJURED_DRAENEI = {}
+INJURED_DRAENEI = {};
 
 function INJURED_DRAENEI.OnSpawn( unit )
 

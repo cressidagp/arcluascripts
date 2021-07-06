@@ -27,7 +27,7 @@
 
 --]]
 
-CAST_FISHING_NET = {}
+CAST_FISHING_NET = {};
 
 function CAST_FISHING_NET.DummyHandler( _, spellObject )
 

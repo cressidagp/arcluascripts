@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -21,7 +21,7 @@
 
 --local NPC_VIZZKICLIK = 6568;
 
-VIZZKLICK = {}
+VIZZKLICK = {};
 
 function VIZZKLICK.OnHelloOnSelect( unit, event, plr, id, selection )
 

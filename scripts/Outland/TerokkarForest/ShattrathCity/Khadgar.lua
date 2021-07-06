@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -44,7 +44,7 @@ local TEXT = {
 [ 6 ] = "There was something else I wanted to ask you.";
 };
 
-KHADGAR = {}
+KHADGAR = {};
 
 function KHADGAR.OnHelloSelect( unit, event, plr, id, selection )
 

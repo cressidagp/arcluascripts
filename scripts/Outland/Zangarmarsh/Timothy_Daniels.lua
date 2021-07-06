@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -27,7 +27,7 @@
 
 --local NPC_TIMOTHY_DANIELS = 18019;
 
-TIMOTHY_DANIELS = {}
+TIMOTHY_DANIELS = {};
 
 function TIMOTHY_DANIELS.OnHelloOnSelect( unit, event, plr, id, selection )
 

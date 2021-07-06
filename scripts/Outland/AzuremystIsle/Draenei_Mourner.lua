@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -65,7 +65,7 @@ local data = {
 { 16, 0, "%s stares in silence at the grave marker before him.", 0 }
 };
 
-DRAENEI_MOURNER = {}
+DRAENEI_MOURNER = {};
 
 function DRAENEI_MOURNER.RandomChat( unit )
 

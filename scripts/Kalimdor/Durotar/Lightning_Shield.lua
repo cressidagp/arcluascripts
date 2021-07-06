@@ -20,7 +20,7 @@
 
 --local SPELL_LIGHTNING_SHIELD = 324;
 
-OOC_LIGHTNING_SHIELD = {}
+OOC_LIGHTNING_SHIELD = {};
 
 function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 

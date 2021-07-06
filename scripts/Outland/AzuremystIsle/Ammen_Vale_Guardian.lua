@@ -16,7 +16,7 @@
 
 --]]
 
-VALE_GUARDIAN = {}
+VALE_GUARDIAN = {};
 
 function VALE_GUARDIAN.OnSpawn( unit )
 	local x = tonumber( os.date( "%H" ) ); -- hour its par

@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Eversong Woods: Sunstrider Guardian
@@ -25,7 +25,7 @@
 
 --]]
 
-SUNSTRIDER_GUARDIAN = {}
+SUNSTRIDER_GUARDIAN = {};
 
 function SUNSTRIDER_GUARDIAN.OnEmote( unit, _, plr, emoteId )
 	if( emoteId == 14 ) -- rude

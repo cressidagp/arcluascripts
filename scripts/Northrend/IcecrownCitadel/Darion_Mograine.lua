@@ -15,7 +15,7 @@
 
 --]]
 
-DARION_LH = {}
+DARION_LH = {};
 
 function DARION_LH.OnHelloOnSelect( unit, event, plr, id, selection, code )
 

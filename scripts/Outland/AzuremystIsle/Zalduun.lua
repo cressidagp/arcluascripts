@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Azuremyst Isle: Zalduun
@@ -17,7 +17,7 @@
 
 --]]
 
-ZALDUUN = {}
+ZALDUUN = {};
 
 function ZALDUUN.DoStuff( unit )
 

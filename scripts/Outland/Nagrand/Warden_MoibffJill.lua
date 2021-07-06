@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -32,7 +32,7 @@ local chat = {
 "That should get Telaar the assistance it needs!"
 };
 
-MOIBFFJILL = {}
+MOIBFFJILL = {};
 
 function MOIBFFJILL.DoStuff( unit )
 

@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -55,7 +55,7 @@ local TEXT = {
 --local UNIT_FLAG_PVP_ATTACKABLE	= 0x00000008
 --local UNIT_FLAG_IN_COMBAT    		= 0x00080000;
 
-DRAENEI_SURVIVOR = {}
+DRAENEI_SURVIVOR = {};
 
 function DRAENEI_SURVIVOR.OnSpawn( unit )
 

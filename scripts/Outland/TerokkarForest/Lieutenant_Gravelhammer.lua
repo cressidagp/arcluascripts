@@ -48,7 +48,7 @@ local TEXT_AURIC = {
 "Lieutenant, I want you to make that your top priority.  Notify anyone that you think can help.", 1 }
 };
 
-GRAVELHAMMER = {}
+GRAVELHAMMER = {};
 
 function GRAVELHAMMER.OutOfCombat( unit )
 

@@ -16,7 +16,7 @@
 
 --]]
 
-VALE_HUNTER = {}
+VALE_HUNTER = {};
 
 function VALE_HUNTER.OnSpawn( unit )
 

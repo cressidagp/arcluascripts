@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -27,7 +27,7 @@
 
 --local NPC_ACTEON = 17110;
 
-ACTEON = {}
+ACTEON = {};
 
 function ACTEON.OnHello( unit, event, plr, id, selection )
 

@@ -33,7 +33,7 @@ local chat = {
 "I regret to inform you all that we sent home another ten soldiers today - in body bags.",
 };
 
-MARSHAL_ISILDOR = {}
+MARSHAL_ISILDOR = {};
 
 function MARSHAL_ISILDOR.OoCRandomChat( unit )
 

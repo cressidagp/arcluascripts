@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -32,7 +32,7 @@
 
 --local NPC_DANATH_TROLLBANE = 16819;
 
-DANATH_TROLLBANE = {}
+DANATH_TROLLBANE = {};
 
 function DANATH_TROLLBANE.OnHelloSelect( unit, event, plr, id, selection )
 

@@ -13,7 +13,7 @@
 
 --]]
 
-TECHNICIAN_ZHANAA = {}
+TECHNICIAN_ZHANAA = {};
 
 function TECHNICIAN_ZHANAA.OnHello( unit, _, plr )
 

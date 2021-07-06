@@ -20,7 +20,7 @@
 
 --local SPELL_DEMON_SKIN = 20798;
 
-OOC_DEMON_SKIN = {}
+OOC_DEMON_SKIN = {};
 
 function OOC_DEMON_SKIN.CastBuff( unit, event )
 

@@ -13,7 +13,7 @@
 --local UNIT_FIELD_SUMMONEDBY = 0x0006 + 0x0008;
 --local UNIT_FIELD_CREATEDBY  = 0x0006 + 0x000A;
 
-KEYANOMIR = {}
+KEYANOMIR = {};
 
 function KEYANOMIR.OnSpawnAndDeath( unit, event )
 

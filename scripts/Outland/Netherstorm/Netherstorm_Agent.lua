@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Netherstorm: Netherstorm Agent (Area 52)
@@ -37,7 +37,7 @@ local TEXT = {
 "Netherock?!  That thing'll squish you flat with one step of its massive foot!  No thanks!";
 };
 
-NETHERSTORM_AGENT = {}
+NETHERSTORM_AGENT = {};
 
 function NETHERSTORM_AGENT.Chat( unit )
   if( unit:IsInCombat() == false )

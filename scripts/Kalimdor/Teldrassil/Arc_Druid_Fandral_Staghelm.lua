@@ -21,7 +21,7 @@
 
 --local NPC_FANDRAL_STAGHELM = 3516;
 
-FANDRAL_STAGHELM = {}
+FANDRAL_STAGHELM = {};
 
 function FANDRAL_STAGHELM.OnHelloSelect( unit, event, plr, id, selection )
 

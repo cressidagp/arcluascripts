@@ -31,7 +31,7 @@ function CYLINA_DARKHEART.OnSpawnAndDeath( unit, event )
 	--
 	
 	if( event == 18 )
-    then
+	then
 		-- unit:CastSpell( 11939 ); -- cast "Summon Imp" (bugged spell on creature cast)
 
 		local minion = unit:SpawnCreature( 12922, -9466, -6.72, 49.79, 4.5, 12, 0, 0, 0, 0, 1, 0 );
