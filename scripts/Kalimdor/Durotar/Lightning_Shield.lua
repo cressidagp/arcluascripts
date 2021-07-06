@@ -1,4 +1,5 @@
---[[  
+--[[
+
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -15,6 +16,7 @@
 	
 --]]
 
+--local NPC_VILE_FIN_MINOR_ORACLE = 1544;
 --local NPC_VOODOO_TROLL = 3206;
 --local NPC_GEOLORD_MOTTLE = 5826;
 
@@ -24,7 +26,10 @@ OOC_LIGHTNING_SHIELD = {};
 
 function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 
+	--
 	-- on ai update
+	--
+	
     if( event == 21 )
     then
 		if( unit:IsInCombat() == false and unit:HasAura( 324 ) == false )
@@ -33,7 +38,10 @@ function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
             unit:ModifyAIUpdateEvent( 600000 );	
 		end
 	
+	--
 	-- on spawn
+	--
+	
 	else
 	
         local n = math.random( 3, 5 );
@@ -41,6 +49,8 @@ function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
     end
 end
 
+RegisterUnitEvent( 1544, 18, OOC_LIGHTNING_SHIELD.CastBuff );
+RegisterUnitEvent( 1544, 21, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 3206, 18, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 3206, 21, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 5826, 18, OOC_LIGHTNING_SHIELD.CastBuff );

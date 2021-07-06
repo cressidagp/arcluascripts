@@ -41,4 +41,4 @@ Morgan_the_Collector2.lua
 Kira_Songshine.lua + Myra_Tyrngaarde.lua = Bread_Vendors.lua
 Kobold_Geomancer.lua + Surena_Caledon.lua + Defias_Rogue_Wizard.lua + Scarlet_Initiate.lua = Frost_Armor.lua
 Felweaver_Scornn.lua + Gazzuz.lua = Demon_Skin.lua
-Voodoo_Troll.lua + Geolord_Mottle.lua = Lightning_Shield.lua
+Voodoo_Troll.lua + Geolord_Mottle.lua + Vile_Fin_Minor_Oracle.lua = Lightning_Shield.lua
