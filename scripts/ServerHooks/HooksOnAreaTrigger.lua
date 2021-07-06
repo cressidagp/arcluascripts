@@ -54,9 +54,9 @@ function HOOKS_AT.OnAreaTrigger( _, plr, areaTriggerId )
 	
 	elseif( areaTriggerId == 1125 )
 	then
-        local brother = plr:GetCreatureNearestCoords( -8556.00, 835.86, 106.60, 7917 );
-        if( brother ~= nil )
-        then
+		local brother = plr:GetCreatureNearestCoords( -8556.00, 835.86, 106.60, 7917 );
+		if( brother ~= nil )
+		then
 			if( brother:IsHostile( plr ) == false )
 			then
 				brother:SetUInt64Value( 0x0006 + 0x000C, plr:GetGUID() );
