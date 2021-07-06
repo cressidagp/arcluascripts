@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -37,7 +37,7 @@ local chat = {
 "If your glass is full may it be again!"
 };
 
-INNKEEPER_FARLEY = {}
+INNKEEPER_FARLEY = {};
 
 function INNKEEPER_FARLEY.OnSpawnOnAIUpdate( unit, event )
 

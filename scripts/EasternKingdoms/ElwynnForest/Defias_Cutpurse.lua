@@ -18,7 +18,7 @@
 --NPC_DEFIAS_CUTPURSE = 94;
 --SPELL_BACKSTAB = 53;
 
-DEFIAS_CUTPURSE = {}
+DEFIAS_CUTPURSE = {};
 
 function DEFIAS_CUTPURSE.CastBackstab( unit )
 

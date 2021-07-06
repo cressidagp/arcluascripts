@@ -1,4 +1,4 @@
---[[ 
+﻿--[[ 
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -38,7 +38,7 @@ local chat = {
 
 local emote = { 25, 1, 5 };
 
-SUPERVISOR_RAELEN = {}
+SUPERVISOR_RAELEN = {};
 
 function SUPERVISOR_RAELEN.OnRangePeasant( unit )
 

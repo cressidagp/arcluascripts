@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -35,7 +35,7 @@ local chat = {
 "Fresh bread for sale!"
 };
 
-KIRA_SONGSHINE = {}
+KIRA_SONGSHINE = {};
 
 function KIRA_SONGSHINE.OoCRandomChat( unit, event )
 

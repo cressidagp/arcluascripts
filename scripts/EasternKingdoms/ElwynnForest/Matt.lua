@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -32,7 +32,7 @@ local chat = {
 "Gee, fish sure dont seem to be biting here. Maybe I should go over to Crystal Lake to try my luck there!"
 };
 
-MATT = {}
+MATT = {};
 
 function MATT.ChatOnReachWP( unit, event, waypointId )
 
