@@ -1,4 +1,4 @@
---[[  
+﻿--[[  
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -32,7 +32,7 @@ local chat = {
 "You're secret code is not a valid one..."
 };
 
-ELDERS = {}
+ELDERS = {};
 
 function ELDERS.OnHelloOnSelect( unit, event, plr, id, selection, code )
 

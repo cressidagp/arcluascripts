@@ -22,7 +22,7 @@
 
 --local SPELL_FROST_ARMOR = 12544;
 
-OOC_FROST_ARMOR = {}
+OOC_FROST_ARMOR = {};
 
 function OOC_FROST_ARMOR.CastBuff( unit, event )
 

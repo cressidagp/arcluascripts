@@ -1,4 +1,4 @@
---[[
+﻿--[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -36,16 +36,20 @@ local chat = {
 "Fresh bread for sale!"
 };
 
-BREAD_VENDORS = {}
+BREAD_VENDORS = {};
 
 function BREAD_VENDORS.OutOfCombatChat( unit, event )
 
+	--
 	-- on ai update
+	--
+	
 	if( event == 21 )
 	then
         if( unit:IsInCombat() == false )
         then
             unit:SendChatMessage( 12, 7, chat[ math.random( 1, 3 ) ] );
+			
 			local entry = unit:GetEntry();
 			
 			-- Kira Songshine
@@ -56,10 +60,14 @@ function BREAD_VENDORS.OutOfCombatChat( unit, event )
 				unit:ModifyAIUpdateEvent( math.random( 40000, 60000 ) );
 			end	
         end
-		
+	
+	--	
 	-- on spawn
+	--
+	
 	else
 		local entry = unit:GetEntry();
+		
 		-- Kira Songshine
 		if( entry == 3937 )
 		then 
