@@ -1,18 +1,4 @@
-*) This scripts has been converted to Modular Way. If you want to use them 
-comment out the Registers and remove his modular way counterpart.
-
-Baltharus_the_Warborn.lua
-Bronjahm.lua
-Captain_Falric.lua
-Captain_Marwyn.lua
-DevourerOfSouls.lua
-Forgemaster_Garfrost.lua
-Frostworn_General.lua
-Halion_the_Destroyer.lua
-General_Zarithrian.lua
-Saviana_Ragefire.lua
-
-**) Deprecated since it will be handled in database:
+*) Deprecated since it will be handled in database:
 
 Meven_Korgal.lua
 Shellene.lua
@@ -20,7 +6,7 @@ The_Three_Beggars.lua
 Tosamina.lua
 Warden_Thelwater.lua
 
-***) Ported to gossip plugin:
+**) Ported to gossip plugin:
 
 Botanist_Taerix.lua
 Hilary.lua
@@ -30,20 +16,20 @@ Seer_Skaltesh.lua
 Shawn.lua
 Spirit_of_the_Vale.lua
 
-****) This one are attemps to do more efficient scripts:
+***) This one are attemps to do more efficient scripts:
 
 Brother_Sarno.lua
 Morgan_the_Collector1.lua
 Morgan_the_Collector2.lua
 
-*****) The next scripts has been merged.
+****) The next scripts has been merged.
 
 Kira_Songshine.lua + Myra_Tyrngaarde.lua = Bread_Vendors.lua
 Kobold_Geomancer.lua + Surena_Caledon.lua + Defias_Rogue_Wizard.lua + Scarlet_Initiate.lua = Frost_Armor.lua
 Felweaver_Scornn.lua + Gazzuz.lua = Demon_Skin.lua
 Voodoo_Troll.lua + Geolord_Mottle.lua + Vile_Fin_Minor_Oracle.lua = Lightning_Shield.lua
 
-******) Deprecated since they will be handled by Area Trigger hook:
+*****) Deprecated since they will be handled by Area Trigger hook:
 
 Brother_Sarno2.lua
 Innkeeper_Farley.lua
