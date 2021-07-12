@@ -120,6 +120,7 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 		if( result ~= nil )
 		then
 			local colcount = result:GetColumnCount();
+			
 			repeat
 			
 				for col = 0, colcount - 1, 1 do
@@ -342,10 +343,27 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 	end
 end
 
+function RUBY_SANCTUM.OnGOPush( _, go )
+
+	local iid = go:GetInstanceID();
+
+	local entry = go:GetEntry();
+	
+	if( entry == 203005 and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
+	then
+		go:SetByte( 0x0006 + 0x000B, 0, 0 );
+		
+	elseif( entry == 203006 and RUBY_SANCTUM[ iid ].savianaIsDead == true and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
+	then
+		go:SetByte( 0x0006 + 0x000B, 0, 0 );
+	end
+end
+
 RegisterUnitEvent( 40429, 21, RUBY_SANCTUM.XerexOnAIUpdate );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
 RegisterInstanceEvent( 724, 5, RUBY_SANCTUM.OnCreatureDeath );
 RegisterInstanceEvent( 724, 3, RUBY_SANCTUM.OnAreaTrigger );
+RegisterInstanceEvent( 724, 8, RUBY_SANCTUM.OnGOPush );
 
 --print( "Lua memory after Ruby Sanctum: "..gcinfo().." KB." );
 

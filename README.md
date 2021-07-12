@@ -35,7 +35,7 @@ Also require [ArcDB world database.](https://github.com/DarkAngel39/ArcDB/tree/m
 ## Credits to
 
 * Trinity for texts, sound ids, timers, spell ids and some inspiration.
-* DarkAngel39 instance progression system.
+* DarkAngel39 for his instance progression system.
 * Hypersniper for his lua guides and some job in the lua engine.
 * Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 * ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
