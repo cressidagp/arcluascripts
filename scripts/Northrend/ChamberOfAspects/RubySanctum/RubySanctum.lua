@@ -101,7 +101,8 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 	if( RUBY_SANCTUM[ iid ] == nil )
 	then
 		RUBY_SANCTUM[ iid ] = {
-
+		
+		hasTriggered = false,
 		isIntro = true,
 		introDone = false,
 		baltharusIsDead = false,
@@ -144,13 +145,13 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 	-- victim is saviana
 	elseif( entry == 39747 )
 	then
-        RUBY_SANCTUM[ iid ].savianaIsDead = true;
+		RUBY_SANCTUM[ iid ].savianaIsDead = true;
 
         if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
         then
 
 			-- remove fire so player can go to zarithrian
-            local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+			local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
 			if( flame )
 			then
 				-- open door
@@ -175,12 +176,12 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
         RUBY_SANCTUM[ iid ].zarithrianIsDead = true;
 		
 		-- get controller using coords
-        local controller = victim:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
+		local controller = victim:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
 		if( controller )
 		then
 			controller:RegisterAIUpdateEvent( 1000 );
 		end
-    end
+	end
 end
 
 function RUBY_SANCTUM.DoAction( unit )
@@ -289,7 +290,7 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 	local iid = plr:GetInstanceID();
 	
 	-- on baltharus plateau
-	if( areaTriggerID == 5867 )
+	if( areaTriggerID == 5867 and RUBY_SANCTUM[ iid ].hasTriggered == false )
 	then
 		-- get xerex using spawnid
 		local xerex = GetInstanceCreature( 724, iid, 134456 );
@@ -304,6 +305,8 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 		then
 			baltharus:RegisterEvent( RUBY_SANCTUM.DoAction, 7000, 1 );
 		end
+		
+		RUBY_SANCTUM[ iid ].hasTriggered = true;
 	end
 end
 
