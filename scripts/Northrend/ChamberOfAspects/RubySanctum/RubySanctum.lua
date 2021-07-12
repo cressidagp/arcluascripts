@@ -351,7 +351,7 @@ RegisterGameObjectEvent( 203007, 2, RUBY_SANCTUM.GoOnSpawn );
 		DEBUG COMMANDS DISABLED BY DEFAULT
 
 
-local COMMANDS = { "ruby", "port", "exit", "xerex", "open", "close", "phase1", "phase32" };
+local COMMANDS = { "ruby", "xerex", "open", "close", "phase1", "phase32" };
 
 function RubyCommands( _, plr, message )
 
@@ -363,15 +363,7 @@ function RubyCommands( _, plr, message )
 			do
 				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
 			end
-
-		elseif( message == "#port" )
-		then
-			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );
-			
-		elseif( message == "#exit" )
-		then
-			plr:Teleport( 571, 3597.61, 200.96, -113.74, 5.30 );
-		
+	
 		elseif( message == "#xerex" )
 		then
 			local iid = plr:GetInstanceID();
