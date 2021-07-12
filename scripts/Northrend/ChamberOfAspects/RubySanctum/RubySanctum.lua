@@ -18,6 +18,7 @@
 
 	*) clear up variables if all players leave instance... need a new instance hook.
 	*) 75416: need spellscript?.
+	*) xerex should teleport to pos2 if instance previously started when spawn? check trinity
 	
 	enUS locale:
 
@@ -61,7 +62,8 @@ local AT_BALTHARUS_PLATEAU = 5867;
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local GAMEOBJECT_DYNAMIC	= 0x0006 + 0x0008;
 local UNIT_FIELD_FLAGS	= 0x0006 + 0x0035;
-local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000
+local UNIT_FLAG_NOT_ATTACKABLE_9	= 0x00000100;
+local UNIT_FLAG_NOT_SELECTABLE	=0x02000000;
 ]]
 
 local talk = {
@@ -196,7 +198,7 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 			if( zarithrian )
 			then
 				-- remove unit field flag not selectable so player can try to kill him
-				zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x02000000);
+				zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
 			
 				-- make him capable of enter combat so he can try of kill players
 				zarithrian:DisableCombat( 0 );
@@ -343,6 +345,22 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 	end
 end
 
+function RUBY_SANCTUM.OnCreaturePush( _, creature )
+
+	local iid = creature:GetInstanceID();
+	
+	local entry = creature:GetEntry();
+	
+	if( entry == 39746 and RUBY_SANCTUM[ iid ].savianaIsDead == true and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
+	then
+		creature:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+		
+	elseif( entry == 39746 and RUBY_SANCTUM[ iid ].savianaIsDead == false and RUBY_SANCTUM[ iid ].baltharusIsDead == false )
+	then
+		creature:SetFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+	end
+end
+
 function RUBY_SANCTUM.OnGOPush( _, go )
 
 	local iid = go:GetInstanceID();
@@ -363,6 +381,7 @@ RegisterUnitEvent( 40429, 21, RUBY_SANCTUM.XerexOnAIUpdate );
 RegisterInstanceEvent( 724, 2, RUBY_SANCTUM.OnPlayerEnter );
 RegisterInstanceEvent( 724, 5, RUBY_SANCTUM.OnCreatureDeath );
 RegisterInstanceEvent( 724, 3, RUBY_SANCTUM.OnAreaTrigger );
+RegisterInstanceEvent( 724, 6, RUBY_SANCTUM.OnCreaturePush );
 RegisterInstanceEvent( 724, 8, RUBY_SANCTUM.OnGOPush );
 
 --print( "Lua memory after Ruby Sanctum: "..gcinfo().." KB." );
@@ -370,18 +389,20 @@ RegisterInstanceEvent( 724, 8, RUBY_SANCTUM.OnGOPush );
 --[[
 function RUBY_SANCTUM.GoOnSpawn( go )
 	
-	state 0: from green to black (close)
-	state 1: from black to green (open)
-	state 2: 
-	state 3: green (set to this at database )
+	--state 0: from green to black (close)
+	--state 1: from black to green (open)
+	--state 2: 
+	--state 3: green (set to this at database )
 	go:SetByte( 0x0006 + 0x000B, 0, 3 );
-	go:SetUInt32Value( 0x0006 + 0x0008, 1 );
+	--go:SetUInt32Value( 0x0006 + 0x0008, 1 );
 end
 
-RegisterGameObjectEvent( 203034, 2, RUBY_SANCTUM.GoOnSpawn );
-RegisterGameObjectEvent( 203035, 2, RUBY_SANCTUM.GoOnSpawn );
-RegisterGameObjectEvent( 203036, 2, RUBY_SANCTUM.GoOnSpawn );
-RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203034, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203035, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203036, 2, RUBY_SANCTUM.GoOnSpawn );
+--RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
+
+
 
 -- fire ring 203007
  0: spawn fire on, then fire off

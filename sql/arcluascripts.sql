@@ -379,7 +379,7 @@ UPDATE `creature_proto` SET `vehicleid` = 0 WHERE `entry` = 37120; -- Hightlord 
 UPDATE `creature_spawns` SET `flags` = 32768 WHERE `entry` = 40429;
 
 -- General Zarithrian:
-UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `entry` = 39746;
+UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `entry` = 64;
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
 VALUES (39746, 0, 100, 0, 14, 'General Zarithrian', 'Alexstrasza has chosen capable allies.... A pity that I must END YOU!', NULL, NULL, NULL, NULL);
@@ -777,4 +777,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-02-12_00-27_MeteorStrike');
+('2021-07-12_15-52_GeneralZarithrian');
