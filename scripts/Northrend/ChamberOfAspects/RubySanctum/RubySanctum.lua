@@ -110,6 +110,38 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 		zarithrianIsDead = false,
 		action = 0
 		};
+		
+		--
+		-- DarkAngel39 instance progression system
+		--
+		
+		local string_data = {};
+		local result = CharDBQuery( "SELECT killed_npc_guids FROM instances WHERE id = "..iid.."; " );
+		if( result ~= nil )
+		then
+			local colcount = result:GetColumnCount();
+			repeat
+			
+				for col = 0, colcount - 1, 1 do
+				
+					string_data[ col ] = result:GetColumn( col ):GetString();
+					
+					local b1 = string.find( string_data[ col ], "39751" ); -- Baltharus
+					local b2 = string.find( string_data[ col ], "39747" ); -- Saviana
+					local b3 = string.find( string_data[ col ], "39746" ); -- Zarithrian
+					
+					if( b1 ~= nil ) 
+					then 
+						RUBY_SANCTUM[ iid ].hasTriggered = true;
+						RUBY_SANCTUM[ iid ].baltharusIsDead = true; 
+					end
+					
+					if( b2 ~= nil ) then RUBY_SANCTUM[ iid ].savianaIsDead = true; end
+					if( b3 ~= nil ) then RUBY_SANCTUM[ iid ].zarithrianIsDead = true; end
+				end
+		
+			until result:NextRow() ~= true;
+		end	
 	end
 end
 
@@ -363,7 +395,7 @@ function RubyCommands( _, plr, message )
 			do
 				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
 			end
-	
+		
 		elseif( message == "#xerex" )
 		then
 			local iid = plr:GetInstanceID();
@@ -387,7 +419,7 @@ function RubyCommands( _, plr, message )
 		elseif( message == "#phase32" )
 		then
 			plr:PhaseSet( 32 );
-		
+			
 		end
 	end
 end
