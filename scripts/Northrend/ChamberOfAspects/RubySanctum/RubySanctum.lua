@@ -199,9 +199,7 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 			then
 				-- remove unit field flag not selectable so player can try to kill him
 				zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
-			
-				-- make him capable of enter combat so he can try of kill players
-				zarithrian:DisableCombat( 0 );
+
 			end
 		end
 
