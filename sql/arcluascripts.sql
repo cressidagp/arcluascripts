@@ -401,6 +401,9 @@ VALUES (39751, 0, 100, 0, 14, 'Baltharus the Warborn', 'Ah, the entertainment ha
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
 VALUES (39751, 5, 100, 0, 14, 'Baltharus the Warborn', 'I... didn\'t see that coming....', NULL, NULL, NULL, NULL);
 
+-- Burning Trees
+UPDATE `gameobject_spawns` SET `State` = 3 WHERE `Entry` IN ( 203034, 203035, 203036, 203037 );
+
 /*
 UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
 */
@@ -777,4 +780,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-07-12_15-52_GeneralZarithrian');
+('2021-07-12_20-00_BurningTrees');

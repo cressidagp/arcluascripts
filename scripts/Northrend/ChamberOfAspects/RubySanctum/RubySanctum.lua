@@ -113,6 +113,7 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 		baltharusIsDead = false,
 		savianaIsDead = false,
 		zarithrianIsDead = false,
+		halionIsDone = false,
 		action = 0
 		};
 		
@@ -135,6 +136,7 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 					local b1 = string.find( string_data[ col ], "39751" ); -- Baltharus
 					local b2 = string.find( string_data[ col ], "39747" ); -- Saviana
 					local b3 = string.find( string_data[ col ], "39746" ); -- Zarithrian
+					local b4 = string.find( string_data[ col ], "39746" ); -- Halion
 					
 					if( b1 ~= nil ) 
 					then 
@@ -144,6 +146,7 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 					
 					if( b2 ~= nil ) then RUBY_SANCTUM[ iid ].savianaIsDead = true; end
 					if( b3 ~= nil ) then RUBY_SANCTUM[ iid ].zarithrianIsDead = true; end
+					if( b4 ~= nil ) then RUBY_SANCTUM[ iid ].halionIsDone = true; end
 				end
 		
 			until result:NextRow() ~= true;
@@ -185,8 +188,8 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 	then
 		RUBY_SANCTUM[ iid ].savianaIsDead = true;
 
-        if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
-        then
+		if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
+		then
 
 			-- remove fire so player can go to zarithrian
 			local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
@@ -378,6 +381,13 @@ function RUBY_SANCTUM.OnGOPush( _, go )
 	elseif( entry == 203006 and RUBY_SANCTUM[ iid ].savianaIsDead == true and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
 	then
 		go:SetByte( 0x0006 + 0x000B, 0, 0 );
+		
+	elseif( entry == 203034 or entry == 203035 or entry == 203036 or entry == 203037 )
+	then
+		if( RUBY_SANCTUM[ iid ].zarithrianIsDead == true )
+		then
+			go:SetByte( 0x0006 + 0x000B, 0, 0 );
+		end
 	end
 end
 
@@ -391,22 +401,6 @@ RegisterInstanceEvent( 724, 8, RUBY_SANCTUM.OnGOPush );
 --print( "Lua memory after Ruby Sanctum: "..gcinfo().." KB." );
 
 --[[
-function RUBY_SANCTUM.GoOnSpawn( go )
-	
-	--state 0: from green to black (close)
-	--state 1: from black to green (open)
-	--state 2: 
-	--state 3: green (set to this at database )
-	go:SetByte( 0x0006 + 0x000B, 0, 3 );
-	--go:SetUInt32Value( 0x0006 + 0x0008, 1 );
-end
-
---RegisterGameObjectEvent( 203034, 2, RUBY_SANCTUM.GoOnSpawn );
---RegisterGameObjectEvent( 203035, 2, RUBY_SANCTUM.GoOnSpawn );
---RegisterGameObjectEvent( 203036, 2, RUBY_SANCTUM.GoOnSpawn );
---RegisterGameObjectEvent( 203037, 2, RUBY_SANCTUM.GoOnSpawn );
-
-
 
 -- fire ring 203007
  0: spawn fire on, then fire off
