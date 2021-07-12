@@ -1,13 +1,15 @@
 --[[
+
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
 	
-	The Ruby Sanctum
+	Instance: The Ruby Sanctum
 
 	Credits:
 
 	*) TrinityCore for texts, sound ids, timers, spell ids and some inspiration.
+	*) DarkAngel39 for his instance progression system.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
@@ -18,7 +20,8 @@
 
 	*) clear up variables if all players leave instance... need a new instance hook.
 	*) 75416: need spellscript?.
-	*) xerex should teleport to pos2 if instance previously started when spawn? check trinity
+	*) xerex should teleport to pos2 if instance previously started when spawn? research.
+	*) fire circle is visible a couple of seconds when player enter instance.
 	
 	enUS locale:
 
@@ -204,9 +207,9 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 		end
 
 	-- victim is zarithrian
-    elseif( entry == 39746 )
-    then
-        RUBY_SANCTUM[ iid ].zarithrianIsDead = true;
+	elseif( entry == 39746 )
+	then
+		RUBY_SANCTUM[ iid ].zarithrianIsDead = true;
 		
 		-- get controller using coords
 		local controller = victim:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
@@ -349,13 +352,16 @@ function RUBY_SANCTUM.OnCreaturePush( _, creature )
 	
 	local entry = creature:GetEntry();
 	
-	if( entry == 39746 and RUBY_SANCTUM[ iid ].savianaIsDead == true and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
+	if( entry == 39746 )
 	then
-		creature:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
-		
-	elseif( entry == 39746 and RUBY_SANCTUM[ iid ].savianaIsDead == false and RUBY_SANCTUM[ iid ].baltharusIsDead == false )
-	then
-		creature:SetFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+		if( RUBY_SANCTUM[ iid ].savianaIsDead == true and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
+		then
+			creature:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+
+		elseif( RUBY_SANCTUM[ iid ].savianaIsDead == false and RUBY_SANCTUM[ iid ].baltharusIsDead == false )
+		then
+			creature:SetFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+		end
 	end
 end
 
