@@ -21,7 +21,8 @@
 	*) clear up variables if all players leave instance... need a new instance hook.
 	*) 75416: need spellscript?.
 	*) xerex should teleport to pos2 if instance previously started when spawn? research.
-	*) fire circle is visible a couple of seconds when player enter instance.
+	*) burning trees (go): unable to make them spawn burned (so far they can spawn green and go burn, burn and go green, or green).
+	*) fire circle (go): unable to make it spawn off (so far, they can spawn on and go off, off and go on, or on).
 	
 	enUS locale:
 
@@ -181,6 +182,14 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 				-- disable flame walls
 				flame:SetByte( 0x0006 + 0x000B, 0, 0 );
 			end
+		
+			-- get zarithrian using spawnid
+			local zarithrian = GetInstanceCreature( 724, iid, 134456 );
+			if( zarithrian )
+			then
+				-- remove unit field flag not selectable so players can try to kill him
+				zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+			end
 		end
 		
 	-- victim is saviana
@@ -190,12 +199,11 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 
 		if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
 		then
-
-			-- remove fire so player can go to zarithrian
+			-- get flame walls using coords
 			local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
 			if( flame )
 			then
-				-- open door
+				-- disable flame walls
 				flame:SetByte( 0x0006 + 0x000B, 0, 0 );
 			end
 		
@@ -203,9 +211,8 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 			local zarithrian = GetInstanceCreature( 724, iid, 134456 );
 			if( zarithrian )
 			then
-				-- remove unit field flag not selectable so player can try to kill him
+				-- remove unit field flag not selectable so players can try to kill him
 				zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
-
 			end
 		end
 
@@ -374,14 +381,17 @@ function RUBY_SANCTUM.OnGOPush( _, go )
 
 	local entry = go:GetEntry();
 	
+	-- fire field
 	if( entry == 203005 and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
 	then
 		go:SetByte( 0x0006 + 0x000B, 0, 0 );
-		
+	
+	-- flame wall
 	elseif( entry == 203006 and RUBY_SANCTUM[ iid ].savianaIsDead == true and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
 	then
 		go:SetByte( 0x0006 + 0x000B, 0, 0 );
-		
+	
+	-- burning trees
 	elseif( entry == 203034 or entry == 203035 or entry == 203036 or entry == 203037 )
 	then
 		if( RUBY_SANCTUM[ iid ].zarithrianIsDead == true )
@@ -455,8 +465,7 @@ function RubyCommands( _, plr, message )
 		
 		elseif( message == "#phase32" )
 		then
-			plr:PhaseSet( 32 );
-			
+			plr:PhaseSet( 32 );	
 		end
 	end
 end
