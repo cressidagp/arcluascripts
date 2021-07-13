@@ -93,7 +93,7 @@ local WORLDSTATE_CORPOREALITY_TOGGLE    = 5051;
 local SPELL_RALLY = 75416;
 ]]
 
-local RUBY_SANCTUM = {}
+local RUBY_SANCTUM = {};
 
 function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 
@@ -114,8 +114,7 @@ function RUBY_SANCTUM.OnPlayerEnter( _, plr )
 		baltharusIsDead = false,
 		savianaIsDead = false,
 		zarithrianIsDead = false,
-		halionIsDone = false,
-		action = 0
+		halionIsDone = false
 		};
 		
 		--
@@ -170,7 +169,7 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 		local xerex = GetInstanceCreature( 724, iid, 134456 );
 		if( xerex )
 		then
-			xerex:RegisterEvent( RUBY_SANCTUM.DoAction, 2000, 1 );
+			xerex:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 2000, 1, 3 );
 		end
 		
 		if( RUBY_SANCTUM[ iid ].savianaIsDead == true )
@@ -230,28 +229,26 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 	end
 end
 
-function RUBY_SANCTUM.DoAction( unit )
+function RUBY_SANCTUM.DoAction( unit, action )
 
 	local iid = unit:GetInstanceID();
 	
-	RUBY_SANCTUM[ iid ].action = RUBY_SANCTUM[ iid ].action + 1;
-	
 	-- intro xerex
-	if( RUBY_SANCTUM[ iid ].action == 1 )
+	if( action == 1 )
 	then
 		unit:PlaySoundToSet( talk[ 9 ][ 1 ] );
 		unit:SendChatMessage( 14, 0, talk[ 9 ][ 2 ] );
 		unit:Emote( 5, 0 );
 	
 	-- intro baltharus
-	elseif( RUBY_SANCTUM[ iid ].action == 2 )
+	elseif( action == 2 )
 	then
 		RUBY_SANCTUM[ iid ].introDone = true;
 		unit:PlaySoundToSet( talk[ 10 ][ 1 ] );
 		unit:SendChatMessage( 14, 0, talk[ 10 ][ 2 ] );
 		
 	-- baltharus death
-	elseif( RUBY_SANCTUM[ iid ].action == 3 )
+	elseif( action == 3 )
 	then
 		unit:PlaySoundToSet( talk[ 1 ][ 1 ] );
 		unit:SendChatMessage( 14, 0, talk[ 1 ][ 2 ] );
@@ -342,14 +339,14 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 		local xerex = GetInstanceCreature( 724, iid, 134456 );
 		if( xerex )
 		then
-			xerex:RegisterEvent( RUBY_SANCTUM.DoAction, 1000, 1 );
+			xerex:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 1000, 1, 1 );
 		end
 		
 		-- get baltharus using spawnid
 		local baltharus = GetInstanceCreature( 724, iid, 134428 );
 		if( baltharus )
 		then
-			baltharus:RegisterEvent( RUBY_SANCTUM.DoAction, 7000, 1 );
+			baltharus:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 7000, 1, 2 );
 		end
 		
 		RUBY_SANCTUM[ iid ].hasTriggered = true;
