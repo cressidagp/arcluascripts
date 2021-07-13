@@ -171,23 +171,19 @@ function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 		then
 			xerex:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 2000, 1, 3 );
 		end
-		
-		if( RUBY_SANCTUM[ iid ].savianaIsDead == true )
-		then
-			-- victim seems to work fine here, but maybe i should find a way to register this without a unit
-			victim:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 1000, 1, 4 );
-		end
+
+		-- victim seems to work fine here, but maybe i should find a way to register this without a unit
+		victim:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 1000, 1, 4 );
+	
 		
 	-- victim is saviana
 	elseif( entry == 39747 )
 	then
 		RUBY_SANCTUM[ iid ].savianaIsDead = true;
 
-		if( RUBY_SANCTUM[ iid ].baltharusIsDead == true )
-		then
-			-- victim seems to work fine here, but maybe i should find a way to register this without a unit
-			victim:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 1000, 1, 4 );
-		end
+		-- victim seems to work fine here, but maybe i should find a way to register this without a unit
+		victim:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 1000, 1, 4 );
+
 
 	-- victim is zarithrian
 	elseif( entry == 39746 )
@@ -239,20 +235,23 @@ function RUBY_SANCTUM.DoAction( unit, action )
 	-- check general
 	elseif( action == 4 )
 	then
-		-- get flame walls using coords
-		local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
-		if( flame )
+		if( RUBY_SANCTUM[ iid ].baltharusIsDead == true and RUBY_SANCTUM[ iid ].savianaIsDead == true )
 		then
-			-- disable flame walls
-			flame:SetByte( 0x0006 + 0x000B, 0, 0 );
-		end	
+			-- get flame walls using coords
+			local flame = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+			if( flame )
+			then
+				-- disable flame walls
+				flame:SetByte( 0x0006 + 0x000B, 0, 0 );
+			end	
 	
-		-- get zarithrian using spawnid
-		local zarithrian = GetInstanceCreature( 724, iid, 134456 );
-		if( zarithrian )
-		then
-			-- remove unit field flag not selectable so players can try to kill him
-			zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+			-- get zarithrian using spawnid
+			local zarithrian = GetInstanceCreature( 724, iid, 134456 );
+			if( zarithrian )
+			then
+				-- remove unit field flag not selectable so players can try to kill him
+				zarithrian:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
+			end
 		end
 	end
 end
