@@ -156,9 +156,9 @@ end
 
 function RUBY_SANCTUM.OnCreatureDeath( _, victim, killer )
 
-	local iid = killer:GetInstanceID();
-
 	local entry = victim:GetEntry();
+	
+	local iid = killer:GetInstanceID();
 	
 	-- victinm is baltharus
 	if( entry == 39751 )
@@ -341,24 +341,28 @@ function RUBY_SANCTUM.OnAreaTrigger( _, plr, areaTriggerID )
 			baltharus:RegisterLuaEvent( RUBY_SANCTUM.DoAction, 7000, 1, 2 );
 		end
 		
+		-- dont cry for help again if already cryed
 		RUBY_SANCTUM[ iid ].hasTriggered = true;
 	end
 end
 
 function RUBY_SANCTUM.OnCreaturePush( _, creature )
 
-	local iid = creature:GetInstanceID();
-	
 	local entry = creature:GetEntry();
 	
+	local iid = creature:GetInstanceID();
+	
+	-- zarithrian
 	if( entry == 39746 )
 	then
 		if( RUBY_SANCTUM[ iid ].savianaIsDead == true and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
 		then
+			-- make him attacable and selectable
 			creature:RemoveFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
 
 		elseif( RUBY_SANCTUM[ iid ].savianaIsDead == false and RUBY_SANCTUM[ iid ].baltharusIsDead == false )
 		then
+			-- make him not attacable and not selectable
 			creature:SetFlag( 0x0006 + 0x0035, 0x00000100 + 0x02000000 );
 		end
 	end
@@ -366,9 +370,9 @@ end
 
 function RUBY_SANCTUM.OnGOPush( _, go )
 
-	local iid = go:GetInstanceID();
-
 	local entry = go:GetEntry();
+	
+	local iid = go:GetInstanceID();
 	
 	-- fire field
 	if( entry == 203005 and RUBY_SANCTUM[ iid ].baltharusIsDead == true )
@@ -399,20 +403,6 @@ RegisterInstanceEvent( 724, 8, RUBY_SANCTUM.OnGOPush );
 
 --print( "Lua memory after Ruby Sanctum: "..gcinfo().." KB." );
 
---[[
-
--- fire ring 203007
- 0: spawn fire on, then fire off
- 1: spawn fire on
- 2: spawn fire on, then fire off
- 3: 
- 
--- deactivate gameobject
-function RUBY_SANCTUM.GoOnSpawn( go )
-	go:SetUInt32Value( 0x0006 + 0x0008, 0 );
-end
-
-RegisterGameObjectEvent( 203007, 2, RUBY_SANCTUM.GoOnSpawn );
 --]]
 
 --[[ 
