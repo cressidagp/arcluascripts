@@ -29,8 +29,14 @@ HOOKS = {};
 
 function HOOKS.Consolidated( event, plr )
 
-	if( event == 3 ) -- OnFirstEnterWorld
+	--
+	-- ON FIRST ENTER WORLD
+	--
+
+	if( event == 3 )
 	then
+	
+		-- add gm items
 		if( plr:IsGm() == true )
 		then
 			for i = 1, #GM_ITEMS
@@ -39,6 +45,7 @@ function HOOKS.Consolidated( event, plr )
 			end
 		end
 		
+		-- fix players start orientation
 		if( plr:GetPlayerClass() ~= "Death Knight" )
 		then
 			local race = plr:GetPlayerRace();
@@ -70,8 +77,14 @@ function HOOKS.Consolidated( event, plr )
 			plr:SetFacing( 3.65997 );
 		end
 
-	elseif( event == 4 ) -- OnEnterWorld
+	--
+	-- ON ENTER WORLD
+	--
+	
+	elseif( event == 4 )
 	then
+		
+		-- add heroic presence to draenei players
 		if( plr:GetPlayerRace() == 11 )
 		then
 			local class = plr:GetPlayerClass();
@@ -84,6 +97,7 @@ function HOOKS.Consolidated( event, plr )
 			end
 		end
 
+		-- add auras to death knight players
 		if( plr:GetPlayerClass() == "Death Knight" )
 		then
 			plr:CastSpell( 48266 ); -- Blood Presence
