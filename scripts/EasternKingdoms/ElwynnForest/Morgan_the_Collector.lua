@@ -34,7 +34,7 @@ function MORGAN_THE_COLLECTOR.OnCombat( unit, event )
 		end
 
 		unit:CastSpellOnTarget( 1776, target );
-		unit:ModifyAIUpdateEvent(  math.random( 12000, 14000 ) );
+		unit:ModifyAIUpdateEvent(  math.random( 12, 14 ) * 1000 );
 	else
 		unit:RegisterAIUpdateEvent( 2000 );
 	end	

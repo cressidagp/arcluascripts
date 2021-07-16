@@ -34,7 +34,7 @@ function VEJREK.OnCombat( unit, event )
 		end
 
 		unit:CastSpellOnTarget( 7386, target );
-		unit:ModifyAIUpdateEvent(  math.random( 4000, 8000 ) );
+		unit:ModifyAIUpdateEvent(  math.random( 4, 8 ) * 1000 );
 	else
 		unit:RegisterAIUpdateEvent( 3000 );
 	end	
