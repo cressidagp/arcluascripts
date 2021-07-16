@@ -55,6 +55,7 @@ UPDATE `creature_proto` SET `auras` = '' WHERE `entry` IN ( 474, 476, 881, 1507,
 
 DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest: Morgan the Collector dont cast "Gouge"
 DELETE FROM `ai_agents` WHERE `entry` = 94 and `spell` = 53; -- Elwynn Forest: Defias Cutpurse dont cast "Backstab"
+DELETE FROM `ai_agents` WHERE `entry` = 6113 and `spell` = 7386; -- Dun Morogh: Verjek dont cast "Sunder Armor"
 
 --
 --
@@ -338,7 +339,7 @@ UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134289 and `entry` = 381
 
 -- Captain Falric
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
-VALUES (38112, 0, 100, 0, 14, 'Falric', 'Men, women, and children... None were spared the master\'s wrath. Your death will be no different.', NULL, NULL, NULL, NULL);
+VALUES (38112, 0, 100, 0, 14, 'Falric', 'Men, women, and children... None were spared the master'\'s wrath. Your death will be no different.', NULL, NULL, NULL, NULL);
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
 VALUES (38112, 5, 100, 0, 14, 'Falric', 'Marwyn, finish them...', NULL, NULL, NULL, NULL);
@@ -780,4 +781,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 insert  into `arcluascripts`(`version`) values 
-('2021-07-12_20-00_BurningTrees');
+('2021-07-16_14-00_Verjek');
