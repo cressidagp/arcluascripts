@@ -1,10 +1,11 @@
 --[[
+
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
 	
 	Zone: Elwynn Forest
-	Creature: Morgan the Collector
+	Creature: Morgan the Collector (473)
 
 	Credits:
 	
@@ -20,26 +21,24 @@
 
 MORGAN_THE_COLLECTOR = {};
 
-function MORGAN_THE_COLLECTOR.CastGouge( unit )
+function MORGAN_THE_COLLECTOR.OnCombat( unit, event )
 
-	local target = unit:GetNextTarget();
-	
-	if( target == nil )
+	if( event == 21 )
 	then
-		unit:RemoveEvents();
-		return;
-	end
+		local target = unit:GetNextTarget();
+	
+		if( target == nil )
+		then
+			unit:RemoveAIUpdateEvent();
+			return;
+		end
 
-    unit:CastSpellOnTarget( 1776, target );
-
-end
-
-function MORGAN_THE_COLLECTOR.OnCombat( unit )
-
-    unit:RegisterEvent( MORGAN_THE_COLLECTOR.CastGouge, 2000, 1 );
-
-    unit:RegisterEvent( MORGAN_THE_COLLECTOR.CastGouge, math.random( 12000, 14000 ), 0 );
-
+		unit:CastSpellOnTarget( 1776, target );
+		unit:ModifyAIUpdateEvent(  math.random( 12000, 14000 ) );
+	else
+		unit:RegisterAIUpdateEvent( 2000 );
+	end	
 end
 
 RegisterUnitEvent( 473, 1, MORGAN_THE_COLLECTOR.OnCombat );
+RegisterUnitEvent( 473, 21, MORGAN_THE_COLLECTOR.OnCombat );
