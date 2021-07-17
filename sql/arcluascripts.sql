@@ -156,8 +156,8 @@ VALUES (36494, 5, 100, 0, 14, 'Forgemaster Garfrost', 'Garfrost hope giant under
 --
 
 -- Falric and Marwyn ( work but its the right invi type? )
-UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` IN ( 38112, 38113 );
-UPDATE `creature_spawns` SET `flags` = 832 WHERE `entry` IN ( 38112, 38113 );
+UPDATE `creature_proto` SET `invisibility_type` = 5, `flags` = 832 WHERE `entry` IN ( 38112, 38113 );
+
 
 -- Lich King speed fix
 UPDATE `creature_proto` SET `walk_speed` = 5  WHERE `entry` = 37226;
@@ -333,7 +333,7 @@ UPDATE `creature_proto` SET `vehicleid` = 0 WHERE `entry` = 37120; -- Hightlord 
 UPDATE `creature_spawns` SET `flags` = 32768 WHERE `entry` = 40429;
 
 -- General Zarithrian:
-UPDATE `creature_spawns` SET `flags` = 33554752 WHERE `entry` = 64;
+UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39746;
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
 VALUES (39746, 0, 100, 0, 14, 'General Zarithrian', 'Alexstrasza has chosen capable allies.... A pity that I must END YOU!', NULL, NULL, NULL, NULL);
