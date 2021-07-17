@@ -1,5 +1,6 @@
 *) Deprecated since it will be handled in database:
 
+Apothecary_Holland
 John_Turner
 Meven_Korgal.lua
 Shellene.lua
