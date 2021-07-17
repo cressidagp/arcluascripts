@@ -1,5 +1,6 @@
 *) Deprecated since it will be handled in database:
 
+John_Turner
 Meven_Korgal.lua
 Shellene.lua
 The_Three_Beggars.lua
