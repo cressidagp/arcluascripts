@@ -23,7 +23,7 @@ then
         print("ArcLuaScripts: your forget to apply SQL file to your database!");
         print("==============================================================");
 
-elseif( version == "2021-07-16_14-00_Verjek" )
+elseif( version == "2021-17-07_03-10_Cleanup" )
 
 then
 
