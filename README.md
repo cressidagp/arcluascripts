@@ -4,7 +4,11 @@
 
 ArcLuaScripts its a NON-OFFICIAL scripting project for ArcEmu just for learning purposes. Its NOT intended as a replace for ArcEmu official plugins, its a complement.
 
-WARNING: this stuff its experimental, use it at your own risk. Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new) Feedback its apreciated.
+I had started this for myself, but you can use it if you want. In that case i hope you enjoy this as much as i enjoyed ArcEmu.
+
+WARNING: this wont expand too much since lua resources are very limited but i will push this to his limits.
+
+Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new) Feedback its apreciated.
 
 
 ## Features
@@ -36,9 +40,11 @@ Also require [ArcDB world database.](https://github.com/DarkAngel39/ArcDB/tree/m
 
 * Trinity for texts, sound ids, timers, spell ids and some inspiration.
 * DarkAngel39 for his instance progression system.
+* Marforius for ArcAddons who make my life much easier.
 * Hypersniper for his lua guides and some job in the lua engine.
 * Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 * ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
+
 
 ## Links
 
