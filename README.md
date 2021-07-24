@@ -4,9 +4,9 @@
 
 ArcLuaScripts its a NON-OFFICIAL scripting project for ArcEmu just for learning purposes. Its NOT intended as a replace for ArcEmu official plugins, its a complement.
 
-I had started this for myself, but you can use it if you want. In that case i hope you enjoy this as much as i enjoyed ArcEmu.
+I had started this project for myself, but you can use it if you want. In that case i hope you enjoy it as much as i enjoyed ArcEmu.
 
-WARNING: this wont expand too much since lua resources are very limited but i will push this to his limits.
+WARNING: this wont expand too much since lua resources are very limited but i will push it to his limits.
 
 Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new) Feedback its apreciated.
 
