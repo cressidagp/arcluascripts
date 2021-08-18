@@ -156,7 +156,8 @@ VALUES (36494, 5, 100, 0, 14, 'Forgemaster Garfrost', 'Garfrost hope giant under
 --
 
 -- Falric and Marwyn ( work but its the right invi type? )
-UPDATE `creature_proto` SET `invisibility_type` = 5, `flags` = 832 WHERE `entry` IN ( 38112, 38113 );
+UPDATE `creature_proto` SET `invisibility_type` = 5 WHERE `entry` IN ( 38112, 38113 );
+UPDATE `creature_spawns` SET `flags` = 832 WHERE `entry` IN ( 38112, 38113 );
 
 
 -- Lich King speed fix
@@ -292,7 +293,7 @@ UPDATE `creature_spawns` SET `phase` = 128 WHERE `id` = 134289 and `entry` = 381
 
 -- Captain Falric
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
-VALUES (38112, 0, 100, 0, 14, 'Falric', 'Men, women, and children... None were spared the master'\'s wrath. Your death will be no different.', NULL, NULL, NULL, NULL);
+VALUES (38112, 0, 100, 0, 14, 'Falric', 'Men, women, and children... None were spared the master\'s wrath. Your death will be no different.', NULL, NULL, NULL, NULL);
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
 VALUES (38112, 5, 100, 0, 14, 'Falric', 'Marwyn, finish them...', NULL, NULL, NULL, NULL);
@@ -706,7 +707,8 @@ INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `positi
 INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (@ID10, 105, -4121.58, -13761.4, 73.5881, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- Azuremyst Isle: Draenei Survivor
-UPDATE `creature_proto` SET `auras` = 35046, `flags` = 4608 WHERE `entry` = 16483;
+UPDATE `creature_proto` SET `auras` = 35046 WHERE `entry` = 16483;
+UPDATE `creature_spawns` SET `flags` = 4608 WHERE `entry` = 16483;
 
 -- Azuremyst Isle: Injured Draenei
 UPDATE `creature_spawns` SET `displayid` = 0, `flags` = 33024, `bytes0` = 0 WHERE `entry` = 16971;
@@ -728,5 +730,5 @@ CREATE TABLE `arcluascripts` (
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-insert  into `arcluascripts`(`version`) values 
-('2021-17-07_03-10_Cleanup');
+INSERT INTO `arcluascripts`(`version`) values 
+('2021-08-18_16-37_SintaxErrors');
