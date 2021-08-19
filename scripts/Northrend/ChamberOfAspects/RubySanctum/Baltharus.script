@@ -485,7 +485,7 @@ function CloneOnAIUpdate( unit )
 			if( target )
 			then
 				-- cast spell enervating brand
-				unit:CastSpellOnTarget( 74502, unit:GetRandomPlayer( 2 ) ); -- range 45
+				unit:CastSpellOnTarget( 74502, target ); -- range 45
 				
 				-- hack fix: empower self (spell siphoned might)
 				unit:CastSpell( 74507 );
