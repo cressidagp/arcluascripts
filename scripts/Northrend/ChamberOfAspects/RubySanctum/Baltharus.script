@@ -191,23 +191,23 @@ function OnDamageTaken( unit, _, _, damage )
 
 	local vars = self[ tostring( unit ) ];
 
-	local hp = unit:GetHealthPct();
+	local pct = unit:GetHealthPct();
 
 	if( vars.diff == 0 )
 	then
-		if( hp < 50 and vars.cloneCount == 0 )
+		if( pct < 50 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
 			unit:RegisterEvent( DoAction, 1000, 1 );
 		end
 		
 	else
-		if( hp < 66 and vars.cloneCount == 0 )
+		if( pct < 66 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
 			unit:RegisterEvent( DoAction, 1000, 1 );
 
-		elseif( hp < 33 and vars.cloneCount == 1 )
+		elseif( pct < 33 and vars.cloneCount == 1 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
 			unit:RegisterEvent( DoAction, 1000, 1 );
