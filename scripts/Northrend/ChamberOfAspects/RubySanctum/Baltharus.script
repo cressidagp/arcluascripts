@@ -414,6 +414,13 @@ function CloneOnDamageTaken( unit, _, _, damage )
 	then
 		SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetHealth() - damage;
 	end
+	
+	-- need test
+	if( unit:DisableCombat() == true )
+	then
+		unit:DisableCombat( 0 );
+	end
+	
 end
 
 function CloneOnLeaveCombat( unit )
