@@ -247,8 +247,15 @@ function OnLeaveCombat( unit )
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
 	if( crystal )
 	then
-		-- spell barrier channel 
-		unit:ChannelSpell( 76221, crystal );
+		-- spell barrier channel
+		-- makes player stuck on loading screen when leaving instance
+		--unit:ChannelSpell( 76221, crystal );
+		
+		-- set the channel target
+		unit:SetChannelTarget( crystal );		
+		
+		-- set the channel spell
+		unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
 	end
 end
 
