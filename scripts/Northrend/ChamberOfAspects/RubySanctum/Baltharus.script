@@ -389,7 +389,7 @@ function CloneOnSpawn( unit )
 	unit:EquipWeapons( 28365, 0, 0 );
 	unit:SetFlag( 0x0006 + 0x0035, 0x00000040 );
 	unit:DisableCombat( 1 );
-	unit:RegisterEvent( DoAction, 2000, 1 );
+	--unit:RegisterEvent( DoAction, 2000, 1 );
 
 end
 
