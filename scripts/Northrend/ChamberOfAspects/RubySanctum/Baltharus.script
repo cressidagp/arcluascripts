@@ -152,7 +152,7 @@ function OnCombat( unit )
 	-- add more protected variables 
 	local vars = self[ tostring( unit ) ];
 	
-	vars.diff = unit:GetDungeonDifficulty() + 1;
+	vars.diff = unit:GetDungeonDifficulty();
 	
 	-- set phase to combat
 	vars.phase = 2;
@@ -193,7 +193,7 @@ function OnDamageTaken( unit, _, _, damage )
 
 	local hp = unit:GetHealthPct();
 
-	if( vars.diff == 1 )
+	if( vars.diff == 0 )
 	then
 		if( hp < 50 and vars.cloneCount == 0 )
 		then
