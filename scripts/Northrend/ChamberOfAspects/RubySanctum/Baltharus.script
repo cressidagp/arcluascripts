@@ -214,9 +214,11 @@ function OnDamageTaken( unit, _, _, damage )
 		end
 	end
 	
-	if( unit:GetHealth() > damage )
+	local hp = unit:GetHealth();
+	
+	if( hp > damage )
 	then
-		SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetHealth() - damage;	
+		SHARED[ unit:GetInstanceID() ].sharedHealth = hp - damage;	
 	end
 end
 
