@@ -75,7 +75,6 @@ local sound = {
 local yell = {
 "Baltharus leaves no survivors!",	-- OnTargetDied 1
 "This world has enough heroes.",	-- OnTargetDied 2
-"Twice the pain and half the fun."	-- OnClone
 };
 
 --[[ Spells:
@@ -131,8 +130,6 @@ function OnSpawn( unit )
 	
 	};
 	
-	
-	
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
 	if( crystal )
 	then
@@ -178,7 +175,7 @@ end
 function DoAction( unit )
 
 	unit:PlaySoundToSet( 17524 );
-	unit:SendChatMessage( 14, 0, yell[ 3 ] );
+	unit:SendChatMessage( 14, 0, "Twice the pain and half the fun." );
 		
 	-- spell clear debuffs
 	unit:CastSpell( 34098 );
