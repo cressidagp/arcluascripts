@@ -98,12 +98,6 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17071; -- Azuremyst Isle: T
 DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: Spirit of the Vale
 */
 
---
---
--- Deprecated scripts ported to database
---
---
-
 
 --
 --
@@ -168,7 +162,6 @@ DELETE FROM `creature_spawns` WHERE `id` = 141917 and `entry` = 37225; -- Uther
 DELETE FROM `creature_spawns` WHERE `id` = 133989 and `entry` = 37158; -- Queldalar
 
 -- Archmage Koreln
-
 /*
 DELETE FROM `creature_spawns` WHERE `id` = 200632 and `entry` = 37582;
 INSERT INTO `creature_spawns` (`id`, `entry`, `map`, `position_x`, `position_y`, `position_z`, `orientation`, `movetype`, `displayid`, `faction`, `flags`, `bytes0`, `bytes1`, `bytes2`, `emote_state`, `npc_respawn_link`, `channel_spell`, `channel_target_sqlid`, `channel_target_sqlid_creature`, `standstate`, `death_state`, `mountdisplayid`, `slot1item`, `slot2item`, `slot3item`, `CanFly`, `phase`) 
@@ -413,6 +406,7 @@ UPDATE `creature_spawns` SET `displayid` = 11686 WHERE `entry` IN ( 40146, 40081
 --
 
 DELETE FROM `creature_spawns` WHERE `id` = @ID1 AND `entry` = 3289; -- Durotar: Minshinas Spirit
+
 
 --
 --
