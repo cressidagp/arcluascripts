@@ -46,7 +46,7 @@ Also require [ArcDB world database.](https://github.com/DarkAngel39/ArcDB/tree/m
 * ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
 
 
-## Links
+## Useful Links
 
 * [ArcEmu Forums](http://www.arcemu.org/forums/)
 * [ArcEmu Github](https://github.com/arcemu)
