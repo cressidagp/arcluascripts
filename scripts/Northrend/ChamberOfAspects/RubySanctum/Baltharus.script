@@ -50,22 +50,22 @@ local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".BALTHARUS_THE_WARBORN", package.seeall );
 
---[[ Constants:
+--[[ DEFINES:
+
 local MAP_RUBY_SANCTUM	= 724;
 local NPC_BALTHARUS		= 39751;
 local NPC_25M_BALTHARUS	= 39920;
 local NPC_CRYSTAL_TARGET = 26712;
 local NPC_BALTHARUS_CLONE		= 39899;
 local NPC_25M_BALTHARUS_CLONE	= 39922;
-]]
 
---local BOSS_HP = { 3486250, 11156000, 3486250, 11156000 };
-
---[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1			= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
 local UNIT_FLAG_PLUS_MOB			= 0x00000040;
+
 ]]
+
+--local BOSS_HP = { 3486250, 11156000, 3486250, 11156000 };
 
 local sound = { 
 17521, -- OnTargetDied 1
@@ -117,7 +117,7 @@ function OnSpawn( unit )
 	-- created protected variables
 	self[ tostring( unit )] = {
 
-    phase = 1,
+	phase = 1,
 	cloneCount = 0
 
     };
@@ -163,12 +163,12 @@ function OnCombat( unit )
 	
 	unit:StopChannel();
 
-    -- Developer notes: we dont need to send the chat here since
-    -- our monstersay table will do the job, instance collision checked.
+	-- Developer notes: we dont need to send the chat here since
+	-- our monstersay table will do the job, instance collision checked.
 
 	unit:PlaySoundToSet( 17520 );
 
-    unit:RegisterAIUpdateEvent( 1000 );
+	unit:RegisterAIUpdateEvent( 1000 );
 	
 end
 
@@ -224,33 +224,16 @@ end
 
 function OnLeaveCombat( unit )
 
-	-- destroy table with variables to recycle resources
-
-	--self[ tostring( unit ) ] = nil;
-
 	-- Developer notes: contrary to popular believe, this is the right place
 	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
 	-- one remove ai update event its more than enough.
 
 	unit:RemoveAIUpdateEvent();
 	
-	-- reset protected variables
-	local vars = self[ tostring( unit ) ];
-	
-	vars.phase = 1;
-	vars.cloneCount = 0;
-	
-	-- reset shared variables
-	SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetMaxHealth();
-	
 	-- get the channel target
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
 	if( crystal )
 	then
-		-- spell barrier channel
-		-- makes player stuck on loading screen when leaving instance
-		--unit:ChannelSpell( 76221, crystal );
-		
 		-- set the channel target
 		unit:SetChannelTarget( crystal );		
 		
@@ -263,9 +246,9 @@ function OnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-    	local rand = math.random( 1, 2 );
-    	unit:PlaySoundToSet( sound[ rand ] );
-    	unit:SendChatMessage( 14, 0, yell[ rand ] );
+		local rand = math.random( 1, 2 );
+		unit:PlaySoundToSet( sound[ rand ] );
+		unit:SendChatMessage( 14, 0, yell[ rand ] );
 	end
 end
 
@@ -277,8 +260,8 @@ function OnDeath( unit )
 	
 	SHARED[ unit:GetInstanceID() ] = nil;
 
-    -- Developer notes: we dont need to send the chat here since our
-    -- monstersay table will do the job, instance collision checked.
+	-- Developer notes: we dont need to send the chat here since our
+	-- monstersay table will do the job, instance collision checked.
 
 	unit:PlaySoundToSet( 17523 );
 	
@@ -291,12 +274,12 @@ function OnDeath( unit )
 	end
 
 	-- get the lady in the tree
-    local xerestrasza = unit:GetCreatureNearestCoords( 3155.54, 342.39, 84.60, 40429 );
-    if( xerestrasza )
-    then
+	local xerestrasza = unit:GetCreatureNearestCoords( 3155.54, 342.39, 84.60, 40429 );
+	if( xerestrasza )
+	then
 		-- come out lady and meet the party
-        xerestrasza:MoveTo( 3151.236, 379.8733, 86.31996, 0 );
-    end
+		xerestrasza:MoveTo( 3151.236, 379.8733, 86.31996, 0 );
+	end
 end
 
 function OnAIUpdate( unit )
@@ -308,10 +291,6 @@ function OnAIUpdate( unit )
 
 	-- update baltharus health acording to shared health
 	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );
-
-	--if( unit:IsCasting() == true ) then return; end
-
-	--if( unit:GetAIState() == 2 ) then return; end
 
 	if( unit:GetCurrentSpell() ~= nil ) then return; end
 	
@@ -530,13 +509,14 @@ end
 RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --]]
+
 --[[ 
-		DEBUG COMMANDS DISABLED BY DEFAULT
+		DEBUG COMMANDS DISABLED BY DEFAULT 
 
 
-local COMMANDS = { "baltharus", "port", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
+local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
-function Commands( _, plr, message )
+function BaltharusCommands( _, plr, message )
 
 	if( plr:IsGm() == true )
 	then
@@ -550,60 +530,82 @@ function Commands( _, plr, message )
 		elseif( message == "#port" )
 		then
 			plr:Teleport( 724, 3585.47, 403.12, 85.63, 3.53 );
-			
-		else
 		
+		elseif( message == "#reset" )
+		then
 			local selection = plr:GetSelection();
-			if( selection == nil)
+			
+			-- reset protected variables
+			local vars = self[ tostring( selection ) ];
+	
+			vars.phase = 1;
+			vars.cloneCount = 0;
+	
+			-- reset shared variables
+			SHARED[ selection:GetInstanceID() ].sharedHealth = selection:GetMaxHealth();
+			
+			-- get the channel target
+			local crystal = selection:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+			if( crystal )
 			then
-				plr:SendBroadcastMessage( "You need to select baltharus first." );
-				
-			else
+				-- set the channel target
+				selection:SetChannelTarget( crystal );		
 		
-				if( message == "#hp50" )
-				then
-					selection:SetHealthPct( 50 );
-					local hp = selection:GetHealth();
-					local iid = selection:GetInstanceID();
-					SHARED[ iid ].sharedHealth = hp;
-
-				elseif( message == "#hp66" )
-				then
-					selection:SetHealthPct( 66 );
-			
-				elseif( message == "#hp33" )
-				then
-					selection:SetHealthPct( 33 );
-			
-				elseif( message == "#spawneffect" )
-				then
-					selection:CastSpell( 64195 );
-			
-				elseif( message == "#clone" )
-				then
-					selection:CastSpell( 74511 );
-					selection:CastSpell( 74509 );
-					
-				elseif( message == "#damage" )
-				then
-					plr:DealDamage( selection, 90000, 13322 );
-					
-				elseif( message == "#enervating" )
-				then
-					selection:CastSpellOnTarget( 74502, selection:GetRandomPlayer( 0 ) );
-				
-				elseif( message == "#enervating2" )
-				then
-					selection:CastSpellOnTarget( SPELL_ENERVATING_BRAND_2, selection:GetRandomPlayer( 0 ) );
-				
-				elseif( message == "#siphon" )
-				then
-					selection:CastSpell( 74507 );
-				end
+				-- set the channel spell
+				selection:SetUInt32Value( 0x0006 + 0x0010, 76221 );
 			end
+		
+		elseif( message == "#hp50" )
+		then
+			local selection = plr:GetSelection();
+			selection:SetHealthPct( 50 );
+			local hp = selection:GetHealth();
+			local iid = selection:GetInstanceID();
+			SHARED[ iid ].sharedHealth = hp;
+
+		elseif( message == "#hp66" )
+		then
+			local selection = plr:GetSelection();
+			selection:SetHealthPct( 66 );
+			
+		elseif( message == "#hp33" )
+		then
+			local selection = plr:GetSelection();
+			selection:SetHealthPct( 33 );
+			
+		elseif( message == "#spawneffect" )
+		then
+			local selection = plr:GetSelection();
+			selection:CastSpell( 64195 );
+			
+		elseif( message == "#clone" )
+		then
+			local selection = plr:GetSelection();
+			selection:CastSpell( 74511 );
+			selection:CastSpell( 74509 );
+					
+		elseif( message == "#damage" )
+		then
+			local selection = plr:GetSelection();
+			plr:DealDamage( selection, 90000, 13322 );
+					
+		elseif( message == "#enervating" )
+		then
+			local selection = plr:GetSelection();
+			selection:CastSpellOnTarget( 74502, selection:GetRandomPlayer( 0 ) );
+			
+		elseif( message == "#enervating2" )
+		then
+			local selection = plr:GetSelection();
+			selection:CastSpellOnTarget( SPELL_ENERVATING_BRAND_2, selection:GetRandomPlayer( 0 ) );
+				
+		elseif( message == "#siphon" )
+		then
+			local selection = plr:GetSelection();
+			selection:CastSpell( 74507 );
 		end
     end
 end
 
-RegisterServerHook( 16, Commands );
+RegisterServerHook( 16, BaltharusCommands );
 --]]
