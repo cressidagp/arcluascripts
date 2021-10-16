@@ -18,8 +18,6 @@
 	ToDo:
 	
 	*) 76221: has an apply dummy aura effect but no handler for it.
-	*) tried to port the channel to database but didnt work.
-	*) after OnLeaveCombat it should channel again.
 	*) 34098: has a scripted effect (0) but no handler for it.
 	*) proper fix enervating brand.
 	*) send ai reaction defensive.
@@ -162,10 +160,7 @@ function DoAction( unit, action )
 	
 	-- clone
 	if( action == 1 )
-	then
-		unit:PlaySoundToSet( 17524 );
-		unit:SendChatMessage( 14, 0, "Twice the pain and half the fun." );
-		
+	then	
 		-- spell clear debuffs
 		unit:CastSpell( 34098 );
 		
@@ -173,7 +168,10 @@ function DoAction( unit, action )
 		unit:CastSpell( 74511 );
 		
 		-- spell repelling wave 
-		unit:CastSpell( 74509 );
+		unit:FullCastSpell( 74509 );
+		
+		unit:PlaySoundToSet( 17524 );
+		unit:SendChatMessage( 14, 0, "Twice the pain and half the fun." );
 	
 	-- channel
 	elseif( action == 2 )
@@ -217,10 +215,8 @@ function OnDamageTaken( unit, _, _, damage )
 			unit:RegisterLuaEvent( DoAction, 1000, 1, 1 );
 		end
 	end
-	
-	local hp = unit:GetHealth();
-	
-	if( hp > damage )
+
+	if( unit:GetHealth() > damage )
 	then
 		SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetHealth() - damage;	
 	end
@@ -367,8 +363,6 @@ function CloneOnSpawn( unit )
 	unit:EquipWeapons( 28365, 0, 0 );
 	unit:SetFlag( 0x0006 + 0x0035, 0x00000040 );
 	unit:DisableCombat( 1 );
-	--unit:RegisterEvent( DoAction, 2000, 1 );
-
 end
 
 function CloneOnCombat( unit )
@@ -378,17 +372,13 @@ function CloneOnCombat( unit )
 	vars.cleave = 11;
 	vars.enervatingBrand = 15;
 	vars.bladeTempest = 10;
-	
-	--CloneOnLeaveCombat( unit );
-	unit:RegisterAIUpdateEvent( 1000 );
 
+	unit:RegisterAIUpdateEvent( 1000 );
 end
 
 function CloneOnDamageTaken( unit, _, _, damage )
 
-	local hp = unit:GetHealth();
-
-	if( hp > damage )
+	if( unit:GetHealth() > damage )
 	then
 		SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetHealth() - damage;
 	end
