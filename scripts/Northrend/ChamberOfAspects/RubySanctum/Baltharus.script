@@ -56,9 +56,9 @@ module( mod._NAME..".BALTHARUS_THE_WARBORN", package.seeall );
 --
 --
 
-local MAP_RUBY_SANCTUM	= 724;
-local NPC_BALTHARUS	= 39751;
-local NPC_25M_BALTHARUS	= 39920;
+local MAP_RUBY_SANCTUM		= 724;
+local NPC_BALTHARUS		= 39751;
+local NPC_25M_BALTHARUS		= 39920;
 local NPC_CRYSTAL_TARGET	= 26712;
 local NPC_BALTHARUS_CLONE	= 39899;
 local NPC_25M_BALTHARUS_CLONE	= 39922;
@@ -298,11 +298,6 @@ function OnAIUpdate( unit )
 	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );
 
 	if( unit:GetCurrentSpell() ~= nil ) then return; end
-	
-	if( unit:IsRooted() == true ) 
-	then
-		unit:Unroot();
-	end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -339,7 +334,6 @@ function OnAIUpdate( unit )
 
 	elseif( vars.bladeTempest <= 0 )
 	then
-		unit:Root();
 		unit:FullCastSpell( 75125 );
 		vars.bladeTempest = 24;
 	end
@@ -439,11 +433,6 @@ function CloneOnAIUpdate( unit )
 	--if( unit:GetAIState() == 2 ) then return; end
 
 	if( unit:GetCurrentSpell() ~= nil ) then return; end
-	
-	if( unit:IsRooted() == true ) 
-	then
-		unit:Unroot();
-	end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -480,7 +469,6 @@ function CloneOnAIUpdate( unit )
 
 	elseif( vars.bladeTempest <= 0 )
 	then
-		unit:Root();
 		unit:FullCastSpell( 75125 );
 		vars.bladeTempest = 24;
 	end
@@ -517,6 +505,7 @@ RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
+--]]
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
