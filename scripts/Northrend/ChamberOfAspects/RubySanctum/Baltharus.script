@@ -120,7 +120,7 @@ function OnSpawn( unit )
 	phase = 1,
 	cloneCount = 0
 
-    };
+	};
 	
 	-- created shared variables
 	SHARED = {}
@@ -144,7 +144,6 @@ function OnSpawn( unit )
 		unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
 		
 	end
-
 end
 
 function OnCombat( unit )
@@ -229,6 +228,15 @@ function OnLeaveCombat( unit )
 	-- one remove ai update event its more than enough.
 
 	unit:RemoveAIUpdateEvent();
+	
+	-- despawn clones
+	for k, v in ipairs( unit:GetInRangeFriends() )
+	do
+        if( v:GetEntry() == 39899 )
+		then
+			v:Despawn( 1000, 0 );
+		end
+	end
 	
 	-- get the channel target
 	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
@@ -343,7 +351,7 @@ end
 RegisterUnitEvent( 39751, 18, OnSpawn );
 RegisterUnitEvent( 39751, 1 , OnCombat );
 RegisterUnitEvent( 39751, 23, OnDamageTaken );
-RegisterUnitEvent( 36751, 2 , OnLeaveCombat );
+RegisterUnitEvent( 39751, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39751, 3 , OnTargetDied );
 RegisterUnitEvent( 39751, 4 , OnDeath );
 RegisterUnitEvent( 39751, 21, OnAIUpdate );
@@ -513,7 +521,6 @@ RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
 
-
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
 function BaltharusCommands( _, plr, message )
@@ -604,7 +611,7 @@ function BaltharusCommands( _, plr, message )
 			local selection = plr:GetSelection();
 			selection:CastSpell( 74507 );
 		end
-    end
+	end
 end
 
 RegisterServerHook( 16, BaltharusCommands );
