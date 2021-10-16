@@ -50,18 +50,36 @@ local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".BALTHARUS_THE_WARBORN", package.seeall );
 
+--
+--
 --[[ DEFINES:
+--
+--
 
 local MAP_RUBY_SANCTUM	= 724;
-local NPC_BALTHARUS		= 39751;
+local NPC_BALTHARUS	= 39751;
 local NPC_25M_BALTHARUS	= 39920;
-local NPC_CRYSTAL_TARGET = 26712;
-local NPC_BALTHARUS_CLONE		= 39899;
+local NPC_CRYSTAL_TARGET	= 26712;
+local NPC_BALTHARUS_CLONE	= 39899;
 local NPC_25M_BALTHARUS_CLONE	= 39922;
 
-local GAMEOBJECT_BYTES_1			= 0x0006 + 0x000B;
-local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
-local UNIT_FLAG_PLUS_MOB			= 0x00000040;
+local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
+local UNIT_FIELD_FLAGS	= 0x0006 + 0x0035;
+local UNIT_FLAG_PLUS_MOB	= 0x00000040;
+
+local PHASE_INTRO	= 1;
+local PHASE_COMBAT	= 2;
+
+local SPELL_BARRIER_CHANNEL		= 76221; -- Intro
+local SPELL_ENERVATING_BRAND	= 74502; -- Spell casted on AIUpdate function
+local SPELL_ENERVATING_BRAND_2	= 74505; -- Triggerd on plr by 74502?
+local SPELL_SIPHONED_MIGHT		= 74507; -- Triggered on boss by 74505?
+local SPELL_CLEAVE				= 40504;
+local SPELL_BLADE_TEMPEST		= 75125;
+local SPELL_CLONE				= 74511;
+local SPELL_REPELLING_WAVE		= 74509;
+local SPELL_CLEAR_DEBUFFS		= 34098;
+local SPELL_SPAWN_EFFECT		= 64195;
 
 ]]
 
@@ -76,24 +94,6 @@ local yell = {
 "Baltharus leaves no survivors!",	-- OnTargetDied 1
 "This world has enough heroes.",	-- OnTargetDied 2
 };
-
---[[ Spells:
-local SPELL_BARRIER_CHANNEL		= 76221; -- Intro
-local SPELL_ENERVATING_BRAND	= 74502; -- Spell casted on AIUpdate function
-local SPELL_ENERVATING_BRAND_2	= 74505; -- Triggerd on plr by 74502?
-local SPELL_SIPHONED_MIGHT		= 74507; -- Triggered on boss by 74505?
-local SPELL_CLEAVE				= 40504;
-local SPELL_BLADE_TEMPEST		= 75125;
-local SPELL_CLONE				= 74511;
-local SPELL_REPELLING_WAVE		= 74509;
-local SPELL_CLEAR_DEBUFFS		= 34098;
-local SPELL_SPAWN_EFFECT		= 64195;
-]]
-
---[[ Phases:
-local PHASE_INTRO	= 1;
-local PHASE_COMBAT = 2;
-]]
 
 --[[
 
@@ -130,19 +130,8 @@ function OnSpawn( unit )
 	
 	};
 	
-	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-	if( crystal )
-	then
-		-- spell barrier channel
-		-- makes player stuck on loading screen when leaving instance
-		--unit:ChannelSpell( 76221, crystal );
-		
-		-- set the channel target
-		unit:SetChannelTarget( crystal );
-		
-		-- set the channel spell
-		unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
-	end
+	-- do channel on the tree
+	unit:RegisterLuaEvent( DoAction, 1000, 1, 2 );
 end
 
 function OnCombat( unit )
@@ -170,7 +159,8 @@ function OnCombat( unit )
 end
 
 function DoAction( unit, action )
-
+	
+	-- clone
 	if( action == 1 )
 	then
 		unit:PlaySoundToSet( 17524 );
@@ -185,6 +175,7 @@ function DoAction( unit, action )
 		-- spell repelling wave 
 		unit:CastSpell( 74509 );
 	
+	-- channel
 	elseif( action == 2 )
 	then
 		-- get the channel target
@@ -252,6 +243,7 @@ function OnLeaveCombat( unit )
 		end
 	end
 	
+	-- return to channeling
 	unit:RegisterLuaEvent( DoAction, 5000, 1, 2 );
 end
 
@@ -525,7 +517,6 @@ RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
-
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
