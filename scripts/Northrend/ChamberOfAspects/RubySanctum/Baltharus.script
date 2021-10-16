@@ -123,7 +123,7 @@ function OnSpawn( unit )
 	};
 	
 	-- created shared variables
-	SHARED = {}
+	SHARED = {};
 	SHARED[ unit:GetInstanceID() ] = {
 	
 	sharedHealth = unit:GetMaxHealth()
@@ -142,7 +142,6 @@ function OnSpawn( unit )
 		
 		-- set the channel spell
 		unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
-		
 	end
 end
 
@@ -168,22 +167,37 @@ function OnCombat( unit )
 	unit:PlaySoundToSet( 17520 );
 
 	unit:RegisterAIUpdateEvent( 1000 );
-	
 end
 
-function DoAction( unit )
+function DoAction( unit, action )
 
-	unit:PlaySoundToSet( 17524 );
-	unit:SendChatMessage( 14, 0, "Twice the pain and half the fun." );
+	if( action == 1 )
+	then
+		unit:PlaySoundToSet( 17524 );
+		unit:SendChatMessage( 14, 0, "Twice the pain and half the fun." );
 		
-	-- spell clear debuffs
-	unit:CastSpell( 34098 );
+		-- spell clear debuffs
+		unit:CastSpell( 34098 );
 		
-	-- spell clone
-	unit:CastSpell( 74511 );
+		-- spell clone
+		unit:CastSpell( 74511 );
 		
-	-- spell repelling wave 
-	unit:CastSpell( 74509 );
+		-- spell repelling wave 
+		unit:CastSpell( 74509 );
+	
+	elseif( action == 2 )
+	then
+		-- get the channel target
+		local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+		if( crystal )
+		then
+			-- set the channel target
+			unit:SetChannelTarget( crystal );		
+		
+			-- set the channel spell
+			unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
+		end
+	end
 end
 
 function OnDamageTaken( unit, _, _, damage )
@@ -197,19 +211,19 @@ function OnDamageTaken( unit, _, _, damage )
 		if( pct < 50 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
-			unit:RegisterEvent( DoAction, 1000, 1 );
+			unit:RegisterLuaEvent( DoAction, 1000, 1, 1 );
 		end
 		
 	else
 		if( pct < 66 and vars.cloneCount == 0 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
-			unit:RegisterEvent( DoAction, 1000, 1 );
+			unit:RegisterLuaEvent( DoAction, 1000, 1, 1 );
 
 		elseif( pct < 33 and vars.cloneCount == 1 )
 		then
 			vars.cloneCount = vars.cloneCount + 1;
-			unit:RegisterEvent( DoAction, 1000, 1 );
+			unit:RegisterLuaEvent( DoAction, 1000, 1, 1 );
 		end
 	end
 	
@@ -232,22 +246,13 @@ function OnLeaveCombat( unit )
 	-- despawn clones
 	for k, v in ipairs( unit:GetInRangeFriends() )
 	do
-        if( v:GetEntry() == 39899 )
+		if( v:GetEntry() == 39899 )
 		then
 			v:Despawn( 1000, 0 );
 		end
 	end
 	
-	-- get the channel target
-	local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-	if( crystal )
-	then
-		-- set the channel target
-		unit:SetChannelTarget( crystal );		
-		
-		-- set the channel spell
-		unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
-	end
+	unit:RegisterLuaEvent( DoAction, 5000, 1, 2 );
 end
 
 function OnTargetDied( unit, _, victim )
@@ -520,6 +525,7 @@ RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
+
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
