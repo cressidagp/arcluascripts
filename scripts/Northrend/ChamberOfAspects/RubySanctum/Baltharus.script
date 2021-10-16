@@ -372,6 +372,8 @@ function CloneOnCombat( unit )
 	vars.cleave = 11;
 	vars.enervatingBrand = 15;
 	vars.bladeTempest = 10;
+	
+	unit:CastSpell( 64195 );
 
 	unit:RegisterAIUpdateEvent( 1000 );
 end
@@ -391,23 +393,6 @@ function CloneOnDamageTaken( unit, _, _, damage )
 	
 end
 
-function CloneOnLeaveCombat( unit )
-
-	-- destroy table with variables to recycle resources
-
-	--self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: contrary to popular believe, this is the right place
-	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
-	-- one remove ai update event its more than enough.
-	
-	-- spell spawn effect
-	unit:CastSpell( 64195 );
-	
-	unit:RemoveAIUpdateEvent();
-
-end
-
 function CloneOnAIUpdate( unit )
 	
 	if( unit:GetNextTarget() == nil ) then
@@ -418,10 +403,6 @@ function CloneOnAIUpdate( unit )
 	-- update clone health acording to shared health
 	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );	
 	
-	--if( unit:IsCasting() == true ) then return; end
-
-	--if( unit:GetAIState() == 2 ) then return; end
-
 	if( unit:GetCurrentSpell() ~= nil ) then return; end
 
 	local vars = self[ tostring( unit ) ];
@@ -467,7 +448,6 @@ end
 RegisterUnitEvent( 39899, 18, CloneOnSpawn );
 RegisterUnitEvent( 39899, 1 , CloneOnCombat );
 RegisterUnitEvent( 39899, 23, CloneOnDamageTaken );
-RegisterUnitEvent( 39899, 2 , CloneOnLeaveCombat );
 RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
 
 --print( "Lua memory after Baltharus: "..gcinfo().." Kb." );
