@@ -64,22 +64,22 @@ local NPC_BALTHARUS_CLONE	= 39899;
 local NPC_25M_BALTHARUS_CLONE	= 39922;
 
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
-local UNIT_FIELD_FLAGS	= 0x0006 + 0x0035;
+local UNIT_FIELD_FLAGS		= 0x0006 + 0x0035;
 local UNIT_FLAG_PLUS_MOB	= 0x00000040;
 
 local PHASE_INTRO	= 1;
 local PHASE_COMBAT	= 2;
 
-local SPELL_BARRIER_CHANNEL		= 76221; -- Intro
+local SPELL_BARRIER_CHANNEL	= 76221; -- Intro
 local SPELL_ENERVATING_BRAND	= 74502; -- Spell casted on AIUpdate function
 local SPELL_ENERVATING_BRAND_2	= 74505; -- Triggerd on plr by 74502?
-local SPELL_SIPHONED_MIGHT		= 74507; -- Triggered on boss by 74505?
-local SPELL_CLEAVE				= 40504;
-local SPELL_BLADE_TEMPEST		= 75125;
-local SPELL_CLONE				= 74511;
-local SPELL_REPELLING_WAVE		= 74509;
-local SPELL_CLEAR_DEBUFFS		= 34098;
-local SPELL_SPAWN_EFFECT		= 64195;
+local SPELL_SIPHONED_MIGHT	= 74507; -- Triggered on boss by 74505?
+local SPELL_CLEAVE		= 40504;
+local SPELL_BLADE_TEMPEST	= 75125;
+local SPELL_CLONE		= 74511;
+local SPELL_REPELLING_WAVE	= 74509;
+local SPELL_CLEAR_DEBUFFS	= 34098;
+local SPELL_SPAWN_EFFECT	= 64195;
 
 ]]
 
@@ -222,7 +222,7 @@ function OnDamageTaken( unit, _, _, damage )
 	
 	if( hp > damage )
 	then
-		SHARED[ unit:GetInstanceID() ].sharedHealth = hp - damage;	
+		SHARED[ unit:GetInstanceID() ].sharedHealth = unit:GetHealth() - damage;	
 	end
 end
 
@@ -505,7 +505,6 @@ RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
---]]
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
