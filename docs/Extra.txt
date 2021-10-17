@@ -1,0 +1,30 @@
+--[[
+
+//Random Flags:
+
+RANDOM_ANY              = 0
+RANDOM_IN_SHORTRANGE    = 1
+RANDOM_IN_MIDRANGE      = 2
+RANDOM_IN_LONGRANGE     = 3
+RANDOM_WITH_MANA        = 4
+RANDOM_WITH_RAGE        = 5
+RANDOM_WITH_ENERGY      = 6
+RANDOM_NOT_MAINTANK     = 7
+
+//Movement Flags:
+
+WALK  = 0
+RUN   = 1
+FLY   = 2
+
+//Movement Type:
+
+MOVEMENTTYPE_NONE             = 0 // a to b then b to a
+MOVEMENTTYPE_RANDOMWP         = 1
+MOVEMENTTYPE_CIRCLEWP         = 2
+MOVEMENTTYPE_WANTEDWP         = 3
+MOVEMENTTYPE_DONTMOVEWP       = 4 // disable waypoint map
+MOVEMENTTYPE_QUEST            = 10
+MOVEMENTTYPE_FORWARDTHANSTOP  = 11
+
+--]]
