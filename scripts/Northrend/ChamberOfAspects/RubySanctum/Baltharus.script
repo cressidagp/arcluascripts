@@ -8,7 +8,9 @@
 	
 	Credits:
 
-	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) TrinityCore for texts, sounds, timers, spells and some Inspiration.
+	*) DarkAngel39 for his instance progression system.
+	*) Marforius for ArcAddons who make my life much easier.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
@@ -25,20 +27,20 @@
 	enUS locale:
 	
 	[ 1 ] = "Your power wanes, ancient one.... Soon you will join your friends.";	-- Intro
-	--[ 2 ] = "Ah, the entertainment has arrived.";			-- OnCombat
-	[ 2 ] = "Baltharus leaves no survivors!";			-- OnTargetDied 1
-	[ 3 ] = "This world has enough heroes.";			-- OnTargetDied 2
-	[ 4 ] = "Twice the pain and half the fun.";			-- OnClone
-	--[ 6 ] = "I... didn't see that coming....";	-- OnDeath
+	--[ 2 ] = "Ah, the entertainment has arrived.";					-- OnCombat
+	[ 2 ] = "Baltharus leaves no survivors!";					-- OnTargetDied 1
+	[ 3 ] = "This world has enough heroes.";					-- OnTargetDied 2
+	[ 4 ] = "Twice the pain and half the fun.";					-- OnClone
+	--[ 6 ] = "I... didn't see that coming....";		-- OnDeath
 	
 	esMX locale:
 	
 	[ 1 ] = "Tu poder mengua, anciano... Pronto te unirás a tus amigos.";	-- Intro
-	--[ 2 ] = "Ah, un poco de entretenimiento";			-- OnCombat
-	[ 2 ] = "¡Baltharus no deja sobrevivientes!"; 	-- OnTargetDied 1
+	--[ 2 ] = "Ah, un poco de entretenimiento";				-- OnCombat
+	[ 2 ] = "¡Baltharus no deja sobrevivientes!"; 			-- OnTargetDied 1
 	[ 3 ] = "Este mundo ya tiene suficientes héroes.";		-- OnTargetDied 2
-	[ 4 ] = "El doble de dolor, la mitad de la diversión.";		-- OnClone
-	--[ 6 ] = "Yo... no me lo esperaba...";			-- OnDeath
+	[ 4 ] = "El doble de dolor, la mitad de la diversión.";			-- OnClone
+	--[ 6 ] = "Yo... no me lo esperaba...";				-- OnDeath
 
 --]]
 
@@ -452,30 +454,9 @@ RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
 
 --print( "Lua memory after Baltharus: "..gcinfo().." Kb." );
 
---[[
-		Spell: Enervating Brand
-
-
-function SpellBaltharusEnervatingBrand( _, _, spell_id, spellObject )
-
-	if( spell_id ~= SPELL_ENERVATING_BRAND ) then return; end
-
-	if( spell_id == SPELL_ENERVATING_BRAND )
-	then
-
-		local caster = spellObject:GetCaster();
-
-		caster:FullCastSpell( SPELL_SIPHONED_MIGHT );
-	end
-end
-
-RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
-
---]]
-
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
---]]
+
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
@@ -571,3 +552,4 @@ function BaltharusCommands( _, plr, message )
 end
 
 RegisterServerHook( 16, BaltharusCommands );
+--]]
