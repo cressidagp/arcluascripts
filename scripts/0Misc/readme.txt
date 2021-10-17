@@ -13,11 +13,3 @@ global_var_management.lua
 You can find all this files in ArcEmu repository:
 
 https://github.com/arcemu/arcemu/tree/master/src/scripts/lua/0Misc
-
-
-The following files are just documentation, but it speed a lot the development if
-you have them close in your script folder, specially if you use a code editor with navigation folder.
-
-0Entry_Registers.lua
-0LuaEvents.lua
-0LuaEventsArguments.lua
