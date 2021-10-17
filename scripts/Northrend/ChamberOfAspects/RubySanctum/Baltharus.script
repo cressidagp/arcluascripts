@@ -25,20 +25,20 @@
 	enUS locale:
 	
 	[ 1 ] = "Your power wanes, ancient one.... Soon you will join your friends.";	-- Intro
-	--[ 2 ] = "Ah, the entertainment has arrived.";									-- OnCombat
-	[ 2 ] = "Baltharus leaves no survivors!";										-- OnTargetDied 1
-	[ 3 ] = "This world has enough heroes.";										-- OnTargetDied 2
-	[ 4 ] = "Twice the pain and half the fun.";										-- OnClone
-	--[ 6 ] = "I... didn't see that coming....";									-- OnDeath
+	--[ 2 ] = "Ah, the entertainment has arrived.";			-- OnCombat
+	[ 2 ] = "Baltharus leaves no survivors!";			-- OnTargetDied 1
+	[ 3 ] = "This world has enough heroes.";			-- OnTargetDied 2
+	[ 4 ] = "Twice the pain and half the fun.";			-- OnClone
+	--[ 6 ] = "I... didn't see that coming....";	-- OnDeath
 	
 	esMX locale:
 	
-	[ 1 ] = "Tu poder mengua, anciano... Pronto te unirás a tus amigos.";			-- Intro
-	--[ 2 ] = "Ah, un poco de entretenimiento";										-- OnCombat
-	[ 2 ] = "¡Baltharus no deja sobrevivientes!";									-- OnTargetDied 1
-	[ 3 ] = "Este mundo ya tiene suficientes héroes.";								-- OnTargetDied 2
-	[ 4 ] = "El doble de dolor, la mitad de la diversión.";							-- OnClone
-	--[ 6 ] = "Yo... no me lo esperaba...";											-- OnDeath
+	[ 1 ] = "Tu poder mengua, anciano... Pronto te unirás a tus amigos.";	-- Intro
+	--[ 2 ] = "Ah, un poco de entretenimiento";			-- OnCombat
+	[ 2 ] = "¡Baltharus no deja sobrevivientes!"; 	-- OnTargetDied 1
+	[ 3 ] = "Este mundo ya tiene suficientes héroes.";		-- OnTargetDied 2
+	[ 4 ] = "El doble de dolor, la mitad de la diversión.";		-- OnClone
+	--[ 6 ] = "Yo... no me lo esperaba...";			-- OnDeath
 
 --]]
 
@@ -69,7 +69,7 @@ local PHASE_INTRO	= 1;
 local PHASE_COMBAT	= 2;
 
 local SPELL_BARRIER_CHANNEL	= 76221; -- Intro
-local SPELL_ENERVATING_BRAND	= 74502; -- Spell casted on AIUpdate function
+local SPELL_ENERVATING_BRAND	= 74502;
 local SPELL_ENERVATING_BRAND_2	= 74505; -- Triggerd on plr by 74502?
 local SPELL_SIPHONED_MIGHT	= 74507; -- Triggered on boss by 74505?
 local SPELL_CLEAVE		= 40504;
@@ -303,7 +303,7 @@ function OnAIUpdate( unit )
 
 	if( vars.cleave <= 0 )
 	then
-		unit:CastSpellOnTarget( 40504, unit:GetMainTank() );
+		unit:CastSpellOnTarget( 40504, unit:GetNextTarget() );
 		vars.cleave = math.random( 20, 24 );
 
 	elseif( vars.enervatingBrand <= 0 )
@@ -413,7 +413,7 @@ function CloneOnAIUpdate( unit )
 
 	if( vars.cleave <= 0 )
 	then
-		unit:CastSpellOnTarget( 40504, unit:GetMainTank() );
+		unit:CastSpellOnTarget( 40504, unit:GetNextTarget() );
 		vars.cleave = math.random( 20, 24 );
 
 	elseif( vars.enervatingBrand <= 0 )
@@ -475,6 +475,7 @@ RegisterServerHook( 10, SpellBaltharusEnervatingBrand );
 
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
+--]]
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
@@ -570,4 +571,3 @@ function BaltharusCommands( _, plr, message )
 end
 
 RegisterServerHook( 16, BaltharusCommands );
---]]
