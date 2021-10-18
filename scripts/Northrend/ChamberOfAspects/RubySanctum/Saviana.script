@@ -58,7 +58,7 @@ local NPC_SAVIANA	= 39747;
 local NPC_25M_SAVIANA	= 39823;
 
 local SPELL_FLAME_BREATH	= 74403;
-local SPELL_ENRAGE	= 78722;
+local SPELL_ENRAGE		= 78722;
 
 ]]
 
@@ -71,8 +71,7 @@ local sound = {
 
 local yell = {
 "Halion will be pleased.", -- OnTargetDied 1
-"As it should be....", -- OnTargetDied 2
-"Burn in the master's flame!" -- OnCast: "Conflagration"
+"As it should be...." -- OnTargetDied 2
 };
 
 local SPELL_CONFLAGRATION       = 74452; -- Currently make all units agro caster if player?
@@ -211,7 +210,7 @@ function MovementInform( unit )
 		-- spell conflagration
 		unit:FullCastSpell( 74452 )
 		unit:PlaySoundToSet( 17532 );
-		unit:SendChatMessage( 14, 0, yell[ 3 ] );
+		unit:SendChatMessage( 14, 0, "Burn in the master's flame!" );
 
 	elseif( vars.movement == 8 )
 	then
