@@ -74,7 +74,7 @@ local sound = {
 
 local yell = {
 "Halion will be pleased.",	-- OnTargetDied 1
-"As it should be...."	-- OnTargetDied 2
+"As it should be...."		-- OnTargetDied 2
 };
 
 --[[
@@ -338,11 +338,11 @@ RegisterDummySpell( 74454, ConflagrationDummy2 );
 --
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT
---]]
+--
 --
 --
 
-local COMMANDS = { "saviana", "port", "reset", "damage", "fly", "land", "mflyout", "mflyin", "mland", "beacon", "conf" };
+local COMMANDS = { "saviana", "port", "reset", "damage", "fly", "land", "wp1", "wp2", "wp3", "beacon", "conf" };
 
 function SavianaCommands( _, plr, message )
 
@@ -387,21 +387,21 @@ function SavianaCommands( _, plr, message )
 			local selection = plr:GetSelection();
 			selection:Land();
 			
-		elseif( message == "#mflyout" )
+		elseif( message == "#wp1" )
 		then
 			local selection = plr:GetSelection();
 			--selection:MoveTo( 3155.51, 683.844, 95.0, 4.69 );
 			selection:MoveToWaypoint( 1 );
 			selection:DisableCombat( 1 );
 				
-		elseif( message == "#mflyin" )
+		elseif( message == "#wp2" )
 		then
 			local selection = plr:GetSelection();
 			--selection:MoveTo( 3151.07, 636.443, 79.540, 4.69 );
 			selection:MoveToWaypoint( 2 );
 			selection:DisableCombat( 1 );
 			
-		elseif( message == "#mland" )
+		elseif( message == "#wp3" )
 		then
 			local selection = plr:GetSelection();
 			--selection:MoveTo( 3151.07, 636.443, 78.649, 4.69 );
@@ -422,3 +422,4 @@ function SavianaCommands( _, plr, message )
 end
 
 RegisterServerHook( 16, SavianaCommands );
+]]
