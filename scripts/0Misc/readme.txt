@@ -2,8 +2,6 @@ In this folder you should add:
 
 global_var_management.lua
 
-0Defined Variables.lua ( currently they are disabled, but its a good source of info. )
-
 0LCF_Includes/0LCF.lua
 0LCF_Includes/LCF_Creature.lua
 0LCF_Includes/LCF_Extra.lua
