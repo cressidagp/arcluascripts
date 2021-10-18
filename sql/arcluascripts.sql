@@ -340,6 +340,14 @@ UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39747;
 
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) VALUES (39747, 0, 100, 0, 14, 'Saviana Ragefire', 'You will sssuffer for this intrusion!', NULL, NULL, NULL, NULL);
 
+UPDATE `creature_spawns` SET `movetype` = 3 WHERE `entry` = 39747;
+
+DELETE FROM `creature_waypoints` WHERE `spawnid` = 134427;
+
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 1, 3155.51, 683.844, 95.0, 0, 2, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 2, 3151.07, 636.443, 79.540, 0, 2, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 3, 3151.07, 636.443, 78.649, 0, 2, 0, 0, 0, 0, 0, 0);
+
 -- Baltharus the Warborn
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39751;
 
@@ -725,4 +733,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `arcluascripts`(`version`) values 
-('2021-08-18_16-37_SintaxErrors');
+('2021-10-18_19-06_SavianaRagefire');

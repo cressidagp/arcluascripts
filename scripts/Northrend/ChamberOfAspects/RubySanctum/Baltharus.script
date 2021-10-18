@@ -31,7 +31,7 @@
 	[ 2 ] = "Baltharus leaves no survivors!";					-- OnTargetDied 1
 	[ 3 ] = "This world has enough heroes.";					-- OnTargetDied 2
 	[ 4 ] = "Twice the pain and half the fun.";					-- OnClone
-	--[ 6 ] = "I... didn't see that coming....";			-- OnDeath
+	--[ 6 ] = "I... didn't see that coming....";				-- OnDeath
 	
 	esMX locale:
 	

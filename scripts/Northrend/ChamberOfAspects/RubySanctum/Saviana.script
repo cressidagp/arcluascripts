@@ -23,7 +23,6 @@
 	*) 74452: has a dummy effect (0) but no handler for it (need a proper fix).
 	*) 74454: has a dummy effect (0) but no handler for it (need a proper fix).
 	*) 74455: has a scripted effect (0) but no handler for it.
-	*) cleanup spells constants.
 
 	enUS locale:
 
@@ -59,6 +58,10 @@ local NPC_25M_SAVIANA	= 39823;
 
 local SPELL_FLAME_BREATH	= 74403;
 local SPELL_ENRAGE		= 78722;
+local SPELL_CONFLAGRATION       = 74452;
+local SPELL_FLAME_BEACON        = 74453; -- Seems to trigger 74455
+local SPELL_CONFLAGRATION_2     = 74454; -- Launch big fire ball but dont make harm.
+local SPELL_CONFLAGRATION_3	= 74455; -- Does nothing.
 
 ]]
 
@@ -74,10 +77,19 @@ local yell = {
 "As it should be...." -- OnTargetDied 2
 };
 
-local SPELL_CONFLAGRATION       = 74452; -- Currently make all units agro caster if player?
-local SPELL_FLAME_BEACON        = 74453; -- Seems to trigger 74455
-local SPELL_CONFLAGRATION_2     = 74454; -- Launch big fire ball but dont make harm.
-local SPELL_CONFLAGRATION_3	= 74455; -- Does nothing.
+--[[
+local waypoints = {
+{3155.51f, 683.844f, 95.0f,   4.69f},	-- FlyOut
+{3151.07f, 636.443f, 79.540f, 4.69f},	-- FlyIn
+{3151.07f, 636.443f, 78.649f, 4.69f}	-- Land
+}; 
+]]
+
+--[[
+
+		Saviana Ragefire AI ( 39747 )
+		
+--]]
 
 local self = getfenv( 1 );
 
@@ -156,9 +168,7 @@ function OnAIUpdate( unit )
 		return;
 	end
 	
-	--if( unit:IsCasting() == true ) then return; end
-
-	if( unit:GetCurrentSpell() ~= nil ) then return; end
+	if( unit:IsCasting() == true ) then return; end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -203,22 +213,29 @@ function MovementInform( unit )
 
 	if( vars.movement == 2 )
 	then
-		unit:MoveTo( 3155.51, 683.84, 95.00, 4.69 ); -- wp1
+		-- move to flyout
+		--unit:MoveTo( 3155.51, 683.84, 95.00, 4.69 );
+		unit:MoveToWaypoint( 1 );
 
 	elseif( vars.movement == 4 )
 	then
 		-- spell conflagration
-		unit:FullCastSpell( 74452 )
+		unit:FullCastSpell( 74452 );
+		
 		unit:PlaySoundToSet( 17532 );
 		unit:SendChatMessage( 14, 0, "Burn in the master's flame!" );
 
 	elseif( vars.movement == 8 )
 	then
-		unit:MoveTo( 3151.07, 636.44, 79.54, 4.69 ); -- wp2
+		-- move to flyin
+		--unit:MoveTo( 3151.07, 636.44, 79.540, 4.69 );
+		unit:MoveToWaypoint( 2 );
 
 	elseif( vars.movement == 9 )
 	then
-		unit:MoveTo( 3151.07, 636.44, 78.65, 4.69 ); -- wp3
+		-- move to land poss
+		--unit:MoveTo( 3151.07, 636.44, 78.649, 4.69 );
+		unit:MoveToWaypoint( 3 );
 
 	elseif( vars.movement == 10 )
 	then
@@ -240,9 +257,13 @@ RegisterUnitEvent( 39747, 3 , OnTargetDied );
 RegisterUnitEvent( 39747, 4 , OnDeath );
 RegisterUnitEvent( 39747, 21, OnAIUpdate );
 
+--
+--
 --[[
 		Spell: Flame Breath ( 74403 )
 --]]
+--
+--
 
 function FlameBreathDummy( effectIndex, spellObject )
 
@@ -254,10 +275,13 @@ end
 
 RegisterDummySpell( 74403, FlameBreathDummy );
 
-
+--
+--
 --[[
 		Spell: Conflagration ( 74452 )
 --]]
+--
+--
 
 function ConflagrationDummy( effectIndex, spellObject )
 
@@ -275,19 +299,22 @@ function ConflagrationDummy( effectIndex, spellObject )
 		if( target ) 
 		then
 			-- spell conflagration 2
-			caster:FullCastSpellOnTarget( SPELL_CONFLAGRATION_2, target );
+			caster:FullCastSpellOnTarget( 74454, target );
 			-- spell flame beacon
-			caster:CastSpellOnTarget( SPELL_FLAME_BEACON, target );
+			caster:CastSpellOnTarget( 74453, target );
 		end
 	end
 end
 
-RegisterDummySpell( SPELL_CONFLAGRATION, ConflagrationDummy );
+RegisterDummySpell( 74452, ConflagrationDummy );
 
-
+--
+--
 --[[
 		Spell: Conflagration 2 ( 74454 )
 --]]
+--
+--
 
 function ConflagrationDummy2( effectIndex, spellObject )
 
@@ -297,19 +324,23 @@ function ConflagrationDummy2( effectIndex, spellObject )
 	
 	if( target )
 	then
-		caster:DealDamage( target, 1000, SPELL_CONFLAGRATION_2 ); -- need proper damage
+		caster:DealDamage( target, 1000, 74454 ); -- need proper damage
 	end
 end
 
-RegisterDummySpell( SPELL_CONFLAGRATION_2, ConflagrationDummy2 );
+RegisterDummySpell( 74454, ConflagrationDummy2 );
 
 --print( "Lua memory after Saviana: "..gcinfo().." Kb." );
 
+--
+--
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT
+--]]
+--
+--
 
-
-local COMMANDS = { "saviana", "port", "damage", "fly", "land", "move1", "move2", "move3", "beacon", "conf" };
+local COMMANDS = { "saviana", "port", "reset", "damage", "fly", "land", "mflyout", "mflyin", "mland", "beacon", "conf" };
 
 function SavianaCommands( _, plr, message )
 
@@ -324,8 +355,20 @@ function SavianaCommands( _, plr, message )
 
 		elseif( message == "#port" )
 		then
-			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );		
+			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );
 
+		elseif( message == "#reset" )
+		then
+			local selection = plr:GetSelection();
+			
+			-- reset protected variables
+			local vars = self[ tostring( selection ) ];
+
+			vars.flameBreath = 14;
+			vars.flight = 60;
+			vars.movement = 0;
+			vars.enrage = 20;
+			
 		elseif( message == "#damage" )
 		then
 			local selection = plr:GetSelection();
@@ -335,42 +378,45 @@ function SavianaCommands( _, plr, message )
 		then
 			local selection = plr:GetSelection();
 			selection:SetFlying();
+			selection:MoveTo( selection:GetX(), selection:GetY(), selection:GetZ() + 10, selection:GetO() );
 				
 		elseif( message == "#land" )
 		then
 			local selection = plr:GetSelection();
 			selection:Land();
 			
-		elseif( message == "#move1" )
+		elseif( message == "#mflyout" )
 		then
 			local selection = plr:GetSelection();
-			selection:MoveTo( 3155.51, 683.844, 95.0, 4.69 ); -- fly out?
+			--selection:MoveTo( 3155.51, 683.844, 95.0, 4.69 );
+			selection:MoveToWaypoint( 1 );
 			selection:DisableCombat( 1 );
 				
-		elseif( message == "#move2" )
+		elseif( message == "#mflyin" )
 		then
 			local selection = plr:GetSelection();
-			selection:MoveTo( 3151.07, 636.443, 79.540, 4.69 ); -- fly in?
+			--selection:MoveTo( 3151.07, 636.443, 79.540, 4.69 );
+			selection:MoveToWaypoint( 2 );
 			selection:DisableCombat( 1 );
 			
-		elseif( message == "#move3" )
+		elseif( message == "#mland" )
 		then
 			local selection = plr:GetSelection();
-			selection:MoveTo( 3151.07, 636.443, 78.649, 4.69 ); -- land?
+			--selection:MoveTo( 3151.07, 636.443, 78.649, 4.69 );
+			selection:MoveToWaypoint( 3 );
 			selection:DisableCombat( 1 );
 				
 		elseif( message == "#beacon" )
 		then
 			local selection = plr:GetSelection();
-			selection:CastSpellOnTarget( SPELL_FLAME_BEACON, selection:GetRandomPlayer( 0 ) );
+			selection:CastSpellOnTarget( 74453, selection:GetRandomPlayer( 0 ) );
 					
 		elseif( message == "#conf" )
 		then
 			local selection = plr:GetSelection();
-			selection:CastSpell( SPELL_CONFLAGRATION );
+			selection:CastSpell( 74452 );
 		end
 	end
 end
 
 RegisterServerHook( 16, SavianaCommands );
---]]
