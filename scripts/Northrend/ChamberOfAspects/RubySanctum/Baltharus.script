@@ -31,16 +31,16 @@
 	[ 2 ] = "Baltharus leaves no survivors!";					-- OnTargetDied 1
 	[ 3 ] = "This world has enough heroes.";					-- OnTargetDied 2
 	[ 4 ] = "Twice the pain and half the fun.";					-- OnClone
-	--[ 6 ] = "I... didn't see that coming....";		-- OnDeath
+	--[ 6 ] = "I... didn't see that coming....";			-- OnDeath
 	
 	esMX locale:
 	
 	[ 1 ] = "Tu poder mengua, anciano... Pronto te unirás a tus amigos.";	-- Intro
 	--[ 2 ] = "Ah, un poco de entretenimiento";				-- OnCombat
-	[ 2 ] = "¡Baltharus no deja sobrevivientes!"; 			-- OnTargetDied 1
-	[ 3 ] = "Este mundo ya tiene suficientes héroes.";		-- OnTargetDied 2
+	[ 2 ] = "¡Baltharus no deja sobrevivientes!"; 				-- OnTargetDied 1
+	[ 3 ] = "Este mundo ya tiene suficientes héroes.";			-- OnTargetDied 2
 	[ 4 ] = "El doble de dolor, la mitad de la diversión.";			-- OnClone
-	--[ 6 ] = "Yo... no me lo esperaba...";				-- OnDeath
+	--[ 6 ] = "Yo... no me lo esperaba...";					-- OnDeath
 
 --]]
 
@@ -295,7 +295,7 @@ function OnAIUpdate( unit )
 	-- update baltharus health acording to shared health
 	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );
 
-	if( unit:GetCurrentSpell() ~= nil ) then return; end
+	if( unit:HasAura( 75125 ) == true ) then return; end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -405,7 +405,7 @@ function CloneOnAIUpdate( unit )
 	-- update clone health acording to shared health
 	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );	
 	
-	if( unit:GetCurrentSpell() ~= nil ) then return; end
+	if( unit:HasAura( 75125 ) == true ) then return; end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -456,7 +456,6 @@ RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
 
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT 
-
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 
