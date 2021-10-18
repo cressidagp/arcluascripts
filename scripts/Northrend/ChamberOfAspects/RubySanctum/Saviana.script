@@ -26,16 +26,16 @@
 
 	enUS locale:
 
-	"You will sssuffer for this intrusion!",-- OnCombat
+	"You will sssuffer for this intrusion!",	-- OnCombat
 	"Burn in the master's flame!",			-- OnCast: "Conflagration"
-	"Halion will be pleased.",		-- OnTargetDied 1
+	"Halion will be pleased.",			-- OnTargetDied 1
 	"As it should be...."				-- OnTargetDied 2
 	
 	esMX locale:
 	
 	"¡Sssufrirás por esta intrusión!",	-- OnCombat
 	"¡Ardan en las llamas del amo!",	-- OnCast: "Conflagration"
-	"Halion estará felíz.",		-- OnTargetDied 1
+	"Halion estará felíz.",			-- OnTargetDied 1
 	"Como debía ser...."			-- OnTargetDied 2
 	
 --]]
@@ -68,13 +68,13 @@ local SPELL_CONFLAGRATION_3	= 74455; -- Does nothing.
 -- local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
 
 local sound = {
-17530,  -- OnTargetDied 1
-17529  -- OnTargetDied 2
+17530,	-- OnTargetDied 1
+17529	-- OnTargetDied 2
 };
 
 local yell = {
-"Halion will be pleased.", -- OnTargetDied 1
-"As it should be...." -- OnTargetDied 2
+"Halion will be pleased.",	-- OnTargetDied 1
+"As it should be...."	-- OnTargetDied 2
 };
 
 --[[
@@ -85,11 +85,13 @@ local waypoints = {
 }; 
 ]]
 
+--
+--
 --[[
-
 		Saviana Ragefire AI ( 39747 )
-		
 --]]
+--
+--
 
 local self = getfenv( 1 );
 
