@@ -69,7 +69,7 @@ end
 
 function MINSHINAS_SKULL.ClearTarget( unit )
 
-    unit:SetUInt64Value( 0x0006 + 0x000C, 0 );
+	unit:SetUInt64Value( 0x0006 + 0x000C, 0 );
 
 end
 

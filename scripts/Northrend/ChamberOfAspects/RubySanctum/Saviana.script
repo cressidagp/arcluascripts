@@ -8,7 +8,9 @@
 
 	Credits:
 
-	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) TrinityCore for texts, sounds, timers, spells and some Inspiration.
+	*) DarkAngel39 for his instance progression system.
+	*) Marforius for ArcAddons who make my life much easier.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
@@ -41,16 +43,26 @@
 
 --print( "Lua memory before Saviana: "..gcinfo().." Kb." );
 
---[[ Constants:
-local MAP_RUBY_SANCTUM	= 724;
-local NPC_SAVIANA	= 39747;
-local NPC_25M_SAVIANA	= 39823;
-local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
-]]
-
 local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".SAVIANA_RAGEFIRE", package.seeall );
+
+--
+--
+--[[ DEFINES:
+--
+--
+
+local MAP_RUBY_SANCTUM	= 724;
+local NPC_SAVIANA	= 39747;
+local NPC_25M_SAVIANA	= 39823;
+
+local SPELL_FLAME_BREATH	= 74403;
+local SPELL_ENRAGE	= 78722;
+
+]]
+
+-- local BOSS_HP = { 4183500, 13945000, 4183500, 13945000 };
 
 local sound = {
 17530,  -- OnTargetDied 1
@@ -62,11 +74,6 @@ local yell = {
 "As it should be....", -- OnTargetDied 2
 "Burn in the master's flame!" -- OnCast: "Conflagration"
 };
-
---[[ Spells:
-local SPELL_FLAME_BREATH	= 74403;
-local SPELL_ENRAGE	= 78722;
-]]
 
 local SPELL_CONFLAGRATION       = 74452; -- Currently make all units agro caster if player?
 local SPELL_FLAME_BEACON        = 74453; -- Seems to trigger 74455
@@ -95,7 +102,7 @@ function OnCombat( unit )
 	
 	flameBreath = 14,
 	flight = 60,
-	movement = 0;
+	movement = 0,
 	enrage = 20
 
 	};
@@ -127,7 +134,7 @@ function OnTargetDied( unit, _, victim )
 
 	if( victim:IsPlayer() == true )
 	then
-		local ran = math.random( 3, 4 );
+		local rand = math.random( 1, 2 );
 		unit:PlaySoundToSet( sound[ rand ] );
 		unit:SendChatMessage( 14, 0, yell[ rand ] );
 	end
@@ -146,13 +153,11 @@ end
 function OnAIUpdate( unit )
 
 	if( unit:GetNextTarget() == nil ) then
-		unit:WipeThreatList()
+		unit:WipeThreatList();
 		return;
 	end
 	
 	--if( unit:IsCasting() == true ) then return; end
-
-	--if( unit:GetAIState() == 2 ) then return; end
 
 	if( unit:GetCurrentSpell() ~= nil ) then return; end
 
@@ -164,7 +169,7 @@ function OnAIUpdate( unit )
 
 	if( vars.flameBreath <= 0 )
 	then
-		unit:FullCastSpellOnTarget( 74403, unit:GetMainTank() );
+		unit:FullCastSpellOnTarget( 74403, unit:GetNextTarget() );
 		vars.flameBreath = math.random( 20, 30 );
 
 	elseif( vars.enrage <= 0 )
@@ -307,7 +312,7 @@ RegisterDummySpell( SPELL_CONFLAGRATION_2, ConflagrationDummy2 );
 
 local COMMANDS = { "saviana", "port", "damage", "fly", "land", "move1", "move2", "move3", "beacon", "conf" };
 
-function Commands( _, plr, message )
+function SavianaCommands( _, plr, message )
 
 	if( plr:IsGm() == true )
 	then
@@ -320,56 +325,53 @@ function Commands( _, plr, message )
 
 		elseif( message == "#port" )
 		then
-			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );
-			
-		else
-		
-			local selection = plr:GetSelection();
-			if( selection == nil)
-			then
-				plr:SendBroadcastMessage( "You need to select saviana first." );
-				
-			else		
+			plr:Teleport( 724, 3190.85, 637.78, 78.93, 3.11 );		
 
-				if( message == "#damage" )
-				then
-					plr:DealDamage( selection, 90000, 13322 );
+		elseif( message == "#damage" )
+		then
+			local selection = plr:GetSelection();
+			plr:DealDamage( selection, 90000, 13322 );
 					
-				elseif( message == "#fly" )
-				then
-					selection:SetFlying();
+		elseif( message == "#fly" )
+		then
+			local selection = plr:GetSelection();
+			selection:SetFlying();
 				
-				elseif( message == "#land" )
-				then
-					selection:Land();
+		elseif( message == "#land" )
+		then
+			local selection = plr:GetSelection();
+			selection:Land();
+			
+		elseif( message == "#move1" )
+		then
+			local selection = plr:GetSelection();
+			selection:MoveTo( 3155.51, 683.844, 95.0, 4.69 ); -- fly out?
+			selection:DisableCombat( 1 );
 				
-				elseif( message == "#move1" )
-				then
-					selection:MoveTo( 3155.51, 683.844, 95.0, 4.69 ); -- fly out?
-					selection:DisableCombat( 1 );
+		elseif( message == "#move2" )
+		then
+			local selection = plr:GetSelection();
+			selection:MoveTo( 3151.07, 636.443, 79.540, 4.69 ); -- fly in?
+			selection:DisableCombat( 1 );
+			
+		elseif( message == "#move3" )
+		then
+			local selection = plr:GetSelection();
+			selection:MoveTo( 3151.07, 636.443, 78.649, 4.69 ); -- land?
+			selection:DisableCombat( 1 );
 				
-				elseif( message == "#move2" )
-				then
-					selection:MoveTo( 3151.07, 636.443, 79.540, 4.69 ); -- fly in?
-					selection:DisableCombat( 1 );
+		elseif( message == "#beacon" )
+		then
+			local selection = plr:GetSelection();
+			selection:CastSpellOnTarget( SPELL_FLAME_BEACON, selection:GetRandomPlayer( 0 ) );
 					
-				elseif( message == "#move3" )
-				then
-					selection:MoveTo( 3151.07, 636.443, 78.649, 4.69 ); -- land?
-					selection:DisableCombat( 1 );
-				
-				elseif( message == "#beacon" )
-				then
-					selection:CastSpellOnTarget( SPELL_FLAME_BEACON, selection:GetRandomPlayer( 0 ) );
-					
-				elseif( message == "#conf" )
-				then
-					selection:CastSpell( SPELL_CONFLAGRATION );
-				end
-			end
+		elseif( message == "#conf" )
+		then
+			local selection = plr:GetSelection();
+			selection:CastSpell( SPELL_CONFLAGRATION );
 		end
-    end
+	end
 end
 
-RegisterServerHook( 16, Commands );
+RegisterServerHook( 16, SavianaCommands );
 --]]
