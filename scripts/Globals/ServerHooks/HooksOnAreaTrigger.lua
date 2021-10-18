@@ -54,9 +54,9 @@ function HOOKS_AT.OnAreaTrigger( _, plr, areaTriggerId )
 	
 	elseif( areaTriggerId == 1125 )
 	then
-		local brother = plr:GetCreatureNearestCoords( -8556.00, 835.86, 106.60, 7917 );
-		if( brother ~= nil )
-		then
+        local brother = plr:GetCreatureNearestCoords( -8556.00, 835.86, 106.60, 7917 );
+        if( brother ~= nil )
+        then
 			if( brother:IsHostile( plr ) == false )
 			then
 				brother:SetUInt64Value( 0x0006 + 0x000C, plr:GetGUID() );
@@ -68,18 +68,23 @@ function HOOKS_AT.OnAreaTrigger( _, plr, areaTriggerId )
     end
 end
 
--- keep it at botton or it will not work
 function HOOKS_AT.Wave( unit )
 
 	unit:Emote( 3, 0 );
 	
 end
 
--- keep it at botton or it will not work
+
 function HOOKS_AT.ClearTarget( unit )
 
 	unit:SetUInt64Value( 0x0006 + 0x000C, 0 );
 	
 end
 
+-- Needed for Wave and ClearTarget
+function HOOKS_AT.OnSpawn( unit )
+end
+
+RegisterUnitEvent( 295, 18, HOOKS_AT.OnSpawn );
+RegisterUnitEvent( 1917, 18, HOOKS_AT.OnSpawn );
 RegisterServerHook( 26, HOOKS_AT.OnAreaTrigger );
