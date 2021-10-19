@@ -8,7 +8,9 @@
 
 	Credits:
 
-	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) TrinityCore for texts, sounds, timers, spells and some Inspiration.
+	*) DarkAngel39 for his instance progression system.
+	*) Marforius for ArcAddons who make my life much easier.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
@@ -44,23 +46,32 @@
 local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".GENERAL_ZARITHRIAN", package.seeall );
-local self = getfenv( 1 );
 
---[[ Constants:
+--
+--
+--[[ DEFINES:
+--
+--
+
 local MAP_RUBY_SANCTUM	= 724;
 local NPC_ZARITHRIAN	= 39746;
 local NPC_25M_ZARITHRIAN	= 39805;
 local NPC_ZARITHRIAN_SPAWN_STALKER	= 39794;
 local NPC_ONYX_FLAMECALLER = 39814;
-]]
 
---local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
-
---[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local UNIT_FIELD_FLAGS       		= 0x0006 + 0x0035;
 local UNIT_FLAG_NOT_SELECTABLE		= 0x02000000
+
+local SPELL_INTIMIDATING_ROAR     = 74384;
+local SPELL_CLEAVE_ARMOR          = 74367;
+local SPELL_SUMMON_FLAMECALLER    = 74398; -- Zarithrian Spawn Stalker
+local SPELL_BLAST_NOVA            = 74392; -- Onyx Flamecaller
+local SPELL_LAVA_GOUT             = 74394; -- Onyx Flamecaller
+
 ]]
+
+--local BOSS_HP = { 4141665, 14098395, 4141665, 14098395 };
 
 local sound = {
 17513, -- OnTargetDied 1
@@ -69,17 +80,18 @@ local sound = {
 
 local yell = {
 "You thought you stood a chance?",		-- OnTargetDied 1
-"It's for the best.",	-- OnTargetDied 2
-"Turn them to ash, minions!"	-- OnMinions
+"It's for the best."	-- OnTargetDied 2
 };
 
---[[ Spells:
-local SPELL_INTIMIDATING_ROAR     = 74384;
-local SPELL_CLEAVE_ARMOR          = 74367;
-local SPELL_SUMMON_FLAMECALLER    = 74398; -- Zarithrian Spawn Stalker
-local SPELL_BLAST_NOVA            = 74392; -- Onyx Flamecaller
-local SPELL_LAVA_GOUT             = 74394; -- Onyx Flamecaller
-]]
+--
+--
+--[[
+		General Zarithrian AI ( 39746 )
+--]]
+--
+--
+
+local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
@@ -100,65 +112,24 @@ end
 function OnCombat( unit )
 
 	self[ tostring( unit )] = {
+	
 	phase = 1,
-	diff = unit:GetDungeonDifficulty(); -- TODO: implement LCF for Is25Man
+	diff = unit:GetDungeonDifficulty(),
 	cleaveArmor = 8,
 	intimidatingRoar = 14,
 	summonMinions = 15,
 	summonMinions25 = 16,
 	flameWalls = 5
+	
 	};
 
 	unit:PlaySoundToSet( 17512 );
 
-	--[[ Developer notes: we dont need to send the chat here since
-	our monstersay table will do the job, instance collision checked. ]]
+	-- Developer notes: we dont need to send the chat here since
+	-- our monstersay table will do the job, instance collision checked.
 
 	unit:RegisterAIUpdateEvent( 1000 );
 
-end
-
-function OnLeaveCombat( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: contrary to popular believe, this is the right place
-	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
-	-- one remove ai update event its more than enough.
-
-	unit:RemoveAIUpdateEvent();
-
-end
-
-function OnTargetDied( unit, _, victim )
-
-	if( victim:IsPlayer() == true )
-	then
-    	local rand = math.random( 1, 2 );
-    	unit:PlaySoundToSet( sound[ rand ] );
-    	unit:SendChatMessage( 14, 0, yell[ rand ] );
-	end
-end
-
-function OnDeath( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: we dont need to send the chat here since our
-	-- monstersay table will do the job, instance collision checked.
-
-	unit:PlaySoundToSet( 17515 );
-	
-	local flameWalls = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
-	if( flameWalls )
-	then
-		-- disable fire
-		flame:SetByte( 0x0006 + 0x000B, 0, 0 );
-	end
 end
 
 function OnAIUpdate( unit )
@@ -168,11 +139,7 @@ function OnAIUpdate( unit )
 		return;
 	end
 
-	--if( unit:IsCasting() == true ) then return; end
-
-	--if( unit:GetAIState() == 2 ) then return; end
-
-	if( unit:GetCurrentSpell() ~= nil ) then return; end
+	if( unit:IsCasting() == true ) then return; end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -184,7 +151,7 @@ function OnAIUpdate( unit )
 
 	if( vars.cleaveArmor <= 0 )
     then
-		unit:CastSpellOnTarget( 74367, unit:GetMainTank() );
+		unit:CastSpellOnTarget( 74367, unit:GetNextTarget() );
 		vars.cleaveArmor = 15;
 
 	elseif( vars.intimidatingRoar <= 0 )
@@ -194,9 +161,8 @@ function OnAIUpdate( unit )
 
 	elseif( vars.summonMinions <= 0 )
 	then
-		
 		unit:PlaySoundToSet( 17516 );
-		unit:SendChatMessage( 14, 0, yell[ 3 ] );
+		unit:SendChatMessage( 14, 0, "Turn them to ash, minions!" );
 		
 		local stalker1 = unit:GetCreatureNearestCoords( 3043.97, 419.88, 87.1399, 39794 );
 		if( stalker1 )
@@ -244,18 +210,63 @@ function OnAIUpdate( unit )
 	end
 end
 
+function OnTargetDied( unit, _, victim )
+
+	if( victim:IsPlayer() == true )
+	then
+    	local rand = math.random( 1, 2 );
+    	unit:PlaySoundToSet( sound[ rand ] );
+    	unit:SendChatMessage( 14, 0, yell[ rand ] );
+	end
+end
+
+function OnLeaveCombat( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
+
+	unit:RemoveAIUpdateEvent();
+
+end
+
+function OnDeath( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	-- Developer notes: we dont need to send the chat here since our
+	-- monstersay table will do the job, instance collision checked.
+
+	unit:PlaySoundToSet( 17515 );
+	
+	local flameWalls = victim:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
+	if( flameWalls )
+	then
+		-- disable fire
+		flame:SetByte( 0x0006 + 0x000B, 0, 0 );
+	end
+end
+
 RegisterUnitEvent( 39746, 18, OnSpawn );
 RegisterUnitEvent( 39746, 1, OnCombat );
+RegisterUnitEvent( 39746, 21, OnAIUpdate );
 RegisterUnitEvent( 39746, 2, OnLeaveCombat );
 RegisterUnitEvent( 39746, 3, OnTargetDied );
 RegisterUnitEvent( 39746, 4, OnDeath );
-RegisterUnitEvent( 39746, 21, OnAIUpdate );
 
+--
+--
 --[[
-
-		Onyx Flamecaller AI ( 39814 )
-		
+		Onyx Flamecaller AI ( 39814 )		
 --]]
+--
+--
 
 function OnyxOnSpawn( unit, event )
 
@@ -270,17 +281,21 @@ RegisterUnitEvent( 39814, 18, OnyxOnSpawn );
 
 --print( "Lua memory after Zarithrian: "..gcinfo().." Kb." );
 
+--
+--
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT
+--]]
+--
+--
 
+local COMMANDS = { "general", "port", "reset", "removeflag", "minions", "gotostalker1", "gotostalker2", "open", "close", "summon" };
 
-local COMMANDS = { "zar", "port", "removeflag", "minions", "gotostalker1", "gotostalker2", "open", "close", "summon" };
-
-function Commands( _, plr, message )
+function ZarithrianCommands( _, plr, message )
 
 	if( plr:IsGm() == true )
 	then
-		if( message == "#zar" )
+		if( message == "#general" )
 		then
 			for i = 1, #COMMANDS
 			do
@@ -291,6 +306,9 @@ function Commands( _, plr, message )
 		then
 			plr:Teleport( 724, 3002.49, 538.22, 90.85, 6.01 );
 			
+		elseif( message == "#reset" )
+		then
+			
 		elseif( message == "#removeflag" )
 		then
 			local zar = plr:GetCreatureNearestCoords( 3049.7, 528.125, 89.6219, 39746 );
@@ -299,12 +317,12 @@ function Commands( _, plr, message )
 		elseif( message == "#minions1" )
 		then
 			local stalker1 = plr:GetCreatureNearestCoords( 3043.97, 419.88, 87.1399, 39794 );
-			stalker1:CastSpell( SPELL_SUMMON_FLAMECALLER );
+			stalker1:CastSpell( 74398 );
 		
 		elseif( message == "#minions2" )
 		then
 			local stalker2 = plr:GetCreatureNearestCoords( 3062.6, 636.998, 82.8377, 39794 );
-			stalker2:CastSpell( SPELL_SUMMON_FLAMECALLER );
+			stalker2:CastSpell( 74398 );
 		
 		elseif( message == "#gotostalker1" )
 		then
@@ -324,31 +342,12 @@ function Commands( _, plr, message )
 			local flame = plr:GetGameObjectNearestCoords( 3050.36, 526.1, 88.41, 203006 );
 			flame:SetByte( 0x0006 + 0x000B, 0, 1 );
 	
-		else
-		
+		elseif( message == "#summon" )
+		then
 			local selection = plr:GetSelection();
-			if( selection == nil)
-			then
-				plr:SendBroadcastMessage( "You need to select baltharus first." );
-				
-			else
-					
-				if( message == "#summon" )
-				then
-					selection:CastSpell( SPELL_SUMMON_FLAMECALLER );
-				
-				elseif( message == "#enervating2" )
-				then
-					selection:CastSpellOnTarget( SPELL_ENERVATING_BRAND_2, selection:GetRandomPlayer( 0 ) );
-				
-				elseif( message == "#siphon" )
-				then
-					selection:CastSpell( SPELL_SIPHONED_MIGHT );
-				end
-			end
+			selection:CastSpell( 74398 );
 		end
     end
 end
 
-RegisterServerHook( 16, Commands );
---]]
+RegisterServerHook( 16, ZarithrianCommands );
