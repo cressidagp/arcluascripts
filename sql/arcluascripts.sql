@@ -339,6 +339,9 @@ VALUES (39746, 5, 100, 0, 14, 'General Zarithrian', 'HALION! I....', NULL, NULL,
 REPLACE INTO `ai_agents` (`entry`, `instance_mode`, `type`, `event`, `chance`, `maxcount`, `spell`, `spelltype`, `targettype_overwrite`, `cooldown_overwrite`, `floatMisc1`, `Misc2`) 
 VALUES (39814, 4, 4, 0, 70, 0, 74392, 7, 4, 17000, 0, 0);
 
+-- Make sure only cast "Lava Gout" from lua script
+DELETE FROM `ai_agents` WHERE `entry` = 39814 and `spell` = 74394;
+
 -- Saviana Ragefire
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39747;
 
@@ -737,4 +740,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `arcluascripts`(`version`) values 
-('2021-10-19_12-00_OnyxFlamecaller');
+('2021-10-19_13-27_LavaGout');

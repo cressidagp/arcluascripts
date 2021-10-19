@@ -8,8 +8,9 @@
 
 	Credits:
 
-	*) TrinityCore for texts, sound ids, timers, spell ids and some inspiration.
+	*) TrinityCore for texts, sounds, timers, spells and some Inspiration.
 	*) DarkAngel39 for his instance progression system.
+	*) Marforius for ArcAddons who make my life much easier.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
@@ -54,20 +55,30 @@
 
 --print( "Lua memory before Ruby Sanctum: "..gcinfo().." KB." );
 
---[[ Constants:
+--
+--
+--[[ DEFINES:
+--
+--
+
 local MAP_RUBY_SANCTUM	= 724;
 local NPC_XERESTRASZA	= 40429;
 local NPC_BALTHARUS		= 39751;
 local FACTION_HOSTILE = 14;
 local AT_BALTHARUS_PLATEAU = 5867;
-]]
 
---[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1	= 0x0006 + 0x000B;
 local GAMEOBJECT_DYNAMIC	= 0x0006 + 0x0008;
 local UNIT_FIELD_FLAGS	= 0x0006 + 0x0035;
 local UNIT_FLAG_NOT_ATTACKABLE_9	= 0x00000100;
-local UNIT_FLAG_NOT_SELECTABLE	=0x02000000;
+local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000;
+
+local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
+local WORLDSTATE_CORPOREALITY_TWILIGHT  = 5050;
+local WORLDSTATE_CORPOREALITY_TOGGLE    = 5051;
+
+local SPELL_RALLY = 75416;
+
 ]]
 
 local talk = {
@@ -82,16 +93,6 @@ local talk = {
 { 17490, "Help! I am trapped within this tree!  I require aid!" }, -- Xerex Intro
 { 17525, "Your power wanes, ancient one.... Soon you will join your friends." }	-- Baltharus Intro
 };
-
---[[ WorldStates:
-local WORLDSTATE_CORPOREALITY_MATERIAL  = 5049;
-local WORLDSTATE_CORPOREALITY_TWILIGHT  = 5050;
-local WORLDSTATE_CORPOREALITY_TOGGLE    = 5051;
-]]
-
---[[ Spells:
-local SPELL_RALLY = 75416;
-]]
 
 local RUBY_SANCTUM = {};
 
@@ -403,11 +404,13 @@ RegisterInstanceEvent( 724, 8, RUBY_SANCTUM.OnGOPush );
 
 --print( "Lua memory after Ruby Sanctum: "..gcinfo().." KB." );
 
---]]
-
+--
+--
 --[[ 
 		DEBUG COMMANDS DISABLED BY DEFAULT
-
+--
+--
+--
 
 local COMMANDS = { "ruby", "xerex", "open", "close", "phase1", "phase32" };
 
@@ -449,4 +452,5 @@ function RubyCommands( _, plr, message )
 	end
 end
 
-RegisterServerHook( 16, RubyCommands );--]]
+RegisterServerHook( 16, RubyCommands );
+--]]
