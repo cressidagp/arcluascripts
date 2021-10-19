@@ -268,16 +268,51 @@ RegisterUnitEvent( 39746, 4, OnDeath );
 --
 --
 
-function OnyxOnSpawn( unit, event )
+function OnyxOnSpawn( unit )
 
-	unit:EquipWeapons( 19355, 0, 0 );
+	self[ tostring( unit )] = {
+	
+	lavaGout = 3,
+	lavaGoutCount = 0
+	
+	};
+
+	unit:EquipWeapons( 19355, 0, 0 );	
 	
 	-- move to general
 	unit:MoveTo( 3009.15, 531.27, 89.24 );
 	
+	unit:RegisterAIUpdateEvent( 1000 );
+end
+
+function OnyxOnAIUpdate( unit )
+
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList()
+		return;
+	end
+
+	if( unit:IsCasting() == true ) then return; end
+	
+	local vars = self[ tostring( unit ) ];
+
+	vars.lavaGout = vars.lavaGout - 1;
+	
+	if( vars.lavaGoutCount >= 3 )
+	then
+		vars.lavaGoutCount = 0;
+		vars.lavaGout = 8;
+	
+	elseif( vars.lavaGout <= 0 )
+	then
+		unit:FullCastSpellOnTarget( 74394, unit:GetNextTarget() );
+		vars.lavaGoutCount = vars.lavaGoutCount + 1;
+		vars.lavaGout = 2;
+	end
 end
 
 RegisterUnitEvent( 39814, 18, OnyxOnSpawn );
+RegisterUnitEvent( 39814, 21, OnyxOnAIUpdate );
 
 --print( "Lua memory after Zarithrian: "..gcinfo().." Kb." );
 
