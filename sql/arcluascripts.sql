@@ -344,9 +344,9 @@ UPDATE `creature_spawns` SET `movetype` = 3 WHERE `entry` = 39747;
 
 DELETE FROM `creature_waypoints` WHERE `spawnid` = 134427;
 
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 1, 3155.51, 683.844, 95.0, 0, 2, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 2, 3151.07, 636.443, 79.540, 0, 2, 0, 0, 0, 0, 0, 0);
-INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 3, 3151.07, 636.443, 78.649, 0, 2, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 1, 3155.51, 683.844, 95.0, 0, 768, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 2, 3151.07, 636.443, 79.540, 0, 768, 0, 0, 0, 0, 0, 0);
+INSERT INTO `creature_waypoints` (`spawnid`, `waypointid`, `position_x`, `position_y`, `position_z`, `waittime`, `flags`, `forwardemoteoneshot`, `forwardemoteid`, `backwardemoteoneshot`, `backwardemoteid`, `forwardskinid`, `backwardskinid`) VALUES (134427, 3, 3151.07, 636.443, 78.649, 0, 768, 0, 0, 0, 0, 0, 0);
 
 -- Baltharus the Warborn
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39751;

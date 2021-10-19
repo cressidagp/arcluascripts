@@ -79,9 +79,9 @@ local yell = {
 
 --[[
 local waypoints = {
-{3155.51f, 683.844f, 95.0f,   4.69f},	-- FlyOut
-{3151.07f, 636.443f, 79.540f, 4.69f},	-- FlyIn
-{3151.07f, 636.443f, 78.649f, 4.69f}	-- Land
+{ 3155.51f, 683.844f, 95.0f,   4.69f },	-- FlyOut
+{ 3151.07f, 636.443f, 79.540f, 4.69f },	-- FlyIn
+{ 3151.07f, 636.443f, 78.649f, 4.69f }	-- Land
 }; 
 ]]
 
@@ -207,7 +207,7 @@ end
 
 function MovementInform( unit )
 
-	if( unit:IsCreatureMoving() == true ) then return; end
+	if( unit:IsCreatureMoving() == true or unit:IsCasting() == true ) then return; end
 
 	local vars = self[ tostring( unit ) ];
 
@@ -216,8 +216,8 @@ function MovementInform( unit )
 	if( vars.movement == 2 )
 	then
 		-- move to flyout
-		--unit:MoveTo( 3155.51, 683.84, 95.00, 4.69 );
-		unit:MoveToWaypoint( 1 );
+		unit:MoveTo( 3155.51, 683.844, 95.0, 4.69 );
+		--unit:MoveToWaypoint( 1 );
 
 	elseif( vars.movement == 4 )
 	then
@@ -230,14 +230,14 @@ function MovementInform( unit )
 	elseif( vars.movement == 8 )
 	then
 		-- move to flyin
-		--unit:MoveTo( 3151.07, 636.44, 79.540, 4.69 );
-		unit:MoveToWaypoint( 2 );
+		unit:MoveTo( 3151.07, 636.443, 79.540, 4.69 );
+		--unit:MoveToWaypoint( 2 );
 
 	elseif( vars.movement == 9 )
 	then
 		-- move to land poss
-		--unit:MoveTo( 3151.07, 636.44, 78.649, 4.69 );
-		unit:MoveToWaypoint( 3 );
+		unit:MoveTo( 3151.07, 636.443, 78.649, 4.69 );
+		--unit:MoveToWaypoint( 3 );
 
 	elseif( vars.movement == 10 )
 	then
@@ -300,10 +300,11 @@ function ConflagrationDummy( effectIndex, spellObject )
 		local target = caster:GetRandomPlayer( 0 );
 		if( target ) 
 		then
-			-- spell conflagration 2
-			caster:FullCastSpellOnTarget( 74454, target );
 			-- spell flame beacon
 			caster:CastSpellOnTarget( 74453, target );
+			
+			-- spell conflagration 2
+			caster:FullCastSpellOnTarget( 74454, target );
 		end
 	end
 end
@@ -390,21 +391,18 @@ function SavianaCommands( _, plr, message )
 		elseif( message == "#wp1" )
 		then
 			local selection = plr:GetSelection();
-			--selection:MoveTo( 3155.51, 683.844, 95.0, 4.69 );
 			selection:MoveToWaypoint( 1 );
 			selection:DisableCombat( 1 );
 				
 		elseif( message == "#wp2" )
 		then
 			local selection = plr:GetSelection();
-			--selection:MoveTo( 3151.07, 636.443, 79.540, 4.69 );
 			selection:MoveToWaypoint( 2 );
 			selection:DisableCombat( 1 );
 			
 		elseif( message == "#wp3" )
 		then
 			local selection = plr:GetSelection();
-			--selection:MoveTo( 3151.07, 636.443, 78.649, 4.69 );
 			selection:MoveToWaypoint( 3 );
 			selection:DisableCombat( 1 );
 				
