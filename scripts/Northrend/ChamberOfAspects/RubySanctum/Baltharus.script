@@ -31,7 +31,7 @@
 	[ 2 ] = "Baltharus leaves no survivors!";					-- OnTargetDied 1
 	[ 3 ] = "This world has enough heroes.";					-- OnTargetDied 2
 	[ 4 ] = "Twice the pain and half the fun.";					-- OnClone
-	--[ 6 ] = "I... didn't see that coming....";				-- OnDeath
+	--[ 6 ] = "I... didn't see that coming....";			-- OnDeath
 	
 	esMX locale:
 	
@@ -224,6 +224,58 @@ function OnDamageTaken( unit, _, _, damage )
 	end
 end
 
+function OnAIUpdate( unit )
+
+	if( unit:GetNextTarget() == nil ) then
+		unit:WipeThreatList();
+		return;
+	end
+
+	-- update baltharus health acording to shared health
+	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );
+
+	if( unit:HasAura( 75125 ) == true ) then return; end
+
+	local vars = self[ tostring( unit ) ];
+
+	vars.cleave = vars.cleave - 1;
+	vars.enervatingBrand = vars.enervatingBrand - 1;
+	vars.bladeTempest = vars.bladeTempest - 1;
+
+	if( vars.cleave <= 0 )
+	then
+		unit:CastSpellOnTarget( 40504, unit:GetNextTarget() );
+		vars.cleave = math.random( 20, 24 );
+
+	elseif( vars.enervatingBrand <= 0 )
+	then
+		local raidMode = { 2, 4, 2, 4 };
+		local targetNum = raidMode[ vars.diff ];
+
+		-- targetNum its the "for" limiter
+		for i = 1, targetNum  
+		do
+			 -- range 45 its fine?
+			local target = unit:GetRandomPlayer( 2 ); 
+			if( target )
+			then
+				-- cast spell enervating brand
+				unit:CastSpellOnTarget( 74502, target );
+				
+				-- hack fix: empower self (spell siphoned might)
+				unit:CastSpell( 74507 );
+			end
+		end
+
+		vars.enervatingBrand = 26;
+
+	elseif( vars.bladeTempest <= 0 )
+	then
+		unit:FullCastSpell( 75125 );
+		vars.bladeTempest = 24;
+	end
+end
+
 function OnLeaveCombat( unit )
 
 	-- Developer notes: contrary to popular believe, this is the right place
@@ -285,65 +337,13 @@ function OnDeath( unit )
 	end
 end
 
-function OnAIUpdate( unit )
-
-	if( unit:GetNextTarget() == nil ) then
-		unit:WipeThreatList();
-		return;
-	end
-
-	-- update baltharus health acording to shared health
-	unit:SetHealth( SHARED[ unit:GetInstanceID() ].sharedHealth );
-
-	if( unit:HasAura( 75125 ) == true ) then return; end
-
-	local vars = self[ tostring( unit ) ];
-
-	vars.cleave = vars.cleave - 1;
-	vars.enervatingBrand = vars.enervatingBrand - 1;
-	vars.bladeTempest = vars.bladeTempest - 1;
-
-	if( vars.cleave <= 0 )
-	then
-		unit:CastSpellOnTarget( 40504, unit:GetNextTarget() );
-		vars.cleave = math.random( 20, 24 );
-
-	elseif( vars.enervatingBrand <= 0 )
-	then
-		local raidMode = { 2, 4, 2, 4 };
-		local targetNum = raidMode[ vars.diff ];
-
-		-- targetNum its the "for" limiter
-		for i = 1, targetNum  
-		do
-			 -- range 45 its fine?
-			local target = unit:GetRandomPlayer( 2 ); 
-			if( target )
-			then
-				-- cast spell enervating brand
-				unit:CastSpellOnTarget( 74502, target );
-				
-				-- hack fix: empower self (spell siphoned might)
-				unit:CastSpell( 74507 );
-			end
-		end
-
-		vars.enervatingBrand = 26;
-
-	elseif( vars.bladeTempest <= 0 )
-	then
-		unit:FullCastSpell( 75125 );
-		vars.bladeTempest = 24;
-	end
-end
-
 RegisterUnitEvent( 39751, 18, OnSpawn );
 RegisterUnitEvent( 39751, 1 , OnCombat );
 RegisterUnitEvent( 39751, 23, OnDamageTaken );
-RegisterUnitEvent( 39751, 2 , OnLeaveCombat );
-RegisterUnitEvent( 39751, 3 , OnTargetDied );
-RegisterUnitEvent( 39751, 4 , OnDeath );
 RegisterUnitEvent( 39751, 21, OnAIUpdate );
+RegisterUnitEvent( 39751, 3 , OnTargetDied );
+RegisterUnitEvent( 39751, 2 , OnLeaveCombat );
+RegisterUnitEvent( 39751, 4 , OnDeath );
 
 --[[
 

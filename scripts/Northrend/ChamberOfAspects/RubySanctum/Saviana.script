@@ -129,40 +129,6 @@ function OnCombat( unit )
 
 end
 
-function OnLeaveCombat( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	-- Developer notes: contrary to popular believe, this is the right place
-	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
-	-- one remove ai update event its more than enough.
-
-	unit:RemoveAIUpdateEvent();
-
-end
-
-function OnTargetDied( unit, _, victim )
-
-	if( victim:IsPlayer() == true )
-	then
-		local rand = math.random( 1, 2 );
-		unit:PlaySoundToSet( sound[ rand ] );
-		unit:SendChatMessage( 14, 0, yell[ rand ] );
-	end
-end
-
-function OnDeath( unit )
-
-	-- destroy table with variables to recycle resources
-
-	self[ tostring( unit ) ] = nil;
-
-	unit:PlaySoundToSet( 17531 );
-
-end
-
 function OnAIUpdate( unit )
 
 	if( unit:GetNextTarget() == nil ) then
@@ -252,12 +218,46 @@ function MovementInform( unit )
 	end
 end
 
+function OnTargetDied( unit, _, victim )
+
+	if( victim:IsPlayer() == true )
+	then
+		local rand = math.random( 1, 2 );
+		unit:PlaySoundToSet( sound[ rand ] );
+		unit:SendChatMessage( 14, 0, yell[ rand ] );
+	end
+end
+
+function OnLeaveCombat( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	-- Developer notes: contrary to popular believe, this is the right place
+	-- to remove ai update event since if a creature is dead the ai update will not trigger, so
+	-- one remove ai update event its more than enough.
+
+	unit:RemoveAIUpdateEvent();
+
+end
+
+function OnDeath( unit )
+
+	-- destroy table with variables to recycle resources
+
+	self[ tostring( unit ) ] = nil;
+
+	unit:PlaySoundToSet( 17531 );
+
+end
+
 RegisterUnitEvent( 39747, 18, OnSpawn );
 RegisterUnitEvent( 39747, 1 , OnCombat );
-RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
-RegisterUnitEvent( 39747, 3 , OnTargetDied );
-RegisterUnitEvent( 39747, 4 , OnDeath );
 RegisterUnitEvent( 39747, 21, OnAIUpdate );
+RegisterUnitEvent( 39747, 3 , OnTargetDied );
+RegisterUnitEvent( 39747, 2 , OnLeaveCombat );
+RegisterUnitEvent( 39747, 4 , OnDeath );
 
 --
 --
@@ -420,4 +420,4 @@ function SavianaCommands( _, plr, message )
 end
 
 RegisterServerHook( 16, SavianaCommands );
-]]
+--]]

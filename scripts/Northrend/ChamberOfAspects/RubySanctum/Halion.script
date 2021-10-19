@@ -8,7 +8,9 @@
 
 	Credits:
 
-	*) TrinityCore for texts, sound ids, timers, spell ids and some Inspiration.
+	*) TrinityCore for texts, sounds, timers, spells and some Inspiration.
+	*) DarkAngel39 for his instance progression system.
+	*) Marforius for ArcAddons who make my life much easier.
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
@@ -17,7 +19,7 @@
 	
 	ToDo:
 
-	*) Twilight Precision: so far, all my attems to fix aura display using SetDBCSpellVar had failed.
+	*) Twilight Precision: so far, all my attemps to fix aura display icon using SetDBCSpellVar had failed.
 	*) get correct scale for exit portals.
 	*) research if orbs can be killed.
 	*) 76006: has a dummy effect (1) but no handler for it.
@@ -29,7 +31,7 @@
 	*) 74812: has an aplly dummy aura effect but no handler for it.
 	*) add localization.
 	*) implement better test/debug commands.
-	*) improve tail lash.
+	*) improve tail lash if needed.
 	*) npc combustion and consumption.
 	*) npc living inferno.
 	*) npc living embers.
@@ -46,9 +48,13 @@
 local mod = getfenv( 1 );
 assert( mod );
 module( mod._NAME..".HALION_THE_DESTROYER", package.seeall );
-local self = getfenv( 1 );
 
---[[ Constants:
+--
+--
+--[[ DEFINES:
+--
+--
+
 local MAP_RUBY_SANCTUM	= 724;
 
 local NPC_HALION	= 39863;
@@ -84,10 +90,6 @@ local NPC_CONSUMPTION = 40135;
 local NPC_LIVING_INFERNO = 40681;
 local NPC_LIVING_EMBER = 40683;
 
-local GO_TREES = { 203034, 203035, 203036, 203037 };
-]]
-
---[[ For 3.3.5a
 local GAMEOBJECT_BYTES_1		= 0x0006 + 0x000B;
 local UNIT_FIELD_SUMMONEDBY		= 0x0006 + 0x0008;
 local UNIT_FIELD_FLAGS			= 0x0006 + 0x0035;
@@ -95,7 +97,14 @@ local UNIT_FLAG_COMBAT			= 0x00080000;
 local UNIT_FLAG_NOT_SELECTABLE	= 0x02000000;
 local UNIT_FIELD_FLAGS_2		= 0x0006 + 0x0036;
 local UNIT_FLAG2_ENABLE_POWER_REGEN	= 0x0000800;
+
+local WORLDSTATE_CORPOREALITY_MATERIAL = 5049;
+local WORLDSTATE_CORPOREALITY_TWILIGHT = 5050;
+local WORLDSTATE_CORPOREALITY_TOGGLE   = 5051;
+
 ]]
+
+-- local GO_TREES = { 203034, 203035, 203036, 203037 };
 
 --[[ not more needed so lets save some bytes
 local sound = {
@@ -197,23 +206,21 @@ local spell_corporeality = {
 -- set twilight realm as a negative buff
 SetDBCSpellVar( 74807, "c_is_flags", 0x01000 );
 
---[[ WorldStates:
-local WORLDSTATE_CORPOREALITY_MATERIAL = 5049;
-local WORLDSTATE_CORPOREALITY_TWILIGHT = 5050;
-local WORLDSTATE_CORPOREALITY_TOGGLE   = 5051;
-]]
-
 -- Phases:
 local PHASE_INTRO	= 1;
 local PHASE_ONE		= 2; -- combat in Physical realm
 local PHASE_TWO		= 3; -- combat in Twilight realm
 local PHASE_THREE	= 4; -- combat in both realms
 
+--
+--
 --[[
-
-		Halion AI ( 39863 )
-		
+		Halion AI ( 39863 )		
 --]]
+--
+--
+
+local self = getfenv( 1 );
 
 function OnSpawn( unit )
 
@@ -459,11 +466,13 @@ RegisterUnitEvent( 39863, 23, OnDamageTaken );
 RegisterUnitEvent( 39863, 29, OnCastSpell );
 RegisterUnitEvent( 39863, 21, OnAIUpdate );
 
+--
+--
 --[[
-
-		Twilight Halion AI ( 40142 )
-		
+		Twilight Halion AI ( 40142 )		
 --]]
+--
+--
 
 function TwilightHalionOnSpawn( unit )
 
@@ -680,13 +689,15 @@ RegisterUnitEvent( 40142, 23, TwilightHalionOnDamageTaken );
 RegisterUnitEvent( 40142, 29, TwilightHalionOnCastSpell );
 RegisterUnitEvent( 40142, 21, TwilightHalionOnAIUpdate );
 
+--
+--
 --[[
-
-		Halion Controller AI ( 40146 )
-		
+		Halion Controller AI ( 40146 )		
 --]]
+--
+--
 
-local HSHARED = {}
+local HSHARED = {};
 
 -- def unit flags 256 + 33554432 (256 for development :P)
 function ControllerOnSpawn( unit )
@@ -796,9 +807,8 @@ function ControllerDoAction( unit, action )
 		end
 		
 		-- summon twilight exit portals at phase 32
-		-- ToDo: use GetLocation() here
-		-- witch scale?
-		unit:SpawnGameObject( 202796, unit:GetX(), unit:GetY(), unit:GetZ(), unit:GetO(), 0, 1, 32 );
+		local position = { unit:GetLocation() };
+		unit:SpawnGameObject( 202796, position[ 1 ], position[ 2 ], position[ 3 ], position[ 4 ], 0, 1, 32 );
 		
 		-- display worldstates
 		unit:SetWorldStateForZone( 5051, 1 );
@@ -831,8 +841,11 @@ function ControllerOnAIUpdate( unit )
 	if( vars.eventIntroProgress1 ~= nil ) then vars.eventIntroProgress1 = vars.eventIntroProgress1 - 1; end
 	if( vars.eventIntroProgress2 ~= nil ) then vars.eventIntroProgress2 = vars.eventIntroProgress2 - 1; end
 	if( vars.eventIntroProgress3 ~= nil ) then vars.eventIntroProgress3 = vars.eventIntroProgress3 - 1; end
+	
 	if( vars.twilightMending ~= nil ) then vars.twilightMending = vars.twilightMending - 1; end
 	if( vars.triggerBerserk ~= nil ) then vars.triggerBerserk = vars.triggerBerserk - 1; end
+	if( vars.shadowPulsars ~= nil ) then vars.shadowPulsars = vars.shadowPulsars - 1; end
+	if( vars.activateEmbers ~= nil ) then vars.activateEmbers = vars.activateEmbers - 1; end
 	
 	if( vars.eventStartIntro and vars.eventStartIntro <= 0 )
 	then
@@ -1036,11 +1049,13 @@ RegisterUnitEvent( 40146, 2, ControllerOnLeaveCombat );
 RegisterUnitEvent( 40146, 4, ControllerOnDeath );
 RegisterUnitEvent( 40146, 21, ControllerOnAIUpdate );
 
+--
+--
 --[[
-
-		Orb Carrier AI ( 40081 )
-		
+		Orb Carrier AI ( 40081 )		
 --]]
+--
+--
 
 function OrbCarrierOnAIUpdate( unit, event )
 
@@ -1135,11 +1150,13 @@ end
 RegisterUnitEvent( 40081, 18, OrbCarrierOnAIUpdate );
 RegisterUnitEvent( 40081, 21, OrbCarrierOnAIUpdate );
 
+--
+--
 --[[
-
-		Meteor Strike Mark AI ( 40029 )
-		
+		Meteor Strike Mark AI ( 40029 )		
 --]]
+--
+--
 
 function MeteorStrikeMark( unit )
 
@@ -1196,11 +1213,13 @@ end
 
 RegisterUnitEvent( 40029, 18, MeteorStrikeMark );
 
+--
+--
 --[[
-
-		Meteor Strike Crap AI ( 40041, 42, 43, 44 )
-		
+		Meteor Strike Crap AI ( 40041, 42, 43, 44 )		
 --]]
+--
+--
 
 function MeteorStrikeCrap( unit )
 
@@ -1223,11 +1242,13 @@ RegisterUnitEvent( 40042, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40043, 18, MeteorStrikeCrap );
 RegisterUnitEvent( 40044, 18, MeteorStrikeCrap );
 
+--
+--
 --[[
-
-		Meteor Strike Flame AI ( 40055 )
-		
+		Meteor Strike Flame AI ( 40055 )		
 --]]
+--
+--
 
 function MeteorStrikeFlame( unit, event )
 
@@ -1248,11 +1269,13 @@ end
 RegisterUnitEvent( 40055, 18, MeteorStrikeFlame );
 RegisterUnitEvent( 40055, 21, MeteorStrikeFlame );
 
+--
+--
 --[[
-
-		Combustion and Consumption AI ( 40001, 40135 )
-		
+		Combustion and Consumption AI ( 40001, 40135 )		
 --]]
+--
+--
 
 function CombustionAndConsumption( unit, event )
 
@@ -1273,13 +1296,15 @@ end
 RegisterUnitEvent( 40001, 18, CombustionAndConsumption );
 RegisterUnitEvent( 40135, 18, CombustionAndConsumption );
 
+--
+--
 --[[
-
 		GameObject: Twilight Portal ( 202794, 202796 )
-
 --]]
+--
+--
 
-function PortalOnActivate( go, event, plr )
+function PortalOnActivate( go, _, plr )
 
 	local entry = go:GetEntry();
 
@@ -1292,18 +1317,20 @@ function PortalOnActivate( go, event, plr )
 	then
 		-- send player out of twilight realm (spell leave twilight realm)
 		--plr:CastSpell( 74812 );
-		plr:RemoveAura( 74807 )
+		plr:RemoveAura( 74807 );
 	end
 end
 
 RegisterGameObjectEvent( 202794, 4, PortalOnActivate );
 RegisterGameObjectEvent( 202796, 4, PortalOnActivate );
 
+--
+--
 --[[
-
 		Aura: Meteor Strike Mark ( 74641 )
-
 --]]
+--
+--
 
 function OnAuraRemove( _, aura )
 
@@ -1326,13 +1353,17 @@ RegisterServerHook( 31, OnAuraRemove );
 
 --print( "Lua memory after Halion: "..gcinfo().." Kb." );
 
+--
+--
 --[[
 		DEBUG COMMANDS DISABLED BY DEFAULT
-
+--
+--
+--
 
 local COMMANDS = { "halion", "port", "exit", "open", "close", "hp75", "hp50", "action1", "action2", "action3", "action4", "meteor", "controller" };
 
-function Commands( _, plr, message )
+function HalionCommands( _, plr, message )
 
 	if( plr:IsGm() == true )
 	then
@@ -1434,7 +1465,6 @@ function Commands( _, plr, message )
 		
 		elseif( message == "#controller" )
 		then
-			-- get controller using coords
 			local controller = plr:GetCreatureNearestCoords( 3156.04, 533.266, 72.9721, 40146 );
 			if( controller )
 			then
@@ -1460,5 +1490,5 @@ function Commands( _, plr, message )
 	end
 end
 
-RegisterServerHook( 16, Commands );
-]]
+RegisterServerHook( 16, HalionCommands );
+--]]
