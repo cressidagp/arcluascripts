@@ -95,11 +95,13 @@ local yell = {
 "This world has enough heroes.",	-- OnTargetDied 2
 };
 
+--
+--
 --[[
-
-		Baltharus The Warborn AI ( 39751 )
-		
+		Baltharus The Warborn AI ( 39751 )		
 --]]
+--
+--
 
 local self = getfenv( 1 );
 
@@ -156,39 +158,6 @@ function OnCombat( unit )
 	unit:PlaySoundToSet( 17520 );
 
 	unit:RegisterAIUpdateEvent( 1000 );
-end
-
-function DoAction( unit, action )
-	
-	-- clone
-	if( action == 1 )
-	then	
-		-- spell clear debuffs
-		unit:CastSpell( 34098 );
-		
-		-- spell clone
-		unit:CastSpell( 74511 );
-		
-		-- spell repelling wave 
-		unit:FullCastSpell( 74509 );
-		
-		unit:PlaySoundToSet( 17524 );
-		unit:SendChatMessage( 14, 0, "Twice the pain and half the fun." );
-	
-	-- channel
-	elseif( action == 2 )
-	then
-		-- get the channel target
-		local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
-		if( crystal )
-		then
-			-- set the channel target
-			unit:SetChannelTarget( crystal );		
-		
-			-- set the channel spell
-			unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
-		end
-	end
 end
 
 function OnDamageTaken( unit, _, _, damage )
@@ -337,6 +306,43 @@ function OnDeath( unit )
 	end
 end
 
+function DoAction( unit, action )
+	
+	--
+	-- clone
+	--
+	if( action == 1 )
+	then	
+		-- spell clear debuffs
+		unit:CastSpell( 34098 );
+		
+		-- spell clone
+		unit:CastSpell( 74511 );
+		
+		-- spell repelling wave 
+		unit:FullCastSpell( 74509 );
+		
+		unit:PlaySoundToSet( 17524 );
+		unit:SendChatMessage( 14, 0, "Twice the pain and half the fun." );
+	
+	--
+	-- channel
+	--
+	elseif( action == 2 )
+	then
+		-- get the channel target
+		local crystal = unit:GetCreatureNearestCoords( 3154.34, 366.58, 89.20, 26712 );
+		if( crystal )
+		then
+			-- set the channel target
+			unit:SetChannelTarget( crystal );		
+		
+			-- set the channel spell
+			unit:SetUInt32Value( 0x0006 + 0x0010, 76221 );
+		end
+	end
+end
+
 RegisterUnitEvent( 39751, 18, OnSpawn );
 RegisterUnitEvent( 39751, 1 , OnCombat );
 RegisterUnitEvent( 39751, 23, OnDamageTaken );
@@ -345,11 +351,13 @@ RegisterUnitEvent( 39751, 3 , OnTargetDied );
 RegisterUnitEvent( 39751, 2 , OnLeaveCombat );
 RegisterUnitEvent( 39751, 4 , OnDeath );
 
+--
+--
 --[[
-
-		Clone AI ( 39899 )
-		
+		Clone AI ( 39899 )		
 --]]
+--
+--
 
 function CloneOnSpawn( unit )
 
@@ -454,8 +462,13 @@ RegisterUnitEvent( 39899, 21, CloneOnAIUpdate );
 
 --print( "Lua memory after Baltharus: "..gcinfo().." Kb." );
 
+--
+--
 --[[ 
-		DEBUG COMMANDS DISABLED BY DEFAULT 
+		DEBUG COMMANDS DISABLED BY DEFAULT
+--
+--
+--		
 
 local COMMANDS = { "baltharus", "port", "reset", "hp50", "hp66", "hp33", "spawneffect", "clone", "damage" };
 

@@ -335,6 +335,10 @@ VALUES (39746, 0, 100, 0, 14, 'General Zarithrian', 'Alexstrasza has chosen capa
 REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
 VALUES (39746, 5, 100, 0, 14, 'General Zarithrian', 'HALION! I....', NULL, NULL, NULL, NULL);
 
+-- Onyx Flamecaller: cast "Blast Nova"
+REPLACE INTO `ai_agents` (`entry`, `instance_mode`, `type`, `event`, `chance`, `maxcount`, `spell`, `spelltype`, `targettype_overwrite`, `cooldown_overwrite`, `floatMisc1`, `Misc2`) 
+VALUES (39814, 4, 4, 0, 70, 0, 74392, 7, 4, 17000, 0, 0);
+
 -- Saviana Ragefire
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39747;
 
@@ -733,4 +737,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `arcluascripts`(`version`) values 
-('2021-10-18_19-06_SavianaRagefire');
+('2021-10-19_12-00_OnyxFlamecaller');

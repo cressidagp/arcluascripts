@@ -4,7 +4,7 @@
 
 ArcLuaScripts its a NON-OFFICIAL scripting project for ArcEmu just for learning purposes. Its NOT intended as a replace for ArcEmu official plugins, its a complement.
 
-I had started this project for myself, but you can use it if you want. In that case i hope you enjoy it as much as i enjoyed ArcEmu.
+I had started this project for myself, but use it if you want. In that case i hope you enjoy it as much as i enjoyed ArcEmu.
 
 WARNING: this wont expand too much since lua resources are very limited but i will push it to his limits.
 
@@ -13,7 +13,7 @@ Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arclua
 
 ## Features
 
-Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips, Quests, DummySpells and a couple of gm/dev commands.
+Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips and Quests. The main focus is set at Ruby Sanctum.
 
 Scripts folder has been organizated per map id, with the hope of a multi interpreter feature could eventually be implemented.
 
