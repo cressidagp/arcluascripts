@@ -98,6 +98,8 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17071; -- Azuremyst Isle: T
 DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: Spirit of the Vale
 */
 
+-- Elwynn Forest: Goldtoth flee
+REPLACE INTO `ai_agents` VALUES (327, 4, 3, 0, 100, 0, 31365, 10, -1, -1, 0.2, 0);
 
 --
 --
