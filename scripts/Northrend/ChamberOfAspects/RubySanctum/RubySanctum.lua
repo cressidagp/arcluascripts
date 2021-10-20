@@ -223,16 +223,12 @@ function RUBY_SANCTUM.DoAction( unit, action )
 	-- baltharus death
 	elseif( action == 3 )
 	then
-		unit:PlaySoundToSet( 17491 );
-		unit:SendChatMessage( 14, 0, "Thank you! I could not have held out for much longer.... A terrible thing has happened here." );
-		unit:Emote( 5, 0 );
-		
 		unit:RegisterAIUpdateEvent( 1000 );
 		
 		RUBY_SANCTUM[ iid ].isIntro = false;
 		
 		-- add protected variables
-		RUBY_SANCTUM[ iid ].timer = 16;
+		RUBY_SANCTUM[ iid ].timer = 14;
 		RUBY_SANCTUM[ iid ].vars = 0;
 	
 	-- check general
@@ -270,47 +266,55 @@ function RUBY_SANCTUM.XerexOnAIUpdate( unit )
 	
 	if( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 0 )
 	then
-		unit:PlaySoundToSet( 17492 );
-		unit:SendChatMessage( 12, 0, "We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault." );
+		unit:PlaySoundToSet( 17491 );
+		unit:SendChatMessage( 14, 0, "Thank you! I could not have held out for much longer.... A terrible thing has happened here." );
+		unit:Emote( 5, 0 );
 		RUBY_SANCTUM[ iid ].vars = 1;
-		RUBY_SANCTUM[ iid ].timer = 9;
+		RUBY_SANCTUM[ iid ].timer = 16;
 	
 	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 1 )
 	then
-		unit:PlaySoundToSet( 17493 );
-		unit:SendChatMessage( 12, 0, "The Black dragonkin materialized from thin air, and set upon us before we could react." );
+		unit:PlaySoundToSet( 17492 );
+		unit:SendChatMessage( 12, 0, "We believed the Sanctum was well-fortified, but we were not prepared for the nature of this assault." );
 		RUBY_SANCTUM[ iid ].vars = 2;
-		RUBY_SANCTUM[ iid ].timer = 7;
+		RUBY_SANCTUM[ iid ].timer = 9;
 	
 	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 2 )
 	then
-		unit:PlaySoundToSet( 17494 );
-		unit:SendChatMessage( 12, 0, "We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance." );
+		unit:PlaySoundToSet( 17493 );
+		unit:SendChatMessage( 12, 0, "The Black dragonkin materialized from thin air, and set upon us before we could react." );
 		RUBY_SANCTUM[ iid ].vars = 3;
-		RUBY_SANCTUM[ iid ].timer = 10;
-
+		RUBY_SANCTUM[ iid ].timer = 7;
+	
 	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 3 )
 	then
-		unit:PlaySoundToSet( 17495 );
-		unit:SendChatMessage( 12, 0, "They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum." );
+		unit:PlaySoundToSet( 17494 );
+		unit:SendChatMessage( 12, 0, "We did not stand a chance. As my brethren perished around me, I managed to retreat here and bar the entrance." );
 		RUBY_SANCTUM[ iid ].vars = 4;
-		RUBY_SANCTUM[ iid ].timer = 9;
+		RUBY_SANCTUM[ iid ].timer = 10;
 
 	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 4 )
 	then
+		unit:PlaySoundToSet( 17495 );
+		unit:SendChatMessage( 12, 0, "They slaughtered us with cold efficiency, but the true focus of their interest seemed to be the eggs kept here in the Sanctum." );
+		RUBY_SANCTUM[ iid ].vars = 5;
+		RUBY_SANCTUM[ iid ].timer = 9;
+
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
+	then
 		unit:PlaySoundToSet( 17496 );
 		unit:SendChatMessage( 12, 0, "The commander of the forces on the ground here is a cruel brute named Zarithrian, but I fear there are greater powers at work." );
-		RUBY_SANCTUM[ iid ].vars = 5;
+		RUBY_SANCTUM[ iid ].vars = 6;
 		RUBY_SANCTUM[ iid ].timer = 10;
 		
-	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 5 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
 	then
 		unit:PlaySoundToSet( 17497 );
 		unit:SendChatMessage( 12, 0, "In their initial assault, I caught a glimpse of their true leader, a fearsome full-grown twilight dragon." );
-		RUBY_SANCTUM[ iid ].vars = 6;
+		RUBY_SANCTUM[ iid ].vars = 7;
 		RUBY_SANCTUM[ iid ].timer = 8;
 		
-	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 6 )
+	elseif( RUBY_SANCTUM[ iid ].timer <= 0 and RUBY_SANCTUM[ iid ].vars == 7 )
 	then
 		unit:PlaySoundToSet( 17498 );
 		unit:SendChatMessage( 12, 0, "I know not the extent of their plans, heroes, but I know this:  They cannot be allowed to succeed!" );
