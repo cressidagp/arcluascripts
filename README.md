@@ -48,6 +48,5 @@ Also require [ArcDB world database.](https://github.com/DarkAngel39/ArcDB/tree/m
 
 ## Useful Links
 
-* [ArcEmu Forums](http://www.arcemu.org/forums/)
 * [ArcEmu Github](https://github.com/arcemu)
 * [ArcEmu Wiki](https://arcemu.fandom.com/wiki/Arcemu_Wiki)
