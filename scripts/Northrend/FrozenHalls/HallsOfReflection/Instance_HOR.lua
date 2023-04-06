@@ -43,7 +43,7 @@ do
     then
 			print( errormsg );
 		else
-			print( string.format( "Successfully loaded script file: \"%s\" ", v ) );
+			print( string.format( "ALE: Loaded script file: \"%s\" ", v ) );
 		end
 	end
 end
