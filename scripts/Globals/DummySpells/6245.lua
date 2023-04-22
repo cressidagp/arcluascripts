@@ -23,19 +23,17 @@
 
 --]]
 
-FORCE_TARGET_SALUTE = {};
-
-function FORCE_TARGET_SALUTE.DummyHandler( _, spellObject )
+function ForceTargetSalute_DummyHandler( _, spellObject )
 
 	local target = spellObject:GetTarget();
 
-	if( target == nil ) then return; end
+	if( target ~= nil ) then
 	
-	local caster = spellObject:GetCaster();
+		local caster = spellObject:GetCaster();
 
-	caster:Emote( 66, 0 );
-	target:Emote( 66, 0 );
-
+		caster:Emote( 66, 0 );
+		target:Emote( 66, 0 );
+	end
 end
 
-RegisterDummySpell( 6245, FORCE_TARGET_SALUTE.DummyHandler );
+RegisterDummySpell( 6245, ForceTargetSalute_DummyHandler );
