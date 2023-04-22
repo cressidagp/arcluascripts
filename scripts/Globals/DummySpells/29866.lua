@@ -27,39 +27,38 @@
 
 --]]
 
-CAST_FISHING_NET = {};
-
-function CAST_FISHING_NET.DummyHandler( _, spellObject )
+function CastFishingNet_DummyHandler( _, spellObject )
 
 	local caster = spellObject:GetCaster();
 
-	if( caster == nil or caster:IsPlayer() == false )
-	then return; end
+	if( caster ~= nil and caster:IsPlayer() == true ) then
 
-	if( caster:HasQuest( 9452 ) == false ) then return; end
+		if( caster:HasQuest( 9452 ) == true ) then
 
-	local target = caster:GetGameObjectNearestCoords( caster:GetX(), caster:GetY(), caster:GetZ(), 181616 );
+			local target = caster:GetGameObjectNearestCoords( caster:GetX(), caster:GetY(), caster:GetZ(), 181616 );
 
-	if( target ) then target:Activate();
+			if( target ) then 
+			
+				target:Activate();
+				-- TODO: play some water effect
+				target:Despawn( 1000, 200000 );
+			end
 
-		-- TODO: play some water effect
+			local chance = math.random( 1, 10 );
 
-		target:Despawn( 1000, 200000 );
-	end
+			if( chance >= 7 ) then
+		
+				local murloc = caster:SpawnCreature( 17102, caster:GetX(), caster:GetY(), caster:GetZ(), caster:GetO(), 14, 0, 0, 0, 0, 1, 0 );
+				murloc:StopMovement( 500 );
+				murloc:SetAttackTimer( 1000 );
+			end
 
-	local chance = math.random( 1, 10 );
-
-	if( chance >= 7 )
-	then
-		local murloc = caster:SpawnCreature( 17102, caster:GetX(), caster:GetY(), caster:GetZ(), caster:GetO(), 14, 0, 0, 0, 0, 1, 0 );
-		murloc:StopMovement( 500 );
-		murloc:SetAttackTimer( 1000 );
-	end
-
-	if( caster:GetItemCount( 23614 ) < 10 )
-	then
-		caster:AddItem( 23614, 1 );
+			if( caster:GetItemCount( 23614 ) < 10 ) then
+			
+				caster:AddItem( 23614, 1 );
+			end
+		end
 	end
 end
 
-RegisterDummySpell( 29866, CAST_FISHING_NET.DummyHandler );
+RegisterDummySpell( 29866, CastFishingNet_DummyHandler );
