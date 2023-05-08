@@ -1,5 +1,9 @@
 # ArcLuaScripts
 
+## Status
+
+Temporary stoped since probably i will switch blizzlike stuff to APE. There is a some crap here, but i did a big effor scripting Ruby Sanctum.
+
 ## Introduction
 
 ArcLuaScripts its a NON-OFFICIAL scripting project for ArcEmu just for learning purposes. Its NOT intended as a replace for ArcEmu official plugins, its a complement.
