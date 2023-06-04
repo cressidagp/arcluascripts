@@ -2,22 +2,22 @@
 
 //Entry Registers:
 
-RegisterUnitEvent( creature_entry, creature_event, function_name );
+RegisterUnitEvent( creatureId, eventType, functionName );
 
-RegisterGameObjectEvent( gameobject_entry, gameobject_event, function_name );
+RegisterGameObjectEvent( gameObjectId, eventType, functionName );
 
-RegisterUnitGossipEvent( creature_entry, gossip_event, function_name );
+RegisterUnitGossipEvent( creatureId, eventType, functionName );
 
-RegisterGOGossipEvent( gameobject_entry, gossip_event, function_name );
+RegisterGOGossipEvent( gameObjectId, eventType, functionName );
 
-RegisterItemGossipEvent( item_entry, gossip_event, function_name );
+RegisterItemGossipEvent( itemId, eventType, functionName );
 
-RegisterQuestEvent( quest_id, quest_event, function_name );
+RegisterQuestEvent( questId, eventType, functionName );
 
-RegisterDummySpell( spell_id, function_name );
+RegisterDummySpell( spellId, functionName );
 
-RegisterInstanceEvent( instance_map, instance_event, function_name );
+RegisterInstanceEvent( mapId, eventType, functionName );
 
-RegisterServerHook( server_hook_event, function_name );
+RegisterServerHook( eventType, functionName );
 
 --]]

@@ -30,8 +30,10 @@ CREATURE_EVENT_ON_EXIT_VEHICLE            = 25
 CREATURE_EVENT_ON_FIRST_PASSENGER_ENTERED = 26
 CREATURE_EVENT_ON_VEHICLE_FULL            = 27
 CREATURE_EVENT_ON_LAST_PASSENGER_LEFT     = 28
+CREATURE_EVENT_ON_ACTIVATE	= 29
+CREATURE_EVENT_ON_DEACTIVATE	= 30
 
-RegisterUnitEvent( creature_entry, creature_event, function_name );
+RegisterUnitEvent( creatureId, eventType, functionName );
 
 //Gameobjects Events:
 
@@ -44,7 +46,7 @@ GAMEOBJECT_EVENT_ON_DESPAWN			= 6
 GAMEOBJECT_EVENT_ON_DAMAGED			= 7
 GAMEOBJECT_EVENT_ON_DESTROYED		= 8
 
-RegisterGameObjectEvent( gameobject_entry, gameobject_event, function_name );
+RegisterGameObjectEvent( gameObjectId, eventType, functionName );
 
 //Gossips Events:
 
@@ -52,9 +54,9 @@ GOSSIP_EVENT_ON_TALK            = 1 // AKA ON_HELLO
 GOSSIP_EVENT_ON_SELECT_OPTION   = 2
 GOSSIP_EVENT_ON_END             = 3 // AKA ON_BYE
 
-RegisterUnitGossipEvent( creature_entry, gossip_event, function_name );
-RegisterGOGossipEvent( gameobject_entry, gossip_event, function_name );
-RegisterItemGossipEvent( item_entry, gossip_event, function_name );
+RegisterUnitGossipEvent( creatureId, eventType, functionName );
+RegisterGOGossipEvent( gameObjectId, eventType, functionName );
+RegisterItemGossipEvent( itemId, eventType, functionName );
 
 //Quest Events:
 
@@ -66,7 +68,7 @@ QUEST_EVENT_ON_CREATURE_KILL      = 5
 QUEST_EVENT_ON_EXPLORE_AREA       = 6
 QUEST_EVENT_ON_PLAYER_ITEMPICKUP  = 7
 
-RegisterQuestEvent( quest_id, quest_event, function_name );
+RegisterQuestEvent( questId, eventId, functionName );
 
 //Instance Hooks:
 
@@ -81,7 +83,7 @@ INSTANCE_EVENT_ON_GO_PUSH			= 8
 INSTANCE_EVENT_ONLOAD				= 9
 INSTANCE_EVENT_DESTROY				= 10
 
-RegisterInstanceEvent( instance_map, instance_event, function_name );
+RegisterInstanceEvent( mapId, eventType, functionName );
 
 //Server Hooks:
 
@@ -118,7 +120,7 @@ SERVER_HOOK_EVENT_ON_DUEL_FINISHED          = 30
 SERVER_HOOK_EVENT_ON_AURA_REMOVE		    = 31
 SERVER_HOOK_EVENT_ON_RESURRECT		        = 32
 
-RegisterServerHook( server_hook_event, function_name );
+RegisterServerHook( eventType, functionName );
 
 //Random Flags:
 
@@ -131,6 +133,6 @@ RANDOM_WITH_RAGE        = 5
 RANDOM_WITH_ENERGY      = 6
 RANDOM_NOT_MAINTANK     = 7
 
-RegisterDummySpell( spell_id, function_name );
+RegisterDummySpell( spellId, functionName );
 
 --]]
