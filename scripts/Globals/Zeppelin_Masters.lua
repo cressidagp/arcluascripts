@@ -74,18 +74,18 @@ function ZEPPELIN_MASTERS.CheckForTransport( unit )
 
     local sUnit = tostring( unit )
 	
-    if( unit:IsAlive() == true and ZEPPELIN_MASTERS[ sUnit ].var == false )
+    if unit:IsAlive() == true and ZEPPELIN_MASTERS[ sUnit ].var == false
     then
 	
         for i = 1, #data
 		do
 		
-            if( unit:GetEntry() == data[ i ][ 1 ] )
+            if unit:GetEntry() == data[ i ][ 1 ]
             then
 			
                 local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), data[ i ][ 2 ] )
 				
-                if( zep ~= nil )
+                if zep ~= nil
                 then
 				
                     unit:SendChatMessage( 14, 0, data[ i ][ 3 ] )
@@ -100,7 +100,7 @@ function ZEPPELIN_MASTERS.CheckForTransport( unit )
     end	
 end
 
-function ZEPPELIN_MASTERS.OnSpawn( unit )
+function ZEPPELIN_MASTERS.OnSpawn( unit, _ )
 
     local sUnit = tostring( unit )
 	

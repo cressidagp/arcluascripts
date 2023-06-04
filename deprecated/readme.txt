@@ -39,3 +39,7 @@ Innkeeper_Farley.lua
 VI) Experiments
 
 Goldtooth.lua
+
+VII) This one are supported by arcemu now
+
+The_Affray.lua (APE)
