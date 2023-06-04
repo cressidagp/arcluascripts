@@ -24,33 +24,31 @@
 --]]
 
 --local EMOTE_STATE_USESTANDING = 69
+--local QUESTID_COLLECTING_KELP = 112
 
-COLLECTING_KELP = {};
+COLLECTING_KELP = {}
 
-function COLLECTING_KELP.OnAIUpdate( unit )
+function COLLECTING_KELP.OnAIUpdate( unit, _ )
 
-	--unit:SendChatMessage( 12, 0, "The invisibility liquor is read for you, "..plr:GetName().."." );
-	unit:SetFacing( 2.98 );
-	unit:SetNPCFlags( 2 );
-	unit:RemoveAIUpdateEvent();
+	unit:SetFacing( 2.98 )
+	unit:SetNPCFlags( 2 )
+	unit:RemoveAIUpdateEvent()
 	
 end
 
-function COLLECTING_KELP.OnComplete( plr, questID )
+function COLLECTING_KELP.OnComplete( plr, _ )
+	
+	local william = plr:GetCreatureNearestCoords( -9460.30, 31.94, 57.05, 253 )
 
-	if( questID == 112 )
-	then
-		local william = plr:GetCreatureNearestCoords( -9460.30, 31.94, 57.05, 253 );
+	if( william ~= nil ) then
+		
+		william:SendChatMessage( 12, 0, "This shouldn't take long..." )
+		william:SetFacing( 1, 45219 )
+		william:Emote( 69, 4000 )
+		william:SetNPCFlags( 0 )
+		william:RegisterAIUpdateEvent( 6000 )
+		william:EventChat( 12, 0, "The invisibility liquor is read for you, "..plr:GetName()..".", 6000 )
 
-		if( william ~= nil )
-		then
-			william:SendChatMessage( 12, 0, "This shouldn't take long..." );
-			william:SetFacing( 1,45219 );
-			william:Emote( 69, 4000 );
-			william:SetNPCFlags( 0 );
-			william:RegisterAIUpdateEvent( 6000 );
-			william:EventChat( 12, 0, "The invisibility liquor is read for you, "..plr:GetName()..".", 6000 );
-		end
 	end
 end
 

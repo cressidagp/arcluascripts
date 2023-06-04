@@ -19,24 +19,29 @@
 --NPC_VEJREK = 6113;
 --SPELL_SUNDER_ARMOR = 7386;
 
-VEJREK = {};
+VEJREK = {}
 
 function VEJREK.OnCombat( unit, event )
 
-	if( event == 21 )
-	then
-		local target = unit:GetNextTarget();
+	if event == 21 then
 	
-		if( target == nil )
-		then
-			unit:RemoveAIUpdateEvent();
+		local target = unit:GetNextTarget()
+	
+		if( target == nil ) then
+		
+			unit:RemoveAIUpdateEvent()
+			
 			return;
+	
 		end
 
-		unit:CastSpellOnTarget( 7386, target );
-		unit:ModifyAIUpdateEvent(  math.random( 4, 8 ) * 1000 );
+		unit:CastSpellOnTarget( 7386, target )
+		unit:ModifyAIUpdateEvent(  math.random( 4, 8 ) * 1000 )
+		
 	else
-		unit:RegisterAIUpdateEvent( 3000 );
+	
+		unit:RegisterAIUpdateEvent( 3000 )
+		
 	end	
 end
 

@@ -4,7 +4,7 @@
 	www.ArcEmu.org
 	Engine: A.L.E
 	
-	Zone: Durotar
+	Zone: Global
 	Creature: Lightning Shield caster
 
 	Credits:
@@ -22,7 +22,7 @@
 
 --local SPELL_LIGHTNING_SHIELD = 324;
 
-OOC_LIGHTNING_SHIELD = {};
+OOC_LIGHTNING_SHIELD = {}
 
 function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 
@@ -30,12 +30,12 @@ function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 	-- on ai update
 	--
 	
-    if( event == 21 )
-    then
-		if( unit:IsInCombat() == false and unit:HasAura( 324 ) == false )
-        then
-            unit:FullCastSpell( 324 );
-            unit:ModifyAIUpdateEvent( 600000 );	
+    if event == 21 then
+		if unit:IsInCombat() == false and unit:HasAura( 324 ) == false then
+		
+            unit:FullCastSpell( 324 )
+            unit:ModifyAIUpdateEvent( 600000 )
+			
 		end
 	
 	--
@@ -44,14 +44,19 @@ function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 	
 	else
 	
-        local n = math.random( 3, 5 );
-        unit:RegisterAIUpdateEvent( n * 1000 );	
+        local n = math.random( 3, 5 )
+        unit:RegisterAIUpdateEvent( n * 1000 )
     end
 end
 
+-- Vile Fin Minor Oracle:
 RegisterUnitEvent( 1544, 18, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 1544, 21, OOC_LIGHTNING_SHIELD.CastBuff );
+
+-- Voodoo Troll:
 RegisterUnitEvent( 3206, 18, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 3206, 21, OOC_LIGHTNING_SHIELD.CastBuff );
+
+-- Geolord Mottle:
 RegisterUnitEvent( 5826, 18, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 5826, 21, OOC_LIGHTNING_SHIELD.CastBuff );

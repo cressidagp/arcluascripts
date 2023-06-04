@@ -30,12 +30,12 @@
 --local EMOTE_ONESHOT_WAVE = 3;
 --local UNIT_FIELD_TARGET = 0x0006 + 0x000C;
 
-local chat = {
+local text = {
 "So much to do, so much to do!  Where does the time go?",
 "If your glass is full may it be again!"
 };
 
-INNKEEPER_FARLEY = {};
+INNKEEPER_FARLEY = {}
 
 function INNKEEPER_FARLEY.OnSpawnOnAIUpdate( unit, event )
 	
@@ -43,12 +43,11 @@ function INNKEEPER_FARLEY.OnSpawnOnAIUpdate( unit, event )
 	-- on ai update
 	--
 	
-	if( event == 21 )
-	then
+	if event == 21 then
 		
-		if( unit:IsInCombat() == true ) then return; end
+		if unit:IsInCombat() == true then return end
 		
-		unit:SendChatMessage( 12, 7, chat[ math.random( 1, 2 ) ] );
+		unit:SendChatMessage( 12, 7, text[ math.random( 1, 2 ) ] )
 		
 		unit:ModifyAIUpdateEvent( math.random( 150000, 180000 ) )
 		
@@ -57,7 +56,9 @@ function INNKEEPER_FARLEY.OnSpawnOnAIUpdate( unit, event )
 	--
 	
 	else
-		unit:RegisterAIUpdateEvent( math.random( 1000, 15000 ) );
+	
+		unit:RegisterAIUpdateEvent( math.random( 1000, 15000 ) )
+		
 	end
 end
 

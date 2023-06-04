@@ -3,7 +3,7 @@
 	www.ArcEmu.org
 	Engine: A.L.E
 	
-	Map: Eastern Kingdoms
+	Map: Global
 	Creatures: Frost Armor casters
 
 	Credits:
@@ -19,10 +19,9 @@
 --local NPC_KOBOLD_GEOMANCER = 476;
 --local NPC_SURENA_CALEDON = 881;
 --local NPC_SCARLET_INITIATE = 1507;
-
 --local SPELL_FROST_ARMOR = 12544;
 
-OOC_FROST_ARMOR = {};
+OOC_FROST_ARMOR = {}
 
 function OOC_FROST_ARMOR.CastBuff( unit, event )
 
@@ -30,29 +29,38 @@ function OOC_FROST_ARMOR.CastBuff( unit, event )
 	-- on ai update
 	--
 	
-	if( event == 21 )
-	then
-		if( unit:IsInCombat() == false and unit:HasAura( 12544 ) == false )
-		then
-			unit:FullCastSpell( 12544 );
-			unit:ModifyAIUpdateEvent( 1800000 );
-		end
+    if event == 21 then
+	
+        if unit:IsInCombat() == false and unit:HasAura( 12544 ) == false then
+		
+            unit:FullCastSpell( 12544 )
+            unit:ModifyAIUpdateEvent( 1800000 )
+			
+        end
 	
 	--
 	-- on spawn
 	--
 	
-	else
-		local n = math.random( 3, 5 );
-		unit:RegisterAIUpdateEvent( n * 1000 );
-	end
+    else
+		local n = math.random( 3, 5 )
+		unit:RegisterAIUpdateEvent( n * 1000 )
+
+    end
 end
 
+-- Defias Rogue Wizard:
 RegisterUnitEvent( 474, 18, OOC_FROST_ARMOR.CastBuff );
 RegisterUnitEvent( 474, 21, OOC_FROST_ARMOR.CastBuff );
+
+-- Kobold Geomancer:
 RegisterUnitEvent( 476, 18, OOC_FROST_ARMOR.CastBuff );
 RegisterUnitEvent( 476, 21, OOC_FROST_ARMOR.CastBuff );
+
+-- Surena Caledon:
 RegisterUnitEvent( 881, 18, OOC_FROST_ARMOR.CastBuff );
 RegisterUnitEvent( 881, 21, OOC_FROST_ARMOR.CastBuff );
+
+-- Scarlet Initiate:
 RegisterUnitEvent( 1507, 18, OOC_FROST_ARMOR.CastBuff );
 RegisterUnitEvent( 1507, 21, OOC_FROST_ARMOR.CastBuff );

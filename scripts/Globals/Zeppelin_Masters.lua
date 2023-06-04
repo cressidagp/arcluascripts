@@ -3,6 +3,7 @@
 	www.ArcEmu.org
 	Engine: A.L.E
 	
+	Zone: Global
 	Creatures: Zeppelin Masters
 	
 	Credits:
@@ -61,17 +62,17 @@ local data = {
 { 34766, 190549, "Step right up! The zeppelin to Orgrimmar has arrived! All aboard to Durotar!" }                  -- Krendle, The Zephyr
 };
 
-ZEPPELIN_MASTERS = {};
+ZEPPELIN_MASTERS = {}
 
 function ZEPPELIN_MASTERS.Reset( unit )
 
-    ZEPPELIN_MASTERS[ tostring( unit ) ].var = false;
+    ZEPPELIN_MASTERS[ tostring( unit ) ].var = false
 	
 end
 
 function ZEPPELIN_MASTERS.CheckForTransport( unit )
 
-    local sUnit = tostring( unit );
+    local sUnit = tostring( unit )
 	
     if( unit:IsAlive() == true and ZEPPELIN_MASTERS[ sUnit ].var == false )
     then
@@ -82,16 +83,16 @@ function ZEPPELIN_MASTERS.CheckForTransport( unit )
             if( unit:GetEntry() == data[ i ][ 1 ] )
             then
 			
-                local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), data[ i ][ 2 ] );
+                local zep = unit:GetGameObjectNearestCoords( unit:GetX(), unit:GetY(), unit:GetZ(), data[ i ][ 2 ] )
 				
                 if( zep ~= nil )
                 then
 				
-                    unit:SendChatMessage( 14, 0, data[ i ][ 3 ] );
+                    unit:SendChatMessage( 14, 0, data[ i ][ 3 ] )
 					
-                    ZEPPELIN_MASTERS[ sUnit ].var = true;
+                    ZEPPELIN_MASTERS[ sUnit ].var = true
 					
-                    unit:RegisterEvent( ZEPPELIN_MASTERS.Reset, 90000, 1 );
+                    unit:RegisterEvent( ZEPPELIN_MASTERS.Reset, 90000, 1 )
 					
                 end	
             end	
@@ -101,13 +102,13 @@ end
 
 function ZEPPELIN_MASTERS.OnSpawn( unit )
 
-    local sUnit = tostring( unit );
+    local sUnit = tostring( unit )
 	
     ZEPPELIN_MASTERS[ sUnit ] = {}
 	
-    ZEPPELIN_MASTERS[ sUnit ].var = false;
+    ZEPPELIN_MASTERS[ sUnit ].var = false
 	
-    unit:RegisterEvent( ZEPPELIN_MASTERS.CheckForTransport, 1000, 0 );
+    unit:RegisterEvent( ZEPPELIN_MASTERS.CheckForTransport, 1000, 0 )
 	
 end
 

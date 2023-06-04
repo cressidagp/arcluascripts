@@ -30,13 +30,13 @@
 --local NPC_KIRA_SONGSHINE = 3937;
 --local NPC_MYRA_TYRNGAARDE = 5109;
 
-local chat = {
+local text = {
 "Fresh bread, baked this very morning!",
 "Come get yer fresh bread!",
 "Fresh bread for sale!"
 };
 
-BREAD_VENDORS = {};
+BREAD_VENDORS = {}
 
 function BREAD_VENDORS.OutOfCombatChat( unit, event )
 
@@ -44,20 +44,22 @@ function BREAD_VENDORS.OutOfCombatChat( unit, event )
 	-- on ai update
 	--
 	
-	if( event == 21 )
-	then
-		if( unit:IsInCombat() == false )
-		then
-			unit:SendChatMessage( 12, 7, chat[ math.random( 1, 3 ) ] );
+	if event == 21 then
+		if unit:IsInCombat() == false then
+		
+			unit:SendChatMessage( 12, 7, text[ math.random( 1, 3 ) ] )
 
-			local entry = unit:GetEntry();
+			local entry = unit:GetEntry()
 			
 			-- Kira Songshine
-			if( entry == 3937 )
-			then
-				unit:ModifyAIUpdateEvent( math.random( 30000, 45000 ) );
+			if entry == 3937 then
+			
+				unit:ModifyAIUpdateEvent( math.random( 30000, 45000 ) )
+				
 			else
-				unit:ModifyAIUpdateEvent( math.random( 40000, 60000 ) );
+			
+				unit:ModifyAIUpdateEvent( math.random( 40000, 60000 ) )
+				
 			end	
 		end
 	
@@ -66,20 +68,25 @@ function BREAD_VENDORS.OutOfCombatChat( unit, event )
 	--
 	
 	else
-		local entry = unit:GetEntry();
+		local entry = unit:GetEntry()
 		
 		-- Kira Songshine
-		if( entry == 3937 )
-		then 
-			unit:RegisterAIUpdateEvent( math.random( 5000, 10000 ) );
+		if entry == 3937 then 
+		
+			unit:RegisterAIUpdateEvent( math.random( 5000, 10000 ) )
 
 		else
-			unit:RegisterAIUpdateEvent( math.random( 10000, 15000 ) );
+		
+			unit:RegisterAIUpdateEvent( math.random( 10000, 15000 ) )
+			
 		end
 	end
 end
 
+-- Kira Songshine:
 RegisterUnitEvent( 3937, 18, BREAD_VENDORS.OutOfCombatChat );
 RegisterUnitEvent( 3937, 21, BREAD_VENDORS.OutOfCombatChat );
+
+-- Myra Tyrngaarde:
 RegisterUnitEvent( 5109, 18, BREAD_VENDORS.OutOfCombatChat );
 RegisterUnitEvent( 5109, 21, BREAD_VENDORS.OutOfCombatChat );

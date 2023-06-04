@@ -27,40 +27,41 @@
 
 local SECRET = 69; -- The happiest number
 
-local chat = {
+local text = {
 "I would like to whisper my secret code to you to receive Tyrael's Hilt.",
 "You're secret code is not a valid one..."
 };
 
-ELDERS = {};
+ELDERS = {}
 
-function ELDERS.OnHelloOnSelect( unit, event, plr, id, selection, code )
+function ELDERS.OnHelloOnSelect( unit, event, plr, textId, id, code )
 
 	--
 	-- on hello
 	--
 	
-	if( event == 1 )
-	then
-		unit:GossipCreateMenu( 13441, plr, 0 );
-		unit:GossipMenuAddItem( 0, chat[ event ], 2, 1, "", 0 );
-		unit:GossipSendMenu( plr );
+	if event == 1 then
+		unit:GossipCreateMenu( 13441, plr, 0 )
+		unit:GossipMenuAddItem( 0, text[ event ], 2, 1, "", 0 )
+		unit:GossipSendMenu( plr )
 	
 	--
-	-- on selection
+	-- on select
 	--
 	
 	else
-		if( selection == 2 )
-		then
-			if( code == ""..SECRET.."" )
-			then
-				plr:AddItem( 39656, 1 );
+		if id == 2 then
+		
+			if code == ""..SECRET.."" then
+			
+				plr:AddItem( 39656, 1 )
+				
 			else
-				unit:SendChatMessage( 12, 0, CHAT[ event ] );
+			
+				unit:SendChatMessage( 12, 0, CHAT[ event ] )
 			end
 			
-			plr:GossipComplete();	
+			plr:GossipComplete()
 
 		end	
 	end	

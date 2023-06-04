@@ -4,7 +4,7 @@
 	www.ArcEmu.org
 	Engine: A.L.E
 	
-	Zone: Durotar
+	Zone: Global
 	Creature: Demon Skin casters
 
 	Credits:
@@ -22,29 +22,40 @@
 
 --local SPELL_DEMON_SKIN = 20798;
 
-OOC_DEMON_SKIN = {};
+OOC_DEMON_SKIN = {}
 
 function OOC_DEMON_SKIN.CastBuff( unit, event )
 
+	--
 	-- on ai update
-	if( event == 21 )
-	then
-		if( unit:IsInCombat() == false and unit:HasAura( 20798 ) == false )
-		then
-			unit:FullCastSpell( 20798 );
-			unit:ModifyAIUpdateEvent( 1800000 );	
-		end
+	--
 	
+	if event == 21 then
+	
+		if unit:IsInCombat() == false and unit:HasAura( 20798 ) == false then
+		
+			unit:FullCastSpell( 20798 )
+			unit:ModifyAIUpdateEvent( 1800000 )
+			
+		end
+	--
 	-- on spawn
+	--
+	
 	else
-		local n = math.random( 3, 5 );
-		unit:RegisterAIUpdateEvent( n * 1000 ); 	
+		local n = math.random( 3, 5 )
+		unit:RegisterAIUpdateEvent( n * 1000 )	
 	end	
 end
 
+-- Gazzuz:
 RegisterUnitEvent( 3204, 18, OOC_DEMON_SKIN.CastBuff );
 RegisterUnitEvent( 3204, 21, OOC_DEMON_SKIN.CastBuff );
+
+-- Felweaver Scorn:
 RegisterUnitEvent( 5822, 18, OOC_DEMON_SKIN.CastBuff );
 RegisterUnitEvent( 5822, 21, OOC_DEMON_SKIN.CastBuff );
+
+-- Frostmane Shadowcaster:
 RegisterUnitEvent( 1124, 18, OOC_DEMON_SKIN.CastBuff );
 RegisterUnitEvent( 1124, 21, OOC_DEMON_SKIN.CastBuff );

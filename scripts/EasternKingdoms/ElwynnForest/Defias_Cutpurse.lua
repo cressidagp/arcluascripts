@@ -18,27 +18,28 @@
 --NPC_DEFIAS_CUTPURSE = 94;
 --SPELL_BACKSTAB = 53;
 
-DEFIAS_CUTPURSE = {};
+DEFIAS_CUTPURSE = {}
 
-function DEFIAS_CUTPURSE.CastBackstab( unit )
+function DEFIAS_CUTPURSE.CastBackstab( unit, _ )
 
-	local target = unit:GetNextTarget();
+	local target = unit:GetNextTarget()
 	
-	if( target == nil )
-	then
-		unit:RemoveEvents();
-		return;
+	if target == nil then
+	
+		unit:RemoveEvents()
+		return
+		
 	end
 
-    unit:CastSpellOnTarget( 53, target );
+    unit:CastSpellOnTarget( 53, target )
 
 end
 
-function DEFIAS_CUTPURSE.OnCombat( unit )
+function DEFIAS_CUTPURSE.OnCombat( unit, _, _ )
 
-    unit:RegisterEvent( DEFIAS_CUTPURSE.CastBackstab, 1100, 1 );
+    unit:RegisterEvent( DEFIAS_CUTPURSE.CastBackstab, 1100, 1 )
 
-    unit:RegisterEvent( DEFIAS_CUTPURSE.CastBackstab, math.random( 2400, 7900 ), 0 );
+    unit:RegisterEvent( DEFIAS_CUTPURSE.CastBackstab, math.random( 2400, 7900 ), 0 )
 
 end
 

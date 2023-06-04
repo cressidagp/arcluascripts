@@ -20,19 +20,20 @@
 --SPELL_RENEW = 139;
 --SPELL_LESSER_HEAL = 2053;
 
-GREAT_FATHER_ARCTIKUS = {};
+GREAT_FATHER_ARCTIKUS = {}
 
 function GREAT_FATHER_ARCTIKUS.OnDamageTaken( unit, _, _, damage )
 
-	local hp = unit:GetHealthPct();
+	local hp = unit:GetHealthPct()
 	
-	if( hp < 75 )
-	then
-		unit:CastSpell( 139 );
+	if( hp < 75 ) then
 	
-	elseif( hp < 20 )
-	then
-		unit:FullCastSpell( 2053 );
+		unit:CastSpell( 139 )
+	
+	elseif( hp < 20 ) then
+	
+		unit:FullCastSpell( 2053 )
+		
 	end
 end
 
