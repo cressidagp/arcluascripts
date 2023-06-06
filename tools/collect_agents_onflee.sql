@@ -1,3 +1,5 @@
+-- Work on: 335.21081_2021_08_15
+
 -- Can remeber what are theese
 DELETE FROM `smart_scripts` WHERE `entryorguid` < 0;
 
@@ -118,6 +120,13 @@ ALTER TABLE `smart_scripts`
 	
 	ADD COLUMN `Misc2` int(11) unsigned NOT NULL DEFAULT '0';
 
+
+-- set spell and spell type to 0
+UPDATE `smart_scripts` SET `spell` = 0;
+UPDATE `smart_scripts` SET `spelltype` = 0;
+
+-- from pct to float
+UPDATE `smart_scripts` SET `floatMisc1` = (`floatMisc1` / 100);
 
 -- All modes
 UPDATE `smart_scripts` SET `instance_mode` = 4 WHERE `instance_mode` = 1;
