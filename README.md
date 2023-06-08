@@ -2,7 +2,7 @@
 
 ## Status
 
-Temporary stopped since probably i will switch blizzlike stuff to APE. There is a some crap here, but i did a big effor scripting Ruby Sanctum.
+Temporary stopped since probably i will switch blizzlike stuff to APE. There is some crap here, but i did a big effort scripting Ruby Sanctum.
 
 ## Introduction
 

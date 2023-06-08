@@ -29,17 +29,27 @@ SET @ID10 := 66819; -- Azuremyst Isle: Zulduun
 --
 --
 
-DELETE FROM `ai_agents` WHERE `entry` = 474 and `spell` = 12544; -- Elwynn Forest: Defias Rogue Wizard cast "Frost Armor"
-DELETE FROM `ai_agents` WHERE `entry` = 476 and `spell` = 12544; -- Elwynn Forest: Kobold Geomancer cast "Frost Armor"
-DELETE FROM `ai_agents` WHERE `entry` = 881 and `spell` = 12544; -- Elwynn Forest: Surena Caledon cast "Frost Armor"
-DELETE FROM `ai_agents` WHERE `entry` = 1507 and `spell` = 12544; -- Tirisfall Glades: Scarlet Initiate cast "Frost Armor"
-DELETE FROM `ai_agents` WHERE `entry` = 1544 and `spell` = 324; -- Tirisfall Glades: Vile Fin Minor Oracle cast "Lighting Shield"
-DELETE FROM `ai_agents` WHERE `entry` = 3204 and `spell` = 20798; -- Durotar: Gazzuz cast "Demon Skin"
-DELETE FROM `ai_agents` WHERE `entry` = 3206 and `spell` = 324; -- Durotar: Voodoo Troll cast "Lighting Shield"
-DELETE FROM `ai_agents` WHERE `entry` = 5822 and `spell` = 20798; -- Durotar: Feelweaver Scornn cast "Demon Skin"
-DELETE FROM `ai_agents` WHERE `entry` = 5826 and `spell` = 324; -- Durotar: Geolord Mottle cast "Lighting Shield"
+-- Frost Armor:
+DELETE FROM `ai_agents` WHERE `spell` = 12544 AND `entry` 
+IN ( 203, 474, 476, 589, 619, 881, 910, 1009, 1539, 1867, 1889, 1920, 2018, 2276, 2387, 2567, 2761, 3269, 4460, 5328, 6117, 6228, 7437, 7666, 7667, 13096, 13099, 13540, 13541, 13542, 13546, 13547, 13548, 18664, 18934, 25073, 32373 );
 
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` IN ( 474, 476, 881, 1507, 1544, 3204, 3206, 5822, 5826 );
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
+IN ( 203, 474, 476, 589, 619, 881, 910, 1009, 1539, 1867, 1889, 1920, 2018, 2276, 2387, 2567, 2761, 3269, 4460, 5328, 6117, 6228, 7437, 7666, 7667, 13096, 13099, 13540, 13541, 13542, 13546, 13547, 13548, 18664, 18934, 25073, 32373 );
+
+
+-- Lightning Shield:
+DELETE FROM `ai_agents` WHERE `spell` = 324 AND `entry` 
+IN ( 1544, 3206, 5826 );
+
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
+IN ( 1544, 3206, 5826 );
+
+-- Demon Skin:
+DELETE FROM `ai_agents` WHERE `spell` = 20798 AND `entry` 
+IN ( 3204, 5822 );
+
+UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
+IN ( 3204, 5822 );
 
 --
 --

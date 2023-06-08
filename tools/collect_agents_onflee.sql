@@ -122,8 +122,8 @@ ALTER TABLE `smart_scripts`
 
 
 -- set spell and spell type to 0
-UPDATE `smart_scripts` SET `spell` = 0;
-UPDATE `smart_scripts` SET `spelltype` = 0;
+-- UPDATE `smart_scripts` SET `spell` = 0;
+-- UPDATE `smart_scripts` SET `spelltype` = 0;
 
 -- from pct to float
 UPDATE `smart_scripts` SET `floatMisc1` = (`floatMisc1` / 100);
