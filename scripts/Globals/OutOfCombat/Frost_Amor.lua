@@ -1,9 +1,10 @@
 --[[
+
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
 	
-	Map: Global
+	Zone: Global
 	Creatures: Frost Armor casters
 
 	Credits:

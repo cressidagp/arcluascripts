@@ -46,10 +46,10 @@ IN ( 1544, 3206, 5826 );
 
 -- Demon Skin:
 DELETE FROM `ai_agents` WHERE `spell` = 20798 AND `entry` 
-IN ( 3204, 5822 );
+IN ( 1060, 1124, 1915, 3204, 5648, 16315 );
 
 UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
-IN ( 3204, 5822 );
+IN ( 1060, 1124, 1915, 3204, 5648, 16315 );
 
 --
 --

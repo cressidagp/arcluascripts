@@ -16,9 +16,12 @@
 	
 --]]
 
---local NPC_GAZZUZ = 3204;
---local NPC_FELWEAVER_SCORN = 5822;
---local NPC_FROSTMANE_SHADOWCASTER = 1124;
+--local NPC_MOGH_THE_UNDYING			= 1060
+--local NPC_FROSTMANE_SHADOWCASTER		= 1124
+--local NPC_DALARAN_CONJUROR			= 1915
+--local NPC_GAZZUZ						= 3204
+--local NPC_SANDFURY_SHADOWCASTER		= 5648
+--local NPC_DEATHOLME_ACOLYTE			= 16315
 
 --local SPELL_DEMON_SKIN = 20798;
 
@@ -48,14 +51,26 @@ function OOC_DEMON_SKIN.CastBuff( unit, event )
 	end	
 end
 
--- Gazzuz:
-RegisterUnitEvent( 3204, 18, OOC_DEMON_SKIN.CastBuff );
-RegisterUnitEvent( 3204, 21, OOC_DEMON_SKIN.CastBuff );
-
--- Felweaver Scorn:
-RegisterUnitEvent( 5822, 18, OOC_DEMON_SKIN.CastBuff );
-RegisterUnitEvent( 5822, 21, OOC_DEMON_SKIN.CastBuff );
+-- Mogh the Undying:
+RegisterUnitEvent( 1060, 18, OOC_DEMON_SKIN.CastBuff );
+RegisterUnitEvent( 1060, 21, OOC_DEMON_SKIN.CastBuff );
 
 -- Frostmane Shadowcaster:
 RegisterUnitEvent( 1124, 18, OOC_DEMON_SKIN.CastBuff );
 RegisterUnitEvent( 1124, 21, OOC_DEMON_SKIN.CastBuff );
+
+-- Dalaran Conjuror:
+RegisterUnitEvent( 1915, 18, OOC_DEMON_SKIN.CastBuff );
+RegisterUnitEvent( 1915, 21, OOC_DEMON_SKIN.CastBuff );
+
+-- Gazzuz:
+RegisterUnitEvent( 3204, 18, OOC_DEMON_SKIN.CastBuff );
+RegisterUnitEvent( 3204, 21, OOC_DEMON_SKIN.CastBuff );
+
+-- Sandfury Shadowcaster:
+RegisterUnitEvent( 5648, 18, OOC_DEMON_SKIN.CastBuff );
+RegisterUnitEvent( 5648, 21, OOC_DEMON_SKIN.CastBuff );
+
+-- Deatholme Acolyte:
+RegisterUnitEvent( 5648, 18, OOC_DEMON_SKIN.CastBuff );
+RegisterUnitEvent( 5648, 21, OOC_DEMON_SKIN.CastBuff );
