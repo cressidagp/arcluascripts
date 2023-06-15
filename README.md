@@ -2,7 +2,9 @@
 
 ## Status
 
-Temporary stopped since probably i will switch blizzlike stuff to APE. There is some crap here, but i did a big effort scripting Ruby Sanctum.
+At the momment im cleaning up this. Many blizzlike scripts will be ported to Plugins or APE.
+Then i will continue expanding the 'Out of Combat Cast' scripts, since its not supported by ArcEmu.
+Will return to development of Ruby Sanctum (i mean to finish Halion) after that.
 
 ## Introduction
 
