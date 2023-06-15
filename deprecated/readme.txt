@@ -43,3 +43,7 @@ Goldtooth.lua
 VII) This one are supported by arcemu now
 
 The_Affray.lua (APE)
+
+VIII) Handled at quest plugin
+
+The_Escape.lua
