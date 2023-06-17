@@ -47,3 +47,7 @@ The_Affray.lua (APE)
 VIII) Handled at quest plugin
 
 The_Escape.lua
+
+IX) Fixed at core
+
+GoScaleFix.lua
