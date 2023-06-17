@@ -39,10 +39,10 @@ IN ( 203, 474, 476, 589, 619, 881, 910, 1009, 1539, 1867, 1889, 1920, 2018, 2276
 
 -- Lightning Shield:
 DELETE FROM `ai_agents` WHERE `spell` = 324 AND `entry` 
-IN ( 1544, 3206, 5826 );
+IN ( 1544, 2030, 3206, 3271, 5826 );
 
 UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
-IN ( 1544, 3206, 5826 );
+IN ( 1544, 2030, 3206, 3271, 5826 );
 
 -- Demon Skin:
 DELETE FROM `ai_agents` WHERE `spell` = 20798 AND `entry` 

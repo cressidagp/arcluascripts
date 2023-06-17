@@ -5,7 +5,7 @@
 	Engine: A.L.E
 	
 	Zone: Global
-	Creatures: Frost Armor casters
+	Creatures: 'Frost Armor' casters
 
 	Credits:
 	

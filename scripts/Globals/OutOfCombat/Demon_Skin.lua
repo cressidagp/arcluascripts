@@ -5,7 +5,7 @@
 	Engine: A.L.E
 	
 	Zone: Global
-	Creature: Demon Skin casters
+	Creature: 'Demon Skin' casters
 
 	Credits:
 
@@ -23,7 +23,7 @@
 --local NPC_SANDFURY_SHADOWCASTER		= 5648
 --local NPC_DEATHOLME_ACOLYTE			= 16315
 
---local SPELL_DEMON_SKIN = 20798;
+--local SPELL_DEMON_SKIN = 20798
 
 OOC_DEMON_SKIN = {}
 

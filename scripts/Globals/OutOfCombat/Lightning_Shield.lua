@@ -5,7 +5,7 @@
 	Engine: A.L.E
 	
 	Zone: Global
-	Creature: Lightning Shield caster
+	Creature: 'Lightning Shield' casters
 
 	Credits:
 
@@ -16,11 +16,13 @@
 	
 --]]
 
---local NPC_VILE_FIN_MINOR_ORACLE = 1544;
---local NPC_VOODOO_TROLL = 3206;
---local NPC_GEOLORD_MOTTLE = 5826;
+--local NPC_VILE_FIN_MINOR_ORACLE	= 1544
+--local NPC_ELDER_TIMBERLING		= 2030
+--local NPC_VOODOO_TROLL			= 3206
+--local NPC_RAZORMANE_MYSTIC		= 3271
+--local NPC_GEOLORD_MOTTLE			= 5826
 
---local SPELL_LIGHTNING_SHIELD = 324;
+--local SPELL_LIGHTNING_SHIELD = 324
 
 OOC_LIGHTNING_SHIELD = {}
 
@@ -53,9 +55,17 @@ end
 RegisterUnitEvent( 1544, 18, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 1544, 21, OOC_LIGHTNING_SHIELD.CastBuff );
 
+-- Elder Timberling:
+RegisterUnitEvent( 2030, 18, OOC_LIGHTNING_SHIELD.CastBuff );
+RegisterUnitEvent( 2030, 21, OOC_LIGHTNING_SHIELD.CastBuff );
+
 -- Voodoo Troll:
 RegisterUnitEvent( 3206, 18, OOC_LIGHTNING_SHIELD.CastBuff );
 RegisterUnitEvent( 3206, 21, OOC_LIGHTNING_SHIELD.CastBuff );
+
+-- Razormane Mystic:
+RegisterUnitEvent( 3271, 18, OOC_LIGHTNING_SHIELD.CastBuff );
+RegisterUnitEvent( 3271, 21, OOC_LIGHTNING_SHIELD.CastBuff );
 
 -- Geolord Mottle:
 RegisterUnitEvent( 5826, 18, OOC_LIGHTNING_SHIELD.CastBuff );
