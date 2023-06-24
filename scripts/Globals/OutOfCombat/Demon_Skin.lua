@@ -72,5 +72,5 @@ RegisterUnitEvent( 5648, 18, OOC_DEMON_SKIN.CastBuff );
 RegisterUnitEvent( 5648, 21, OOC_DEMON_SKIN.CastBuff );
 
 -- Deatholme Acolyte:
-RegisterUnitEvent( 5648, 18, OOC_DEMON_SKIN.CastBuff );
-RegisterUnitEvent( 5648, 21, OOC_DEMON_SKIN.CastBuff );
+RegisterUnitEvent( 16315, 18, OOC_DEMON_SKIN.CastBuff );
+RegisterUnitEvent( 16315, 21, OOC_DEMON_SKIN.CastBuff );

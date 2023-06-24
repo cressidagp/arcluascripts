@@ -18,7 +18,7 @@ HOOKS_QUEST = {}
 function HOOKS_QUEST.OnComplete( event, plr, questId, questEnder )
 
 	if questId == 823 then
-		questEnder:SendChatMessage( 16, 0, "%s listens to $n's report..." )
+		questEnder:SendChatMessage( 16, 0, ""..questEnder:GetName().." listens to "..plr:GetName().."'s report..." )
 		questEnder:EventChat( 12, 1, What??  The Burning Blade is spreading!  We must investigate!, 2000 )
 	end
 	
