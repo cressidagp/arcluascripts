@@ -33,7 +33,7 @@ function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 	--
 	
     if event == 21 then
-		if unit:IsInCombat() == false and unit:HasAura( 324 ) == false then
+		if unit:IsInCombat() == false then
 		
             unit:FullCastSpell( 324 )
             unit:ModifyAIUpdateEvent( 600000 )

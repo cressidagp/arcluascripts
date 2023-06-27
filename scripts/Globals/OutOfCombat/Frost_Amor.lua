@@ -68,7 +68,7 @@ function OOC_FROST_ARMOR.CastBuff( unit, event )
 	
     if event == 21 then
 	
-        if unit:IsInCombat() == false and unit:HasAura( 12544 ) == false then
+        if unit:IsInCombat() == false then
 		
             unit:FullCastSpell( 12544 )
             unit:ModifyAIUpdateEvent( 1800000 )
@@ -80,7 +80,8 @@ function OOC_FROST_ARMOR.CastBuff( unit, event )
 	--
 	
     else
-		unit:RegisterAIUpdateEvent( 1000 )
+		local n = math.random( 3, 5 )
+		unit:RegisterAIUpdateEvent( n * 1000 )
 
     end
 end

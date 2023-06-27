@@ -35,7 +35,7 @@ function OOC_DEMON_SKIN.CastBuff( unit, event )
 	
 	if event == 21 then
 	
-		if unit:IsInCombat() == false and unit:HasAura( 20798 ) == false then
+		if unit:IsInCombat() == false then
 		
 			unit:FullCastSpell( 20798 )
 			unit:ModifyAIUpdateEvent( 1800000 )
