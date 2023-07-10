@@ -33,6 +33,7 @@ function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 	--
 	
     if event == 21 then
+	
 		if unit:IsInCombat() == false then
 		
             unit:FullCastSpell( 324 )
@@ -48,6 +49,7 @@ function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 	
         local n = math.random( 3, 5 )
         unit:RegisterAIUpdateEvent( n * 1000 )
+		
     end
 end
 
