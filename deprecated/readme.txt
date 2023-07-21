@@ -54,3 +54,4 @@ Sputtervalve.lua
 Knight_Defender_Zunade.lua
 Meven_Korgal.lua
 Jenal.lua
+Fandral_Staghelm.lua
