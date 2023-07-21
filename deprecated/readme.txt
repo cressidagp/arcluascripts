@@ -1,8 +1,7 @@
 I) Deprecated since it will be handled in database:
 
-Apothecary_Holland
-John_Turner
-Meven_Korgal.lua
+Apothecary_Holland.lua
+John_Turner.lua
 Shellene.lua
 The_Three_Beggars.lua
 Tosamina.lua
@@ -12,7 +11,6 @@ II) Ported to gossip plugin:
 
 Botanist_Taerix.lua
 Hilary.lua
-Knight-Defender_Zunade.lua
 Proenitus.lua
 Seer_Skaltesh.lua
 Shawn.lua
@@ -47,12 +45,11 @@ The_Affray.lua (APE)
 VIII) Handled at quest plugin
 
 The_Escape.lua
+HilarysNecklace.lua
 
-IX) Fixed at core
-
-
-
-X) Ported to APE
+IX) Ported to APE
 
 Zeppelin_Masters.lua
 Sputtervalve.lua
+Knight_Defender_Zunade.lua
+Meven_Korgal.lua
