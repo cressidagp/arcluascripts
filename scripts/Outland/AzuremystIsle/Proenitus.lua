@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Azuremyst Isle: Botanist Taerix
+	Azuremyst Isle: Proenitus
 	Engine: A.L.E
 
 	Credits:
@@ -13,18 +13,18 @@
 
 --]]
 
-BOTANIST_TAERIX = {}
+PROENITUS = {}
 
-function BOTANIST_TAERIX.OnHello( unit, _, plr )
+function PROENITUS.OnHello( unit, _, plr )
 
-	if( plr:HasFinishedQuest( 9293 ) == true ) -- "What Must Be Done..."
+	if( plr:HasFinishedQuest( 9280 ) == true ) -- "Replenishing the Healing Crystals"
 	then
-		unit:GossipCreateMenu( 8666, plr, 0 );
+		unit:GossipCreateMenu( 8669, plr, 0 );
 	else
-		unit:GossipCreateMenu( 8664, plr, 0 );
+      unit:GossipCreateMenu( 8667, plr, 0 );
     end
     unit:GossipAddQuests( plr );
     unit:GossipSendMenu( plr );
 end
 
---RegisterUnitGossipEvent( 16514, 1, BOTANIST_TAERIX.OnHello );
+RegisterUnitGossipEvent( 16477, 1, PROENITUS.OnHello );

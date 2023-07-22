@@ -8,41 +8,32 @@ Tosamina.lua
 Warden_Thelwater.lua
 Bread_Vendors.lua
 
-II) Ported to gossip plugin:
-
-Botanist_Taerix.lua
-Hilary.lua
-Proenitus.lua
-Seer_Skaltesh.lua
-Shawn.lua
-Spirit_of_the_Vale.lua
-
-III) The next scripts has been merged.
+II) The next scripts has been merged.
 
 Kira_Songshine.lua + Myra_Tyrngaarde.lua = Bread_Vendors.lua
 
-IV) Deprecated since they will be handled by Area Trigger hook:
+III) Deprecated since they will be handled by Area Trigger hook:
 
 Brother_Sarno2.lua
 Innkeeper_Farley.lua
 
-V) Experiments
+IV) Experiments
 
 Goldtooth.lua
 Brother_Sarno.lua
 Morgan_the_Collector1.lua
 Morgan_the_Collector2.lua
 
-VI) This ones are supported by arcemu now
+V) This ones are supported by arcemu now
 
 The_Affray.lua (APE)
 
-VII) Handled at quest plugin
+VI) Handled at quest plugin
 
 The_Escape.lua
 HilarysNecklace.lua
 
-VIII) Ported to APE
+VII) Ported to APE
 
 Zeppelin_Masters.lua
 Sputtervalve.lua

@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Azuremyst Isle: Proenitus
+	Azuremyst Isle: Spirit of the Vale
 	Engine: A.L.E
 
 	Credits:
@@ -13,18 +13,18 @@
 
 --]]
 
-PROENITUS = {}
+SPIRIT_VALE = {}
 
-function PROENITUS.OnHello( unit, _, plr )
+function SPIRIT_VALE.OnHello( unit, _, plr )
 
-	if( plr:HasFinishedQuest( 9280 ) == true ) -- "Replenishing the Healing Crystals"
+	if( plr:HasFinishedQuest( 9450 ) == true ) -- "Call of Earth"
 	then
-		unit:GossipCreateMenu( 8669, plr, 0 );
+		unit:GossipCreateMenu( 8826, plr, 0 );
 	else
-      unit:GossipCreateMenu( 8667, plr, 0 );
+      unit:GossipCreateMenu( 8827, plr, 0 );
     end
     unit:GossipAddQuests( plr );
     unit:GossipSendMenu( plr );
 end
 
---RegisterUnitGossipEvent( 16477, 1, PROENITUS.OnHello );
+RegisterUnitGossipEvent( 17087, 1, SPIRIT_VALE.OnHello );

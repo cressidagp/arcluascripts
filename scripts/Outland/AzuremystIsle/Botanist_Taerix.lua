@@ -1,7 +1,7 @@
 --[[
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
-	Azuremyst Isle: Spirit of the Vale
+	Azuremyst Isle: Botanist Taerix
 	Engine: A.L.E
 
 	Credits:
@@ -13,18 +13,18 @@
 
 --]]
 
-SPIRIT_VALE = {}
+BOTANIST_TAERIX = {}
 
-function SPIRIT_VALE.OnHello( unit, _, plr )
+function BOTANIST_TAERIX.OnHello( unit, _, plr )
 
-	if( plr:HasFinishedQuest( 9450 ) == true ) -- "Call of Earth"
+	if( plr:HasFinishedQuest( 9293 ) == true ) -- "What Must Be Done..."
 	then
-		unit:GossipCreateMenu( 8826, plr, 0 );
+		unit:GossipCreateMenu( 8666, plr, 0 );
 	else
-      unit:GossipCreateMenu( 8827, plr, 0 );
+		unit:GossipCreateMenu( 8664, plr, 0 );
     end
     unit:GossipAddQuests( plr );
     unit:GossipSendMenu( plr );
 end
 
---RegisterUnitGossipEvent( 17087, 1, SPIRIT_VALE.OnHello );
+RegisterUnitGossipEvent( 16514, 1, BOTANIST_TAERIX.OnHello );
