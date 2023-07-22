@@ -6,6 +6,7 @@ Shellene.lua
 The_Three_Beggars.lua
 Tosamina.lua
 Warden_Thelwater.lua
+Bread_Vendors.lua
 
 II) Ported to gossip plugin:
 
