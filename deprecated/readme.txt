@@ -16,35 +16,32 @@ Seer_Skaltesh.lua
 Shawn.lua
 Spirit_of_the_Vale.lua
 
-III) This one are attemps to do more efficient scripts:
-
-Brother_Sarno.lua
-Morgan_the_Collector1.lua
-Morgan_the_Collector2.lua
-
-IV) The next scripts has been merged.
+III) The next scripts has been merged.
 
 Kira_Songshine.lua + Myra_Tyrngaarde.lua = Bread_Vendors.lua
 
-V) Deprecated since they will be handled by Area Trigger hook:
+IV) Deprecated since they will be handled by Area Trigger hook:
 
 Brother_Sarno2.lua
 Innkeeper_Farley.lua
 
-VI) Experiments
+V) Experiments
 
 Goldtooth.lua
+Brother_Sarno.lua
+Morgan_the_Collector1.lua
+Morgan_the_Collector2.lua
 
-VII) This one are supported by arcemu now
+VI) This ones are supported by arcemu now
 
 The_Affray.lua (APE)
 
-VIII) Handled at quest plugin
+VII) Handled at quest plugin
 
 The_Escape.lua
 HilarysNecklace.lua
 
-IX) Ported to APE
+VIII) Ported to APE
 
 Zeppelin_Masters.lua
 Sputtervalve.lua
