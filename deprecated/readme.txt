@@ -7,6 +7,7 @@ The_Three_Beggars.lua
 Tosamina.lua
 Warden_Thelwater.lua
 Bread_Vendors.lua
+Vejrek.lua
 
 II) The next scripts has been merged.
 
