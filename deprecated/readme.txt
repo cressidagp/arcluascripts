@@ -44,3 +44,4 @@ Jenal.lua
 Fandral_Staghelm.lua
 Ol_Emma.lua
 Elders.lua
+Arcanist_Vandril.lua

@@ -12,10 +12,6 @@
 	*) Hypersniper for his lua guides and some job in the lua engine.
 	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
 	*) ArcEmu developers for ArcEmu and his A.L.E, specially to dfighter1985.
-	
-	enUS locale: "Arcanist Vandril, what are the Forsaken doing here?"
-	
-	esMX locale: "Arcanista Vandril, ¿qué están haciendo aquí los Renegados?"
 
 --]]
 
