@@ -58,7 +58,7 @@ function ELDERS.OnHelloOnSelect( unit, event, plr, textId, id, code )
 				
 			else
 			
-				unit:SendChatMessage( 12, 0, CHAT[ event ] )
+				unit:SendChatMessage( 12, 0, text[ event ] )
 			end
 			
 			plr:GossipComplete()
