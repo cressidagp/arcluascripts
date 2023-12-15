@@ -29,26 +29,34 @@ OOC_DEMON_SKIN = {}
 
 function OOC_DEMON_SKIN.CastBuff( unit, event )
 
+	if unit:IsInCombat() == true then return; end
+
 	--
 	-- on ai update
 	--
-	
+
 	if event == 21 then
-	
-		if unit:IsInCombat() == false then
-		
+
+		if unit:HasAura( 20798 ) == false then
+
 			unit:FullCastSpell( 20798 )
-			unit:ModifyAIUpdateEvent( 1800000 )
-			
+
+			unit:ModifyAIUpdateEvent( 1000 )
+
 		end
+
 	--
 	-- on spawn
 	--
-	
+
 	else
+
 		local n = math.random( 3, 5 )
+
 		unit:RegisterAIUpdateEvent( n * 1000 )	
+
 	end	
+
 end
 
 -- Mogh the Undying:

@@ -28,29 +28,34 @@ OOC_LIGHTNING_SHIELD = {}
 
 function OOC_LIGHTNING_SHIELD.CastBuff( unit, event )
 
+	if unit:IsInCombat() == true then return; end
+
 	--
 	-- on ai update
 	--
-	
+
     if event == 21 then
-	
-		if unit:IsInCombat() == false then
-		
+
+		if unit:HasAura( 324 ) == false then
+
             unit:FullCastSpell( 324 )
-            unit:ModifyAIUpdateEvent( 600000 )
-			
+
+            unit:ModifyAIUpdateEvent( 1000 )
+
 		end
-	
+
 	--
 	-- on spawn
 	--
-	
+
 	else
-	
+
         local n = math.random( 3, 5 )
+
         unit:RegisterAIUpdateEvent( n * 1000 )
-		
+
     end
+
 end
 
 -- Vile Fin Minor Oracle:

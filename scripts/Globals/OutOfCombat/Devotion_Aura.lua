@@ -24,27 +24,34 @@ OOC_DEVOTION_AURA = {}
 
 function OOC_DEVOTION_AURA.CastBuff( unit, event )
 
+	if unit:IsInCombat() == true then return; end
+
 	--
 	-- on ai update
 	--
-	
+
     if event == 21 then
-	
-        if unit:IsInCombat() == false and unit:HasAura( 8258 ) == false then
-		
+
+        if unit:HasAura( 8258 ) == false then
+
             unit:FullCastSpell( 8258 )
-            unit:ModifyAIUpdateEvent( 240000 )
-			
+
+            unit:ModifyAIUpdateEvent( 1000 )
+
         end
-	
+
 	--
 	-- on spawn
 	--
-	
+
     else
+
 		local n = math.random( 3, 5 )
+
 		unit:RegisterAIUpdateEvent( n * 1000 )
+
     end
+
 end
 
 -- Captain Melrache:

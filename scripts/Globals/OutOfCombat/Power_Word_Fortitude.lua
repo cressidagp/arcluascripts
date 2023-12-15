@@ -24,27 +24,34 @@ OOC_POWER_WORD_FORTITUDE = {}
 
 function OOC_POWER_WORD_FORTITUDE.CastBuff( unit, event )
 
+	if unit:IsInCombat() == true then return; end
+
 	--
 	-- on ai update
 	--
-	
+
     if event == 21 then
-	
-        if unit:IsInCombat() == false and unit:HasAura( 1243 ) == false then
-		
+
+        if unit:HasAura( 1243 ) == false then
+
             unit:FullCastSpell( 1243 )
-            unit:ModifyAIUpdateEvent( 3000000 )
-			
+
+            unit:ModifyAIUpdateEvent( 1000 )
+
         end
-	
+
 	--
 	-- on spawn
 	--
-	
+
     else
+
 		local n = math.random( 3, 5 )
+
 		unit:RegisterAIUpdateEvent( n * 1000 )
+
     end
+
 end
 
 -- Scarlet Friar:
