@@ -9,6 +9,7 @@ Warden_Thelwater.lua
 Bread_Vendors.lua
 Vejrek.lua
 Defias_Cutpurse.lua
+Great_Father_Arctikus.lua
 
 II) The next scripts has been merged.
 
