@@ -53,16 +53,6 @@ IN ( 1060, 1124, 1915, 3204, 5648, 16315 );
 
 --
 --
--- The follows ai_agents are not working so lets port them to lua:
---
---
-
-DELETE FROM `ai_agents` WHERE `entry` = 473 and `spell` = 1776; -- Elwynn Forest: Morgan the Collector dont cast "Gouge"
-DELETE FROM `ai_agents` WHERE `entry` = 94 and `spell` = 53; -- Elwynn Forest: Defias Cutpurse dont cast "Backstab"
-DELETE FROM `ai_agents` WHERE `entry` = 6113 and `spell` = 7386; -- Dun Morogh: Verjek dont cast "Sunder Armor"
-
---
---
 -- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
 --
 --
