@@ -1,4 +1,5 @@
 --[[
+
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
@@ -13,42 +14,56 @@
 
 	Developer notes: this one save me a lot of time in debuggin quest and spells.
 	
-	WARNING: disabled by default.
+	NOTE: disabled by default.
 
---
 
-HOOKS_DEBUG = {};
+--]]
 
-function HOOKS_DEBUG.Consolidated( event, plr, argC, argD )
+HOOKS_DEBUG = {}
 
-	if( plr:IsGm() == true )
-	then
-		if( event == 8 ) -- OnEmote
-		then
-			plr:SendBroadcastMessage( "Emote ID: "..argD.." " );
-		
-		elseif( event == 10 ) -- OnCastSpell
-		then
-			plr:SendBroadcastMessage( "Spell ID: "..argC.." " );
+--OnCastSpell( event, player, spellid, spellObject )
+--OnQuestAccept( event, player, questId, questGiver )
+--OnQuestComplete( event, player, questId, questGiver )
+--OnAreaTrigger( event, player, areaTriggerId )
 
-		elseif( event == 14 or event == 22 ) -- QuestAccept or QuestComplete
-		then
-			plr:SendBroadcastMessage( "QuestId: "..argC.." " );
-			if( argD ~= nil )
-			then
-				plr:SendBroadcastMessage( "QuestGiver: "..argD:GetEntry().. " " );
+function HOOKS_DEBUG.onEventSendArgumentsToPlayer( event, plr, arg1, arg2 )
+
+	if plr:IsGm() == true then
+
+		--
+		-- OnCastSpell
+		--
+		if event == 10 then
+
+			plr:SendBroadcastMessage( "Spellid: "..arg1.." " )
+
+		--
+		-- OnQuestAccept or OnQuestComplete
+		--
+		elseif event == 14 or event == 22 then
+
+			plr:SendBroadcastMessage( "QuestId: "..arg1.." " )
+
+			if arg2 ~= nil then
+
+				plr:SendBroadcastMessage( "QuestGiver: "..arg2:GetEntry().. " " )
+
 			end
 
-		elseif( event == 26) -- OnAreaTrigger
-		then
-			plr:SendBroadcastMessage("AT: "..argC.. " " );
+		-- 
+		-- OnAreaTrigger
+		--
+		elseif event == 26 then
+
+			plr:SendBroadcastMessage( "AreaTriggerId: "..arg1.. " " )
+
 		end
+
 	end
+
 end
 
-RegisterServerHook( 8, HOOKS_DEBUG.Consolidated );
-RegisterServerHook( 10, HOOKS_DEBUG.Consolidated );
-RegisterServerHook( 14, HOOKS_DEBUG.Consolidated );
-RegisterServerHook( 22, HOOKS_DEBUG.Consolidated );
-RegisterServerHook( 26, HOOKS_DEBUG.Consolidated );
---]]
+RegisterServerHook( 10, HOOKS_DEBUG.onEventSendArgumentsToPlayer );
+RegisterServerHook( 14, HOOKS_DEBUG.onEventSendArgumentsToPlayer );
+RegisterServerHook( 22, HOOKS_DEBUG.onEventSendArgumentsToPlayer );
+RegisterServerHook( 26, HOOKS_DEBUG.onEventSendArgumentsToPlayer );
