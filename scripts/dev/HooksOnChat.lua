@@ -1,9 +1,10 @@
 --[[
+
 	ArcLuaScripts for ArcEmu
 	www.ArcEmu.org
 	Engine: A.L.E
 	
-	Hooks Chat
+	Debug Commands
 	
 	Credits:
 
@@ -14,66 +15,123 @@
 
 --]]
 
-local COMMANDS = { "help", "gprint", "removeauras", "getphase", "jail", "entry", "movetype" };
+local COMMANDS = { "help", "gprint", "removeauras", "getphase", "jail", "npc", "movetype" }
 
-HOOKS_CHAT = {};
+HOOKS_DEBUG = {}
 
-function HOOKS_CHAT.AllCommands( event, plr, msg )
+function HOOKS_DEBUG.onChatMessage( event, plr, message )
 
-	if( plr:IsGm() == true )
-	then
-		if( msg == "#help" )
-		then
-			for i = 1, #COMMANDS
-			do
-				plr:SendBroadcastMessage( ""..COMMANDS[ i ].."" );
+	if plr:IsGm() == true then
+
+		if message == "#help" then
+
+			for i = 1, #COMMANDS do
+
+				plr:SendBroadcastMessage( " "..COMMANDS[ i ].." " )
+
 			end
 
-		elseif( msg == "#gprint" )
-		then
-			for n in pairs( _G )
-			do
-				print( n );
-				plr:SendBroadcastMessage( ""..n.."" );
+		elseif message == "#gprint" then
+
+			for n in pairs( _G ) do
+
+				print( n )
+
+				plr:SendBroadcastMessage( " "..n.." " )
+
 			end
 
-			plr:SendBroadcastMessage( "Lua global table has been printed." );
-			
-				
-		elseif( msg == "#removeauras" )
-		then
-			local selection = plr:GetSelection();
-			selection:RemoveAllAuras();
-				
-		elseif( msg == "#getphase" )
-		then
-			local selection = plr:GetSelection();
-			plr:SendBroadcastMessage( "Phase: "..selection:GetPhase().."" );
-				
-		elseif( msg == "#jail" )
-		then
-			local selection = plr:GetSelection();
-			selection:Teleport( 0, -8667.677, 624.130, 95.69, 2.2 );
-			selection:SendBroadcastMessage( "You are in jail." );
-			plr:SendBroadcastMessage( "Player has been send to jail." );					
-			
-		elseif( msg == "#entry" )
-		then
-			plr:SendBroadcastMessage( "Entry: "..selection:GetEntry().."" );
-					
-		elseif( msg == "#movetype" )
-		then
-			local selection = plr:GetSelection();
-			plr:SendBroadcastMessage( "Type: "..selection:GetMoveType().."" );
-					
-		--[[ debug rangecheck
-		elseif( msg == "#distance" )
-		then 
-			plr:SendBroadcastMessage( "Distance: "..plr:GetDistance( target ).."" );
-			plr:SendBroadcastMessage( "Use .debug dist to get distance in yards." );
-		--]]
+			plr:SendBroadcastMessage( "Lua global table has been printed." )
+
+		elseif message == "#removeauras" then
+
+			local selection = plr:GetSelection()
+
+			if selection ~= nil then
+
+				selection:RemoveAllAuras()
+
+			else
+
+				plr:RemoveAllAuras()
+
+			end
+
+		elseif message == "#getphase" then
+
+			local selection = plr:GetSelection()
+
+			if selection ~= nil then
+
+				plr:SendBroadcastMessage( "Target phase: "..selection:GetPhase().." " )
+
+			end
+
+		elseif message == "#jail" then
+
+			local selection = plr:GetSelection()
+
+			if selection ~= nil then
+
+				if selection:IsPlayer() then
+
+					selection:Teleport( 0, -8667.677, 624.130, 95.69, 2.2 )
+					selection:SendBroadcastMessage( "You are in jail." )
+
+				end
+
+			else
+
+				plr:Teleport( 0, -8667.677, 624.130, 95.69, 2.2 )
+				plr:SendBroadcastMessage( "Player has been send to jail." )
+
+			end
+
+		elseif message == "#npc" then
+
+			local selection = plr:GetSelection()
+
+			if selection ~= nil and selection:IsCreature() then
+
+				local name = selection:GetName()
+				local entry = selection:GetEntry()
+				local id = selection:GetSpawnId()
+
+				plr:SendBroadcastMessage( "Entry: "..entry.." " )
+				plr:SendBroadcastMessage( "Spawnid: "..entry.." " )
+
+				print()
+				print(""..name.."")
+				print("npcid: "..entry.."")
+				print("spawnid: "..id.."")
+
+			end
+
+		elseif message == "#movetype" then
+
+			local selection = plr:GetSelection()
+
+			if selection ~= nil and selection:IsCreature() then
+
+				plr:SendBroadcastMessage( "moveType: "..selection:GetMoveType().." " )
+
+			end
+
+		elseif message == "#distance" then
+
+			local selection = plr:GetSelection()
+
+			if selection ~= nil then
+
+				plr:SendBroadcastMessage( "Distance: "..plr:GetDistance( selection ).." " )
+				plr:SendBroadcastMessage( "Yards: "..plr:GetDistanceYards( selection ).." " )
+
+			end
+
 		end
+
 	end
+
 end
 
-RegisterServerHook( 16, HOOKS_CHAT.AllCommands );
+RegisterServerHook( 16, HOOKS_DEBUG.onChatMessage );
