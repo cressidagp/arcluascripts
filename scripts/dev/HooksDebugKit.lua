@@ -35,7 +35,10 @@ function HOOKS_DEBUG.onEventSendArgumentsToPlayer( event, plr, arg1, arg2 )
 		--
 		if event == 10 then
 
+			local name = plr:GetName()
+			print( "LuaEngine: Player " .. ""..name.." " .. "has casted spell " .. ""..arg1.." " )
 			plr:SendBroadcastMessage( "Spellid: "..arg1.." " )
+			plr:SendBroadcastMessage( "spellType: "..arg2:GetSpellType().." " )
 
 		--
 		-- OnQuestAccept or OnQuestComplete
