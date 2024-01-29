@@ -48,3 +48,8 @@ Ol_Emma.lua
 Elders.lua
 Arcanist_Vandril.lua
 Khadgar.lua
+
+VIII) Consolidated at ai_summons.lua
+
+cylina_darkheart.lua
+keyanomir.lua
