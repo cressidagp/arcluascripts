@@ -23,7 +23,7 @@ if version == nil then
 	print("ArcLuaScripts: your forget to apply SQL file to your database!")
 	print("==============================================================")
 
-elseif( version == "2021-10-26_15-00_FleeAgents" ) then
+elseif version == "2021-10-26_15-00_FleeAgents" then
 
 	print("============================================")
 	print("ArcLuaScripts: your database its up to date!")
