@@ -13,18 +13,16 @@ I had started this project for myself, but use it if you want. In that case i ho
 
 WARNING: this wont expand too much since lua resources are very limited but i will push it to his limits.
 
-Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new) Feedback its apreciated.
+Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new).
 
 
 ## Features
 
 Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips and Quests. The main focus is set at Ruby Sanctum.
 
-Scripts folder has been organizated per map id, with the hope of a multi interpreter feature could eventually be implemented.
+All script has been writed to prevent variable collision
 
-All script has been writed to prevent [variable collision.](http://arcemu.org/forums/index.php?showtopic=19907)
-
-Bosses has been scripted in [modular way.](http://arcemu.org/forums/index.php?showtopic=21127)
+Bosses has been scripted in modular way.
 
 
 ## Requirements
