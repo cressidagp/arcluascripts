@@ -85,6 +85,6 @@ end
 function HOOKS_AT.OnSpawn( unit )
 end
 
-RegisterUnitEvent( 295, 18, HOOKS_AT.OnSpawn );
-RegisterUnitEvent( 1917, 18, HOOKS_AT.OnSpawn );
-RegisterServerHook( 26, HOOKS_AT.OnAreaTrigger );
+--RegisterUnitEvent( 295, 18, HOOKS_AT.OnSpawn );
+--RegisterUnitEvent( 1917, 18, HOOKS_AT.OnSpawn );
+--RegisterServerHook( 26, HOOKS_AT.OnAreaTrigger );
