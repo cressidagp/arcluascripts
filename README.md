@@ -22,9 +22,9 @@ Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips and Quests. T
 
 All script has been writed to prevent variable collision. Bosses has been scripted in modular way.
 
-*AI Summons loaded from database
-*AI Out of Combat Cast loaded from database
-*There are some others script wich are uncompleted or gonna be ported to APE
+* AI Summons loaded from database
+* AI Out of Combat Cast loaded from database
+* There are some others script wich are uncompleted or gonna be ported to APE
 
 The Ruby Sanctum  | Status
 :-- | :--
