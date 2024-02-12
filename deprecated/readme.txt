@@ -49,6 +49,7 @@ Elders.lua
 Arcanist_Vandril.lua
 Khadgar.lua
 Thomas_Miller.lua
+Supervisor_Raelen.lua
 
 VIII) Consolidated at ai_summons.lua
 
