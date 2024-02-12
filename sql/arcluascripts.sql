@@ -20,35 +20,6 @@ SET @ID8 := 78482;	-- Terokkar Forest: Liutenant Gravelhammer
 SET @ID9 := 77081;	-- Nagrand: Warden Moibff Jill
 SET @ID10 := 66819; -- Azuremyst Isle: Zulduun
 
-
---
--- 
--- This will just remove what should be the "out of combat stuff", so the lua script will coexist with the "on combat" ai agent:
---
---
-
--- Frost Armor:
-DELETE FROM `ai_agents` WHERE `spell` = 12544 AND `entry` 
-IN ( 203, 474, 476, 589, 619, 881, 910, 1009, 1539, 1867, 1889, 1920, 2018, 2276, 2387, 2567, 2761, 3269, 4460, 5328, 6117, 6228, 7437, 7666, 7667, 13096, 13099, 13540, 13541, 13542, 13546, 13547, 13548, 18664, 18934, 25073, 32373 );
-
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
-IN ( 203, 474, 476, 589, 619, 881, 910, 1009, 1539, 1867, 1889, 1920, 2018, 2276, 2387, 2567, 2761, 3269, 4460, 5328, 6117, 6228, 7437, 7666, 7667, 13096, 13099, 13540, 13541, 13542, 13546, 13547, 13548, 18664, 18934, 25073, 32373 );
-
-
--- Lightning Shield:
-DELETE FROM `ai_agents` WHERE `spell` = 324 AND `entry` 
-IN ( 1544, 2030, 3206, 3271, 5826 );
-
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
-IN ( 1544, 2030, 3206, 3271, 5826 );
-
--- Demon Skin:
-DELETE FROM `ai_agents` WHERE `spell` = 20798 AND `entry` 
-IN ( 1060, 1124, 1915, 3204, 5648, 16315 );
-
-UPDATE `creature_proto` SET `auras` = '' WHERE `entry` 
-IN ( 1060, 1124, 1915, 3204, 5648, 16315 );
-
 --
 --
 -- The next npc_monstersay has been ported to lua since its pointless to be casted on enter combat:
