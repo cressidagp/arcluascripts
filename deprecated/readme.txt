@@ -48,6 +48,7 @@ Ol_Emma.lua
 Elders.lua
 Arcanist_Vandril.lua
 Khadgar.lua
+Thomas_Miller.lua
 
 VIII) Consolidated at ai_summons.lua
 
