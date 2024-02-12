@@ -4,15 +4,7 @@
 	Engine: A.L.E
 	2024
 	
-	AI "Out Of Combat" cast with database loading
-
-	Credits:
-
-	*) TrinityCore for texts, sound ids, timers, spell ids and some inspiration.
-	*) DarkAngel39 for his instance progression system.
-	*) Hypersniper for his lua guides and some job in the lua engine.
-	*) Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-	*) ArcEmu developers for ArcEmu and A.L.E, specially to dfighter1985.
+	AI "Out Of Combat" cast loaded from database
 
 --]]
 
@@ -33,12 +25,21 @@ function OOC.onAIUpdate( unit, event )
 	
 	if q2 ~= nil then
 	
-		local spellId = q2:GetColumn( 0 ):GetUShort()
-		local cooldown = q2:GetColumn( 1 ):GetUShort()
+		local data = {}
+		
+		local colcount = q2:GetColumnCount()
+		
+		for col = 0, colcount -1 do
+		
+			data[ col ] = q2:GetColumn( col ):GetUShort()
+			--print(data[col])
 	
-		unit:CastSpell( spellId )
+		end
 	
-		unit:ModifyAIUpdateEvent( cooldown * 1000 )
+		unit:CastSpell( data[ 0 ] )
+		unit:ModifyAIUpdateEvent( data[ 1 ] * 1000 )
+		
+		data = nil
 		
 	end 
 
@@ -52,7 +53,7 @@ if q1 ~= nil then
 	
 	repeat
 	
-		for col = 0, colcount -1 do
+		for col = 0, colcount - 3 do
 		
 			local npcid = q1:GetColumn( col ):GetUShort()
 		
