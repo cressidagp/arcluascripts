@@ -13,16 +13,24 @@ I had started this project for myself, but use it if you want. In that case i ho
 
 WARNING: this wont expand too much since lua resources are very limited but i will push it to his limits.
 
-Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new).
+Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arcluascripts/issues/new)
 
 
 ## Features
 
 Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips and Quests. The main focus is set at Ruby Sanctum.
 
-All script has been writed to prevent variable collision
+All script has been writed to prevent variable collision. Bosses has been scripted in modular way.
 
-Bosses has been scripted in modular way.
+*AI Summons loaded from database
+*AI Out of Combat Cast loaded from database
+*There are some others script wich are uncompleted or gonna be ported to APE
+
+The Ruby Sanctum  | Status |
+Baltharus | :heavy_check_mark: |
+Saviana | :heavy_check_mark: |
+Zarithian | :heavy_check_mark: |
+Halion | :x: |
 
 
 ## Requirements
