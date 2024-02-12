@@ -26,11 +26,12 @@ All script has been writed to prevent variable collision. Bosses has been script
 *AI Out of Combat Cast loaded from database
 *There are some others script wich are uncompleted or gonna be ported to APE
 
-The Ruby Sanctum  | Status |
-Baltharus | :heavy_check_mark: |
-Saviana | :heavy_check_mark: |
-Zarithian | :heavy_check_mark: |
-Halion | :x: |
+The Ruby Sanctum  | Status
+:-- | :--
+Baltharus | :heavy_check_mark:
+Saviana | :heavy_check_mark:
+Zarithian | :heavy_check_mark:
+Halion | :x:
 
 
 ## Requirements
