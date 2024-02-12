@@ -98,7 +98,7 @@ function HOOKS_DEBUG.onChatMessage( event, plr, message )
 				local id = selection:GetSpawnId()
 
 				plr:SendBroadcastMessage( "Entry: "..entry.." " )
-				plr:SendBroadcastMessage( "Spawnid: "..entry.." " )
+				plr:SendBroadcastMessage( "Spawnid: "..id.." " )
 
 				print()
 				print(""..name.."")
