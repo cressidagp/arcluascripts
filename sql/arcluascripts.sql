@@ -14,7 +14,6 @@
 SET @ID1 := 135619;	-- Durotar: Minshinas Spirit
 SET @ID4 := 711234; -- Ruby Sanctum: Orb Carrier
 SET @ID5 := 134428; -- Ruby Sanctum: Baltharus
-SET @ID6 := 109436; -- Ruby Sanctum: Target Crystal
 SET @ID7 := 200631; -- Ruby Sanctum: Halion Controller
 SET @ID8 := 78482;	-- Terokkar Forest: Liutenant Gravelhammer
 SET @ID9 := 77081;	-- Nagrand: Warden Moibff Jill
@@ -280,10 +279,6 @@ UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 39751;
 -- Burning Trees
 UPDATE `gameobject_spawns` SET `State` = 3 WHERE `Entry` IN ( 203034, 203035, 203036, 203037 );
 
-/*
-UPDATE `creature_spawns` SET `channel_spell` = 76221 AND `channel_target_sqlid_creature` = @ID6 WHERE `id` = @ID5;
-*/
-
 -- Halion Controller
 UPDATE `creature_proto` SET `invisibility_type` = 0 WHERE `entry` = 40146;
 
@@ -506,4 +501,4 @@ CREATE TABLE `arcluascripts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `arcluascripts`(`version`) values 
-('2025-06-25_13-48_PortedToDB');
+('2025-06-25_14-16_Cleanup');
