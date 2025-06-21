@@ -72,12 +72,6 @@ DELETE FROM `npc_gossip_textid` WHERE `creatureid` = 17087; -- Azuremyst Isle: S
 -- Bronjahm: monstersay OnCombat, OnDeath
 UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36497;
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
-VALUES (36497, 0, 100, 0, 14, 'Bronjahm', 'Finally, a captive audience!', NULL, NULL, NULL, NULL);
-
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
-VALUES (36497, 5, 100, 0, 14, 'Bronjahm', 'The Devourer awaits...', NULL, NULL, NULL, NULL);
-
 /*
 -- Corrupted Fragmented Soul:
 UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36535;
@@ -86,11 +80,6 @@ UPDATE `creature_proto` SET `auras` = '' WHERE `entry` = 36535;
 -- Devourer Of Souls
 UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 36502;
 
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
-VALUES (36502, 0, 100, 0, 14, 'Devourer Of Souls', 'You dare look upon the host of souls? I SHALL DEVOUR YOU WHOLE!', NULL, NULL, NULL, NULL);
-
-REPLACE INTO `npc_monstersay` (`entry`, `event`, `chance`, `language`, `type`, `monstername`, `text0`, `text1`, `text2`, `text3`, `text4`) 
-VALUES (36502, 5, 100, 0, 14, 'Devourer Of Souls', 'The swell of souls will not be abated! You only delay the inevitable.', NULL, NULL, NULL, NULL);
 
 --
 --
