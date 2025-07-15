@@ -21,8 +21,7 @@ function LadyDeathwhisper_onSpawn( unit, event )
 		action = 0,
 		chat = 0,
 		phase = 0
-		
-	
+
 	}
 	
 	unit:RegisterAIUpdateEvent( 1000 )
@@ -103,8 +102,37 @@ end
 
 function LadyDeathwhisper_onEnterCombat( unit, event, attacker )
 
+	local vars = self[ tostring( unit ) ]
 	
+	vars.phase = 2
+	vars.deathNdecay = 17
+	vars.dominateMinds = math.random( 40, 45 )
+	vars.berserk = 10 * 60 * 1000
 
+end
+
+function LadyDeathwhisper_onTargetDied( unit, event, victim )
+
+	if victim:IsPlayer() == true then
+	
+		local chance = math.random( 0, 1 )
+		
+		if chance == 0 then
+	
+			unit:PlaySoundToSet( 16869 )
+		
+			unit:SendChatMessage( 14, 0, "Do you yet grasp the futility of your actions?" )
+			
+		else
+		
+			unit:PlaySoundToSet( 16870 )
+			
+			unit:SendChatMessage( 14, 0, "Embrace the darkness... darkness eternal.!" )
+		
+		end
+	
+	end
+	
 end
 
 function LadyDeathwhisper_onAIUpdate( unit, event )
@@ -132,11 +160,22 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			return 
 		end
 	
-		vars.boneSlice = vars.boneSlice - 1
+		vars.deathNdecay = vars.deathNdecay - 1
+		vars.berserk = vars.berserk - 1
 		
-		if vars.boneSlice <= 0 then
+		if vars.deathNdecay <= 0 then
 		
-			-- do sheet
+			target = unit:GetRandomPlayer( 0 )
+			
+			if target then
+			
+				unit:FullCastSpellOnTarget( 71001, target )
+				
+			end
+		
+		elseif vars.berserk <= 0 then
+		
+			unit:CastSpell( 26662 )
 		
 		end
 	
@@ -144,8 +183,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 
 end
 
-
-
 RegisterUnitEvent( 36855, 18, LadyDeathwhisper_onSpawn )
 RegisterUnitEvent( 36855, 1, LadyDeathwhisper_onEnterCombat )
+RegisterUnitEvent( 36855, 3, LadyDeathwhisper_onTargetDied )
 RegisterUnitEvent( 36855, 21, LadyDeathwhisper_onAIUpdate )
