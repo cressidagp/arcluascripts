@@ -111,7 +111,7 @@ function LadyDeathwhisper_onEnterCombat( unit, event, attacker )
 	vars.phase = 2
 	vars.deathNdecay = 17
 	vars.dominateMinds = math.random( 40, 45 )
-	vars.berserk = 10 * 60 * 1000
+	vars.berserk = 10 * 60
 	vars.shadowBolt = 2
 	vars.summons = 5
 	
@@ -230,7 +230,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			
 			unit:CastSpell( 26662 )
 			
-			vars.berserk = 10 * 60 * 1000
+			vars.berserk = 10 * 60
 		
 		end
 		

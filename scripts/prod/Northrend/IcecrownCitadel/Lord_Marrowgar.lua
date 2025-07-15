@@ -31,7 +31,7 @@ function LordMarrowgar_onSpawn( unit, event )
 		boneStormBegin = nil,
 		boneStormMove = nil,
 		boneStormEnd = nil,
-		berserk = 10 * 60 * 1000,
+		berserk = 10 * 60,
 		coldflameTarget = 0,
 		coldflameLastPos = { nil, nil, nil }
 	
@@ -219,7 +219,7 @@ function LordMarrowgar_onAIUpdate( unit )
 			unit:CastSpell( 26662 )
 			unit:PlaySoundToSet( 16945 )
 			unit:SendChatMessage( 14, 0, "THE MASTER'S RAGE COURSES THROUGH ME!" )
-			vars.berserk = 10 * 60 * 1000
+			vars.berserk = 10 * 60
 
 		end
 
