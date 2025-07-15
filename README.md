@@ -26,6 +26,13 @@ All script has been writed to prevent variable collision. Bosses has been script
 * AI Out of Combat Cast loaded from database
 * There are some others script wich are uncompleted or gonna be ported to APE
 
+Icecrown Citadel  | Status
+:-- | :--
+Lord Marrowgar | :heavy_check_mark:
+Lady Deathwhisper | :x:
+Deathbringer Saurfang | :x:
+The Lich King | :x:
+
 The Ruby Sanctum  | Status
 :-- | :--
 Baltharus | :heavy_check_mark:
