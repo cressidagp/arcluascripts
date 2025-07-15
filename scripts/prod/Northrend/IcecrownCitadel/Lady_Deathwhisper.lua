@@ -28,6 +28,10 @@ function LadyDeathwhisper_onSpawn( unit, event )
 
 end
 
+
+--
+-- @dfighter1985 python state machine version lua
+--
 function LadyDeathwhisper_doAction( unit )
 
 	local vars = self[ tostring( unit ) ]
@@ -139,6 +143,24 @@ function LadyDeathwhisper_onTargetDied( unit, event, victim )
 	
 end
 
+function LadyDeathwhisper_onDamageTaken( unit, event, attacker, damage )
+
+	local vars = self[ tostring( unit ) ]
+
+	if vars.phase == 2 and damage > unit:GetMana() then
+	
+		unit:PlaySoundToSet( 16877 )
+		
+		unit:SendChatMessage( 14, 0, "Enough! I see I must take matters into my own hands!" )
+		
+		unit:SendChatMessage( 41, 0, "%s's Mana Barrier shimmers and fades away!" )
+		
+		vars.phase = 3
+	
+	end
+
+end
+
 function LadyDeathwhisper_summonW1( unit )
 
 end
@@ -186,6 +208,10 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 		
 		elseif vars.dominateMinds <= 0 then
 		
+			unit:PlaySoundToSet( 16876 )
+			
+			unit:SendChatMessage( 14, 0, "You are weak, powerless to resist my will!" )
+			
 			target = unit:GetRandomPlayer( 0 )
 			
 			if target then
@@ -197,12 +223,12 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			vars.dominateMinds = math.random( 40, 45 )
 		
 		elseif vars.berserk <= 0 then
-		
-			unit:CastSpell( 26662 )
 			
 			unit:PlaySoundToSet( 16872 )
 			
 			unit:SendChatMessage( 14, 0, "This charade has gone on long enough!" )
+			
+			unit:CastSpell( 26662 )
 			
 			vars.berserk = 10 * 60 * 1000
 		
@@ -232,6 +258,10 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 				vars.summons = 45
 			
 			end
+			
+		elseif vars.phase == 3 then
+		
+			-- do sheet
 		
 		end
 	
@@ -242,4 +272,5 @@ end
 RegisterUnitEvent( 36855, 18, LadyDeathwhisper_onSpawn )
 RegisterUnitEvent( 36855, 1, LadyDeathwhisper_onEnterCombat )
 RegisterUnitEvent( 36855, 3, LadyDeathwhisper_onTargetDied )
+RegisterUnitEvent( 36855, 23, LadyDeathwhisper_onDamageTaken )
 RegisterUnitEvent( 36855, 21, LadyDeathwhisper_onAIUpdate )
