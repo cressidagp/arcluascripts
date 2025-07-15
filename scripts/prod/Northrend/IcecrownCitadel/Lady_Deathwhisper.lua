@@ -108,6 +108,10 @@ function LadyDeathwhisper_onEnterCombat( unit, event, attacker )
 	vars.deathNdecay = 17
 	vars.dominateMinds = math.random( 40, 45 )
 	vars.berserk = 10 * 60 * 1000
+	vars.shadowBolt = 2
+	vars.summons = 5
+	
+	unit:PlaySoundToSet( 16868 )
 
 end
 
@@ -135,6 +139,10 @@ function LadyDeathwhisper_onTargetDied( unit, event, victim )
 	
 end
 
+function LadyDeathwhisper_summonW1( unit )
+
+end
+
 function LadyDeathwhisper_onAIUpdate( unit, event )
 
 	local vars = self[ tostring( unit ) ]
@@ -153,7 +161,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 	
 	end
 	
-	if vars.phase == 2 then
+	if vars.phase == 2 or vars.phase == 3 then
 	
 		if unit:GetNextTarget() == nil then
 			unit:WipeThreatList()
@@ -197,6 +205,33 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			unit:SendChatMessage( 14, 0, "This charade has gone on long enough!" )
 			
 			vars.berserk = 10 * 60 * 1000
+		
+		end
+		
+		if vars.phase == 2 then
+		
+			vars.shadowBolt = vars.shadowBolt - 1
+			vars.summons = vars.summons - 1
+			
+			if vars.shadowBolt <= 0 then
+			
+				local target = unit:GetRandomPlayer( 0 )
+				
+				if target then
+				
+					unit:FullCastSpellOnTarget( 71254, target )
+					
+					vars.shadowBolt = math.random( 3, 4 )
+				
+				end
+			
+			elseif vars.summons <= 0 then
+			
+				LadyDeathwhisper_summonW1( unit )
+				
+				vars.summons = 45
+			
+			end
 		
 		end
 	
