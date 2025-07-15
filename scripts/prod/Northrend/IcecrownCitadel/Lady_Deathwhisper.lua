@@ -161,6 +161,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 		end
 	
 		vars.deathNdecay = vars.deathNdecay - 1
+		vars.dominateMinds = vars.dominateMinds - 1
 		vars.berserk = vars.berserk - 1
 		
 		if vars.deathNdecay <= 0 then
@@ -174,6 +175,18 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			end
 			
 			vars.deathNdecay = math.random( 22, 30 )
+		
+		elseif vars.dominateMinds <= 0 then
+		
+			target = unit:GetRandomPlayer( 0 )
+			
+			if target then
+			
+				unit:FullCastSpellOnTarget( 71289, target )
+			
+			end
+			
+			vars.dominateMinds = math.random( 40, 45 )
 		
 		elseif vars.berserk <= 0 then
 		
