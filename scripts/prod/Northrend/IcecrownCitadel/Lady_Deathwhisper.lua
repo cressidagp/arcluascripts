@@ -172,6 +172,8 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 				unit:FullCastSpellOnTarget( 71001, target )
 				
 			end
+			
+			vars.deathNdecay = math.random( 22, 30 )
 		
 		elseif vars.berserk <= 0 then
 		
