@@ -176,6 +176,12 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 		elseif vars.berserk <= 0 then
 		
 			unit:CastSpell( 26662 )
+			
+			unit:PlaySoundToSet( 16872 )
+			
+			unit:SendChatMessage( 14, 0, "This charade has gone on long enough!" )
+			
+			vars.berserk = 10 * 60 * 1000
 		
 		end
 	
