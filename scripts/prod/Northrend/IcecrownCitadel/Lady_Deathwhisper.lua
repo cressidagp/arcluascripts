@@ -1,3 +1,9 @@
+--[[
+
+PHASE_ALL       = 0
+PHASE_INTRO     = 1
+PHASE_ONE       = 2
+PHASE_TWO       = 3
 
 TODO:
 
@@ -6,6 +12,7 @@ TODO:
 *) SPELL_SHADOW_CHANNELING: dummy aura
 *) SUMMON_SPIRITS: dummy spell
 *) stop fucking elevator until boss is dead
+*) darnavan quest and summon
 	
 --]]
 
@@ -419,9 +426,121 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 
 end
 
+--
+-- Darnavan
+--
+
+function ICC_Darnavan_onSpawn( unit, event )
+
+	self[ tostring( unit ) ] = {
+	
+		canCharge = true,
+		canShatter = true,
+		bladestorm = 10,
+		intimidatingShout = math.random( 20, 25 ),
+		mortalStrike = math.random( 25, 30 ),
+		sunderArmor = math.random( 5, 8 )
+
+	}
+
+end
+
+function ICC_Darnavan_onAIupdate( unit, event )
+
+	if unit:GetNextTarget() == nil then
+		unit:WipeThreatList()
+		return 
+	end
+	
+	if unit:GetAIState() == 2 then
+		return
+	end
+	
+	local misc = self[ tostring( unit ) ]
+	
+	if misc.canShatter == true then
+	
+		unit:FullCastSpellOnTarget( 65940, target )
+		
+		misc.canShatter = false
+		
+		misc.shatteringThrow = 30
+	
+	end
+	
+	if misc.canCharge == true then
+	
+		unit:FullCastSpellOnTarget( 65927, target )
+		
+		misc.canCharge = false
+		
+		misc.charge = 20
+	
+	end
+	
+	if misc.shatteringThrow ~= nil then
+	
+		misc.shatteringThrow = misc.shatteringThrow - 1
+	
+	end
+	
+	if misc.charge ~= nil then
+	
+		misc.charge = misc.charge - 1
+	
+	end
+	
+	misc.bladestorm = misc.bladestorm - 1
+	misc.intimidatingShout = misc.intimidatingShout - 1
+	misc.mortalStrike = misc.mortalStrike - 1
+	misc.sunderArmor = misc.sunderArmor = - 1
+	
+	if misc.bladestorm <= 0 then
+	
+		unit:FullCastSpell( 65947 )
+		
+		misc.bladestorm = math.random( 90, 100 )
+	
+	elseif misc.charge <= 0 then
+	
+		misc.canCharge = true
+		misc.charge = nil
+	
+	elseif misc.intimidatingShout <= 0 then
+	
+		unit:FullCastSpell( 65930 )
+		
+		misc.intimidatingShout = math.random( 90, 120 )
+	
+	elseif misc.mortalStrike <= 0 then
+	
+		unit:FullCastSpell( 65926 )
+		
+		misc.mortalStrike = math.random( 15, 30 )
+	
+	elseif misc.shatteringThrow <= 0 then
+	
+		misc.canShatter = true
+		misc.shatteringThrow = nil
+	
+	elseif misc.sunderArmor <= 0 then
+	
+		unit:FullCastSpell( 65936 )
+		
+		misc.sunderArmor = math.random( 3, 7 )
+	
+	end
+
+end
+
 RegisterUnitEvent( 36855, 18, LadyDeathwhisper_onSpawn )
 RegisterUnitEvent( 36855, 1, LadyDeathwhisper_onEnterCombat )
 RegisterUnitEvent( 36855, 3, LadyDeathwhisper_onTargetDied )
 RegisterUnitEvent( 36855, 4, LadyDeathwhisper_onDied )
 RegisterUnitEvent( 36855, 23, LadyDeathwhisper_onDamageTaken )
 RegisterUnitEvent( 36855, 21, LadyDeathwhisper_onAIUpdate )
+
+RegisterUnitEvent( 38472, 1, ICC_Darnavan_onAIupdate )
+RegisterUnitEvent( 38485, 1, ICC_Darnavan_onAIupdate )
+RegisterUnitEvent( 38472, 18, ICC_Darnavan_onSpawn )
+RegisterUnitEvent( 38485, 18, ICC_Darnavan_onSpawn )
