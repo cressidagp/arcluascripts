@@ -493,7 +493,7 @@ function ICC_Darnavan_onAIupdate( unit, event )
 	misc.bladestorm = misc.bladestorm - 1
 	misc.intimidatingShout = misc.intimidatingShout - 1
 	misc.mortalStrike = misc.mortalStrike - 1
-	misc.sunderArmor = misc.sunderArmor = - 1
+	misc.sunderArmor = misc.sunderArmor - 1
 	
 	if misc.bladestorm <= 0 then
 	
