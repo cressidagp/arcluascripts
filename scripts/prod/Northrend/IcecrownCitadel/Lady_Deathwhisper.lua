@@ -1,9 +1,11 @@
---[[
 
-PHASE_ALL       = 0
-PHASE_INTRO     = 1
-PHASE_ONE       = 2
-PHASE_TWO       = 3
+TODO:
+
+*) all archivment stuff
+*) load a boss database entry for heach dungeon difficulty
+*) SPELL_SHADOW_CHANNELING: dummy aura
+*) SUMMON_SPIRITS: dummy spell
+*) stop fucking elevator until boss is dead
 	
 --]]
 
@@ -122,8 +124,10 @@ function LadyDeathwhisper_onEnterCombat( unit, event, attacker )
 	local vars = self[ tostring( unit ) ]
 	
 	vars.phase = 2
-	vars.deathNdecay = 17
 	
+	if unit:IsRooted() == false then unit:Root() end
+	
+	vars.deathNdecay = 17
 	vars.berserk = 10 * 60
 	vars.shadowBolt = 2
 	vars.summonW1 = 5
@@ -192,8 +196,6 @@ function LadyDeathwhisper_onDamageTaken( unit, event, attacker, damage )
 		
 		if unit:IsRooted() == true then unit:Unroot() end
 		
-		mana = mana - damage
-		
 		unit:SetMana( 0 )
 		
 		-- SPELL_MANA_BARRIER
@@ -204,6 +206,19 @@ function LadyDeathwhisper_onDamageTaken( unit, event, attacker, damage )
 		vars.touchOfInsignificance = 5
 		vars.summonSpirits = 12
 		
+		-- heroic(s)
+		if vars.raidMode >= 2 then
+		
+			vars.summonW2 = 45
+		
+		end
+		
+	else
+		
+		currentMana = currentMana - damage
+		
+		unit:SetMana( currentMana )
+	
 	end
 
 end
@@ -219,6 +234,10 @@ function LadyDeathwhisper_summonWave( unit )
 	unit:SpawnCreature( 37890, -598.9688, 2269.264, 51.01529, 4.590216, 14, 80000 ) -- 5 Right Door 2 (Cult Fanatic)
 	unit:SpawnCreature( 37949, -619.4323, 2268.523, 51.01530, 4.590216, 14, 80000 ) -- 6 Right Door 3 (Cult Adherent)
 	unit:SpawnCreature( cultist[ i ], -524.2480, 2211.920, 62.90960, 3.141592, 14, 80000 ) -- 7 Upper (Random Cultist)
+	
+	local vars = self[ tostring( unit ) ]
+	
+	vars.waveCounter = vars.waveCounter + 1
 
 end
 
@@ -248,8 +267,13 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 		end
 	
 		vars.deathNdecay = vars.deathNdecay - 1
-		vars.dominateMinds = vars.dominateMinds - 1
 		vars.berserk = vars.berserk - 1
+		
+		if vars.dominateMinds ~= nil then
+		
+			vars.dominateMinds = vars.dominateMinds - 1
+		
+		end
 		
 		if vars.deathNdecay <= 0 then
 		
@@ -263,7 +287,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			
 			vars.deathNdecay = math.random( 22, 30 )
 		
-		elseif vars.dominateMinds <= 0 then
+		elseif vars.raidMode ~= 0 and vars.dominateMinds <= 0 then
 		
 			unit:PlaySoundToSet( 16876 )
 			
@@ -275,7 +299,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			
 			local targetCount = 0
 			
-			for i, v in ipairs do 
+			for i, v in ipairs( targetCandidates ) do 
 			
 				if v:HasAura( 71289 ) == false then
 				
@@ -316,7 +340,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 		if vars.phase == 2 then
 		
 			vars.shadowBolt = vars.shadowBolt - 1
-			vars.summonW1 = vars.summonsW1 - 1
+			vars.summonW1 = vars.summonW1 - 1
 			
 			if vars.shadowBolt <= 0 then
 			
@@ -359,7 +383,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 				
 			elseif vars.frostboltVolley <= 0 then
 			
-				unit:FullCastAoE( x, y, z, 72905 )
+				unit:FullCastSpell( 72905 )
 				
 				vars.frostboltVolley = 20
 				
