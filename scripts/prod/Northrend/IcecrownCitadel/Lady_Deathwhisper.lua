@@ -28,7 +28,6 @@ function LadyDeathwhisper_onSpawn( unit, event )
 
 end
 
-
 --
 -- @dfighter1985 python state machine version lua
 --
@@ -116,6 +115,12 @@ function LadyDeathwhisper_onEnterCombat( unit, event, attacker )
 	vars.summons = 5
 	
 	unit:PlaySoundToSet( 16868 )
+	
+	-- SPELL_SHADOW_CHANNELING
+	unit:RemoveAura( 43897 )
+	
+	-- SPELL_MANA_BARRIER
+	unit:CastSpell( 70842 )
 
 end
 
@@ -143,11 +148,19 @@ function LadyDeathwhisper_onTargetDied( unit, event, victim )
 	
 end
 
+function LadyDeathwhisper_onDied( unit, event, killer )
+
+	unit:PlaySoundToSet( 16871 )
+
+end
+
 function LadyDeathwhisper_onDamageTaken( unit, event, attacker, damage )
 
 	local vars = self[ tostring( unit ) ]
 
-	if vars.phase == 2 and damage > unit:GetMana() then
+	local mana = unit:GetMana()
+	
+	if vars.phase == 2 and damage > mana then
 	
 		unit:PlaySoundToSet( 16877 )
 		
@@ -156,6 +169,17 @@ function LadyDeathwhisper_onDamageTaken( unit, event, attacker, damage )
 		unit:SendChatMessage( 41, 0, "%s's Mana Barrier shimmers and fades away!" )
 		
 		vars.phase = 3
+		
+		mana = mana - damage
+		
+		unit:SetMana( mana )
+		
+		if mana <= 0 then
+		
+			-- Mana barrier
+			unit:RemoveAura( 70842 )
+		
+		end
 	
 	end
 
@@ -200,7 +224,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			
 			if target then
 			
-				unit:FullCastSpellOnTarget( 71001, target )
+				unit:CastSpellOnTarget( 71001, target )
 				
 			end
 			
@@ -216,7 +240,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			
 			if target then
 			
-				unit:FullCastSpellOnTarget( 71289, target )
+				unit:CastSpellOnTarget( 71289, target )
 			
 			end
 			
@@ -272,5 +296,6 @@ end
 RegisterUnitEvent( 36855, 18, LadyDeathwhisper_onSpawn )
 RegisterUnitEvent( 36855, 1, LadyDeathwhisper_onEnterCombat )
 RegisterUnitEvent( 36855, 3, LadyDeathwhisper_onTargetDied )
+RegisterUnitEvent( 36855, 4, LadyDeathwhisper_onDied )
 RegisterUnitEvent( 36855, 23, LadyDeathwhisper_onDamageTaken )
 RegisterUnitEvent( 36855, 21, LadyDeathwhisper_onAIUpdate )
