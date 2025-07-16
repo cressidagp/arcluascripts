@@ -9,14 +9,20 @@ PHASE_TWO       = 3
 
 local self = getfenv( 1 )
 
+local cultist = { 37890, 37949 }
+
 function LadyDeathwhisper_onSpawn( unit, event )
 
+	-- SPELL_SHADOW_CHANNELING
+	unit:CastSpell( 43897 )
+	
 	self[ tostring( unit ) ] = {
 	
 		waveCounter = 0,
 		nextVengefulShadeTargetGUID = 0,
 		cultistQueue = 0,
 		darnavanGUID = 0,
+		raidMode = unit:GetDungeonDifficulty(), 
 		dominateMindCount = { 0, 1, 1, 3 },
 		action = 0,
 		chat = 0,
@@ -97,7 +103,15 @@ function LadyDeathwhisper_doAction( unit )
 		
 	end
 	
-	action = action + 1
+	if action == 8 then
+	
+		action = nil
+		
+	else
+	
+		action = action + 1
+		
+	end
 	
 	vars.action = action
 
@@ -109,10 +123,16 @@ function LadyDeathwhisper_onEnterCombat( unit, event, attacker )
 	
 	vars.phase = 2
 	vars.deathNdecay = 17
-	vars.dominateMinds = math.random( 40, 45 )
+	
 	vars.berserk = 10 * 60
 	vars.shadowBolt = 2
-	vars.summons = 5
+	vars.summonW1 = 5
+	
+	if vars.raidMode ~= 0 then
+	
+		vars.dominateMinds = 27
+	
+	end
 	
 	unit:PlaySoundToSet( 16868 )
 	
@@ -158,9 +178,9 @@ function LadyDeathwhisper_onDamageTaken( unit, event, attacker, damage )
 
 	local vars = self[ tostring( unit ) ]
 
-	local mana = unit:GetMana()
+	local currentMana = unit:GetMana()
 	
-	if vars.phase == 2 and damage > mana then
+	if vars.phase == 2 and damage > currentMana then
 	
 		unit:PlaySoundToSet( 16877 )
 		
@@ -170,22 +190,35 @@ function LadyDeathwhisper_onDamageTaken( unit, event, attacker, damage )
 		
 		vars.phase = 3
 		
+		if unit:IsRooted() == true then unit:Unroot() end
+		
 		mana = mana - damage
 		
-		unit:SetMana( mana )
+		unit:SetMana( 0 )
 		
-		if mana <= 0 then
+		-- SPELL_MANA_BARRIER
+		unit:RemoveAura( 70842 )
 		
-			-- Mana barrier
-			unit:RemoveAura( 70842 )
+		vars.frostbolt = 12
+		vars.frostboltVolley = 20
+		vars.touchOfInsignificance = 5
+		vars.summonSpirits = 12
 		
-		end
-	
 	end
 
 end
 
-function LadyDeathwhisper_summonW1( unit )
+function LadyDeathwhisper_summonWave( unit )
+
+	local i = math.random( 1, 2 )
+				
+	unit:SpawnCreature( 37890, -578.7066, 2154.167, 51.01529, 1.692969, 14, 80000 ) -- 1 Left Door 1 (Cult Fanatic)
+	unit:SpawnCreature( 37949, -598.9028, 2155.005, 51.01530, 1.692969, 14, 80000 ) -- 2 Left Door 2 (Cult Adherent)
+	unit:SpawnCreature( 37890, -619.2864, 2154.460, 51.01530, 1.692969, 14, 80000 ) -- 3 Left Door 3 (Cult Fanatic)
+	unit:SpawnCreature( 37949, -578.6996, 2269.856, 51.01529, 4.590216, 14, 80000 ) -- 4 Right Door 1 (Cult Adherent)
+	unit:SpawnCreature( 37890, -598.9688, 2269.264, 51.01529, 4.590216, 14, 80000 ) -- 5 Right Door 2 (Cult Fanatic)
+	unit:SpawnCreature( 37949, -619.4323, 2268.523, 51.01530, 4.590216, 14, 80000 ) -- 6 Right Door 3 (Cult Adherent)
+	unit:SpawnCreature( cultist[ i ], -524.2480, 2211.920, 62.90960, 3.141592, 14, 80000 ) -- 7 Upper (Random Cultist)
 
 end
 
@@ -236,11 +269,33 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 			
 			unit:SendChatMessage( 14, 0, "You are weak, powerless to resist my will!" )
 			
-			target = unit:GetRandomPlayer( 0 )
+			local targetList = {}
 			
-			if target then
+			local targetCandidates = unit:GetInRangePlayers()
 			
-				unit:CastSpellOnTarget( 71289, target )
+			local targetCount = 0
+			
+			for i, v in ipairs do 
+			
+				if v:HasAura( 71289 ) == false then
+				
+					table.insert( targetList, v )
+					
+					targetCount = targetCount + 1
+					
+					if count == vars.dominateMindCount[ vars.raidMode + 1 ] then
+						
+						break
+							
+					end
+				
+				end
+			
+			end
+			
+			for t = 1, #targetList do
+			
+				unit:CastSpellOnTarget( 71289, targetList[ t ] )
 			
 			end
 			
@@ -261,7 +316,7 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 		if vars.phase == 2 then
 		
 			vars.shadowBolt = vars.shadowBolt - 1
-			vars.summons = vars.summons - 1
+			vars.summonW1 = vars.summonsW1 - 1
 			
 			if vars.shadowBolt <= 0 then
 			
@@ -275,17 +330,64 @@ function LadyDeathwhisper_onAIUpdate( unit, event )
 				
 				end
 			
-			elseif vars.summons <= 0 then
+			elseif vars.summonW1 <= 0 then
 			
-				LadyDeathwhisper_summonW1( unit )
-				
-				vars.summons = 45
+				LadyDeathwhisper_summonWave( unit )
+
+				vars.summonW1 = 45
 			
 			end
 			
 		elseif vars.phase == 3 then
 		
-			-- do sheet
+			vars.frostbolt = vars.frostbolt - 1
+			vars.frostboltVolley = vars.frostboltVolley - 1
+			vars.touchOfInsignificance = vars.touchOfInsignificance - 1
+			vars.summonSpirits = vars.summonSpirits - 1
+		
+			if vars.frostbolt <= 0 then
+			
+				target = unit:GetNextTarget()
+				
+				if target then
+				
+					unit:FullCastSpellOnTarget( 71420, target )
+				
+					vars.frostbolt = 12
+					
+				end
+				
+			elseif vars.frostboltVolley <= 0 then
+			
+				unit:FullCastAoE( x, y, z, 72905 )
+				
+				vars.frostboltVolley = 20
+				
+			elseif vars.touchOfInsignificance <= 0 then
+			
+				target = unit:GetNextTarget()
+				
+				if target then
+				
+					target:AddAura( 71204, -1 )
+					
+					vars.touchOfInsignificance = 5
+					
+				end
+			
+			elseif vars.summonSpirits <= 0 then
+			
+				unit:CastSpell( 72478 )
+				
+				vars.summonSpirits = 12
+			
+			elseif vars.summonW2 <= 0 then
+			
+				LadyDeathwhisper_summonWave( unit )
+				
+				vars.summonW2 = 45
+			
+			end
 		
 		end
 	
