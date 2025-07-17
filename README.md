@@ -22,14 +22,15 @@ Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips and Quests. T
 
 All script has been writed to prevent variable collision. Bosses has been scripted in modular way.
 
-* AI Summons loaded from database
-* AI Out of Combat Cast loaded from database
+* AI Summons loaded from database (experimental)
+* AI Out of Combat Cast loaded from database (eperimental)
 * There are some others script wich are uncompleted or gonna be ported to APE
 
 Icecrown Citadel  | Status
 :-- | :--
 Lord Marrowgar | :heavy_check_mark:
 Lady Deathwhisper | :heavy_check_mark:
+Gunship Battle | Need core support
 Deathbringer Saurfang | :x:
 The Lich King | :x:
 Instance | :x:
