@@ -29,9 +29,10 @@ All script has been writed to prevent variable collision. Bosses has been script
 Icecrown Citadel  | Status
 :-- | :--
 Lord Marrowgar | :heavy_check_mark:
-Lady Deathwhisper | :x:
+Lady Deathwhisper | :heavy_check_mark:
 Deathbringer Saurfang | :x:
 The Lich King | :x:
+Instance | :x:
 
 The Ruby Sanctum  | Status
 :-- | :--
@@ -39,6 +40,7 @@ Baltharus | :heavy_check_mark:
 Saviana | :heavy_check_mark:
 Zarithian | :heavy_check_mark:
 Halion | :x:
+Instance | :heavy_check_mark:
 
 
 ## Requirements
