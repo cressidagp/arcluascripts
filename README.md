@@ -2,7 +2,7 @@
 
 ## Status
 
-At the momment im cleaning up this. Many blizzlike scripts will be ported to Plugins or APE.
+Work on Icecrown Citadel has been started.
 Will return to development of Ruby Sanctum (i mean to finish Halion) after that.
 
 ## Introduction
@@ -20,11 +20,12 @@ Feel free to [open tickets to report bugs.](https://github.com/cressidagp/arclua
 
 Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips and Quests. The main focus is set at Ruby Sanctum.
 
-All script has been writed to prevent variable collision. Bosses has been scripted in modular way.
+All script has been writed to prevent variable collision. Some bosses has been scripted in modular way.
 
+* Add support to load creatures speaches (sound + text + emote) from database
 * AI Summons loaded from database (experimental)
 * AI Out of Combat Cast loaded from database (eperimental)
-* There are some others script wich are uncompleted or gonna be ported to APE
+* There are some others script wich are uncompleted, useless or gonna be ported to APE
 
 Icecrown Citadel  | Status
 :-- | :--
