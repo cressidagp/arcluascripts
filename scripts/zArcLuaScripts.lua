@@ -19,21 +19,21 @@ local version = WorldDBQuery( "SELECT `version` FROM `arcluascripts`" ):GetColum
 
 if version == nil then
 
-	print("==============================================================")
-	print("ArcLuaScripts: your forget to apply SQL file to your database!")
-	print("==============================================================")
+	print("====================================================================")
+	print("ArcLuaScripts: your forget to apply SQL file to your world database!")
+	print("====================================================================")
 
-elseif version == "2021-10-26_15-00_FleeAgents" then
+elseif version == "2025-06-25_14-16_Cleanup" then
 
-	print("============================================")
-	print("ArcLuaScripts: your database its up to date!")
-	print("============================================")
+	print("==================================================")
+	print("ArcLuaScripts: your world database its up to date!")
+	print("==================================================")
 
 else
 
-    print("=================================================")
-    print("ArcLuaScripts: your database has and old version!")
-    print("=================================================")
+    print("================================================")
+    print("ArcLuaScripts: your world database its outdated!")
+    print("================================================")
 
 end
 

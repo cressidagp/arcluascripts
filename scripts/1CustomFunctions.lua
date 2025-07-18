@@ -14,7 +14,6 @@
 	Developer notes: added here some custom function(s) that can be used at more than one script.
 
 --]]
-
 function table.find( t, v ) 
     if type( t ) == "table" and v then
         for k, value in pairs( t ) do
