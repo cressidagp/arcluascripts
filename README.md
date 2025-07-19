@@ -3,6 +3,7 @@
 ## Status
 
 Work on Icecrown Citadel has been started.
+
 Will return to development of Ruby Sanctum (i mean to finish Halion) after that.
 
 ## Introduction
@@ -22,9 +23,9 @@ Lua scripts for Instances, Bosses, Creatures, GameObjects, Gossips and Quests. T
 
 All script has been writed to prevent variable collision. Some bosses has been scripted in modular way.
 
-* Add support to load creatures speaches (sound + text + emote) from database
+* Support to load creatures speaches (sound + text + emote) from database
 * AI Summons loaded from database (experimental)
-* AI Out of Combat Cast loaded from database (eperimental)
+* AI Out of Combat Cast loaded from database (experimental)
 * There are some others script wich are uncompleted, useless or gonna be ported to APE
 
 Icecrown Citadel  | Status
@@ -54,19 +55,19 @@ Also require [db world database.](https://github.com/arcemu/db)
 
 ## Instalation
 
-1. Copy all files from scripts folder in to your ArcEmu scripts folder.
+1. Copy all files from scripts\prod folder in to your ArcEmu scripts folder.
 
-2. Apply arcluascripts.sql to your world database (for db only).
+2. Apply all files from sql folder to your world database (for db only).
 
 
 ## Credits to
 
 * Trinity for texts, sound ids, timers, spell ids and some inspiration.
-* DarkAngel39 for his instance progression system.
-* Marforius for ArcAddons who make my life much easier.
+* @DarkAngel39 for his instance progression system.
+* @Marforius for ArcAddons who make my life much easier.
 * Hypersniper for his lua guides and some job in the lua engine.
-* Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
-* ArcEmu developers for ArcEmu and A.L.E, specially to dfighter1985.
+* @Paroxysm for his Modular Way of scripting, LCF and Lua Scripting Expected Standards.
+* ArcEmu developers for ArcEmu and A.L.E, specially to @dfighter1985
 
 
 ## Useful Links
