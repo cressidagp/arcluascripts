@@ -31,7 +31,7 @@ function talkFromDB( unit, group )
 	
 	local entry = unit:GetEntry()
 	
-	local result = WorldDBQuery("SELECT ID, Text, Type, Language, Probability, Emote, Duration, Sound FROM .lua_text WHERE npcId = '"..entry.."' AND groupId = '"..group.."' ")
+	local result = WorldDBQuery("SELECT ID, Text, Type, Language, Probability, Emote, Duration, Sound FROM lua_text WHERE npcId = '"..entry.."' AND groupId = '"..group.."' ")
 	
 	if result ~= nil then
 		
