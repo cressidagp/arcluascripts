@@ -242,6 +242,12 @@ UPDATE `creature_spawns` SET `flags` = 64 WHERE `entry` = 36723;
 -- Hack! Since arcemu cand handle gossip vehicles
 UPDATE `creature_proto` SET `vehicleid` = 0 WHERE `entry` = 37120; -- Hightlord Darion Mograine
 
+-- Spawn handles by ICC script: (Horde)
+DELETE FROM `creature_spawns` WHERE `entry` IN ( 37935, 37936 );
+DELETE FROM `gameobject_spawns` WHERE `entry` IN ( 201886, 201887 );
+-- Spawn handles by ICC script: (Alliance)
+DELETE FROM `creature_spawns` WHERE `entry` IN ( 37903, 37904 );
+DELETE FROM `gameobject_spawns` WHERE `entry` = 201868;
 
 --
 --
