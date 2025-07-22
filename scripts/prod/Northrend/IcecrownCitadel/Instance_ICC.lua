@@ -245,7 +245,7 @@ function ICC.OnCreatureDeath( iid, victim, killer )
 		for i = 1, 2, 1 do
 
 			killer:SpawnCreature( npc_entry[ team ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], faction, 0, 1, 2, 3, phase )	
-			killer:SpawnGameObject( go_entry[ team ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 1, phase )
+			killer:SpawnGameObject( go_entry[ team ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 100, phase )
 
 		end
 
