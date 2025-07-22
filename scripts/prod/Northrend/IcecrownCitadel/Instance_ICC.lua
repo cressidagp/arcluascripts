@@ -13,8 +13,8 @@ local object_link = {
 
 local npc_entry = { 
 
-{ 37935, 37936 },
-{ 37903, 37904 }
+{ 37903, 37904 },
+{ 37935, 37936 }
 
 }
 
@@ -27,8 +27,8 @@ local spawn_creature = {
 
 local go_entry = { 
 
-{ 201886, 201887 },
-{ 201868, 201868 }
+{ 201868, 201868 },
+{ 201886, 201887 }
 
 }
 
@@ -232,17 +232,17 @@ function ICC.OnCreatureDeath( iid, victim, killer )
 
 		if team == 1 then
 
-			faction = 1735
+			faction = 1732
 
 		else
 
-			faction = 1732
+			faction = 1735
 
 		end
 
 		local phase = killer:GetPhase()
 
-		for i = 0, 2, 1 do
+		for i = 1, 2, 1 do
 
 			killer:SpawnCreature( npc_entry[ team ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], faction, 0, 1, 2, 3, phase )	
 			killer:SpawnGameObject( go_entry[ team ][ i ], spawn_go[ i ][ 1 ], spawn_go[ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 1, phase )
