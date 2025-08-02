@@ -33,7 +33,9 @@ Icecrown Citadel  | Status
 Lord Marrowgar | :heavy_check_mark:
 Lady Deathwhisper | :heavy_check_mark:
 Gunship Battle | Need core support
-Deathbringer Saurfang | :x:
+Deathbringer Saurfang | Need core gossip fix
+Rotface | :x:
+Festergut | :x:
 The Lich King | :x:
 Instance | :x:
 
