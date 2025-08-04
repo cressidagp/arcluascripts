@@ -46,7 +46,7 @@ The Ruby Sanctum  | Status
 Baltharus | :heavy_check_mark:
 Saviana | :heavy_check_mark:
 Zarithian | :heavy_check_mark:
-Halion | :x:
+Halion | WIP: need GO anim progress, better formation angles
 Instance | :heavy_check_mark:
 
 

@@ -11,6 +11,20 @@ local object_link = {
 
 }
 
+local scourge_ports = { 202246, 202245, 202244, 202243, 202242, 202235, 202223 }
+
+local tele_coords = {
+
+{ 1, 70781, -17.1928, 2211.44, 30.1158, 0 },
+{ 2, 70856, -503.62, 2211.47, 62.8235, 0 },
+{ 3, 70857, -615.145, 2211.47, 199.972, 0 },
+{ 4, 70858, -549.131, 2211.29, 539.291, 0 },
+{ 5, 70859, 4198.42, 2769.22, 351.065, 0 },
+{ 6, 70861, 4356.58, 2565.75, 220.4, 0 },
+{ 7, 70860, 528.39, -2124.84, 1040.86, 0 }
+
+}
+
 local npc_entry = { 
 
 { 37903, 37904 },
@@ -54,7 +68,10 @@ function ICC.onPlayerEnter( iid, plr )
 			marrowgarIsDead = false,
 			deathwhisperIsDead = false,
 			marrowgarHasTalked = false,
-			saurfangIsDead = false
+			saurfangIsDead = false,
+			rimefangIsDead = false,
+			spinestalkerIsDead = false,
+			sindragosaIsDead = false
 
 		}
 
@@ -63,6 +80,7 @@ function ICC.onPlayerEnter( iid, plr )
 		--
 		local string_data = {}
 
+		-- this table stores entry(s) and spawnid(s)
 		local result = CharDBQuery( "SELECT killed_npc_guids FROM instances WHERE id = "..iid.."; " )
 
 		if result ~= nil
@@ -78,6 +96,9 @@ function ICC.onPlayerEnter( iid, plr )
 					local b1 = string.find( string_data[ col ], "36612" )
 					local b2 = string.find( string_data[ col ], "36855" )
 					local b3 = string.find( string_data[ col ], "37813" )
+					local b4 = string.find( string_data[ col ], "37533" )
+					local b5 = string.find( string_data[ col ], "37534" )
+					local b6 = string.find( string_data[ col ], "36853" )
 
 					if( b1 ~= nil ) then 
 
@@ -88,14 +109,20 @@ function ICC.onPlayerEnter( iid, plr )
 
 					if( b2 ~= nil ) then ICC[ iid ].deathwhisperIsDead = true end
 					if( b3 ~= nil ) then ICC[ iid ].saurfangIsDead = true end
+					if( b4 ~= nil ) then ICC[ iid ].rimefangIsDead = true end
+					if( b5 ~= nil ) then ICC[ iid ].spinestalkerIsDead = true end
+					if( b6 ~= nil ) then ICC[ iid ].sindragosaIsDead = true end
 
 				end
 
 			until result:NextRow() ~= true
 
-			--print(ICC[ iid ].marrowgarIsDead)
-			--print(ICC[ iid ].deathwhisperIsDead)
-			--print(ICC[ iid ].saurfangIsDead)
+			--print( ICC[ iid ].marrowgarIsDead )
+			--print( ICC[ iid ].deathwhisperIsDead )
+			--print( ICC[ iid ].saurfangIsDead )
+			--print( ICC[ iid ].rimefangIsDead )
+			--print( ICC[ iid ].spinestalkerIsDead )
+			--print( ICC[ iid ].sindragosaIsDead )
 
 		end
 
@@ -146,9 +173,9 @@ function ICC.onGameObjectPush( iid, go )
 		go:Activate()
 
 	end
-
+	
 	local iid = go:GetInstanceID()
-
+	
 	for b = 1, #object_link do
 
 		if ICC[ iid ].marrowgarIsDead == true then
@@ -195,7 +222,34 @@ function ICC.onCreatureLoad( iid, creature )
 	
 		if ICC[ iid ].saurfangIsDead == true then
 		
-			-- spawn vendors
+			local t = 0
+			
+			local f = 0
+			
+			local p = creature:GetPhase()
+			
+			if p == 128 then
+			
+				t = 1
+				
+				f = 1732
+			
+			else
+			
+				t = 2
+				
+				f = 1735
+				
+			end
+		
+			-- Spawn vendors and tents at Deathbringer Rise
+			for i = 1, 2, 1 do
+		
+				creature:SpawnCreature( npc_entry[ t ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], f, 0, 1, 2, 3, p )
+		
+				creature:SpawnGameObject( go_entry[ t ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 100, p )
+			
+			end
 		
 		end
 	
@@ -221,40 +275,50 @@ function ICC.OnCreatureDeath( iid, victim, killer )
 
 	-- Deathbringer Saurfang
 	elseif entry == 37813 then
-
+	
 		ICC[ iid ].saurfangIsDead = true
-
+		
 		-- Spawn vendors and tents at Deathbringer Rise
-
 		local team = killer:GetTeam() + 1
-
+		
 		local faction = 0
-
+		
 		if team == 1 then
-
+		
 			faction = 1732
-
+			
 		else
-
+		
 			faction = 1735
-
+			
 		end
-
+		
 		local phase = killer:GetPhase()
 
 		for i = 1, 2, 1 do
-
-			killer:SpawnCreature( npc_entry[ team ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], faction, 0, 1, 2, 3, phase )	
+		
+			killer:SpawnCreature( npc_entry[ team ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], faction, 0, 1, 2, 3, phase )
+			
 			killer:SpawnGameObject( go_entry[ team ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 100, phase )
-
+		
 		end
-
+		
+	-- Rimefang
+	elseif entry == 37533 then
+	
+		ICC[ iid ].rimefangIsDead = true
+	
+	-- Spinestalker
+	elseif entry == 37534 then
+	
+		ICC[ iid ].spinestalkerIsDead = true
+	
 	end
 
 end
 
 function ICC.onAreaTrigger( iid, plr, areaTriggerId )
-
+	
 	local iid = plr:GetInstanceID()
 
 	if areaTriggerId == 5732 and ICC[ iid ].marrowgarHasTalked == false then
@@ -280,9 +344,91 @@ function ICC.onAreaTrigger( iid, plr, areaTriggerId )
 			LadyDeathwhisper_doAction( deathwhisper )
 
 		end
-
+		
+	elseif areaTriggerId == 5604 then
+	
+		if ICC[ iid ].sindragosaIsDead == true then return end
+		
+		if ICC[ iid ].rimefangIsDead == true and ICC[ iid ].spinestalkerIsDead == true then
+		
+			local sindragosa = plr:SpawnCreature( 36853, 4550.690, 2483.710, 287.0650, 3.089233, 2068, 0, 1, 2, 3, plr:GetPhase() )
+		
+			sindragosa:SetByteValue( 0x0006 + 0x0044, 3, 3 ) -- fly
+		
+			SindragosaDoAction( 0, sindragosa )
+		
+			plr:SendBroadcastMessage( "Sindragosa has spawned." )
+			
+		end
+		
 	end
 
+end
+
+function ICC.onInstanceDestroy( iid )
+    
+	ICC[ iid ] = nil
+	
+end
+
+function ICC.TeleportOnHello( go, event, plr )
+
+    go:GossipCreateMenu( 15221, plr, 0 )
+	
+	go:GossipMenuAddItem( 0, "Teleport to the Light's Hammer.", 1, 0 )
+	
+	local iid = plr:GetInstanceID()
+	
+    if ICC[ iid ].marrowgarIsDead == true then
+
+	    go:GossipMenuAddItem( 0, "Teleport to the Oratory of the Damned.", 2, 0 )
+	
+    end
+
+    if ICC[ iid ].deathwhisperIsDead == true then
+
+	    go:GossipMenuAddItem( 0, "Teleport to the Rampart of Skulls.", 3, 0 )
+		
+	    go:GossipMenuAddItem( 0, "Teleport to the Deathbringer's Rise.", 4, 0 )
+	
+    end
+
+    if ICC[ iid ].saurfangIsDead == true then
+
+	    go:GossipMenuAddItem( 0, "Teleport to the The Upper Spire.", 5, 0 )
+		
+    end
+	
+    if ICC[ iid ].sindragosaIsDead == true then
+
+	    go:GossipMenuAddItem( 0, "Teleport to the The Frost Queen's Lair.", 6, 0 )
+		
+    end
+	
+    go:GossipSendMenu( plr )
+	
+end
+
+function ICC.TeleporterOnSelect( go, event, plr, id, selection, code )
+
+	for i = 1, #tele_coords do
+
+		if selection == tele_coords[ i ][ 1 ] and not plr:IsInCombat() then
+		
+			plr:CastSpell( tele_coords[ i ][ 2 ] )
+			
+			plr:Teleport( 631, tele_coords[ i ][ 3 ], tele_coords[ i ][ 4 ], tele_coords[ i ][ 5 ], tele_coords[ i ][ 6 ] )
+
+		elseif selection == tele_coords[ i ][ 1 ] and plr:IsInCombat() then
+		
+			plr:SendAreaTriggerMessage( "You are in combat!" )
+				
+		end
+		
+		plr:GossipComplete()
+		
+	end
+	
 end
 
 RegisterInstanceEvent( 631, 2, ICC.onPlayerEnter )
@@ -290,3 +436,16 @@ RegisterInstanceEvent( 631, 6, ICC.onCreatureLoad )
 RegisterInstanceEvent( 631, 5, ICC.onCreatureDeath )
 RegisterInstanceEvent( 631, 3, ICC.onAreaTrigger )
 RegisterInstanceEvent( 631, 8, ICC.onGameObjectPush )
+--RegisterInstanceEvent( 631, 10, ICC.onInstanceDestroy )
+
+for i = 1, #scourge_ports do
+
+    RegisterGameObjectEvent( scourge_ports[ i ], 4, ICC.TeleportOnHello )
+	
+end
+
+for i = 1, #scourge_ports do
+
+    RegisterGOGossipEvent( scourge_ports[ i ], 2, ICC.TeleporterOnSelect )
+	
+end
