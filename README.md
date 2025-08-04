@@ -32,12 +32,12 @@ Icecrown Citadel  | Status
 :-- | :--
 Lord Marrowgar | :heavy_check_mark:
 Lady Deathwhisper | :heavy_check_mark:
-Gunship Battle | Need core support
-Deathbringer Saurfang | Need core gossip fix
+Gunship Battle | :x: Need core support
+Deathbringer Saurfang | WIP: need core gossip vehicles
 Festergut | :x:
 Rotface | :x:
 Professor Putricide | :x:
-Sindragosa | Need gravity, far visibility, far spawn
+Sindragosa | WIP: need gravity, far visibility, far spawn
 The Lich King | :x:
 Instance | :x:
 
