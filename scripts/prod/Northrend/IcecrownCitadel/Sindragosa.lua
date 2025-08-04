@@ -13,29 +13,41 @@ local SPELL_FROST_INFUSION = 72292
 
 local self = getfenv( 1 )
 
-function Sindragosa_onEnterCombat( unit, event, attacker )
+function Sindragosa_onSpawn( unit, event )
 
 	self[ tostring( unit ) ] = {
-	
-	phase = 0,
+
 	raidMode = unit:GetDungeonDifficulty(),
 	isInAirPhase = false,
 	isThirdPhase = false,
-	mysticBuffetStack = 0,
-	berserk = 60 * 10
-	
+	mysticBuffetStack = 0
+
 	}
-	
+
+end
+
+function Sindragosa_onEnterCombat( unit, event, attacker )
+
+	local vars = self[ tostring( unit ) ]
+
+	vars.berserk = 60 * 10
+	vars.cleave = 10
+	vars.tailSmash = 20
+	vars.frostBreath = math.random( 8, 12 )
+	vars.unchainedMagic = math.random( 9, 14 )
+	vars.icyGrip = 33
+	vars.airPhase = 50
+
 	--unit:SendChatMessage( 14, 0, "You are fools to have come to this place. The icy winds of Northrend will consume your souls!" )
-	
+
 	unit:PlaySoundToSet( 17007 )
-	
+
 	-- cast: Frost Aura
 	unit:CastSpell( 70084 )
-	
+
 	-- cast: Permaeating Chill
 	unit:CastSpell( 70109 )
-	
+
 end
 
 function SindragosaDoAction( action, unit )
@@ -87,6 +99,10 @@ function Sindragosa_onDied( unit, event, killer )
 		
 			---- spell: Frost Infusion Credit
 			unit:CastSpell( 72292 )
+			
+		end
+		
+	end
 
 end
 
@@ -133,6 +149,7 @@ function Sindragosa_onDamageTaken( unit, event, attacker, damage )
 
 end
 
+RegisterUnitEvent( 36853, 1, Sindragosa_onSpawn )
 RegisterUnitEvent( 36853, 1, Sindragosa_onEnterCombat )
 RegisterUnitEvent( 36853, 3, Sindragosa_onTargetDied )
 RegisterUnitEvent( 36853, 4, Sindragosa_onDied )

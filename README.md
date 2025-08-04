@@ -37,7 +37,7 @@ Deathbringer Saurfang | Need core gossip fix
 Festergut | :x:
 Rotface | :x:
 Professor Putricide | :x:
-Sindragosa | :x:
+Sindragosa | Need gravity, far visibility, far spawn
 The Lich King | :x:
 Instance | :x:
 
