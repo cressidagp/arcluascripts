@@ -32,7 +32,7 @@ local npc_entry = {
 
 }
 
-local spawn_creature = { 
+local spawn_npc = { 
 
 { -529.35, 2226.35, 539.29, 5.88 },
 { -521.22, 2233.37, 539.29, 5.42 }
@@ -245,7 +245,7 @@ function ICC.onCreatureLoad( iid, creature )
 			-- Spawn vendors and tents at Deathbringer Rise
 			for i = 1, 2, 1 do
 		
-				creature:SpawnCreature( npc_entry[ t ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], f, 0, 1, 2, 3, p )
+				creature:SpawnCreature( npc_entry[ t ][ i ], spawn_npc[ i ][ 1 ], spawn_npc[ i ][ 2 ], spawn_npc[ i ][ 3 ], spawn_npc[ i ][ 4 ], f, 0, 1, 2, 3, p )
 		
 				creature:SpawnGameObject( go_entry[ t ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 100, p )
 			
@@ -297,7 +297,7 @@ function ICC.OnCreatureDeath( iid, victim, killer )
 
 		for i = 1, 2, 1 do
 		
-			killer:SpawnCreature( npc_entry[ team ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], faction, 0, 1, 2, 3, phase )
+			killer:SpawnCreature( npc_entry[ team ][ i ], spawn_npc[ i ][ 1 ], spawn_npc[ i ][ 2 ], spawn_npc[ i ][ 3 ], spawn_npc[ i ][ 4 ], faction, 0, 1, 2, 3, phase )
 			
 			killer:SpawnGameObject( go_entry[ team ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 100, phase )
 		

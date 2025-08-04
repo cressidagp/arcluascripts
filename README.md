@@ -34,12 +34,12 @@ Lord Marrowgar | :heavy_check_mark:
 Lady Deathwhisper | :heavy_check_mark:
 Gunship Battle | :x: Need core support
 Deathbringer Saurfang | WIP: need core gossip vehicles
-Festergut | :x:
-Rotface | :x:
-Professor Putricide | :x:
+Festergut | WIP
+Rotface | WIP
+Professor Putricide | WIP
 Sindragosa | WIP: need gravity, far visibility, far spawn
 The Lich King | :x:
-Instance | :x:
+Instance | WIP
 
 The Ruby Sanctum  | Status
 :-- | :--
