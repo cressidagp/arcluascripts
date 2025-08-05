@@ -7,7 +7,9 @@ local object_link = {
 { 36612, 201563 }, -- Marrowgar, Oratory of the Damned Entrance
 { 36612, 202245 }, -- Marrowgar, Transporter
 { 36855, 202243 }, -- Lady Deathwhisper, Transporter at (rampart of skull)
-{ 36855, 202244 } -- Lady Deathwhisper, Transporter at (deatbringer rise)
+{ 36855, 202244 }, -- Lady Deathwhisper, Transporter at (deatbringer rise)
+{ 37813, 201825 }, -- Saurfang: Door
+{ 37813, 202235 }  -- Saurfang: Transporter at Upper Reaches
 
 }
 
@@ -192,6 +194,14 @@ function ICC.onGameObjectPush( iid, go )
 
 				go:Activate()
 
+			end
+
+		elseif ICC[ iid ].saurfangIsDead == true then
+
+			if entry == object_link[ b ][ 2 ] and object_link[ b ][ 1 ] == 37813 and go:GetByte( 0x0006 + 0x000B, 0 ) ~= 0 then
+			
+				go:Activate()
+			
 			end
 
 		end
