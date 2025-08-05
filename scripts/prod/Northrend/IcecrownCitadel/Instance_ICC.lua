@@ -431,6 +431,36 @@ function ICC.TeleporterOnSelect( go, event, plr, id, selection, code )
 	
 end
 
+function ICC.DarionMograine_onHello( unit, event, plr )
+	
+	unit:GossipCreateMenu( 15158, plr, 0 )
+	
+	unit:GossipAddQuests( plr )
+	
+	unit:GossipMenuAddItem( 0, "What is the Ashen Verdict?", 1, 0 )
+	
+	unit:GossipSendMenu( plr )
+	
+end
+
+function ICC.DarionMograine_onSelect( unit, event, plr, id, selection, code )
+	
+	if selection == 1 then
+	
+		unit:GossipCreateMenu( 15159, plr, 0 )
+		
+		unit:GossipMenuAddItem( 0, "How can I learn to work Primordial Saronite?", 2, 0 )
+	
+	else
+	
+		unit:GossipCreateMenu( 15160, plr, 0 )
+		
+	end
+
+	plr:GossipComplete()
+
+end
+
 RegisterInstanceEvent( 631, 2, ICC.onPlayerEnter )
 RegisterInstanceEvent( 631, 6, ICC.onCreatureLoad )
 RegisterInstanceEvent( 631, 5, ICC.onCreatureDeath )
@@ -449,3 +479,6 @@ for i = 1, #scourge_ports do
     RegisterGOGossipEvent( scourge_ports[ i ], 2, ICC.TeleporterOnSelect )
 	
 end
+
+RegisterUnitGossipEvent( 37120, 1, ICC.DarionMograine_onHello )
+RegisterUnitGossipEvent( 37120, 2, ICC.DarionMograine_onSelect )
