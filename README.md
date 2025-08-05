@@ -37,6 +37,7 @@ Deathbringer Saurfang | WIP: need core gossip vehicles
 Festergut | WIP
 Rotface | WIP
 Professor Putricide | WIP
+Sister Svalna | WIP
 Sindragosa | WIP: need gravity, far visibility, far spawn
 The Lich King | :x:
 Instance | WIP
