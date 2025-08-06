@@ -68,9 +68,10 @@ function ICC.onPlayerEnter( iid, plr )
 		ICC[ iid ] = {
 
 			marrowgarIsDead = false,
-			deathwhisperIsDead = false,
 			marrowgarHasTalked = false,
+			deathwhisperIsDead = false,
 			saurfangIsDead = false,
+			putricideIsDead = false,
 			rimefangIsDead = false,
 			spinestalkerIsDead = false,
 			sindragosaIsDead = false
@@ -98,9 +99,10 @@ function ICC.onPlayerEnter( iid, plr )
 					local b1 = string.find( string_data[ col ], "36612" )
 					local b2 = string.find( string_data[ col ], "36855" )
 					local b3 = string.find( string_data[ col ], "37813" )
-					local b4 = string.find( string_data[ col ], "37533" )
-					local b5 = string.find( string_data[ col ], "37534" )
-					local b6 = string.find( string_data[ col ], "36853" )
+					local b4 = string.find( string_data[ col ], "36678" )
+					local b5 = string.find( string_data[ col ], "37533" )
+					local b6 = string.find( string_data[ col ], "37534" )
+					local b7 = string.find( string_data[ col ], "36853" )
 
 					if( b1 ~= nil ) then 
 
@@ -111,9 +113,10 @@ function ICC.onPlayerEnter( iid, plr )
 
 					if( b2 ~= nil ) then ICC[ iid ].deathwhisperIsDead = true end
 					if( b3 ~= nil ) then ICC[ iid ].saurfangIsDead = true end
-					if( b4 ~= nil ) then ICC[ iid ].rimefangIsDead = true end
-					if( b5 ~= nil ) then ICC[ iid ].spinestalkerIsDead = true end
-					if( b6 ~= nil ) then ICC[ iid ].sindragosaIsDead = true end
+					if( b4 ~= nil ) then ICC[ iid ].putricideIsDead = true end
+					if( b5 ~= nil ) then ICC[ iid ].rimefangIsDead = true end
+					if( b6 ~= nil ) then ICC[ iid ].spinestalkerIsDead = true end
+					if( b7 ~= nil ) then ICC[ iid ].sindragosaIsDead = true end
 
 				end
 
@@ -312,7 +315,12 @@ function ICC.OnCreatureDeath( iid, victim, killer )
 			killer:SpawnGameObject( go_entry[ team ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 100, phase )
 		
 		end
-		
+
+	-- Putricide
+	elseif entry == 36678 then
+	
+		ICC[ iid ].putricideIsDead = true	
+	
 	-- Rimefang
 	elseif entry == 37533 then
 	
