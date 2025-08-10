@@ -39,7 +39,7 @@ Rotface | WIP
 Professor Putricide | WIP
 Sister Svalna | WIP
 Sindragosa | WIP: need gravity, far visibility, far spawn
-The Lich King | :x:
+The Lich King | WIP: need SetZoneMusic
 Instance | WIP
 
 The Ruby Sanctum  | Status
