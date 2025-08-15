@@ -51,7 +51,7 @@ function NerubarBroodkeeper_onAIUpdate( unit, event )
 	
 	if vars.cryptScarabs <= 0 then
 	
-		unit:CastSpellOnTarget( 70965, victim )
+		unit:FullCastSpellOnTarget( 70965, victim )
 		
 		vars.cryptScarabs = math.random( 4, 5 )
 	
@@ -63,7 +63,7 @@ function NerubarBroodkeeper_onAIUpdate( unit, event )
 		
 			if v:GetDistanceYards( unit ) < 50 and v:GetHealthPct() < 75 then
 			
-				unit:CastSpellOnTarget( 71020, v )
+				unit:FullCastSpellOnTarget( 71020, v )
 			
 			end
 		
