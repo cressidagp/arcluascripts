@@ -33,10 +33,10 @@ Icecrown Citadel  | Status
 Lord Marrowgar | :heavy_check_mark:
 Lady Deathwhisper | :heavy_check_mark:
 Gunship Battle | :x: Need core support
-Deathbringer Saurfang | WIP: need core gossip vehicles
+Deathbringer Saurfang | WIP: need core gossip vehicles, +events
 Festergut | WIP
 Rotface | WIP
-Professor Putricide | WIP
+Professor Putricide | WIP: need more vehicle events
 Sister Svalna | WIP
 Sindragosa | WIP: need gravity, far visibility, far spawn
 The Lich King | WIP: need SetZoneMusic
