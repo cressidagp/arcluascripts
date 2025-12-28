@@ -5,6 +5,9 @@ local NPC_CROCK_SCOURGEBANE = 37129
 
 local SPELL_DIVINE_SURGE = 71465
 local SPELL_CARESS_OF_DEATH = 70078
+local SPELL_REVIVE_CHAMPION = 70053
+local SPELL_IMPALING_SPEAR = 71443
+local SPELL_AETHER_SHIELD = 71463
 
 --]]
 
@@ -128,7 +131,65 @@ function SisterSvalna_doAction( unit, action )
 
 end
 
+function SisterSvalna_onAIUpdate( unit, event )
+
+	local vars = self[ tostring( unit ) ]
+	
+	if( not unit:GetNextTarget() and not vars.isEventInProgress ) then
+		return
+	end
+	
+	-- dont bother with this func if unit is casting
+	if unit:GetAIState() == 2 then
+		return
+	end
+	
+	if vars.svalnaStart <= 0 then
+	
+		unit:PlaySoundToSet( 17017 )
+		
+		unit:SendChatMessage( 14, 0, "You may have once fought beside me, Crok, but now you are nothing more than a traitor. Come, your second death approaches!" )
+	
+	elseif vars.svalnaResurrect <= 0 then
+	
+		unit:PlaySoundToSet( 17019 )
+		
+		unit:SendChatMessage( 14, 0, "Foolish Crok. You brought my reinforcements with you. Arise, Argent Champions, and serve the Lich King in death!" )
+		
+		-- spell: Revive Champion
+		unit:FullCastSpell( 70053 )
+	
+	elseif vars.svalnaCombat <= 0 then
+	
+		-- TODO: react defensive
+	
+		unit:PlaySoundToSet( 17020 )
+		
+		unit:SendChatMessage( 14, 0, "Come, Scourgebane. I'll show the master which of us is truly worthy of the title of "Champion"!" )
+	
+	elseif vars.impalingSpear <= 0 then
+	
+		-- TODO: get a target not impaled yet
+		local target = unit:GetRandomPlayer()
+		
+		if target then
+		
+			-- spell: Aether Shield
+			unit:CastSpell( 71463 )
+		
+			-- spell: Impaling Spear
+			unit:CastSpellOnTarget( 71443, target )
+			
+		end
+		
+		vars.impalingSpear = math.random( 20, 25 )
+	
+	end
+
+end
+
 RegisterUnitEvent( 37126, 18, SisterSvalna_onSpawn )
 RegisterUnitEvent( 37126, 1, SisterSvalna_onEnterCombat )
 RegisterUnitEvent( 37126, 3, SisterSvalna_onTargetDied )
 RegisterUnitEvent( 37126, 4, SisterSvalna_onDied )
+RegisterUnitEvent( 37126, 18, SisterSvalna_onSpawn )
