@@ -4,6 +4,7 @@ local NPC_SISTER_SVALNA = 37126
 local NPC_CROCK_SCOURGEBANE = 37129
 
 local SPELL_DIVINE_SURGE = 71465
+local SPELL_CARESS_OF_DEATH = 70078
 
 --]]
 
@@ -31,7 +32,7 @@ function SisterSvalna_onEnterCombat( unit, event, attacker )
 	unit:CastSpell( 71465 )
 	
 	unit:RegisterAIUpdateEvent( 1000 )
-
+	
 	local crock = GetInstanceCreature( 631, unit:GetInstanceID(), 37129 )
 	
 	if crock then
@@ -75,7 +76,55 @@ function SisterSvalna_onDied( unit, event, killer )
 
 	unit:PlaySoundToSet( 17023 )
 
-	--unit:SendChatMessage( 14, 0, "Perhaps... you were right, Crok." )
+	unit:SendChatMessage( 14, 0, "Perhaps... you were right, Crok." )
+
+end
+
+function SisterSvalna_doAction( unit, action )
+
+	local vars = self[ tostring( unit ) ]
+	
+	--
+	-- kill Captain
+	--
+	if action == 0 then
+	
+		-- spell: Caress of Death
+		unit:CastSpell( 70078 )
+	
+	
+	--
+	-- start gauntlet
+	--
+	elseif action == 1 then
+	
+		vars.isEventInProgress = true
+		vars.svalnaStart = 25
+	
+	--
+	-- resurrect Captains
+	--
+	elseif action == 2 then
+	
+		vars.svalnaResurrect = 7
+	
+	--
+	-- Captains die
+	--
+	elseif action == 3 then
+	
+		unit:PlaySoundToSet( 17022 )
+		
+		unit:SendChatMessage( 14, 0, "They died so easily. No matter." )
+	
+	--
+	-- reset event
+	--
+	elseif action == 4 then
+	
+		unit:DisableCombat()
+	
+	end
 
 end
 
