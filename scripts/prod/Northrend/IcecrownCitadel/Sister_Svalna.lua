@@ -1,6 +1,7 @@
 --[[
 
 local NPC_SISTER_SVALNA = 37126
+local NPC_CROCK_SCOURGEBANE = 37129
 
 local SPELL_DIVINE_SURGE = 71465
 
@@ -30,6 +31,18 @@ function SisterSvalna_onEnterCombat( unit, event, attacker )
 	unit:CastSpell( 71465 )
 	
 	unit:RegisterAIUpdateEvent( 1000 )
+
+	local crock = GetInstanceCreature( 631, unit:GetInstanceID(), 37129 )
+	
+	if crock then
+	
+		unit:PlaySoundToSet( 16825 )
+		
+		unit:SendChatMessage( 14, 0, "I'll draw her attacks. Return our brothers to their graves, then help me bring her down!" )
+		
+		unit:Emote( 15 )
+	
+	end
 
 end
 
