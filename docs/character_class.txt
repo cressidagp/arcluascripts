@@ -1,4 +1,5 @@
-Class Ids:
+-- Class Ids:
+
 1 - Warrior
 2 - Paladin
 3 - Hunter
@@ -8,5 +9,5 @@ Class Ids:
 7 - Shaman
 8 - Mage
 9 - Warlock
-10- Unused
+10 - Unused
 11 - Druid

@@ -1,4 +1,0 @@
-GetColumn
-GetColumnCount
-GetRowCount
-NextRow

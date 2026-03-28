@@ -1,0 +1,4 @@
+GetColumn()
+GetColumnCount()
+GetRowCount()
+NextRow()
