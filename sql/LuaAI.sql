@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `lua_gameobject_ai` (
   PRIMARY KEY (`entry`,`idx`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-INSERT INTO `lua_gameobject_ai` (`entry`, `idx`, `event_type`, `event_param1`, `event_param2`, `action_type`, `action_param1`, `comment`) VALUES (1796, 0, 2, 25000, 35000, 1, 12544, `GO on spawn`);
+INSERT INTO `lua_gameobject_ai` (`entry`, `idx`, `event_type`, `event_param1`, `event_param2`, `action_type`, `action_param1`, `comment`) VALUES (1796, 0, 2, 25000, 35000, 1, 12544, 'GO on spawn');
 
 CREATE TABLE IF NOT EXISTS `lua_quest_ai` (
   `entry` int(10) unsigned NOT NULL,
