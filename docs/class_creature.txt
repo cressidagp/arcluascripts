@@ -1,3 +1,9 @@
+-- creature
+
+AddAssistTarget( friend )
+AggroWithInRangeFriends()
+CallForHelpHp()
+CanCallForHelp()
 CreateCustomWaypoint( waypointId, x, y, z, o, waitTime, moveFlags, model_id )
 CreateCustomWaypointMap()
 CreateWaypoint( x, y, z, o, waitTime, moveFlags, model_id )
@@ -5,6 +11,7 @@ DeleteWaypoint( waypointId )
 DeleteWaypoints()
 Despawn( delay, respawnTime )
 DestroyCustomWaypointMap()
+DisableRespawn()
 GetCurrentWaypoint()
 GetEntry()
 GetMoveType()

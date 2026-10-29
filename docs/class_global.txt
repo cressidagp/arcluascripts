@@ -1,3 +1,5 @@
+-- global
+
 bit_and
 bit_not
 bit_or
