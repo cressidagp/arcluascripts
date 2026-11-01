@@ -1,4 +1,4 @@
---[[
+--[[ ICC: Deathbringer Saurfang
 
 TODO:
 
@@ -6,6 +6,7 @@ TODO:
 *) faction 974 for Undead Scourge? thats the correct one?
 *) move DoZoneInCombat to common.lua?
 *) Highlord Saurfang its a vehicle, so his gossip on select wont work due arcemu bugs
+*) Grip of Agony need a dummy aura.
 
 local NPC_DEATHBRINGER_SAURFANG = 37813
 local NPC_OVERLORD_SAURFANG = 37187
@@ -51,14 +52,15 @@ local PHASE_INTRO_H	= 2
 local PHASE_COMBAT	= 3
 
 --]]
-
 local self = getfenv( 1 )
 
 local deathbringerPos = { -496.3542, 2211.33, 541.1138, 0.0 }
+
 local firstStepPos = { -541.3177, 2211.365, 539.2921, 0.0 }
 
 local chargePos = {
-    { -509.6505, 2211.377, 539.2872, 0.0 }, -- High Overlord Saurfang/Muradin Bronzebeard
+
+    { -509.6505, 2211.377, 539.2872, 0.0 }, -- High Overlord Saurfang / Muradin Bronzebeard
     { -508.7480, 2211.897, 539.2870, 0.0 }, -- front left
     { -509.2929, 2211.411, 539.2870, 0.0 }, -- front right
     { -506.6607, 2211.367, 539.2870, 0.0 }, -- back middle
@@ -68,7 +70,7 @@ local chargePos = {
 
 local chokePos = {
 
-    { -514.4834, 2211.334, 549.2887, 0.0 }, -- High Overlord Saurfang/Muradin Bronzebeard
+    { -514.4834, 2211.334, 549.2887, 0.0 }, -- High Overlord Saurfang / Muradin Bronzebeard
     { -510.1081, 2211.592, 546.3773, 0.0 }, -- front left
     { -513.3210, 2211.396, 551.2882, 0.0 }, -- front right
     { -507.3684, 2210.353, 545.7497, 0.0 }, -- back middle
@@ -80,11 +82,11 @@ local finalPos = { -563.7552, 2211.328, 538.7848, 0.0 }
 
 function DoZoneInCombat( creature )
 
-	local players = creature:GetInRangePlayers()
+	local inRangePlayers = creature:GetInRangePlayers()
 	
-	if players then
+	if inRangePlayers then
 	
-		for _, player in ipairs (players) do
+		for _, player in ipairs (inRangePlayers) do
 		
 			if player:IsAlive() then
 			
@@ -93,7 +95,6 @@ function DoZoneInCombat( creature )
 			end
 		end
 	end
-	
 	--local target = unit:GetUInt64Value( 0x0006 + 0x000C )
 end
 
@@ -108,11 +109,12 @@ function DeathbringerSaurfang_onSpawn( unit, event )
 
 	self[ tostring( unit ) ] = {
 	
+		raidMode = unit:GetDungeonDifficulty(),
 		phase = 0, --default 0
 		fallenChampionCastCount = 0,
 		frenzied = false,
 		dead = false,
-		intro = 0,
+		introA = 0,
 		itime = 3	
 	}
 	
@@ -134,17 +136,14 @@ function DeathbringerSaurfang_onSpawn( unit, event )
 		unit:CastSpell( 72408 ) -- Rune of Blood S (nothing happen)
 		unit:RemoveAura( 26662 ) -- Berserk
 		unit:RemoveAura( 72737 ) -- Frenzy
-	end	
+	end
 end
 
 function DeathbringerSaurfang_onEnterCombat( unit, event, attacker )
 
 	local vars = self[ tostring( unit ) ]
 	
-	if vars.dead then return end
-	
-	-- set active
-	unit:UseAI()
+	if vars.dead then return end	
 	
 	--DoZoneInCombat( unit )
 
@@ -156,13 +155,13 @@ function DeathbringerSaurfang_onEnterCombat( unit, event, attacker )
 	
 	if vars.introDone == false then
 	
-		unit:CastSpell( 70572 ) -- Grip of Agony
+		--unit:CastSpell( 70572 ) -- Grip of Agony
 	
 	end
 	
 	vars.introDone = true
-	--unit:SendChatMessage( 14, 0, "BY THE MIGHT OF THE LICH KING!" )
 
+	unit:SendChatMessage( 14, 0, "BY THE MIGHT OF THE LICH KING!" )
 	unit:PlaySoundToSet( 16694 )
 
 	-- reset spell vars
@@ -217,7 +216,7 @@ function DeathbringerSaurfang_onDamageTaken( unit, event, attacker, damage )
 	
 		vars.frenzied = true
 		
-		unit:CastSpell( 72737 )
+		unit:CastSpell( 72737 ) -- Frenzy
 		
 		unit:SendChatMessage( 41, 0, "%s goes into a frenzy!" )
 	
@@ -250,30 +249,68 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 
 	--if MISC[ iid ].phase == 1 then
 
-	--	unit:PlaySoundToSet( 16697 )
-	--	unit:RemoveAIUpdateEvent()
-	--end
-	
 	if unit:GetAIState() == 2 then
 		return
 	end
 	
 	-- intro alliance
 	if vars.phase == 1 then
-	
-		unit:PlaySoundToSet( 16697 ) --- test
 
-		unit:RemoveAIUpdateEvent()
-
-		vars.itime = vars.itime - 1
+		if vars.itime ~= nil then vars.itime = vars.itime - 1 end
 		
 		if vars.itime <= 0 then
-		
 
-			
+			if vars.introA == 2 then
+
+				unit:RemoveFlag( 0x0006 + 0x0035, 0x02000000 ) -- uninterectible
+				unit:SetFaction(974) -- Undead Scourge
+				unit:PlaySoundToSet( 16701 )
+				unit:SendChatMessage(14, 0, "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.")
+
+				vars.introA = vars.introA + 1
+				vars.itime = 20
+
+			elseif vars.introA == 3 then
+
+				unit:PlaySoundToSet( 16702 )
+				unit:SendChatMessage(14, 0, "Things are about to get much worse. Come, taste the power that the Lich King has bestowed upon me!")
+				--vars.itime = nil
+				vars.introA = vars.introA + 1
+
+			elseif vars.introA == 6 then
+
+				unit:PlaySoundToSet( 16703 )
+				unit:SendChatMessage(14, 0, "Dwarves...")
+				vars.introA = vars.introA + 1
+				vars.itime = 8
+
+			elseif vars.introA == 7 then
+
+				--unit:FullCastSpellOnTarget( 70572, unit ) -- Grip of Agony
+				local inRangeEnemies = unit:GetInRangeEnemies()
+				for _, e in ipairs( inRangeEnemies ) do
+					if e:IsCreature() == true then
+						local id = e:GetEntry()
+						if id == 37200 or id == 37830 then
+							e:AddAura( 70572, -1 )
+						end
+					end 
+				end
+
+				unit:SendChatMessage(16, 0, "%s immobilizes Muradin and his guards.")
+				--vars.itime = nil
+				vars.introA = vars.introA + 1
+
+			elseif vars.introA == 8 then
+
+				vars.phase = 3 -- combat
+				unit:RemoveFlag( 0x0006 + 0x0035, 0x00000100 ) -- set inmune to pc false
+				vars.introA = vars.introA + 1
+
+			end
+
 		end
 			
-	
 	-- intro horde
 	elseif vars.phase == 2 then
 	
@@ -284,19 +321,35 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 		
 		
 		end
-			
+	
+	--elseif vars.phase == 2 or vars.phase == 3 then
+		
+		
+
+
 	-- combat
 	elseif vars.phase == 3 then
 
 		vars.summonBloodBeast = vars.summonBloodBeast - 1
 		vars.berserk = vars.berserk - 1
 		vars.boilingBlood = vars.boilingBlood - 1
-		vars.bloodNova = bloodNova - 1
-		vars.runeOfBlood = runeOfBlood - 1
+		vars.bloodNova = vars.bloodNova - 1
+		vars.runeOfBlood = vars.runeOfBlood - 1
 
 		if vars.summonBloodBeast <= 0 then
 
-			unit:CastSpell( 72172 )
+			for i = 1, 2 do 
+				unit:CastSpell( 72172 )
+			end
+
+			if vars.RaidMode == 1 or vars.RaidMode == 3 then
+
+				for i = 1, 3 do
+					unit:CastSpell( 72172 )
+				end
+			end
+
+			unit:SendChatMessage( 14, 0, "Feast, my minions!" )
 			vars.summonBloodBeast = 40
 
 		elseif vars.bloodNova <= 0 then
@@ -317,77 +370,72 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 		elseif vars.berserk <= 0 then
 
 			unit:CastSpell( 26662 )
+			unit:PlaySoundToSet( 16698 )
+			unit:SendChatMessage(14, 0, "I have become... DEATH!")
 
 		elseif vars.scentOfBlood <= 0 then
 
+			unit:SendChatMessage( 41, 0, "%s's Blood Beasts gain the scent of blood!" )
 			unit:CastSpell( 72769 )
 		end
 	end 
 end
 
-function DeathbringerSaurfang_doAction( unit )
+function DeathbringerSaurfang_doAction( unit, actionId )
 
 	local vars = self[ tostring( unit ) ]
 
-	if action == 1 or action == 2 then
+	--
+	-- Intro Alliance or Intro Horde
+	--
+	if actionId == 1 or actionId == 2 then
 	
-		vars.phase = action
+		vars.phase = actionId
 		
-		unit:MoveTo( -541.3177, 2211.365, 539.2921, 0 )
+		unit:MoveTo( deathbringerPos[1], deathbringerPos[2], deathbringerPos[3], 0 )
 		
 		if vars.phase == 1 then
-		
-			if subaction == 1 then
+
+			vars.introA = 2
+			vars.itime = 3
 			
-				unit:PlaySoundToSet( 16701 )
-				
-				unit:SendChatMessage( 14, 0, "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge." )
-			
-			elseif subaction == 2 then
-			
-				unit:PlaySoundToSet( 16702 )
-				
-				unit:SendChatMessage( 14, 0, "Things are about to get much worse. Come, taste the power that the Lich King has bestowed upon me!" )
-			
-			end
-		
-		
 		elseif vars.phase == 2 then
 		
-			unit:PlaySoundToSet( 16704 )
-			
-			unit:SendChatMessage( 14, 0, "Join me, father. Join me and we will crush this world in the name of the Scourge -- for the glory of the Lich King!" )
+			vars.itime = 5
 		
 		end
 	
-	elseif action == 3 then
-	
-		if vars.phase == 1 then
-		
-			if subaction == 1 then
-			
-				unit:PlaySoundToSet( 16703 )
-				
-				unit:SendChatMessage( 14, 0, "Dwarves..." )
-			
-				vars.chat = 8
-			
-			elseif subaction == 2 then
-				
-				unit:SendChatMessage( 16, 0, "%s immobilizes Muradin and his guards." )
-			
-			end
-		
-		
-		
-		elseif var.phase == 2 then
-		
-		
-		
-		end
-	
-	end
+	--
+	-- Action Continue Intro
+	--
+	elseif actionId == 3 then
 
+		if vars.phase == 1 then
+
+			vars.introA = 6
+			vars.itime = 7
+
+		elseif vars.phase == 2 then
+
+		end
+
+	--
+	-- Mark of the Fallen Champion
+	--
+	elseif actionId == 4 then
+
+		local inRangeEnemies = unit:GetInRangeEnemies()
+		if inRangeEnemies then
+			for _, e in ipairs( inRangeEnemies ) do
+				if e:IsPlayer() and e:IsAlive() and not e:HasAura(72293) then
+					vars.fallenChampionCastCount = vars.fallenChampionCastCount + 1
+					unit:CastSpellOnTarget(72293, e)
+					unit:SetPower(0, 3)
+					break
+				end
+			end
+		end
+	end
 end
 
 --
@@ -430,27 +478,27 @@ function HighOverlordSaurfang_onHello( unit, event, plr )
 	
 	unit:GossipCreateMenu( 15217, plr, 0 )
 	
-	unit:GossipMenuAddItem( 0, "We are ready to go, High Overlord. The Lich King must fall!", 0, 0 )
+	unit:GossipMenuAddItem( 0, "We are ready to go, High Overlord. The Lich King must fall!", 1, 0 )
 	
 	unit:GossipSendMenu( plr )
 
 end
 
-function HighOverlordSaurfang_onSelectOption( unit, event, plr, id, option, code )
+function HighOverlordSaurfang_onSelectOption( unit, event, plr, id, optionId, code )
 	
-	if option == 0 then
+	if optionId == 1 then
 	
 		unit:GossipCreateMenu( 15218, plr, 0 )
 
-		unit:GossipMenuAddItem( 0, "Lok'tar ogar! We are ready! Onward, brother orc!", 1, 0 )
+		unit:GossipMenuAddItem( 0, "Lok'tar ogar! We are ready! Onward, brother orc!", 2, 0 )
 
 		unit:GossipSendMenu( plr )
 		
-	elseif option == 1 then
+	elseif optionId == 2 then
 
 		plr:GossipComplete()
 		
-		OverlordDoAction( unit, 0 )
+		OverlordDoAction( unit, 1 ) -- Action Start Event
 
 	end
 end
@@ -468,7 +516,7 @@ function OverlordDoAction( unit, actionId )
 	--
 	-- Action Start Event
 	--
-	if actionId == 0 then
+	if actionId == 1 then
 
 		vars.phase = 2
 		unit:SetNPCFlags( 0 )
@@ -480,14 +528,17 @@ function OverlordDoAction( unit, actionId )
 	--
 	-- Action Start Outro
 	--
-	elseif actionId == 1 then
+	elseif actionId == 2 then
 
-		-- do something else
+		--remove aura grip of agony
+		--set disable gravity
+		--move fall
+		--guard actions despawn
 
 	--
 	-- Action Interrup Intro
 	--
-	elseif actionId == 2 then
+	elseif actionId == 3 then
 
 		-- so something more
 	end
@@ -516,9 +567,13 @@ function MovementInform(unit, currentId)
         if id == 1 then 
 
             unit:PlaySoundToSet( 16970 )
+			unit:SendChatMessage(14, 0, "A lone orc against the might of the Alliance???")
 			local vars = self[ tostring( unit ) ]
-			vars.timer = 5
+			vars.timer = 7--5
 			vars.eventId = 5
+
+			local boss = GetInstanceCreature( 631, unit:GetInstanceID(), 133784 )
+			DeathbringerSaurfang_doAction( boss, 3 ) -- Action Continue Intro
             
         --exit
 		elseif id == 2 then
@@ -572,31 +627,31 @@ function MuradinBronzebeard_onHello( unit, event, plr )
 
 	local db = GetInstanceCreature( 631, unit:GetInstanceID(), 133784 )
 
-	if not db then unit:SendChatMessage( 12, 0, "Explore a little then return to avoid ArcEmu buggs." ) return end
+	if not db then unit:SendChatMessage( 12, 0, "Remember to explore a little to avoid ArcEmu buggs." ) return end
 	
 	unit:GossipCreateMenu( 15194, plr, 0 )
 	
-	unit:GossipMenuAddItem( 0, "We're ready, Muradin", 0, 0 )
+	unit:GossipMenuAddItem( 0, "We're ready, Muradin", 1, 0 )
 	
 	unit:GossipSendMenu( plr )
 
 end
 
-function MuradinBronzebeard_onSelectOption( unit, event, plr, id, option, code )
+function MuradinBronzebeard_onSelectOption( unit, event, plr, id, optionId, code )
 
-	if option == 0 then
+	if optionId == 1 then
 
 		unit:GossipCreateMenu( 15195, plr, 0 )
 	
-		unit:GossipMenuAddItem( 0, "We're sure. Let's go!", 1, 0 )
+		unit:GossipMenuAddItem( 0, "We're sure. Let's go!", 2, 0 )
 
 		unit:GossipSendMenu( plr )
 
-	elseif option == 1 then
+	elseif optionId == 2 then
 	
 		plr:GossipComplete()
 
-		MuradinDoAction( unit, 0 )
+		MuradinDoAction( unit, 1 ) -- Action Start Event
 
 	end
 
@@ -604,9 +659,9 @@ end
 
 function MuradinDoAction( unit, actionId )
 
-	local db = GetInstanceCreature( 631, unit:GetInstanceID(), 133784 )
+	local boss = GetInstanceCreature( 631, unit:GetInstanceID(), 133784 )
 	
-	local vars = self[ tostring( db ) ]
+	local vars = self[ tostring( boss ) ]
 	local vars2 = self[ tostring( unit ) ]
 
 
@@ -615,7 +670,7 @@ function MuradinDoAction( unit, actionId )
 	--
 	-- Action Start Event
 	--
-	if actionId == 0 then
+	if actionId == 1 then
 
 		vars.phase = 1 -- intro alliance
 
@@ -632,24 +687,35 @@ function MuradinDoAction( unit, actionId )
 
 		unit:SetNPCFlags( 0 ) -- remove gossip flag
 		unit:PlaySoundToSet( 16974 )
-		vars2.timer = 29
+		unit:SendChatMessage( 14, 0, "Let's get a move on then! Move ou..." )
+		vars2.timer = 30--29,5
 		vars2.eventId = 4
+		local door = unit:GetGameObjectNearestCoords( -469, 2211, 541, 201825 )
+		if door then door:Activate() end
+		-- get saurfang and do action intro alliance
+		DeathbringerSaurfang_doAction( boss, 1 ) -- Intro Alliance
+
 
 	--	MISC[ iid ].phase = 1
 
 	--
 	-- Action Start Outro
 	--
-	elseif actionId == 1 then
+	elseif actionId == 2 then
 
-		-- do something else
+		-- remove aura grip of agony
+		unit:PlaySoundToSet( 16975 )
+		unit:SendChatMessage( 16, 0, "%s gasps for air." )
+		--disable gravity
+		--move fall
+		--guard actions despawn
 
 	--
 	-- Action Interrup Intro
 	--
-	elseif actionId == 2 then
+	elseif actionId == 3 then
 
-		-- so something more
+		--guard actions despawn
 	end
 end
 
@@ -675,11 +741,12 @@ function MuradinBronzebeard_onAIUpdate( unit, event )
 		elseif vars2.eventId == 5 then
 
 			unit:PlaySoundToSet( 16971 )
+			unit:SendChatMessage( 14, 0, "Charge!!!" )
 
 			for i = 1, 4 do
 				if vars2.guardList[ i ] then
 					local guard = unit:GetUnitByGUID( vars2.guardList[ i ] )
-					npcDoAction( guard, 0 )
+					npcDoAction( guard, 1, i + 1 ) -- Action Charge
 				end
 			end
 
@@ -696,21 +763,25 @@ end
 --
 function npcSaurfangEvent_onSpawn( unit, event ) end
 
-function npcDoAction( unit, actionId )
+function npcDoAction( unit, actionId, i )
 
-	-- action charge
-	if actionId == 0 then
+	-- Action Charge
+	if actionId == 1 then
 
-		for i = 2, 5 do
+		unit:SetMovementFlags( 1 ) -- run
+		unit:MoveTo( chargePos[i][1],chargePos[i][2],chargePos[i][3],chargePos[i][4] )
+		---for i = 2, 6 do
 
-			unit:SetMovementFlags( 1 ) -- run
-			unit:MoveTo( chargePos[i][1],chargePos[i][2],chargePos[i][3],chargePos[i][4] )
+		--	unit:SetMovementFlags( 1 ) -- run
+		--	unit:MoveTo( chargePos[i][1],chargePos[i][2],chargePos[i][3],chargePos[i][4] )
 		
-		end
+		--end
 
-	else
-		-- action despawn
-	
+	-- Action Despawn
+	elseif actionId == 2 then
+
+		-- TODO:
+
 	end
 end
 
@@ -739,14 +810,13 @@ RegisterUnitEvent( 37200, 21, MuradinBronzebeard_onAIUpdate )
 -- DEBUG STUFF
 --
 --
-
-local COMMANDS = { "icc", "port", "exit", "spawn" }
+local COMMANDS = { "saurfang", "s_port", "s_faction", "s_spawn", "s_ai" }
 
 function SaurfangDebugCommands( event, plr, message )
 
 	if plr:IsGm() == true then
 
-		if message == "#icc" then
+		if message == "#saurfang" then
 		
 			for i = 1, #COMMANDS do
 			
@@ -754,17 +824,17 @@ function SaurfangDebugCommands( event, plr, message )
 				
 			end
 
-		elseif message == "#saurfang" then
+		elseif message == "#s_port" then
 		
 			plr:Teleport( 631, -510.48, 2211.29, 539.28, 0.06 )
 			
-		elseif message == "#faction" then
+		elseif message == "#s_faction" then
 		
 			local selection = plr:GetSelection()
 			selection:SetFaction( 974 )
 			selection:RemoveFlag(0x02000000)
 
-		elseif message == "#spa" then
+		elseif message == "#s_spawn" then
 		
 			local selection = plr:GetSelection()
 			
@@ -779,20 +849,14 @@ function SaurfangDebugCommands( event, plr, message )
 				if team == 1 then
 		
 					faction = 1732
-			
 				else
-		
 					faction = 1735
-			
 				end
 		
 			local phase = selection:GetPhase()
 
 			for i = 1, 2, 1 do
-		
-				print("SPAWN")
-				print( i )
-			
+
 				selection:SpawnCreature( npc_entry[ team ][ i ], spawn_creature[ i ][ 1 ], spawn_creature[ i ][ 2 ], spawn_creature[ i ][ 3 ], spawn_creature[ i ][ 4 ], faction, 0, 1, 2, 3, phase )	
 				selection:SpawnGameObject( go_entry[ team ][ i ], spawn_go[ i ][ 1 ], spawn_go[ i ][ 2 ], spawn_go[ i ][ 3 ], spawn_go[ i ][ 4 ], 0, 100, phase )
 				
@@ -801,6 +865,17 @@ function SaurfangDebugCommands( event, plr, message )
 			else
 				plr:SendBroadcastMessage( "Select leader first." )
 			end
+			
+		elseif message == "#s_ai" then
+		
+			local saurfang = GetInstanceCreature( 631, plr:GetInstanceID(), 133784 )
+			if saurfang then 
+				saurfang:UseAI() 
+			end
+
+		elseif message == "#s_mark" then
+			local unit = GetInstanceCreature( 631, plr:GetInstanceID(), 133784 )
+			DeathbringerSaurfang_doAction( unit, 4 )
 		end
 	end
 end
