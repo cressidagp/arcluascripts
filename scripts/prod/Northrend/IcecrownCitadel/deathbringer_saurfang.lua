@@ -2,7 +2,6 @@
 
 TODO:
 
-*) The power should not auto regenerate (spell Zero Power)
 *) faction 974 for Undead Scourge? thats the correct one?
 *) move DoZoneInCombat to common.lua?
 *) Highlord Saurfang its a vehicle, so his gossip on select wont work due arcemu bugs
@@ -43,9 +42,6 @@ local SPELL_ACHIEVEMENT                         = 72928
 local SPELL_REMOVE_MARKS_OF_THE_FALLEN_CHAMPION = 72257
 local SPELL_PERMANENT_FEIGN_DEATH               = 70628
 
-// Helper to get id of the aura on different modes (HasAura(baseId) wont work)
-local BOILING_BLOOD_HELPER RAID_MODE<int32>(72385, 72441, 72442, 72443)
-
 local PHASE_ALL		= 0
 local PHASE_INTRO_A	= 1
 local PHASE_INTRO_H	= 2
@@ -80,31 +76,61 @@ local chokePos = {
 
 local finalPos = { -563.7552, 2211.328, 538.7848, 0.0 }
 
+local BOILING_BLOOD_HELPER = { 72385, 72441, 72442, 72443 }
+
 function DoZoneInCombat( creature )
 
 	local inRangePlayers = creature:GetInRangePlayers()
 	
 	if inRangePlayers then
 	
-		for _, player in ipairs (inRangePlayers) do
+		for _, targetPlayer in ipairs( inRangePlayers ) do
 		
-			if player:IsAlive() then
+			if targetPlayer:IsAlive() then
 			
-				creature:AttackReaction( player, 1, 0 )
-			
+				creature:AttackReaction( targetPlayer, 1, 0 )
+				targetPlayer:AttackReaction( creature, 1, 0 )
+				creature:ModThreat( targetPlayer, 0 )
 			end
 		end
 	end
 	--local target = unit:GetUInt64Value( 0x0006 + 0x000C )
 end
 
-local MISC = {}
-
 --
 --
 -- Deathbringer Saurfang (37813)
 --
 --
+
+local SAURFANG_ENERGY = {}
+
+function BloodLink_DummyAura( unit )
+
+	local vars = self[ tostring( unit ) ]
+
+	if vars.phase ~= 3 then return end
+
+	if unit:GetPower( 3 ) == unit:GetMaxPower( 3 ) then
+
+		DeathbringerSaurfang_doAction( unit, 4 ) -- Action Mark of the Fallen Champion
+	end
+end
+
+local function AddBloodPower( unit, amount )
+
+	local guid = unit:GetGUID()
+
+	if SAURFANG_ENERGY[guid] == nil then
+        SAURFANG_ENERGY[guid] = 0
+    end
+
+	SAURFANG_ENERGY[guid] = SAURFANG_ENERGY[guid] + amount
+
+	unit:SetPower(SAURFANG_ENERGY[guid], -3)
+
+end
+
 function DeathbringerSaurfang_onSpawn( unit, event )
 
 	self[ tostring( unit ) ] = {
@@ -112,6 +138,7 @@ function DeathbringerSaurfang_onSpawn( unit, event )
 		raidMode = unit:GetDungeonDifficulty(),
 		phase = 0, --default 0
 		fallenChampionCastCount = 0,
+		combatActive = false,
 		frenzied = false,
 		dead = false,
 		introA = 0,
@@ -119,43 +146,54 @@ function DeathbringerSaurfang_onSpawn( unit, event )
 	}
 	
 	unit:RegisterAIUpdateEvent( 1000 )
+
+	unit:RegisterEvent("BloodLink_DummyAura", 1000, 0)
 	
 	--talkFromDB( unit, 7 )
 	unit:UseAI()
 	
 	local vars = self[ tostring( unit ) ]
 	
-	if vars.phase == 1 then
+	if vars.phase == 0 then
 	
 		unit:SetPower( 0, 3 )
-		--unit:RemoveFlag( 0x0006 + 0x0036, 0x00000800 ) -- dont regenerate power
-		unit:CastSpell( 72242 ) -- Zero Power (nothing happen)
-		unit:CastSpell( 72178 ) -- Blood Link (need dummy aura)
-		unit:CastSpell( 72371 ) -- Blood Power
+		--unit:CastSpell( 72242 ) -- Zero Power
+		--unit:CastSpell( 72178 ) -- Blood Link (need dummy aura)
+		--unit:CastSpell( 72371 ) -- Blood Power
 		unit:CastSpell( 72256 ) -- Mark of the Fallen Champion S (nothing happen)
 		unit:CastSpell( 72408 ) -- Rune of Blood S (nothing happen)
+		--unit:AddAura( 72256, -1)
+		--unit:AddAura( 72408, -1)
 		unit:RemoveAura( 26662 ) -- Berserk
 		unit:RemoveAura( 72737 ) -- Frenzy
+
+		-- set unit field flags
+		unit:SetFlag( 0x0006 + 0x0035, 0x00000100 ) -- inmune to PC
+		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 ) -- uninteractible
+		--unit:SetFlag( 0x0006 + 0x0036, 0x00000800 ) -- dont regenerate power
+		--unit:SetFlag( 0x0006 + 0x0029, 0 ) -- dont regenerate power
 	end
 end
 
 function DeathbringerSaurfang_onEnterCombat( unit, event, attacker )
 
 	local vars = self[ tostring( unit ) ]
-	
-	if vars.dead then return end	
-	
+
+	if vars.dead then 
+		return 
+	end
+
+	if vars.combatActive == true then return end
+
+	vars.combatActive == true
 	--DoZoneInCombat( unit )
 
-	--unit:SetFlag( 0x0006 + 0x004C, 0x00000100 ) -- inmuneToPC
-	unit:SetFlag( 0x0006 + 0x0035, 0x00000100 ) -- inmuneToPC
-	
-	-- set PHASE_COMBAT
-	vars.phase = 3
+	vars.phase = 3 -- set PHASE_COMBAT
+	unit:RemoveFlag( 0x0006 + 0x0035, 0x00000100 ) -- inmuneToPC
 	
 	if vars.introDone == false then
 	
-		--unit:CastSpell( 70572 ) -- Grip of Agony
+		unit:CastSpell( 70572 ) -- Grip of Agony
 	
 	end
 	
@@ -205,9 +243,7 @@ function DeathbringerSaurfang_onDamageTaken( unit, event, attacker, damage )
 	local currentHealth = unit:GetHealth()
 	
 	if damage >= currentHealth then
-	
 		damage = currentHealth - 1
-	
 	end
 	
 	local vars = self[ tostring( unit ) ]
@@ -215,11 +251,8 @@ function DeathbringerSaurfang_onDamageTaken( unit, event, attacker, damage )
 	if vars.frenzied == false and unit:GetHealthPct() < 31 then
 	
 		vars.frenzied = true
-		
 		unit:CastSpell( 72737 ) -- Frenzy
-		
 		unit:SendChatMessage( 41, 0, "%s goes into a frenzy!" )
-	
 	end
 	
 	local newHealth = currentHealth - damage
@@ -227,12 +260,10 @@ function DeathbringerSaurfang_onDamageTaken( unit, event, attacker, damage )
 	if vars.dead == false and newHealth < 100000 then
 	
 		vars.dead = true
-		
+		unit:SetFlag( 0x0006 + 0x0035, 0x02000000 ) -- uninteractible
+		unit:SetFlag( 0x0006 + 0x0035, 0x00000100 ) -- set inmune to PC
 		unit:PlaySoundToSet( 16697 )
-		
-		-- db can do it
-		--unit:SendChatMessage( 14, 0, "I... Am... Released..." )
-		
+		-- db can do it:unit:SendChatMessage( 14, 0, "I... Am... Released..." )
 		unit:CastSpell( 70628 ) -- Permanent Feign Death
 	end
 end
@@ -246,9 +277,9 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 	end
 
 	--local iid = unit:GetInstanceID()
-
 	--if MISC[ iid ].phase == 1 then
 
+	-- is casting check
 	if unit:GetAIState() == 2 then
 		return
 	end
@@ -262,8 +293,8 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 
 			if vars.introA == 2 then
 
-				unit:RemoveFlag( 0x0006 + 0x0035, 0x02000000 ) -- uninterectible
-				unit:SetFaction(974) -- Undead Scourge
+				unit:RemoveFlag( 0x0006 + 0x0035, 0x02000000 ) -- uninteractible
+				unit:SetFaction( 974 ) -- Undead Scourge
 				unit:PlaySoundToSet( 16701 )
 				unit:SendChatMessage(14, 0, "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.")
 
@@ -306,7 +337,6 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 				vars.phase = 3 -- combat
 				unit:RemoveFlag( 0x0006 + 0x0035, 0x00000100 ) -- set inmune to pc false
 				vars.introA = vars.introA + 1
-
 			end
 
 		end
@@ -317,15 +347,16 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 		vars.itime = vars.itime - 1
 		
 		if vars.itime <= 0 then
-		
-		
-		
+
+			if vars.introA == 2 then
+
+				unit:RemoveFlag( 0x0006 + 0x0035, 0x02000000 ) -- uninteractible
+				unit:SetFaction( 974 ) -- Undead Scourge
+
+			end
 		end
 	
 	--elseif vars.phase == 2 or vars.phase == 3 then
-		
-		
-
 
 	-- combat
 	elseif vars.phase == 3 then
@@ -335,26 +366,32 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 		vars.boilingBlood = vars.boilingBlood - 1
 		vars.bloodNova = vars.bloodNova - 1
 		vars.runeOfBlood = vars.runeOfBlood - 1
+		if vars.scentOfBlood ~= nil then vars.scentOfBlood = vars.scentOfBlood - 1 end
 
 		if vars.summonBloodBeast <= 0 then
 
 			for i = 1, 2 do 
-				unit:CastSpell( 72172 )
+				unit:CastSpell( 72172 ) -- summon bloodbeast
 			end
 
 			if vars.RaidMode == 1 or vars.RaidMode == 3 then
 
 				for i = 1, 3 do
-					unit:CastSpell( 72172 )
+					unit:CastSpell( 72356 ) -- summon bloodbeast 25 man
 				end
 			end
 
 			unit:SendChatMessage( 14, 0, "Feast, my minions!" )
 			vars.summonBloodBeast = 40
 
+			if vars.RaidMode == 2 or vars.RaidMode == 3 then
+				vars.scentOfBlood = 10
+			end
+
 		elseif vars.bloodNova <= 0 then
 
-			unit:CastSpell( 72378 ) -- trigger
+			unit:FullCastSpell( 72378 ) -- trigger
+			AddBloodPower( unit, 5 )
 			vars.bloodNova = math.random( 20, 25 )
 
 		elseif vars.runeOfBlood <= 0 then
@@ -365,6 +402,7 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 		elseif vars.boilingBlood <= 0 then
 
 			unit:CastSpell( 72385 )
+			AddBloodPower( unit, 10 ) 
 			vars.boilingBlood = math.random( 15, 20 )
 
 		elseif vars.berserk <= 0 then
@@ -372,11 +410,16 @@ function DeathbringerSaurfang_onAIUpdate( unit, event )
 			unit:CastSpell( 26662 )
 			unit:PlaySoundToSet( 16698 )
 			unit:SendChatMessage(14, 0, "I have become... DEATH!")
+		end
 
-		elseif vars.scentOfBlood <= 0 then
+		if vars.RaidMode == 2 or vars.RaidMode == 3 then	
+	
+			if vars.scentOfBlood <= 0 then
 
-			unit:SendChatMessage( 41, 0, "%s's Blood Beasts gain the scent of blood!" )
-			unit:CastSpell( 72769 )
+				unit:SendChatMessage( 41, 0, "%s's Blood Beasts gain the scent of blood!" )
+				unit:CastSpell( 72769 )
+				vars.scentOfBlood = nil
+			end
 		end
 	end 
 end
@@ -393,6 +436,9 @@ function DeathbringerSaurfang_doAction( unit, actionId )
 		vars.phase = actionId
 		
 		unit:MoveTo( deathbringerPos[1], deathbringerPos[2], deathbringerPos[3], 0 )
+
+		--unit:CastSpell(72242) -- Zero Power
+		--unit:SetPower( 0, 3 ) -- works here, but dont work on spawn
 		
 		if vars.phase == 1 then
 
@@ -401,6 +447,7 @@ function DeathbringerSaurfang_doAction( unit, actionId )
 			
 		elseif vars.phase == 2 then
 		
+			vars.introA = 2
 			vars.itime = 5
 		
 		end
@@ -417,10 +464,13 @@ function DeathbringerSaurfang_doAction( unit, actionId )
 
 		elseif vars.phase == 2 then
 
+			vars.introA = 4
+			vars.itime = 7
+
 		end
 
 	--
-	-- Mark of the Fallen Champion
+	-- Action Mark of the Fallen Champion
 	--
 	elseif actionId == 4 then
 
@@ -445,7 +495,7 @@ end
 --
 function HighOverlordSaurfang_onSpawn( unit, event )
 
-	local v = unit:GetVehicleBase()
+	unit:GetVehicleBase()
 	
 	self[ tostring( unit ) ] = {
 	
@@ -453,45 +503,48 @@ function HighOverlordSaurfang_onSpawn( unit, event )
 		fallenChampionCastCount = 0,
 		frenzied = false,
 		dead = false
-		
 	}
 	
 	unit:RegisterAIUpdateEvent( 1000 )
 	
 	unit:SetNPCFlags( 3 )
 
-	unit:SetFlag( 0x0006 + 0x0035, 0x00000100 ) -- inmuneToPC
-
+	--unit:SetFlag( 0x0006 + 0x0035, 0x00000100 ) -- inmuneToPC
+	--unit:SetFlag( 0x0006 + 0x0036, 0x00002000 ) -- preventSpellClick
+	-- saurfang in love with player
+	--unit:SetFlag(0x0006 + 0x004C, 33554432)
 	-- removed vehicle enter option
-	unit:RemoveFlag( 0x0006 + 0x004C, 0x01000000 ) --UNIT_NPC_FLAG_SPELLCLICK
-	unit:RemoveFlag( 0x0006 + 0x004C, 0x02000000 ) --UNIT_NPC_FLAG_PLAYER_VEHICLE
-	
+	--unit:RemoveFlag( 0x0006 + 0x004C, 0x01000000 ) --UNIT_NPC_FLAG_SPELLCLICK
+	---unit:SetFlag( 0x0006 + 0x004C, 0x02000000 ) --UNIT_NPC_FLAG_PLAYER_VEHICLE
 end
 
 function HighOverlordSaurfang_onHello( unit, event, plr )
+	
+	--print(unit:IsCreature())
+	--print(unit:GetObjectType())
+	--print(unit:GetGUID())
+	--print(unit:GetUInt32Value(0x0006 + 0x004C))
+	--print(unit:GetUInt32Value(0x0006 + 0x0035))
+	--print(unit:GetUInt32Value(0x0006 + 0x0036))
 
 	local db = GetInstanceCreature( 631, unit:GetInstanceID(), 133784 )
-
 	if not db then unit:SendChatMessage( 12, 0, "Explore a little then return to avoid ArcEmu buggs." ) return end
-
-	--unit:GossipSendQuickMenu(15218, plr, 1, 0, "Lok'tar ogar! We are ready! Onward, brother orc!", 0, "money", 0)
 	
 	unit:GossipCreateMenu( 15217, plr, 0 )
-	
 	unit:GossipMenuAddItem( 0, "We are ready to go, High Overlord. The Lich King must fall!", 1, 0 )
-	
 	unit:GossipSendMenu( plr )
-
 end
 
 function HighOverlordSaurfang_onSelectOption( unit, event, plr, id, optionId, code )
-	
+
+	--print("DEBUG: SAURFANG GOSSIP CALLBACK EXECUTED")
+    --print("DEBUG: selection = " .. tostring(selection))
+    --unit:SendChatMessage(14, 0, "Lua callback reached!")
+
 	if optionId == 1 then
 	
 		unit:GossipCreateMenu( 15218, plr, 0 )
-
 		unit:GossipMenuAddItem( 0, "Lok'tar ogar! We are ready! Onward, brother orc!", 2, 0 )
-
 		unit:GossipSendMenu( plr )
 		
 	elseif optionId == 2 then
@@ -499,7 +552,6 @@ function HighOverlordSaurfang_onSelectOption( unit, event, plr, id, optionId, co
 		plr:GossipComplete()
 		
 		OverlordDoAction( unit, 1 ) -- Action Start Event
-
 	end
 end
 
@@ -510,18 +562,32 @@ function OverlordDoAction( unit, actionId )
 	local vars = self[ tostring( db ) ]
 	local vars2 = self[ tostring( unit ) ]
 
-
-	--local iid = unit:GetInstanceID()
-
 	--
 	-- Action Start Event
 	--
 	if actionId == 1 then
 
-		vars.phase = 2
+		local friends = unit:GetInRangeFriends()
+		if friends then
+			local i = 0
+			for _, f in ipairs( friends ) do 
+				if f:GetEntry() == 37920 then
+					i = i + 1
+					vars2.guardList[ i ] = f:GetGUID()
+				end
+			end
+		end
+
 		unit:SetNPCFlags( 0 )
 		unit:PlaySoundToSet( 17103 )
-		vars2.timer = 18
+		unit:SendChatMessage( 14, 0, "Kor'kron, move out! Champions, watch your backs. The Scourge have been..." )
+		vars.phase = 2 -- intro horde
+		vars2.timer = 19
+		vars2.eventId = 3
+		local door = unit:GetGameObjectNearestCoords( -469, 2211, 541, 201825 )
+		if door then door:Activate() end
+		-- get saurfang and do action intro?
+		DeathbringerSaurfang_doAction( boss, 2 ) -- Intro Horde
 
 	--	MISC[ iid ].phase = 1
 
@@ -664,9 +730,6 @@ function MuradinDoAction( unit, actionId )
 	local vars = self[ tostring( boss ) ]
 	local vars2 = self[ tostring( unit ) ]
 
-
-	--local iid = unit:GetInstanceID()
-
 	--
 	-- Action Start Event
 	--
@@ -785,12 +848,28 @@ function npcDoAction( unit, actionId, i )
 	end
 end
 
+function BloodLink_DummySpell( effectIndex, spellObject )
+
+	print(effectIndex)
+	print(spellObject)
+
+end
+
+function DeathbringerSaurfang_onCastSpell( unit, event, spell )
+	print(unit)
+	print(event)
+	print(spell)
+
+end
+
 RegisterUnitEvent( 37813, 18, DeathbringerSaurfang_onSpawn )
 RegisterUnitEvent( 37813, 1, DeathbringerSaurfang_onEnterCombat )
 RegisterUnitEvent( 37813, 3, DeathbringerSaurfang_onTargetDied )
 --RegisterUnitEvent( 37813, 4, DeathbringerSaurfang_onDied )
 RegisterUnitEvent( 37813, 23, DeathbringerSaurfang_onDamageTaken )
 RegisterUnitEvent( 37813, 21, DeathbringerSaurfang_onAIUpdate )
+
+--RegisterUnitEvent( 37813, 31, DeathbringerSaurfang_onCastSpell )
 
 RegisterUnitGossipEvent( 37187, 1, HighOverlordSaurfang_onHello )
 RegisterUnitGossipEvent( 37187, 2, HighOverlordSaurfang_onSelectOption )
@@ -804,6 +883,8 @@ RegisterUnitEvent( 37200, 21, MuradinBronzebeard_onAIUpdate )
 
 --RegisterUnitEvent( 37830, 18, npcSaurfangEvent_onSpawn )
 --RegisterUnitEvent( 37920, 18, npcSaurfangEvent_onSpawn )
+
+RegisterDummySpell( 72202, BloodLink_DummySpell )
 
 --
 --
@@ -876,6 +957,11 @@ function SaurfangDebugCommands( event, plr, message )
 		elseif message == "#s_mark" then
 			local unit = GetInstanceCreature( 631, plr:GetInstanceID(), 133784 )
 			DeathbringerSaurfang_doAction( unit, 4 )
+
+		elseif message == "#s_power" then
+			local unit = GetInstanceCreature( 631, plr:GetInstanceID(), 133784 )
+			unit:SetPower(0,3)
+
 		end
 	end
 end
