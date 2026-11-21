@@ -988,7 +988,7 @@ RegisterUnitEvent( 37200, 21, MuradinBronzebeard_onAIUpdate )
 
 --RegisterDummySpell( 72202, BloodLink_DummySpell )
 
-[[
+--[[
 --
 -- DEBUG STUFF
 --
