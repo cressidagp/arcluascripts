@@ -1,109 +1,21 @@
-local NPCID = 31111
-
-function MohawkOnActivate( unit, activator )
-
-	print("ON ACTIVATE")
-	print(unit:GetName())
-	--print(event)
-	print(activator:GetName())
-end
-
-function MohawkOnDeactivate( unit, event )
-
-	print("ON DE-ACTIVATE")
-	--print(event)
-	print(unit:GetName())
-end
-
-function MohawkOnHello( unit, event, player )
-
-	unit:GossipCreateMenu( 1, player, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI type Loner", 1, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI type Agro", 2, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI type Social", 3, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI type Pet", 4, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI type Totem", 5, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI type Guardian", 6, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI type Passive", 7, 0 )
-	unit:GossipMenuAddItem( 0, "Set Allowed to Combat true", 8, 0 )
-	unit:GossipMenuAddItem( 0, "Set Allowed to Combat false", 9, 0 )
-	unit:GossipMenuAddItem( 0, "Set AI to use True", 10, 0 )
-	unit:GossipSendMenu( player )
-
-end
-
-function MohawkOnSelect( unit, event, player, textId, id, code )
-
-	if id == 1 then
-	
-		local target = player:GetSelection()
-		target:SetAIType(0) -- loner
-		target:SendChatMessage(12, 0, "My AI type its Loner")
-	
-	elseif id == 2 then
-	
-		local target = player:GetSelection()
-		target:SetAIType(1) -- Agro
-		target:SendChatMessage(12, 0, "My AI type its Agro")
-		
-	elseif id == 3 then
-	
-		local target = player:GetSelection()
-		target:SetAIType(2) -- Social
-		target:SendChatMessage(12, 0, "My AI type its Social")
-		
-	elseif id == 4 then
-	
-		local target = player:GetSelection()
-		target:SetAIType(3) -- Pet
-		target:SendChatMessage(12, 0, "My AI type its Pet")
-		
-	elseif id == 5 then
-	
-		local target = player:GetSelection()
-		target:SetAIType(4) -- Totem
-		target:SendChatMessage(12, 0, "My AI type its Totem")
-	
-	elseif id == 6 then
-	
-		local target = player:GetSelection()
-		target:SetAIType(5) -- Guardian
-		target:SendChatMessage(12, 0, "My AI type its Guardian")
-	
-	elseif id == 7 then
-	
-		local target = player:GetSelection()
-		target:SetAIType(6) -- Passive
-		target:SendChatMessage(12, 0, "My AI type its Pasive")
-		
-	elseif id == 8 then
-	
-		local target = player:GetSelection()
-		target:SetAllowedToEnterCombat(1)
-		local v = target:GetVehicleBase()
-		if v then v:SetAllowedToEnterCombat(1) end
-	
-	elseif id == 9 then
-	
-		local target = player:GetSelection()
-		target:SetAllowedToEnterCombat(0)
-		local v = target:GetVehicleBase()
-		if v then v:SetAllowedToEnterCombat(0) end
-		
-	elseif id == 10 then
-	
-		local target = player:GetSelection()
-		target:UseAI()
-		local v = target:GetVehicleBase()
-		if v then v:UseAI() end
-	end
-	player:GossipComplete()
-end
-
---RegisterUnitGossipEvent( NPCID, 1, MohawkOnHello )
---RegisterUnitGossipEvent( NPCID, 2, MohawkOnSelect )
-
-
+--[[
+ * ArcLuaScripts for ArcEmu
+ * 2020-2026
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+]]
 local ITEM_ID = 58001
 
 GUILD_MASTER_TOOL = {}
