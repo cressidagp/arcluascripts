@@ -33,7 +33,7 @@ function GUILD_MASTER_TOOL.itemOnSelect( item, event, player, id, option, code )
 	
 	if option == 1 then
 	
-		GuildOnHello( item, event, player )
+		GUILD_MASTER_TOOL.itemOnHello( item, event, player )
 	end
 	
 	item:GossipCreateMenu( 1, player, 0 )
